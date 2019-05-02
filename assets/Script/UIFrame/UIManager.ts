@@ -44,6 +44,7 @@ export default class UIManager extends cc.Component {
      */
     public async ShowUIForms(uiFormName: string) {
         if(uiFormName == "" || uiFormName == null) return ;
+        
         let baseUIForms = await this.LoadFormsToAllUIFormsCatch(uiFormName);
         
         if(baseUIForms == null) return ;
@@ -167,8 +168,9 @@ export default class UIManager extends cc.Component {
      * @param uiFormName 
      */
     private PushUIFormToStack(uiFormName: string) {
+        
         if(this._StaCurrentUIForms.length > 0) {
-            let topUIForm = this._StaCurrentUIForms.pop();
+            let topUIForm = this._StaCurrentUIForms[this._StaCurrentUIForms.length-1];
             topUIForm.Freeze();
         }
         let baseUIForm = this._MapAllUIForms[uiFormName];
@@ -223,7 +225,7 @@ export default class UIManager extends cc.Component {
         if(this._StaCurrentUIForms.length >= 2) {
             let topUIForm = this._StaCurrentUIForms.pop();
             topUIForm.Hiding();
-            topUIForm = this._StaCurrentUIForms.pop();
+            topUIForm = this._StaCurrentUIForms[this._StaCurrentUIForms.length-1];
             topUIForm.ReDisPlay();
         }else if(this._StaCurrentUIForms.length >= 1) {
             let topUIForm = this._StaCurrentUIForms.pop();
@@ -265,7 +267,8 @@ export default class UIManager extends cc.Component {
             "MainPanel": "MainPanel",
             "BottomPanel": "BottomPanel",
             "SkillPanel": "SkillPanel",
-            "Maker_UIForm": "Maker_UIForm"
+            "Maker_UIForm": "Maker_UIForm",
+            "Prop_UIForm": "Prop_UIForm"
         }
     }
 

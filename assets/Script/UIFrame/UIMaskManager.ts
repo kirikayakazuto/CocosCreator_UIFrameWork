@@ -17,7 +17,6 @@ export default class UIMaskManager extends cc.Component {
         return this.instance;
     }
 
-
     public SetMaskWindow(parent: cc.Node, lucenyType: number) {
         
         switch (lucenyType) {
@@ -43,6 +42,7 @@ export default class UIMaskManager extends cc.Component {
             break;        
         }
         parent.addChild(this.node, -1);
+        
         
     }
 

@@ -1,6 +1,8 @@
 import BaseUIForm from "../UIFrame/BaseUIForm";
 import { UIFormType, UIFormLucenyType, UIFormShowMode } from "../UIFrame/config/SysDefine";
 
+import GMessageManager from "../UIFrame/GMessageManager";
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -25,15 +27,30 @@ export default class Maker_UIForm extends BaseUIForm {
         }, this);
 
         this.BtnTicket.on('click', () => {
-            
+            this.OpenUIForm("Prop_UIForm");
+            let obj = {
+                name: "神杖",
+                dist: "神杖详细介绍..."
+            }
+            GMessageManager.emit("prop", obj);
         }, this);
 
         this.BtnShoe.on('click', () => {
-
+            this.OpenUIForm("Prop_UIForm");
+            let obj = {
+                name: "战靴",
+                dist: "战靴详细介绍..."
+            }
+            GMessageManager.emit("prop", obj);
         }, this);
 
         this.BtnCloth.on('click', () => {
-
+            this.OpenUIForm("Prop_UIForm");
+            let obj = {
+                name: "盔甲",
+                dist: "盔甲详细介绍..."
+            }
+            GMessageManager.emit("prop", obj);
         }, this);
     }
 

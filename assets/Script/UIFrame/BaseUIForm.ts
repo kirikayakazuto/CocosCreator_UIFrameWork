@@ -23,10 +23,10 @@ export default class BaseUIForm extends cc.Component {
         }
     }
     public Hiding() {
-        this.node.active = false;
         if(this.CurrentUIType.UIForms_Type == UIFormType.PopUp) {
             UIMaskManager.GetInstance().CancelMaskWindow();
         }
+        this.node.active = false;
     }
     public ReDisPlay() {
         this.node.active = true;
@@ -36,6 +36,9 @@ export default class BaseUIForm extends cc.Component {
     }
     public Freeze() {
         this.node.active = true;
+        if(this.CurrentUIType.UIForms_Type == UIFormType.PopUp) {
+            UIMaskManager.GetInstance().CancelMaskWindow();
+        }
     }
 
 
