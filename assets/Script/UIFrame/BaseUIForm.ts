@@ -2,6 +2,7 @@ import CocosHelper from "./CocosHelper";
 import UIManager from "./UIManager";
 import UIType from "./UIType";
 import { UIFormType } from "./config/SysDefine";
+import UIMaskManager from "./UIMaskManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -10,7 +11,6 @@ export default class BaseUIForm extends cc.Component {
 
     /** 窗体类型 */
     public CurrentUIType = new UIType();
-    public NodeName = "";
 
     /**
      * 显示状态
@@ -18,14 +18,21 @@ export default class BaseUIForm extends cc.Component {
     public DisPlay() {
         this.node.active = true;
         if(this.CurrentUIType.UIForms_Type == UIFormType.PopUp) {
-
+            
+            UIMaskManager.GetInstance().SetMaskWindow(this.node, this.CurrentUIType.UIForm_LucencyType);
         }
     }
     public Hiding() {
         this.node.active = false;
+        if(this.CurrentUIType.UIForms_Type == UIFormType.PopUp) {
+            UIMaskManager.GetInstance().CancelMaskWindow();
+        }
     }
     public ReDisPlay() {
         this.node.active = true;
+        if(this.CurrentUIType.UIForms_Type == UIFormType.PopUp) {
+            UIMaskManager.GetInstance().SetMaskWindow(this.node, this.CurrentUIType.UIForm_LucencyType);
+        }
     }
     public Freeze() {
         this.node.active = true;
@@ -35,7 +42,7 @@ export default class BaseUIForm extends cc.Component {
     /**
      * 注册点击事件
      */
-    public RigisterNodeEvent(nodeName: string, eventName: string, callback: Function, targer: any) {
+    /* public RigisterNodeEvent(nodeName: string, eventName: string, callback: Function, targer: any) {
         let node = CocosHelper.FindChildInNode(nodeName, this.node);
         if(!node) {
             return ;
@@ -48,17 +55,16 @@ export default class BaseUIForm extends cc.Component {
             return ;
         }
         node.off(eventName, callback, targer);
-    }
+    } */
 
     /**
      * 窗口生命周期
      */
     public OpenUIForm(uiFormName: string) {
-        this.NodeName = uiFormName;
         UIManager.GetInstance().ShowUIForms(uiFormName);
     }
     public CloseUIForm() {
-        UIManager.GetInstance().CloseUIForms(this.NodeName);
+        UIManager.GetInstance().CloseUIForms(this.node.name);
     }
 
     /**

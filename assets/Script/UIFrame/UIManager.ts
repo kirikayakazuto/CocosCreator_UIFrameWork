@@ -184,7 +184,7 @@ export default class UIManager extends cc.Component {
         if(uiFormName == "" || uiFormName == null) return ;
 
         let baseUIForm = this._MapCurrentShowUIForms[uiFormName];
-        if(baseUIForm == null) return ;
+        if(baseUIForm != null) return ;
 
         // 隐藏其他窗口 
         for(let key in this._MapCurrentShowUIForms) {
@@ -195,6 +195,7 @@ export default class UIManager extends cc.Component {
         });
 
         let baseUIFormFromAll = this._MapAllUIForms[uiFormName];
+        
         if(baseUIFormFromAll == null) return ;
 
         this._MapCurrentShowUIForms[uiFormName] = baseUIFormFromAll;
@@ -258,7 +259,14 @@ export default class UIManager extends cc.Component {
      * 初始化预制体信息
      */
     InitUIFormsPathData() {
-
+        this._MapFormsPaths = {
+            "TestPanel": "TestPanel",
+            "SelectPeople": "SelectPeople",
+            "MainPanel": "MainPanel",
+            "BottomPanel": "BottomPanel",
+            "SkillPanel": "SkillPanel",
+            "Maker_UIForm": "Maker_UIForm"
+        }
     }
 
 
