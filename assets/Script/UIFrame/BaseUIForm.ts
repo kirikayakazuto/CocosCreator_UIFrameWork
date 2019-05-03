@@ -4,6 +4,7 @@ import UIType from "./UIType";
 import { UIFormType } from "./config/SysDefine";
 import UIMaskManager from "./UIMaskManager";
 
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -41,24 +42,6 @@ export default class BaseUIForm extends cc.Component {
         }
     }
 
-
-    /**
-     * 注册点击事件
-     */
-    /* public RigisterNodeEvent(nodeName: string, eventName: string, callback: Function, targer: any) {
-        let node = CocosHelper.FindChildInNode(nodeName, this.node);
-        if(!node) {
-            return ;
-        }
-        node.on(eventName, callback, targer);
-    }
-    public OffRigisterNodeEvent(nodeName: string, eventName: string, callback: Function, targer: any) {
-        let node = CocosHelper.FindChildInNode(nodeName, this.node);
-        if(!node) {
-            return ;
-        }
-        node.off(eventName, callback, targer);
-    } */
 
     /**
      * 窗口生命周期

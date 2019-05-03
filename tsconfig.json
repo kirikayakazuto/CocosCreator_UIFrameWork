@@ -5,7 +5,8 @@
     "target": "es5",
     "allowJs": true,
     "experimentalDecorators": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
   },
   "exclude": [
     "node_modules",
@@ -15,4 +16,5 @@
     "build",
     "settings"
   ]
+  
 }

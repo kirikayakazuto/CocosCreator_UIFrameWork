@@ -9,8 +9,5 @@ export default class UIType {
     public UIForms_ShowMode = UIFormShowMode.Normal;
     //UI窗体透明度类型
     public UIForm_LucencyType = UIFormLucenyType.Lucency;
-    
-    constructor() {
-        
-    }
+
 }

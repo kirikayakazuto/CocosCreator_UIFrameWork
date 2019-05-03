@@ -24823,6 +24823,10 @@ declare namespace dragonBones {
         skin: SkinData | null;
     }
 }
+declare module "*.json" {
+	const value: any;
+	export default value;
+   }
 
 declare let jsb: any;
 /** Running in the editor. */

@@ -2,7 +2,7 @@ import CocosHelper from "./CocosHelper";
 import BaseUIForm from "./BaseUIForm";
 import { SysDefine, UIFormType, UIFormShowMode } from "./config/SysDefine";
 import UILoader from "./UILoader";
-
+import ConfigUIFrame from "./config/ConfigUIFrame";
 
 const {ccclass, property} = cc._decorator;
 
@@ -261,15 +261,8 @@ export default class UIManager extends cc.Component {
      * 初始化预制体信息
      */
     InitUIFormsPathData() {
-        this._MapFormsPaths = {
-            "TestPanel": "TestPanel",
-            "SelectPeople": "SelectPeople",
-            "MainPanel": "MainPanel",
-            "BottomPanel": "BottomPanel",
-            "SkillPanel": "SkillPanel",
-            "Maker_UIForm": "Maker_UIForm",
-            "Prop_UIForm": "Prop_UIForm"
-        }
+        
+        this._MapFormsPaths = ConfigUIFrame.UIFormPathConfig;
     }
 
 
