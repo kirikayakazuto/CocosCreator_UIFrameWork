@@ -1,6 +1,7 @@
 import BaseUIForm from "../UIFrame/BaseUIForm";
 import { UIFormType, UIFormLucenyType, UIFormShowMode } from "../UIFrame/config/SysDefine";
 import GMessageManager from "../UIFrame/GMessageManager";
+import UIType from "../UIFrame/UIType";
 
 
 const {ccclass, property} = cc._decorator;
@@ -15,15 +16,16 @@ export default class Prop_UIForm extends BaseUIForm {
     @property(cc.Node)
     closeBtn: cc.Node = null;
 
+    CurrentUIType = new UIType(UIFormType.PopUp, UIFormShowMode.ReverseChange, UIFormLucenyType.ImPenetrable);
+
+    init(obj?: any) {
+        this.PropMsgReturn(obj);
+    }
+
     onLoad() {
-        this.CurrentUIType.UIForms_Type = UIFormType.PopUp;
-        this.CurrentUIType.UIForms_ShowMode = UIFormShowMode.ReverseChange;
-        this.CurrentUIType.UIForm_LucencyType = UIFormLucenyType.ImPenetrable;
         this.closeBtn.on('click', () => {
             this.CloseUIForm();
         }, this)
-        GMessageManager.on("prop", this.PropMsgReturn, this);
-
     }
 
     PropMsgReturn(data) {

@@ -7,14 +7,12 @@ export default class Helloworld extends cc.Component {
 
     @property(cc.Node)
     cocos: cc.Node = null;
-    @property(cc.Node)
-    bg: cc.Node = null;
 
     onLoad() {
         
     }
 
     start () {
-        UIManager.GetInstance().ShowUIForms("TestPanel");
+        UIManager.GetInstance().ShowUIForms("TestPanel", null);
     }
 }

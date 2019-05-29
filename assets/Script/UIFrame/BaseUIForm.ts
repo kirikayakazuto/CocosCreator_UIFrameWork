@@ -14,12 +14,18 @@ export default class BaseUIForm extends cc.Component {
     public CurrentUIType = new UIType();
 
     /**
+     * 消息初始化
+     * 子类需重写
+     */
+    public init(obj?: any) {
+
+    }
+    /**
      * 显示状态
      */
     public DisPlay() {
         this.node.active = true;
         if(this.CurrentUIType.UIForms_Type == UIFormType.PopUp) {
-            
             UIMaskManager.GetInstance().SetMaskWindow(this.node, this.CurrentUIType.UIForm_LucencyType);
         }
     }
@@ -46,8 +52,8 @@ export default class BaseUIForm extends cc.Component {
     /**
      * 窗口生命周期
      */
-    public OpenUIForm(uiFormName: string) {
-        UIManager.GetInstance().ShowUIForms(uiFormName);
+    public ShowUIForm(uiFormName: string, obj?: any) {
+        UIManager.GetInstance().ShowUIForms(uiFormName, obj);
     }
     public CloseUIForm() {
         UIManager.GetInstance().CloseUIForms(this.node.name);

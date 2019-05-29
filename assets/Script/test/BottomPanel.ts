@@ -1,5 +1,6 @@
 import BaseUIForm from "../UIFrame/BaseUIForm";
 import { UIFormType } from "../UIFrame/config/SysDefine";
+import UIType from "../UIFrame/UIType";
 
 
 const {ccclass, property} = cc._decorator;
@@ -10,14 +11,15 @@ export default class NewClass extends BaseUIForm {
     @property(cc.Node)
     ShopNode: cc.Node = null;
 
+
+    CurrentUIType = new UIType(UIFormType.Fixed);
+
     onLoad() {
-        this.CurrentUIType.UIForms_Type = UIFormType.Fixed;
         this.ShopNode.on('click', this.ShopClick, this);
     }
 
     ShopClick() {
-        this.OpenUIForm("Maker_UIForm")
+        this.ShowUIForm("Maker_UIForm")
     }
-
 
 }

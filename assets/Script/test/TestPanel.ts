@@ -9,16 +9,15 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class TestPanel extends BaseUIForm {
     
-    onLoad() {
-        this.CurrentUIType.UIForms_Type = UIFormType.Normal;
-        this.CurrentUIType.UIForms_ShowMode = UIFormShowMode.Normal;
-        this.CurrentUIType.UIForm_LucencyType = UIFormLucenyType.Lucency;
 
+
+
+    onLoad() {
         this.node.getChildByName("btn").on('click', this.callback, this);
     }
 
     callback() {
-        this.OpenUIForm("SelectPeople");
+        this.ShowUIForm("SelectPeople");
     }
     
 }

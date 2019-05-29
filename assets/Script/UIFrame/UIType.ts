@@ -10,4 +10,11 @@ export default class UIType {
     //UI窗体透明度类型
     public UIForm_LucencyType = UIFormLucenyType.Lucency;
 
+    constructor(formtype?: UIFormType, showMode?: UIFormShowMode, lucencyType?: UIFormLucenyType, isClearStack?: boolean) {
+        this.UIForms_Type = formtype || this.UIForms_Type;
+        this.UIForms_ShowMode = showMode || this.UIForms_ShowMode;
+        this.UIForm_LucencyType = lucencyType || this.UIForm_LucencyType;
+        this.IsClearStack = isClearStack || this.IsClearStack;
+    }
+
 }

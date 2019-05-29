@@ -1,5 +1,6 @@
 import BaseUIForm from "../UIFrame/BaseUIForm";
 import { UIFormShowMode } from "../UIFrame/config/SysDefine";
+import UIType from "../UIFrame/UIType";
 
 const {ccclass, property} = cc._decorator;
 
@@ -7,8 +8,9 @@ const {ccclass, property} = cc._decorator;
 export default class MainPanel extends BaseUIForm {
 
 
+    CurrentUIType = new UIType(null, UIFormShowMode.HideOther);
+
     onLoad () {
-        this.CurrentUIType.UIForms_ShowMode = UIFormShowMode.HideOther;
         
     }
 

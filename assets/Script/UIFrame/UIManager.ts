@@ -16,11 +16,11 @@ export default class UIManager extends cc.Component {
     private _NoPopUp: cc.Node = null;                               // 弹出窗口
 
     private _StaCurrentUIForms:Array<BaseUIForm> = [];                     // 存储反向切换的窗体
-    private _MapFormsPaths: {[key: string]: string} = {};              // UI窗体预制体名称, 窗体预制体url
+    private _MapFormsPaths: {[key: string]: string} = {};                  // UI窗体预制体名称, 窗体预制体url
     private _MapAllUIForms: {[key: string]: BaseUIForm} = {};              // 所有的窗体
     private _MapCurrentShowUIForms: {[key: string]: BaseUIForm} = {};      // 正在显示的窗体
 
-    private static _Instance: UIManager = null;
+    private static _Instance: UIManager = null;                     // 单例
 
     onLoad () {
         this.InitRootCanvasLoading();
@@ -41,18 +41,22 @@ export default class UIManager extends cc.Component {
     /**
      * 重要方法 加载显示一个UIForm
      * @param uiFormName 
+     * @param obj 初始化信息, 可以不要
      */
-    public async ShowUIForms(uiFormName: string) {
+    public async ShowUIForms(uiFormName: string, obj?: any) {
         if(uiFormName == "" || uiFormName == null) return ;
         
         let baseUIForms = await this.LoadFormsToAllUIFormsCatch(uiFormName);
+        // 初始化窗体信息
+        baseUIForms.init(obj);
         
         if(baseUIForms == null) return ;
 
+        // 是否清理栈内窗口
         if(baseUIForms.CurrentUIType.IsClearStack) {
             this.ClearStackArray();
         }
-
+        
         switch(baseUIForms.CurrentUIType.UIForms_ShowMode) {
             case UIFormShowMode.Normal:                             // 普通模式显示
                 this.LoadUIToCurrentCache(uiFormName);
