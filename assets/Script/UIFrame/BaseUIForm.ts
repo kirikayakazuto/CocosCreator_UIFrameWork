@@ -1,4 +1,3 @@
-import CocosHelper from "./CocosHelper";
 import UIManager from "./UIManager";
 import UIType from "./UIType";
 import { UIFormType } from "./config/SysDefine";
@@ -10,18 +9,26 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class BaseUIForm extends cc.Component {
 
+    /** 窗体名字 */
+    public UIFromName: string;
     /** 窗体类型 */
     public CurrentUIType = new UIType();
+    /** 点击阴影关闭弹窗 */
+    public ClickMaskClose = false;
+    
+
 
     /**
      * 消息初始化
      * 子类需重写
+     * @param obj
      */
     public init(obj?: any) {
 
     }
+    
     /**
-     * 显示状态
+     * 窗体生命周期
      */
     public DisPlay() {
         this.node.active = true;
@@ -47,16 +54,14 @@ export default class BaseUIForm extends cc.Component {
             UIMaskManager.GetInstance().CancelMaskWindow();
         }
     }
-
-
     /**
-     * 窗口生命周期
+     * 显示与关闭
      */
     public ShowUIForm(uiFormName: string, obj?: any) {
         UIManager.GetInstance().ShowUIForms(uiFormName, obj);
     }
     public CloseUIForm() {
-        UIManager.GetInstance().CloseUIForms(this.node.name);
+        UIManager.GetInstance().CloseUIForms(this.UIFromName);
     }
 
     /**
@@ -68,15 +73,4 @@ export default class BaseUIForm extends cc.Component {
     public ReceiveMessage(messagType: string, callback: Function, targer: any) {
 
     }
-
-    /**
-     * 语言配置
-     * @param id 配置表对应的id
-     */
-    public getText(id: string) {
-
-    }
-
-
-
 }

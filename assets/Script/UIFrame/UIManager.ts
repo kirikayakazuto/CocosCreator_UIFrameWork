@@ -47,6 +47,7 @@ export default class UIManager extends cc.Component {
         if(uiFormName == "" || uiFormName == null) return ;
         
         let baseUIForms = await this.LoadFormsToAllUIFormsCatch(uiFormName);
+        baseUIForms.UIFromName = uiFormName;
         // 初始化窗体信息
         baseUIForms.init(obj);
         
@@ -89,8 +90,8 @@ export default class UIManager extends cc.Component {
                 this.ExitUIFormsAndDisplayOther(uiFormName);
             break;
         }
-
     }
+    
 
     /**
      * 从全部的UI窗口中加载
@@ -137,8 +138,6 @@ export default class UIManager extends cc.Component {
         return baseUIForm;
     }
 
-        
-
     /**
      * 清除栈内所有窗口
      */
@@ -148,6 +147,17 @@ export default class UIManager extends cc.Component {
             return true;
         }
         return false;
+    }
+    /**
+     * 关闭栈顶窗口
+     */
+    public CloseStackTopUIForm() {
+        if(this._StaCurrentUIForms != null && this._StaCurrentUIForms.length >= 1) {
+            let uiFrom = this._StaCurrentUIForms[this._StaCurrentUIForms.length-1];
+            if(uiFrom.ClickMaskClose) {
+                uiFrom.CloseUIForm();
+            }   
+        }
     }
 
     /**

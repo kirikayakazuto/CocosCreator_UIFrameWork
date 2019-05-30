@@ -1,7 +1,6 @@
 import BaseUIForm from "../UIFrame/BaseUIForm";
 import { UIFormType, UIFormLucenyType, UIFormShowMode } from "../UIFrame/config/SysDefine";
 
-import GMessageManager from "../UIFrame/GMessageManager";
 import UIType from "../UIFrame/UIType";
 
 const {ccclass, property} = cc._decorator;
@@ -18,8 +17,8 @@ export default class Maker_UIForm extends BaseUIForm {
     @property(cc.Node)
     BtnCloth: cc.Node = null;
 
-    CurrentUIType = new UIType(UIFormType.PopUp, UIFormShowMode.ReverseChange, UIFormLucenyType.Translucence)
-    
+    CurrentUIType = new UIType(UIFormType.PopUp, UIFormShowMode.ReverseChange, UIFormLucenyType.ImPenetrable);
+    ClickMaskClose = true;
     onLoad() {
         this.CloseBtn.on('click', () => {
             this.CloseUIForm();
