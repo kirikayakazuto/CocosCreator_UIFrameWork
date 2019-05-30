@@ -18,14 +18,16 @@ export default class UIMaskManager extends cc.Component {
     }
 
     public addMaskWindow(parent: cc.Node, lucenyType: number) {
+        if(parent.getChildByName("UIMaskNode")) {
+            return ;
+        }
+        
         let uiMaskScript = new cc.Node("UIMaskNode").addComponent(UIMaskScript);
 
         uiMaskScript.init(parent.getComponent(BaseUIForm).UIFormName);
         uiMaskScript.showMaskUI(lucenyType);
+
         
-        if(parent.getChildByName("UIMaskNode")) {
-            return ;
-        }
         parent.addChild(uiMaskScript.node, -1);
     }
 
