@@ -1,61 +1,42 @@
-import { UIFormLucenyType } from "./config/SysDefine";
+import { UIFormLucenyType, SysDefine } from "./config/SysDefine";
 import UIManager from "./UIManager";
+import UIMaskScript from "./UIMaskScript";
+import BaseUIForm from "./BaseUIForm";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class UIMaskManager extends cc.Component {
+
     static instance: UIMaskManager = null;
 
-    static GetInstance() {
+    static getInstance() {
         if(this.instance == null) {
-            this.instance = new cc.Node("UIMaskManager").addComponent(this);
-            let size = cc.view.getVisibleSize();
-            this.instance.node.height = size.height;
-            this.instance.node.width = size.width;
-            this.instance.addComponent(cc.Graphics);
-            this.instance.addComponent(cc.Button);
-            this.instance.node.on('click', this.instance._clickMaskWindow, this.instance);
+            this.instance = cc.find(SysDefine.SYS_UIMASK_NAME).addComponent<UIMaskManager>(this);
         }
         return this.instance;
     }
 
-    public SetMaskWindow(parent: cc.Node, lucenyType: number) {
+    public addMaskWindow(parent: cc.Node, lucenyType: number) {
+        let uiMaskScript = new cc.Node("UIMaskNode").addComponent(UIMaskScript);
+
+        uiMaskScript.init(parent.getComponent(BaseUIForm).UIFormName);
+        uiMaskScript.showMaskUI(lucenyType);
         
-        switch (lucenyType) {
-            case UIFormLucenyType.Lucency:    
-                
-                this.node.active = true;
-                this.getComponent(cc.Graphics).fillColor = cc.color(0, 0, 0, 0);
-                this.getComponent(cc.Graphics).fillRect(-this.node.width/2, -this.node.height/2, this.node.width, this.node.height);
-                
-            break;
-            case UIFormLucenyType.Translucence:    
-                
-                this.node.active = true;
-                this.getComponent(cc.Graphics).fillColor = cc.color(0, 0, 0, 126);
-                this.getComponent(cc.Graphics).fillRect(-this.node.width/2, -this.node.height/2, this.node.width, this.node.height);
-                
-            break;
-            case UIFormLucenyType.ImPenetrable:    
-                
-                this.node.active = true;
-                this.getComponent(cc.Graphics).fillColor = cc.color(0, 0, 0, 63);
-                this.getComponent(cc.Graphics).fillRect(-this.node.width/2, -this.node.height/2, this.node.width, this.node.height);
-            break;
-            case UIFormLucenyType.Pentrate:    
-                
-                this.node.active = false;
-            break;        
+        if(parent.getChildByName("UIMaskNode")) {
+            return ;
         }
-        parent.addChild(this.node, -1);
+        parent.addChild(uiMaskScript.node, -1);
     }
 
-    public CancelMaskWindow() {
-        this.node.active = false;
-        this.node.parent = null;
-        this.getComponent(cc.Graphics).clear();
+    public removeMaskWindow(parent: cc.Node) {
+        let node = parent.getChildByName("UIMaskNode");
+        if(node) {
+            node.removeFromParent();
+        }
     }
+
+
 
     /**
      * 点击阴影部分

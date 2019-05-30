@@ -10,7 +10,7 @@ const {ccclass, property} = cc._decorator;
 export default class BaseUIForm extends cc.Component {
 
     /** 窗体名字 */
-    public UIFromName: string;
+    public UIFormName: string;
     /** 窗体类型 */
     public CurrentUIType = new UIType();
     /** 点击阴影关闭弹窗 */
@@ -32,14 +32,15 @@ export default class BaseUIForm extends cc.Component {
      */
     public DisPlay() {
         this.node.active = true;
-        this.ShowPopUpAnimation();
         if(this.CurrentUIType.UIForms_Type == UIFormType.PopUp) {
-            UIMaskManager.GetInstance().SetMaskWindow(this.node, this.CurrentUIType.UIForm_LucencyType);
+            this.ShowPopUpAnimation(() => {
+                UIMaskManager.getInstance().addMaskWindow(this.node, this.CurrentUIType.UIForm_LucencyType);    
+            });
         }
     }
     public Hiding() {
         if(this.CurrentUIType.UIForms_Type == UIFormType.PopUp) {
-            UIMaskManager.GetInstance().CancelMaskWindow();
+            UIMaskManager.getInstance().removeMaskWindow(this.node);
         }
         this.HidePopUpAnimation();
         this.node.active = false;
@@ -47,13 +48,15 @@ export default class BaseUIForm extends cc.Component {
     public ReDisPlay() {
         this.node.active = true;
         if(this.CurrentUIType.UIForms_Type == UIFormType.PopUp) {
-            UIMaskManager.GetInstance().SetMaskWindow(this.node, this.CurrentUIType.UIForm_LucencyType);
+            this.ShowPopUpAnimation(() => {
+                UIMaskManager.getInstance().addMaskWindow(this.node, this.CurrentUIType.UIForm_LucencyType);    
+            });
         }
     }
     public Freeze() {
         this.node.active = true;
         if(this.CurrentUIType.UIForms_Type == UIFormType.PopUp) {
-            UIMaskManager.GetInstance().CancelMaskWindow();
+            
         }
     }
     /**
@@ -63,14 +66,14 @@ export default class BaseUIForm extends cc.Component {
         UIManager.GetInstance().ShowUIForms(uiFormName, obj);
     }
     public CloseUIForm() {
-        UIManager.GetInstance().CloseUIForms(this.UIFromName);
+        UIManager.GetInstance().CloseUIForms(this.UIFormName);
     }
 
     /**
      * 弹窗动画
      */
-    public ShowPopUpAnimation() {
-        
+    public ShowPopUpAnimation(callback: Function) {
+        callback();
     }
     public HidePopUpAnimation() {
 

@@ -38,11 +38,15 @@ export default class Prop_UIForm extends BaseUIForm {
         this.dist.string = data.dist;
     }
 
-    ShowPopUpAnimation() {
+    ShowPopUpAnimation(callback: Function) {
         this.node.scale = 0;
         this.node.setPosition(this.startPostion);
         cc.tween(this.node)
         .to(0.3, {scale:1, position:cc.v2(0,0)})
+        .call(() => {
+            // 显示mask
+            callback();
+        })
         .start();
     }
 }

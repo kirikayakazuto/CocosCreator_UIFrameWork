@@ -46,7 +46,7 @@ export default class UIManager extends cc.Component {
         if(uiFormName == "" || uiFormName == null) return ;
         
         let baseUIForms = await this.LoadFormsToAllUIFormsCatch(uiFormName);
-        baseUIForms.UIFromName = uiFormName;
+        baseUIForms.UIFormName = uiFormName;
         // 初始化窗体信息
         baseUIForms.init(obj);
         

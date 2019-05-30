@@ -53,11 +53,5 @@ export default class Maker_UIForm extends BaseUIForm {
         }, this);
     }
 
-    /**
-     * 重写父类方法
-     */
-    ShowPopUpAnimation() {
-        
-    }
 
 }
