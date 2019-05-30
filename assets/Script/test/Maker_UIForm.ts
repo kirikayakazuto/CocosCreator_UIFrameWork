@@ -28,7 +28,8 @@ export default class Maker_UIForm extends BaseUIForm {
         this.BtnTicket.on('click', () => {
             let obj = {
                 name: "神杖",
-                dist: "神杖详细介绍..."
+                dist: "神杖详细介绍...",
+                buttonPos: this.BtnTicket.position,
             }
             this.ShowUIForm("Prop_UIForm", obj);
         }, this);
@@ -36,7 +37,8 @@ export default class Maker_UIForm extends BaseUIForm {
         this.BtnShoe.on('click', () => {
             let obj = {
                 name: "战靴",
-                dist: "战靴详细介绍..."
+                dist: "战靴详细介绍...",
+                buttonPos: this.BtnShoe.position,
             }
             this.ShowUIForm("Prop_UIForm", obj);
         }, this);
@@ -44,10 +46,18 @@ export default class Maker_UIForm extends BaseUIForm {
         this.BtnCloth.on('click', () => {
             let obj = {
                 name: "盔甲",
-                dist: "盔甲详细介绍..."
+                dist: "盔甲详细介绍...",
+                buttonPos: this.BtnCloth.position,
             }
             this.ShowUIForm("Prop_UIForm", obj);
         }, this);
+    }
+
+    /**
+     * 重写父类方法
+     */
+    ShowPopUpAnimation() {
+        
     }
 
 }

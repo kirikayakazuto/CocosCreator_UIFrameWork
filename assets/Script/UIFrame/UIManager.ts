@@ -27,7 +27,6 @@ export default class UIManager extends cc.Component {
         this._NoNormal = CocosHelper.FindChildInNode(SysDefine.SYS_NORMAL_NODE, this.node);
         this._NoFixed = CocosHelper.FindChildInNode(SysDefine.SYS_FIXED_NODE, this.node);
         this._NoPopUp = CocosHelper.FindChildInNode(SysDefine.SYS_POPUP_NODE, this.node);
-        cc.game.addPersistRootNode(this.node);
         this.InitUIFormsPathData();
     }
 

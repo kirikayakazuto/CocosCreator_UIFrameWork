@@ -32,6 +32,7 @@ export default class BaseUIForm extends cc.Component {
      */
     public DisPlay() {
         this.node.active = true;
+        this.ShowPopUpAnimation();
         if(this.CurrentUIType.UIForms_Type == UIFormType.PopUp) {
             UIMaskManager.GetInstance().SetMaskWindow(this.node, this.CurrentUIType.UIForm_LucencyType);
         }
@@ -40,6 +41,7 @@ export default class BaseUIForm extends cc.Component {
         if(this.CurrentUIType.UIForms_Type == UIFormType.PopUp) {
             UIMaskManager.GetInstance().CancelMaskWindow();
         }
+        this.HidePopUpAnimation();
         this.node.active = false;
     }
     public ReDisPlay() {
@@ -62,6 +64,16 @@ export default class BaseUIForm extends cc.Component {
     }
     public CloseUIForm() {
         UIManager.GetInstance().CloseUIForms(this.UIFromName);
+    }
+
+    /**
+     * 弹窗动画
+     */
+    public ShowPopUpAnimation() {
+        
+    }
+    public HidePopUpAnimation() {
+
     }
 
     /**
