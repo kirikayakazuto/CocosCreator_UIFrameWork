@@ -27,6 +27,11 @@
         场景结点设置, 如果UIRoot及子节点设置的和我不同, 请到SysDefind中修改
 ![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/UIROOT_dist.png)
 
+        1, 新建一个UI窗体, 并为它创建一个脚本, 脚本继承自BaseUIForm, 重写属性CurrentUIType设置为窗体对应属性
+        2, 重写init方法, 并获取参数obj, 对UI窗体进行数据初始化
+        3, 更多使用方法请看test
+
+
 
 
 
