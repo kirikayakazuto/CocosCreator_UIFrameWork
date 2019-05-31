@@ -17,9 +17,9 @@ export default class SelectPeople extends BaseUIForm {
     }
 
     EnterGame() {
-        this.ShowUIForm("MainPanel");
-        this.ShowUIForm("SkillPanel");
-        this.ShowUIForm("BottomPanel");
+        this.ShowUIForm("MainPanel", null);
+        this.ShowUIForm("SkillPanel", null);
+        this.ShowUIForm("BottomPanel", null);
     }
 
     BackGame() {

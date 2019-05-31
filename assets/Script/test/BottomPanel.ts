@@ -6,7 +6,7 @@ import UIType from "../UIFrame/UIType";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends BaseUIForm {
+export default class BottomPanel extends BaseUIForm {
 
     @property(cc.Node)
     ShopNode: cc.Node = null;
@@ -19,7 +19,11 @@ export default class NewClass extends BaseUIForm {
     }
 
     ShopClick() {
-        this.ShowUIForm("Maker_UIForm")
+        let buttonPos = this.node.position.add(this.ShopNode.position)
+        let obj = {
+            buttonPos: buttonPos,
+        }
+        this.ShowUIForm("Maker_UIForm", obj)
     }
 
 }

@@ -38,8 +38,6 @@ export default class UIMaskManager extends cc.Component {
         }
     }
 
-
-
     /**
      * 点击阴影部分
      * 关闭弹窗

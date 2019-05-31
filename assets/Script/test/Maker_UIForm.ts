@@ -19,11 +19,18 @@ export default class Maker_UIForm extends BaseUIForm {
 
     CurrentUIType = new UIType(UIFormType.PopUp, UIFormShowMode.ReverseChange, UIFormLucenyType.ImPenetrable);
     ClickMaskClose = true;
+
+
+    startPosition: cc.Vec2;
+
+    init(obj: any) {
+        this.startPosition = obj.buttonPos;
+    }
+
     onLoad() {
         this.CloseBtn.on('click', () => {
             this.CloseUIForm();
         }, this);
-
 
         this.BtnTicket.on('click', () => {
             let obj = {
@@ -51,6 +58,18 @@ export default class Maker_UIForm extends BaseUIForm {
             }
             this.ShowUIForm("Prop_UIForm", obj);
         }, this);
+    }
+    
+    ShowPopUpAnimation(callback: Function) {
+        this.node.scale = 0;
+        this.node.setPosition(this.startPosition);
+        cc.tween(this.node)
+        .to(0.3, {scale:1, position:cc.v2(0,0)})
+        .call(() => {
+            // 显示mask
+            callback();
+        })
+        .start();
     }
 
 

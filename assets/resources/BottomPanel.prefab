@@ -27,7 +27,7 @@
       }
     ],
     "_active": true,
-    "_level": 3,
+    "_level": 1,
     "_components": [
       {
         "__id__": 18
@@ -214,7 +214,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "c6873e29-2b60-4d5f-bc33-d156b6b76431"
     },
     "fileId": "97YclfR+tC2aCba8DnFXWe",
     "sync": false
@@ -381,7 +381,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "c6873e29-2b60-4d5f-bc33-d156b6b76431"
     },
     "fileId": "3b3ijdqiJO2InzqOV9nVFF",
     "sync": false
@@ -394,6 +394,8 @@
       "__id__": 5
     },
     "_enabled": true,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_spriteFrame": {
       "__uuid__": "a23235d1-15db-4b95-8439-a2e005bfff91"
     },
@@ -410,8 +412,6 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
     "_id": ""
   },
   {
@@ -486,7 +486,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "c6873e29-2b60-4d5f-bc33-d156b6b76431"
     },
     "fileId": "a2V09WZapP6Lu52Pry91IM",
     "sync": false
@@ -650,7 +650,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "c6873e29-2b60-4d5f-bc33-d156b6b76431"
     },
     "fileId": "83iT3qWEpHQqF9tgbjAlE2",
     "sync": false
@@ -663,6 +663,8 @@
       "__id__": 12
     },
     "_enabled": true,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_spriteFrame": {
       "__uuid__": "a23235d1-15db-4b95-8439-a2e005bfff91"
     },
@@ -679,8 +681,6 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
     "_id": ""
   },
   {
@@ -689,7 +689,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "c6873e29-2b60-4d5f-bc33-d156b6b76431"
     },
     "fileId": "35/59enZ1IlaLJnJ22MC2d",
     "sync": false
@@ -713,7 +713,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "c6873e29-2b60-4d5f-bc33-d156b6b76431"
     },
     "fileId": "13VKebwmtHjoVBm6+mNXTI",
     "sync": false

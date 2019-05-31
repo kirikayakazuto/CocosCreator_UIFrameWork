@@ -46,15 +46,12 @@ export default class BaseUIForm extends cc.Component {
         this.node.active = false;
     }
     public ReDisPlay() {
-        this.node.active = true;
         if(this.CurrentUIType.UIForms_Type == UIFormType.PopUp) {
-            this.ShowPopUpAnimation(() => {
-                UIMaskManager.getInstance().addMaskWindow(this.node, this.CurrentUIType.UIForm_LucencyType);    
-            });
+            
         }
     }
     public Freeze() {
-        this.node.active = true;
+        
         if(this.CurrentUIType.UIForms_Type == UIFormType.PopUp) {
             
         }
