@@ -16,7 +16,8 @@ export default class SkillPanel extends BaseUIForm {
         this.skill1.on('click', this.Skill1Callback, this);
     }
 
+
     Skill1Callback() {
-        cc.log("skill1 clicked");
+        this.ShowUIForm("QuikHideForm", null);
     }
 }

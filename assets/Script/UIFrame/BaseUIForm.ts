@@ -40,10 +40,13 @@ export default class BaseUIForm extends cc.Component {
     }
     public Hiding() {
         if(this.CurrentUIType.UIForms_Type == UIFormType.PopUp) {
-            UIMaskManager.getInstance().removeMaskWindow(this.node);
+            UIMaskManager.getInstance().removeMaskWindow(this.node); 
         }
-        this.HidePopUpAnimation();
-        this.node.active = false;
+        this.HidePopUpAnimation(() => {
+            this.node.active = false;
+        });
+        
+        
     }
     public ReDisPlay() {
         if(this.CurrentUIType.UIForms_Type == UIFormType.PopUp) {
@@ -72,8 +75,8 @@ export default class BaseUIForm extends cc.Component {
     public ShowPopUpAnimation(callback: Function) {
         callback();
     }
-    public HidePopUpAnimation() {
-
+    public HidePopUpAnimation(callback: Function) {
+        callback();
     }
 
     /**

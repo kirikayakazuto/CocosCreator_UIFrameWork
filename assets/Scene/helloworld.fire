@@ -361,7 +361,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 342.33,
+      "width": 390,
       "height": 60
     },
     "_anchorPoint": {
@@ -415,7 +415,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "simhei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": "81CJdMBsxEeKnVUvPYu7SV"

@@ -50,6 +50,6 @@ export default class UIMaskScript extends cc.Component {
 
 
     public _clickMaskWindow() {
-        UIManager.GetInstance().CloseUIForms(this.UIFormName);
+        UIManager.GetInstance().CloseStackTopUIForm();
     }
 }

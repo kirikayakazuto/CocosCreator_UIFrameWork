@@ -125,39 +125,6 @@
 			"service_price": "该服务按使用量计费，<a href='https://docs.agora.io/cn/Agora Platform/billing_faq?platform=All Platforms'><font color='#dddddd'>计费规则</font></a>，所产生的费用将由第三方从您的 <a href='https://account.cocos.com/#/finance/finance_list'><font color='#dddddd'>Cocos 账户余额</font></a> 中扣除。",
 			"packpage_version_desc": "",
 			"service_protocol": "游戏首次开启该服务时，Cocos会后台通知服务方为游戏开通服务并初始化参数，服务方根据需要可能会获取您的Cocos账户信息，包括账户基本资料、游戏基本资料、账户余额等，点击确认开通按钮即视为您同意该服务访问您的账户信息，详见<a href='http://auth.cocos.com/CocosServiceAgreement.html'>《Cocos用户服务协议》</a>和<a href='http://auth.cocos.com/PrivacyPolicy.html'>《Cocos隐私政策》</a>"
-		},
-		{
-			"service_id": "7",
-			"service_name": "AnySDK",
-			"service_icon": "https://account.cocos.com/client/3ba1fcf9029140cf08d95813e387d04a.png",
-			"service_desc": "800+渠道、支持多平台多引擎、安全稳定的本地打包工具。技术支持：https://forum.cocos.com/c/anysdk",
-			"service_title": "游戏快速接入第三方SDK的解决方案",
-			"service_guide_url": "http://docs.anysdk.com",
-			"service_sample_url": "http://github.com/AnySDK",
-			"service_dev_url": "http://dev.anysdk.com",
-			"service_type": "0",
-			"service_type_zh": "不支持游戏",
-			"support_platform": [
-				"Android",
-				"iOS",
-				"HTML5"
-			],
-			"package_download_url": "http://download.cocos.com/CocosServices/plugins/service-anysdk/1.0.1_2.2.5.zip",
-			"package_version_desc": "修复 Creator 2.0.x 系列版本 2.0.7 以上因调用 cc.game.restart(); 而导致的 AnySDK 调用失败的错误",
-			"service_component_name": "service-anysdk",
-			"package_versions": [
-				"1.0.1_2.2.5"
-			],
-			"build_platform": [
-				"web-mobile",
-				"web-desktop",
-				"android",
-				"ios"
-			],
-			"require_verify": 0,
-			"service_price": "",
-			"packpage_version_desc": "",
-			"service_protocol": "游戏首次开启该服务时，Cocos会后台通知服务方为游戏开通服务并初始化参数，服务方根据需要可能会获取您的Cocos账户信息，包括账户基本资料、游戏基本资料、账户余额等，点击确认开通按钮即视为您同意该服务访问您的账户信息，详见<a href='http://auth.cocos.com/CocosServiceAgreement.html'>《Cocos用户服务协议》</a>和<a href='http://auth.cocos.com/PrivacyPolicy.html'>《Cocos隐私政策》</a>"
 		}
 	],
 	"game": {

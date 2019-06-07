@@ -1943,7 +1943,7 @@ declare namespace cc {
          添加一个延时 action
          @param duration duration
          */
-        delay(duration: number): void;
+        delay(duration: number): Tween;
 
         /**
          !#en
