@@ -20,7 +20,6 @@ export default class QuikHideForm extends BaseUIForm {
     }
 
     HidePopUpAnimation(callback: Function) {
-        console.log("==");
         cc.tween(this.node)
         .delay(2)
         .call(() => {

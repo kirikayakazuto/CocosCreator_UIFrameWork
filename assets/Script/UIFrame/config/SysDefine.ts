@@ -1,38 +1,33 @@
 /**窗体类型 */
 export enum UIFormType {
-    Normal,                     // 普通窗口
-    Fixed,                      // 固定窗口
-    PopUp,                      // 弹出窗口
+    /** 普通窗口 */
+    Normal,
+    /** 固定窗口 */
+    Fixed,                      
+    /** 弹出窗口 */
+    PopUp,                      
 }
 /**显示类型 */
 export enum UIFormShowMode {
-    //普通
+    /** 普通, 窗体的显示和关闭并不会影响其他窗体 */
     Normal,
-    //反向切换
+    /** 反向切换, 窗体关闭时, 会显示其他窗体 */
     ReverseChange,
-    //隐藏其他
+    /** 隐藏其他, 窗体显示时, 会隐藏其他窗体 */
     HideOther
 }
 /**透明度类型 */
 export enum UIFormLucenyType {
-    /**
-     * 完全透明，不能穿透
-     */
+    /** 完全透明，不能穿透 */
     Lucency,
-    /**
-     * 半透明，不能穿透
-     */
+    /** 半透明，不能穿透 */
     Translucence,
-    /**
-     * 低透明度，不能穿透
-     */
+    /** 低透明度，不能穿透 */
     ImPenetrable,
-    /**
-     * 可以穿透
-     */
+    /** 可以穿透 */
     Pentrate    
 }
-
+/** 常量 */
 export class SysDefine {
     /* 路径常量 */
     public static SYS_PATH_CANVAS = "Canvas";

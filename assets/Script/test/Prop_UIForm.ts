@@ -23,7 +23,8 @@ export default class Prop_UIForm extends BaseUIForm {
     ClickMaskClose = true;
     
     init(obj?: any) {
-        this.PropMsgReturn(obj);
+        this.title.string = obj.name;
+        this.dist.string = obj.dist;
         this.startPostion = obj.buttonPos;
     }
 
@@ -33,10 +34,6 @@ export default class Prop_UIForm extends BaseUIForm {
         }, this)
     }
 
-    PropMsgReturn(data) {
-        this.title.string = data.name;
-        this.dist.string = data.dist;
-    }
 
     ShowPopUpAnimation(callback: Function) {
         this.node.scale = 0;

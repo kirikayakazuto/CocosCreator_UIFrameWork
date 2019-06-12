@@ -90,10 +90,8 @@ export default class UIManager extends cc.Component {
             break;
         }
     }
-    
-
     /**
-     * 从全部的UI窗口中加载
+     * 从全部的UI窗口中加载, 并挂载到结点上
      */
     private async LoadFormsToAllUIFormsCatch(uiFormName: string) {
         let baseUIResult = this._MapAllUIForms[uiFormName];
@@ -181,16 +179,16 @@ export default class UIManager extends cc.Component {
      * @param uiFormName 
      */
     private PushUIFormToStack(uiFormName: string) {
-        
         if(this._StaCurrentUIForms.length > 0) {
             let topUIForm = this._StaCurrentUIForms[this._StaCurrentUIForms.length-1];
             topUIForm.Freeze();
         }
         let baseUIForm = this._MapAllUIForms[uiFormName];
         if(baseUIForm == null) return ;
-
+        // 加入栈中, 同时设置其zIndex 使得后进入的窗体总是显示在上面
+        this._StaCurrentUIForms.push(baseUIForm);       
+        baseUIForm.node.zIndex = this._StaCurrentUIForms.length;
         baseUIForm.DisPlay();
-        this._StaCurrentUIForms.push(baseUIForm);
     }
     /**
      * 加载时, 关闭其他窗口
