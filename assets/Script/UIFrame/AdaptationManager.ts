@@ -39,9 +39,9 @@ export default class AdaptationManager extends cc.Component {
         switch(type) {
             case AdaptationType.Top:
                 if(CC_WECHATGAME) {     // 微信小游戏适配刘海屏
-                    let menuInfo = window["ws"].getMenuButtonBoundingClientRect();
-                    let systemInfo = window["ws"].getSystemInfoSync();
-                    distance = this.node.parent.height * (menuInfo.top / systemInfo.screenHeight);
+                    let menuInfo = window["wx"].getMenuButtonBoundingClientRect();
+                    let systemInfo = window["wx"].getSystemInfoSync();
+                    distance = cc.find("Canvas").height * (menuInfo.top / systemInfo.screenHeight);
                 }
                 widget.top = distance ? distance : 0;
                 widget.isAbsoluteTop = true;
