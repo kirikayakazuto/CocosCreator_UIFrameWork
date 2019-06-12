@@ -1,0 +1,76 @@
+import { SysDefine } from './config/SysDefine';
+/**
+ * @Author: 邓朗 
+ * @Date: 2019-06-12 17:18:04  
+ * @Describe: 适配组件, 主要适配背景大小, fixed类型窗体的位置
+ */
+
+const {ccclass, property} = cc._decorator;
+
+@ccclass
+export default class AdaptationManager extends cc.Component {
+
+    private static _Instance: AdaptationManager = null;                     // 单例
+    static GetInstance(): AdaptationManager {
+        if(this._Instance == null) {
+            this._Instance = cc.find(SysDefine.SYS_UIAdaptation_NAME).addComponent<AdaptationManager>(this);
+        }
+        return this._Instance;
+    }
+    
+    /** 屏幕尺寸 */
+    public VisibleSize: cc.Size;
+
+    onLoad () {
+        this.VisibleSize = cc.view.getVisibleSize();
+    }
+
+    start () {
+
+    }
+    /**
+     * 适配靠边的UI
+     * @param type 
+     * @param node 
+     * @param distance 
+     */
+    adaptationFormByType(type: AdaptationType, node: cc.Node, distance?: number) {
+        let widget = node.addComponent(cc.Widget);
+        switch(type) {
+            case AdaptationType.Top:
+                if(CC_WECHATGAME) {     // 微信小游戏适配刘海屏
+                    let menuInfo = window["ws"].getMenuButtonBoundingClientRect();
+                    let systemInfo = window["ws"].getSystemInfoSync();
+                    distance = this.node.parent.height * (menuInfo.top / systemInfo.screenHeight);
+                }
+                widget.top = distance ? distance : 0;
+                widget.isAbsoluteTop = true;
+                widget.isAlignTop = true;
+            break;
+            case AdaptationType.Bottom:
+                widget.bottom = distance ? distance : 0;
+                widget.isAbsoluteBottom = true;
+                widget.isAlignBottom = true;
+            break;
+            case AdaptationType.Left:
+                widget.left = distance ? distance : 0;
+                widget.isAbsoluteLeft = true;
+                widget.isAlignLeft = true;
+            break;
+            case AdaptationType.Right:
+                widget.right = distance ? distance : 0;
+                widget.isAbsoluteRight = true;
+                widget.isAlignRight = true;
+            break;
+        }
+        widget.target = cc.find("Canvas");
+        widget.updateAlignment();
+    }
+}
+
+export enum AdaptationType {
+    Top = 1,
+    Bottom = 2,
+    Left = 3,
+    Right = 4,
+}

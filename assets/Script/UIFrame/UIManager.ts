@@ -8,8 +8,6 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class UIManager extends cc.Component {
-
-
     
     private _NoNormal: cc.Node = null;                              // 全屏显示的UI 挂载结点
     private _NoFixed: cc.Node = null;                               // 固定显示的UI

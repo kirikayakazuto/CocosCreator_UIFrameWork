@@ -1,6 +1,7 @@
 import BaseUIForm from "../UIFrame/BaseUIForm";
 import { UIFormType } from "../UIFrame/config/SysDefine";
 import UIType from "../UIFrame/UIType";
+import AdaptationManager, { AdaptationType } from "../UIFrame/AdaptationManager";
 
 
 const {ccclass, property} = cc._decorator;
@@ -14,8 +15,11 @@ export default class BottomPanel extends BaseUIForm {
 
     CurrentUIType = new UIType(UIFormType.Fixed);
 
-    onLoad() {
+    onLoad() {}
+    start() {
+        AdaptationManager.GetInstance().adaptationFormByType(AdaptationType.Bottom, this.node);
         this.ShopNode.on('click', this.ShopClick, this);
+
     }
 
     ShopClick() {
