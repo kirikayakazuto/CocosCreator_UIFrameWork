@@ -16,8 +16,8 @@
 				"iOS",
 				"HTML5"
 			],
-			"package_download_url": "http://download.cocos.com/CocosServices/plugins/service-analytics/1.1.7_2.0.3.zip",
-			"package_version_desc": "1、 更新 H5 SDK 版本至 2.0.3。<br>2、 SDK 优化更新，删除 init 接口字段 'channel' ，改为 login 接口输入。<br>3、 如有相关问题咨询或者需求， 可以联系我们技术支持邮箱 <a href=' '>support-cocos@cocos.com</a>",
+			"package_download_url": "http://download.cocos.com/CocosServices/plugins/service-analytics/1.2.0_2.1.0.zip",
+			"package_version_desc": "1、优化SDK，修复H5-SDK 与多个小游戏平台适配问题，删除和优化init事件无用接口<br>2、 如有相关问题咨询或者需求， 可以联系我们技术支持邮箱 <a href=' '>support-cocos@cocos.com</a>",
 			"service_component_name": "service-analytics",
 			"package_versions": [
 				"1.0.0_1.0.5",
@@ -26,7 +26,10 @@
 				"1.1.4_2.0.1",
 				"1.1.5_2.0.1",
 				"1.1.6_2.0.1_2.0.2",
-				"1.1.7_2.0.3"
+				"1.1.7_2.0.3",
+				"1.1.8_2.0.4",
+				"1.1.9_2.1.0",
+				"1.2.0_2.1.0"
 			],
 			"build_platform": [
 				"web-mobile",

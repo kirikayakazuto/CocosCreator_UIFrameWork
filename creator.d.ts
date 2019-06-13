@@ -1934,7 +1934,7 @@ declare namespace cc {
          @param props {scale: 2, position: cc.v3(100, 100, 100)}
          @param opts opts
          */
-        by(duration: number, props: any, opts: { progress: Function; easing: Function | string; }): Tween;
+        by(duration: number, props: any, opts?: { progress: Function; easing: Function | string; }): Tween;
 
         /**
          !#en

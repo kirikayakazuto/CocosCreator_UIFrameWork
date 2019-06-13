@@ -6,12 +6,11 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class QuikHideForm extends BaseUIForm {
 
-    CurrentUIType = new UIType(UIFormType.PopUp, UIFormShowMode.ReverseChange, UIFormLucenyType.Translucence);
+    CurrentUIType = new UIType(UIFormType.PopUp, UIFormShowMode.ReverseChange, UIFormLucenyType.Pentrate);
     ClickMaskClose = false;
 
-
-    init() {
-        this.scheduleOnce(this.CloseUIForm.bind(this), 1)
+    init() {        
+        this.scheduleOnce(this.CloseUIForm.bind(this), 0.8)
     }
     // onLoad () {}
 
@@ -20,10 +19,12 @@ export default class QuikHideForm extends BaseUIForm {
     }
 
     HidePopUpAnimation(callback: Function) {
+        
         cc.tween(this.node)
-        .delay(2)
+        .by(0.3, {position: cc.v2(0, 90)})
         .call(() => {
             callback();
+            this.node.setPosition(0, 0);
         })
         .start();
     }

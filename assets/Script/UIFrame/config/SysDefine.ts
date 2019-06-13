@@ -36,9 +36,9 @@ export class SysDefine {
 
 
     /* 标签常量 */
-    public static SYS_UIROOT_NAME = "Canvas/UIRoot";
-    public static SYS_UIMASK_NAME = "Canvas/UIRoot/UIMaskScript"
-    public static SYS_UIAdaptation_NAME = "Canvas/UIRoot/UIAdaptationScript"
+    public static SYS_UIROOT_NAME = "Canvas/UIROOT";
+    public static SYS_UIMASK_NAME = "Canvas/UIROOT/UIMaskScript"
+    public static SYS_UIAdaptation_NAME = "Canvas/UIROOT/UIAdaptationScript"
     /* 节点常量 */
     public static SYS_NORMAL_NODE = "Normal";
     public static SYS_FIXED_NODE = "Fixed";

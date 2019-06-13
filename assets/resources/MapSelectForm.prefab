@@ -12,23 +12,26 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "QuikHideForm",
+    "_name": "MapSelectForm",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
       {
         "__id__": 2
+      },
+      {
+        "__id__": 5
       }
     ],
     "_active": true,
     "_level": 1,
     "_components": [
       {
-        "__id__": 5
+        "__id__": 8
       }
     ],
     "_prefab": {
-      "__id__": 6
+      "__id__": 9
     },
     "_opacity": 255,
     "_color": {
@@ -76,14 +79,14 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "str",
+    "_name": "bg",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
     },
     "_children": [],
     "_active": true,
-    "_level": 4,
+    "_level": 2,
     "_components": [
       {
         "__id__": 3
@@ -95,15 +98,15 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 170,
+      "g": 83,
+      "b": 83,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 97.87,
-      "height": 40
+      "width": 640,
+      "height": 1280
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -137,16 +140,117 @@
     "_id": ""
   },
   {
-    "__type__": "cc.Label",
+    "__type__": "cc.Sprite",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 2
     },
     "_enabled": true,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_spriteFrame": {
+      "__uuid__": "a23235d1-15db-4b95-8439-a2e005bfff91"
+    },
+    "_type": 0,
+    "_sizeMode": 0,
+    "_fillType": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_state": 0,
+    "_atlas": null,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "b641bcb4-ef69-46f3-a37f-2bce665221ca"
+    },
+    "fileId": "72YjzGvTdEIKplp/oaI7YZ",
+    "sync": false
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "str",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 2,
+    "_components": [
+      {
+        "__id__": 6
+      }
+    ],
+    "_prefab": {
+      "__id__": 7
+    },
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 120,
+      "height": 40
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 373,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_quat": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "groupIndex": 0,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 5
+    },
+    "_enabled": true,
     "_useOriginalSize": false,
-    "_string": "Label",
-    "_N$string": "Label",
+    "_string": "地图一",
+    "_N$string": "地图一",
     "_fontSize": 40,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -167,13 +271,13 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "c6eddf43-6c74-4cc5-bb8c-51d476a684c4"
+      "__uuid__": "b641bcb4-ef69-46f3-a37f-2bce665221ca"
     },
-    "fileId": "46K2bt7wxEKKEFXRC6NjPo",
+    "fileId": "84C3r1r0tJC4/H2deE/2Tz",
     "sync": false
   },
   {
-    "__type__": "d82a637yIBPoblyyjFa6kv4",
+    "__type__": "c937b8ujBpP/KejswsfwfUc",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -188,9 +292,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "c6eddf43-6c74-4cc5-bb8c-51d476a684c4"
+      "__uuid__": "b641bcb4-ef69-46f3-a37f-2bce665221ca"
     },
-    "fileId": "d8s8F96ClBKZftDpO4J/vz",
+    "fileId": "f6JZmQ5JhEOqEPDdbqXFkT",
     "sync": false
   }
 ]

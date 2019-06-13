@@ -2,6 +2,7 @@ import BaseUIForm from "../UIFrame/BaseUIForm";
 import { UIFormType } from "../UIFrame/config/SysDefine";
 import UIType from "../UIFrame/UIType";
 import AdaptationManager, { AdaptationType } from "../UIFrame/AdaptationManager";
+import UIManager from "../UIFrame/UIManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -23,6 +24,7 @@ export default class SkillPanel extends BaseUIForm {
 
 
     Skill1Callback() {
+        
         this.ShowUIForm("QuikHideForm", null);
     }
 }

@@ -1,3 +1,4 @@
+import { UIFormType } from './../UIFrame/config/SysDefine';
 import BaseUIForm from "../UIFrame/BaseUIForm";
 import { UIFormShowMode } from "../UIFrame/config/SysDefine";
 import UIType from "../UIFrame/UIType";
@@ -9,7 +10,7 @@ export default class SelectPeople extends BaseUIForm {
 
 
 
-    CurrentUIType = new UIType(null, UIFormShowMode.HideOther);
+    CurrentUIType = new UIType(UIFormType.Normal, UIFormShowMode.HideOther);
 
     onLoad () {
         this.node.getChildByName("btn").on('click', this.EnterGame, this);
@@ -17,13 +18,12 @@ export default class SelectPeople extends BaseUIForm {
     }
 
     EnterGame() {
-        this.ShowUIForm("MainPanel", null);
-        this.ShowUIForm("SkillPanel", null);
-        this.ShowUIForm("BottomPanel", null);
+        this.ShowUIForm("MapSelectForm", null);
     }
 
     BackGame() {
         this.CloseUIForm();
+        this.ShowUIForm("LoginForm", null);
     }
 
     start () {

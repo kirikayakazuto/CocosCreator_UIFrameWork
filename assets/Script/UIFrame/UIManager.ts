@@ -34,6 +34,20 @@ export default class UIManager extends cc.Component {
         }
         return this._Instance;
     }
+    /**
+     * 窗体是否正在显示
+     * @param uiFormName 
+     */
+    public UIFormIsShowing(uiFormName: string) {
+        let baseUIForms = this._MapAllUIForms[uiFormName];
+        if (baseUIForms == null) {
+            return false;
+        }
+        if(baseUIForms.node.active === true) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * 重要方法 加载显示一个UIForm
@@ -42,6 +56,10 @@ export default class UIManager extends cc.Component {
      */
     public async ShowUIForms(uiFormName: string, obj?: any) {
         if(uiFormName == "" || uiFormName == null) return ;
+        if(this.UIFormIsShowing(uiFormName)) {
+            cc.log(`${uiFormName}窗体已经在显示`);
+            return ;        
+        }
         
         let baseUIForms = await this.LoadFormsToAllUIFormsCatch(uiFormName);
         baseUIForms.UIFormName = uiFormName;

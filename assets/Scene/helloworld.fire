@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.502739813291584,
-      "y": 0.502739813291584,
+      "x": 0.4325455844508205,
+      "y": 0.4325455844508205,
       "z": 1
     },
     "_quat": {
@@ -101,8 +101,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 960,
-      "height": 640
+      "width": 640,
+      "height": 1280
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -111,8 +111,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 480,
-      "y": 320,
+      "x": 320,
+      "y": 640,
       "z": 0
     },
     "_scale": {
@@ -246,8 +246,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 960,
-      "height": 640
+      "width": 640,
+      "height": 1280
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -372,7 +372,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -180,
+      "y": -282,
       "z": 0
     },
     "_scale": {
@@ -460,7 +460,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 38,
+      "y": 166,
       "z": 0
     },
     "_scale": {
@@ -524,7 +524,7 @@
     "_alignFlags": 1,
     "_left": 0,
     "_right": 0,
-    "_top": 147,
+    "_top": 339,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
@@ -540,7 +540,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "UIRoot",
+    "_name": "UIROOT",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -900,11 +900,11 @@
     "_enabled": true,
     "_designResolution": {
       "__type__": "cc.Size",
-      "width": 960,
-      "height": 640
+      "width": 640,
+      "height": 1280
     },
-    "_fitWidth": false,
-    "_fitHeight": true,
+    "_fitWidth": true,
+    "_fitHeight": false,
     "_id": "5b9UK/l/BP4Kc7/XTh8Pbb"
   },
   {
