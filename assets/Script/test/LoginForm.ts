@@ -7,7 +7,11 @@ const {ccclass, property} = cc._decorator;
 export default class TestPanel extends BaseUIForm {
     
 
+    CloseAndDestory = true;
+
     CurrentUIType = new UIType(UIFormType.Normal, UIFormShowMode.HideOther)
+    
+
     onLoad() {
         this.node.getChildByName("btn").on('click', this.callback, this);
     }

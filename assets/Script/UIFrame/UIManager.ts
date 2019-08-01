@@ -2,7 +2,6 @@ import CocosHelper from "./CocosHelper";
 import BaseUIForm from "./BaseUIForm";
 import { SysDefine, UIFormType, UIFormShowMode } from "./config/SysDefine";
 import UILoader from "./UILoader";
-import ConfigUIFrame from "./config/ConfigUIFrame";
 
 const {ccclass, property} = cc._decorator;
 
@@ -14,26 +13,25 @@ export default class UIManager extends cc.Component {
     private _NoPopUp: cc.Node = null;                               // 弹出窗口
 
     private _StaCurrentUIForms:Array<BaseUIForm> = [];                     // 存储反向切换的窗体
-    private _MapFormsPaths: {[key: string]: string} = {};                  // UI窗体预制体名称, 窗体预制体url
     private _MapAllUIForms: {[key: string]: BaseUIForm} = {};              // 所有的窗体
-    private _MapCurrentShowUIForms: {[key: string]: BaseUIForm} = {};      // 正在显示的窗体
+    private _MapCurrentShowUIForms: {[key: string]: BaseUIForm} = {};      // 正在显示的窗体(不包括弹窗)
 
     private static _Instance: UIManager = null;                     // 单例
-
-    onLoad () {
-        this.InitRootCanvasLoading();
-        this._NoNormal = CocosHelper.FindChildInNode(SysDefine.SYS_NORMAL_NODE, this.node);
-        this._NoFixed = CocosHelper.FindChildInNode(SysDefine.SYS_FIXED_NODE, this.node);
-        this._NoPopUp = CocosHelper.FindChildInNode(SysDefine.SYS_POPUP_NODE, this.node);
-        this.InitUIFormsPathData();
-    }
-
     static GetInstance(): UIManager {
         if(this._Instance == null) {
             this._Instance = cc.find(SysDefine.SYS_UIROOT_NAME).addComponent<UIManager>(this);
         }
         return this._Instance;
     }
+
+
+    onLoad () {
+        this.InitRootCanvasLoading();
+        this._NoNormal = CocosHelper.FindChildInNode(SysDefine.SYS_NORMAL_NODE, this.node);
+        this._NoFixed = CocosHelper.FindChildInNode(SysDefine.SYS_FIXED_NODE, this.node);
+        this._NoPopUp = CocosHelper.FindChildInNode(SysDefine.SYS_POPUP_NODE, this.node);
+    }
+
     /**
      * 窗体是否正在显示
      * @param uiFormName 
@@ -43,10 +41,7 @@ export default class UIManager extends cc.Component {
         if (baseUIForms == null) {
             return false;
         }
-        if(baseUIForms.node.active === true) {
-            return true;
-        }
-        return false;
+        return baseUIForms.node.active;
     }
 
     /**
@@ -62,12 +57,11 @@ export default class UIManager extends cc.Component {
         }
         
         let baseUIForms = await this.LoadFormsToAllUIFormsCatch(uiFormName);
+        if(baseUIForms == null) return ;
+        // 初始化窗体名称
         baseUIForms.UIFormName = uiFormName;
         // 初始化窗体信息
         baseUIForms.init(obj);
-        
-        if(baseUIForms == null) return ;
-
         // 是否清理栈内窗口
         if(baseUIForms.CurrentUIType.IsClearStack) {
             this.ClearStackArray();
@@ -105,6 +99,10 @@ export default class UIManager extends cc.Component {
                 this.ExitUIFormsAndDisplayOther(uiFormName);
             break;
         }
+        // 判断是否销毁该窗体
+        if(baseUIForm.CloseAndDestory) {
+            UILoader.getInstance().releaseNodeRes(baseUIForm.node);
+        }
     }
     /**
      * 从全部的UI窗口中加载, 并挂载到结点上
@@ -122,8 +120,7 @@ export default class UIManager extends cc.Component {
      * 从resources中加载
      * @param uiFormName 
      */
-    private async LoadUIForm(uiFormName: string) {
-        let strUIFormPath = this._MapFormsPaths[uiFormName];
+    private async LoadUIForm(strUIFormPath: string) {
         if(strUIFormPath == "" || strUIFormPath == null){
             return ;
         }
@@ -146,7 +143,7 @@ export default class UIManager extends cc.Component {
             break;
         }
         node.active = false;
-        this._MapAllUIForms[uiFormName] = baseUIForm;
+        this._MapAllUIForms[strUIFormPath] = baseUIForm;
         
         return baseUIForm;
     }
@@ -210,7 +207,6 @@ export default class UIManager extends cc.Component {
      * 加载时, 关闭其他窗口
      */
     private EnterUIFormsAndHideOther(uiFormName: string) {
-        if(uiFormName == "" || uiFormName == null) return ;
 
         let baseUIForm = this._MapCurrentShowUIForms[uiFormName];
         if(baseUIForm != null) return ;
@@ -241,12 +237,12 @@ export default class UIManager extends cc.Component {
      * @param uiFormName 
      */
     private ExitUIForms(uiFormName: string) {
-        if(uiFormName == "" || uiFormName == null) return ;
         let baseUIForm = this._MapAllUIForms[uiFormName];
         if(baseUIForm == null) return ;
         baseUIForm.Hiding();
         this._MapCurrentShowUIForms[uiFormName] = null;
         delete this._MapCurrentShowUIForms[uiFormName];
+        
     }
     private PopUIForm() {
         if(this._StaCurrentUIForms.length >= 2) {
@@ -278,18 +274,9 @@ export default class UIManager extends cc.Component {
     }
 
 
-    /**
-     * 预设场景
-     */
+    /** * 预设场景 这里可以放置你的加载页面 */
     InitRootCanvasLoading() {
 
-    }
-    /**
-     * 初始化预制体信息
-     */
-    InitUIFormsPathData() {
-        
-        this._MapFormsPaths = ConfigUIFrame.UIFormPathConfig;
     }
 
 
