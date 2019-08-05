@@ -68,7 +68,7 @@ export default class AdaptationManager extends cc.Component {
         widget.updateAlignment();
     }
 }
-
+/**  */
 export enum AdaptationType {
     Top = 1,
     Bottom = 2,

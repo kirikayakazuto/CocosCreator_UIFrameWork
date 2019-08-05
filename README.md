@@ -1,11 +1,11 @@
-# 基于cocos creator的UI框架
-        中心思想, 将所有的UI窗体分为3类管理
+# 基于cocos creator的UI框架  有疑问可以添加我的QQ 1099263878
+        中心思想, 将所有的UI窗体分为3类管理(普通窗体, 固定窗体, 弹出窗体), 在将窗体制作成预制体, 使用UIManager.getInstance().showForms("窗体名字");显示
         -- UIROOT(UIManager脚本挂载结点)
-        -- normal(普通窗体)
-        -- fixed(固定窗体)
-        -- popup(弹出窗体)
-        -- UIMaskScript(UIMaskManager挂载结点)
-        -- UIAdaptationScript(AdaptationManager挂载结点)
+        ---- normal(普通窗体)
+        ---- fixed(固定窗体)
+        ---- popup(弹出窗体)
+        ---- UIMaskScript(UIMaskManager挂载结点, 为窗体添加阴影)
+        ---- UIAdaptationScript(AdaptationManager挂载结点, 用于窗体适配)
         不同类型的窗体放置在不同的节点上, 统一管理
 
 ## 项目介绍
@@ -39,13 +39,11 @@
         1, 新建一个UI窗体, 并为它创建一个脚本, 脚本继承自BaseUIForm, 重写属性CurrentUIType设置为窗体对应属性
         2, 重写init方法, 并获取参数obj, 对UI窗体进行数据初始化, 每一次执行showUIForm方法都会触发init方法
         3, 重写ShowPopUpAnimation方法,播放入场动画,重写HidePopUpAnimation方法, 播放出场动画
-        4, 在config/ConfigUIForm 中配置窗体名称与对应的路径
+        ~~4, 在config/ConfigUIForm 中配置窗体名称与对应的路径~~
         5, 通过UIManager.GetInstance().ShowUIForms("uiformname", null); 方法展示窗体
         6, 更多详细内容, 请见test中的示例
 
 
-
-
-
-
-
+## 8月3日新增功能
+BaseUIForm中添加CloseAndDestory属性, 当此属性为true时, 关闭此窗体将会销毁此结点,并且释放结点资源
+对于已经显示的窗体, 不会二次显示

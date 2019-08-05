@@ -27,9 +27,9 @@ export default class UIManager extends cc.Component {
 
     onLoad () {
         this.InitRootCanvasLoading();
-        this._NoNormal = CocosHelper.FindChildInNode(SysDefine.SYS_NORMAL_NODE, this.node);
-        this._NoFixed = CocosHelper.FindChildInNode(SysDefine.SYS_FIXED_NODE, this.node);
-        this._NoPopUp = CocosHelper.FindChildInNode(SysDefine.SYS_POPUP_NODE, this.node);
+        this._NoNormal = this.node.getChildByName(SysDefine.SYS_NORMAL_NODE);
+        this._NoFixed = this.node.getChildByName(SysDefine.SYS_FIXED_NODE);
+        this._NoPopUp = this.node.getChildByName(SysDefine.SYS_POPUP_NODE);
     }
 
     /**
