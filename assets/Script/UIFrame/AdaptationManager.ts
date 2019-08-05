@@ -36,7 +36,12 @@ export default class AdaptationManager extends cc.Component {
      * @param distance 
      */
     adaptationFormByType(type: AdaptationType, node: cc.Node, distance?: number) {
-        let widget = node.addComponent(cc.Widget);
+        let widget = node.getComponent(cc.Widget)
+        if(widget){
+            cc.log(`已经添加了widget组件`);
+        }else {
+            widget = node.addComponent(cc.Widget);
+        }
         switch(type) {
             case AdaptationType.Top:
                 if(CC_WECHATGAME) {     // 微信小游戏适配刘海屏
@@ -66,6 +71,10 @@ export default class AdaptationManager extends cc.Component {
         }
         widget.target = cc.find("Canvas");
         widget.updateAlignment();
+    }
+    /** 移除 */
+    removeAdaptationToForm(node: cc.Node) {
+        node.removeComponent(cc.Widget);
     }
 }
 /**  */
