@@ -33,7 +33,7 @@ export default class UIManager extends cc.Component {
     }
 
     /**
-     * 窗体是否正在显示
+     * 窗体是否正在显示, 可以手动调用
      * @param uiFormName 
      */
     public UIFormIsShowing(uiFormName: string) {

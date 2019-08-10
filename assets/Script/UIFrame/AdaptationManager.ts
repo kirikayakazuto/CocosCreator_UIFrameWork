@@ -74,7 +74,9 @@ export default class AdaptationManager extends cc.Component {
     }
     /** 移除 */
     removeAdaptationToForm(node: cc.Node) {
-        node.removeComponent(cc.Widget);
+        if(node.getComponent(cc.Widget)) {
+            node.removeComponent(cc.Widget);
+        }
     }
 }
 /**  */

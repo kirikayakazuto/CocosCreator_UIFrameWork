@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "daa8d794-ec3a-42b4-86ff-4d75bc32378f",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "跑马灯-底": {
+      "ver": "1.0.4",
+      "uuid": "838637f6-118a-43ae-b985-6d82d1a82e95",
+      "rawTextureUuid": "daa8d794-ec3a-42b4-86ff-4d75bc32378f",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 1,
+      "offsetY": -1,
+      "trimX": 2,
+      "trimY": 2,
+      "width": 769,
+      "height": 39,
+      "rawWidth": 771,
+      "rawHeight": 41,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

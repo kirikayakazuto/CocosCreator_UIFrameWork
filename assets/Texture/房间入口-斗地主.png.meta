@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "8dcfe6a7-51a6-4169-8e47-f27eeeaf0bd3",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "房间入口-斗地主": {
+      "ver": "1.0.4",
+      "uuid": "61eaf7c0-c284-4e77-9409-f108ca0011e6",
+      "rawTextureUuid": "8dcfe6a7-51a6-4169-8e47-f27eeeaf0bd3",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -1.5,
+      "offsetY": 1,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 331,
+      "height": 147,
+      "rawWidth": 334,
+      "rawHeight": 149,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

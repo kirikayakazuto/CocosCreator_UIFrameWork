@@ -1,3 +1,4 @@
+/** 来自cocos论坛 */
 export default class UILoader {
     static singleInstance: UILoader = null;
     static getInstance(): UILoader {
