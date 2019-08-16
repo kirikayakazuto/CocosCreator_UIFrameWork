@@ -66,6 +66,7 @@ export default class BaseUIForm extends cc.Component {
      * 暂时无效果, 预计实现成(去除冻结的效果)
      */
     public ReDisPlay() {
+        this.node.active = true;
         if(this.CurrentUIType.UIForms_Type == UIFormType.PopUp) {}
     }
     /**
