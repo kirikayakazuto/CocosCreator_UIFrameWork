@@ -44,5 +44,10 @@ export default class HallSettingForm extends BaseUIForm {
         .start();
     }
 
+    HidePopUpAnimation(callBack: Function) {
+        console.log("call HidePopUpAnimation");
+        callBack();
+    }
+
     // update (dt) {}
 }
