@@ -9,6 +9,7 @@ export default class Helloworld extends cc.Component {
     onLoad() {
         
     }
+
     start () {
         UIManager.GetInstance().ShowUIForms("UIForm/LoginForm");
     }

@@ -27,6 +27,7 @@ export default class UIManager extends cc.Component {
     onLoad () {
         
     }
+
     start() {
         this.InitRootCanvasLoading();
         this._NoNormal = this.node.getChildByName(SysDefine.SYS_NORMAL_NODE);
@@ -63,8 +64,6 @@ export default class UIManager extends cc.Component {
 
         // 初始化窗体名称
         baseUIForms.UIFormName = uiFormName;
-        // 初始化窗体信息   如果预制体默认active为true 那么先执行了onload start 在执行的init
-        
         
         // 是否清理栈内窗口
         if(baseUIForms.CurrentUIType.IsClearStack) {

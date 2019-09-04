@@ -10,12 +10,15 @@ export default class HallForm extends BaseUIForm {
     public CurrentUIType = new UIType(UIFormType.Normal, UIFormShowMode.HideOther);
 
 
-    start () {
-        this.playRoleAnim();
+    init() {
         this.ShowUIForm("UIForm/UserInfoForm");
         this.ShowUIForm("UIForm/FriendRankForm");
         this.ShowUIForm("UIForm/MenuForm");
         this.ShowUIForm("UIForm/RoomForm");
+    }
+
+    start () {
+        this.playRoleAnim();
     }
 
     playRoleAnim() {

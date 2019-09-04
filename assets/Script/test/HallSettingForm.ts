@@ -7,7 +7,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class HallSettingForm extends BaseUIForm {
 
-    CurrentUIType = new UIType(UIFormType.PopUp, UIFormShowMode.Normal, UIFormLucenyType.ImPenetrable);
+    CurrentUIType = new UIType(UIFormType.PopUp, UIFormShowMode.ReverseChange, UIFormLucenyType.ImPenetrable);
     ClickMaskClose = false;
 
 

@@ -8,7 +8,10 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UserInfoForm extends BaseUIForm {
 
-    CurrentUIType = new UIType(UIFormType.Fixed);    
+    CurrentUIType = new UIType(UIFormType.Fixed);   
+    
+    @property(cc.Node)
+    backNode: cc.Node = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -16,6 +19,9 @@ export default class UserInfoForm extends BaseUIForm {
 
     start () {
         AdaptationManager.GetInstance().adaptationFormByType(AdaptationType.Top, this.node);
+        this.backNode.on('click', () => {
+            this.ShowUIForm("UIForm/LoginForm");
+        });
     }
 
     // update (dt) {}
