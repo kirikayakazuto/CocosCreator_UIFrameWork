@@ -14,6 +14,9 @@ export default class AdaptationManager extends cc.Component {
     static GetInstance(): AdaptationManager {
         if(this._Instance == null) {
             this._Instance = cc.find(SysDefine.SYS_UIAdaptation_NAME).addComponent<AdaptationManager>(this);
+            cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
+                this._Instance = null;
+            });
         }
         return this._Instance;
     }

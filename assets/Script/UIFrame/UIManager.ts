@@ -15,10 +15,15 @@ export default class UIManager extends cc.Component {
     private _MapAllUIForms: {[key: string]: BaseUIForm} = {};              // 所有的窗体
     private _MapCurrentShowUIForms: {[key: string]: BaseUIForm} = {};      // 正在显示的窗体(不包括弹窗)
 
+    private WaitingFormName = "";                                   // 等待页面的name
+
     private static _Instance: UIManager = null;                     // 单例
     static GetInstance(): UIManager {
         if(this._Instance == null) {
             this._Instance = cc.find(SysDefine.SYS_UIROOT_NAME).addComponent<UIManager>(this);
+            cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
+                this._Instance = null;
+            });
         }
         return this._Instance;
     }
@@ -33,6 +38,21 @@ export default class UIManager extends cc.Component {
         this._NoNormal = this.node.getChildByName(SysDefine.SYS_NORMAL_NODE);
         this._NoFixed = this.node.getChildByName(SysDefine.SYS_FIXED_NODE);
         this._NoPopUp = this.node.getChildByName(SysDefine.SYS_POPUP_NODE);
+    }
+    /** 设置等待页面 */
+    public async setWaitingFormName(uiFormName: string) {
+        let baseUIForms = await this.LoadFormsToAllUIFormsCatch(uiFormName);
+        if(!baseUIForms) {
+            cc.log("等待页面不存在!");
+            return ;
+        }
+        this.WaitingFormName = uiFormName;
+    }
+    /** 加载Form时显示等待页面 */
+    public async ShowUIFormWithWaiting(uiFormName: string) {
+        await UIManager.GetInstance().ShowUIForms(this.WaitingFormName);
+        await UIManager.GetInstance().ShowUIForms(uiFormName);
+        UIManager.GetInstance().CloseUIForms(this.WaitingFormName);
     }
 
     /**
@@ -82,7 +102,7 @@ export default class UIManager extends cc.Component {
             break;
         }
 
-        
+        return baseUIForms;
     }
     /**
      * 重要方法 关闭一个UIForm
@@ -91,8 +111,9 @@ export default class UIManager extends cc.Component {
     public CloseUIForms(uiFormName: string) {
         if(uiFormName == "" || uiFormName == null) return ;
         let baseUIForm = this._MapAllUIForms[uiFormName];
+        
         if(baseUIForm == null) return ;
-
+        
         switch(baseUIForm.CurrentUIType.UIForms_ShowMode) {
             case UIFormShowMode.Normal:                             // 普通模式显示
                 this.ExitUIForms(uiFormName);
@@ -107,6 +128,10 @@ export default class UIManager extends cc.Component {
         // 判断是否销毁该窗体
         if(baseUIForm.CloseAndDestory) {
             UILoader.getInstance().releaseNodeRes(baseUIForm.node);
+            baseUIForm.node.destroy();
+            // 从allmap中删除
+            this._MapAllUIForms[uiFormName] = null;
+            delete this._MapAllUIForms[uiFormName];
         }
     }
     /**
