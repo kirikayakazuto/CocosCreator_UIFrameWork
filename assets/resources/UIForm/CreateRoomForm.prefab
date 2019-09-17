@@ -12,7 +12,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "HallSettingForm",
+    "_name": "CreateRoomForm",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -179,9 +179,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "ccb4437e-5d85-4b99-97cd-8f4e9a1cc193"
+      "__uuid__": "c6cbf879-6fae-4eb7-a8aa-96c071c9c243"
     },
-    "fileId": "27bzAnT5JH+r30MTa2w/G1",
+    "fileId": "1e2+IztARHML/es8Di2iim",
     "sync": false
   },
   {
@@ -280,9 +280,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "ccb4437e-5d85-4b99-97cd-8f4e9a1cc193"
+      "__uuid__": "c6cbf879-6fae-4eb7-a8aa-96c071c9c243"
     },
-    "fileId": "3bgWaLJL1Ccpo4jU02h0Ka",
+    "fileId": "526biAAptNlpNEXEOgR8W5",
     "sync": false
   },
   {
@@ -313,7 +313,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 280,
+      "width": 80,
       "height": 40
     },
     "_anchorPoint": {
@@ -356,8 +356,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_string": "这里是设置页面",
-    "_N$string": "这里是设置页面",
+    "_string": "开房",
+    "_N$string": "开房",
     "_fontSize": 40,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -378,9 +378,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "ccb4437e-5d85-4b99-97cd-8f4e9a1cc193"
+      "__uuid__": "c6cbf879-6fae-4eb7-a8aa-96c071c9c243"
     },
-    "fileId": "ecvh0TG8FABKsY/ZmzI4i3",
+    "fileId": "6eZKDvK3ZP14bFU0x8F392",
     "sync": false
   },
   {
@@ -548,13 +548,13 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "ccb4437e-5d85-4b99-97cd-8f4e9a1cc193"
+      "__uuid__": "c6cbf879-6fae-4eb7-a8aa-96c071c9c243"
     },
-    "fileId": "81NafAExhAP6d3Y1zzYkKg",
+    "fileId": "4fXZ/9ZjRIp4JOhz1bIU0a",
     "sync": false
   },
   {
-    "__type__": "096a4QCG09LoKqKG6uAxOUo",
+    "__type__": "766fc0upRdH1oCw1ONFMaVv",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -572,9 +572,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "ccb4437e-5d85-4b99-97cd-8f4e9a1cc193"
+      "__uuid__": "c6cbf879-6fae-4eb7-a8aa-96c071c9c243"
     },
-    "fileId": "ecN+K56fRJMLa8V3XO9aJ/",
+    "fileId": "96JeL+BEJLooiCYVGky4NU",
     "sync": false
   }
 ]

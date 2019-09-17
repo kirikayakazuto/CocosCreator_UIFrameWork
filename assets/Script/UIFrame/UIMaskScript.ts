@@ -7,7 +7,9 @@ import { UIFormLucenyType } from "./config/SysDefine";
  * @Date: 2019-05-30 23:35:26  
  * @Last Modified time: 2019-05-30 23:35:26 
  */
+const {ccclass, property} = cc._decorator;
 
+@ccclass
 export default class UIMaskScript extends cc.Component {
 
     UIFormName: string;
@@ -25,6 +27,7 @@ export default class UIMaskScript extends cc.Component {
         this.node.active = true;
     }
 
+    
     public showMaskUI(lucenyType: number) {
         switch (lucenyType) {
             case UIFormLucenyType.Lucency:    
@@ -44,13 +47,13 @@ export default class UIMaskScript extends cc.Component {
             break;        
         }
     }
+    
     public hideMaskUI() {
         this.getComponent(cc.Graphics).clear();
     }
 
 
     public _clickMaskWindow() {
-        console.log("click mask");
         UIManager.GetInstance().CloseStackTopUIForm();
     }
 }
