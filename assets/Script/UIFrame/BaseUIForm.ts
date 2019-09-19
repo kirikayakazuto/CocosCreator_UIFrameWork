@@ -15,12 +15,13 @@ import UIType from "./UIType";
 import { UIFormType } from "./config/SysDefine";
 import UIMaskManager from "./UIMaskManager";
 import GEventManager from "./GEventManager";
+import BaseUIBinder from "./BaseUIBinder";
 
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class BaseUIForm extends cc.Component {
+export default class BaseUIForm extends BaseUIBinder {
 
     /** 窗体名字,该窗体的唯一标示(请不要对这个值进行赋值操作, 内部已经实现了对应的赋值) */
     public UIFormName: string;

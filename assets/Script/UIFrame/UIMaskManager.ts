@@ -24,13 +24,8 @@ export default class UIMaskManager extends cc.Component {
         if(parent.getChildByName("UIMaskNode")) {
             return ;
         }
-        
         this.uiMaskScript = new cc.Node("UIMaskNode").addComponent(UIMaskScript);
-
-        this.uiMaskScript.init(parent.getComponent(BaseUIForm).UIFormName);
-        
-
-        
+        this.uiMaskScript.init(parent.getComponent(BaseUIForm).UIFormName);        
         parent.addChild(this.uiMaskScript.node, -1);
     }
     /** 为mask添加颜色 */

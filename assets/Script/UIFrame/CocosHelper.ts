@@ -1,3 +1,5 @@
+import { SysDefine } from "./config/SysDefine";
+
 export default class CocosHelper {
     /**
      * 寻找子节点
@@ -14,5 +16,24 @@ export default class CocosHelper {
             }
         }
         return null;
+    }
+
+    /** 检测前缀是否符合绑定规范 */
+    public static checkNodePrefix(name: string) {
+        if(name[0] !== SysDefine.SYS_STANDARD_Prefix) {
+            return false;
+        }
+        return true;
+    }
+    /** 获得类型和name */
+    public static getPrefixNames(name: string) {
+        if(name === null) {
+            return ;
+        }
+        return name.split(SysDefine.SYS_STANDARD_Separator);
+    }
+
+    private static _getComponentName(component: cc.Component) {
+        return component.name.match(/<.*>$/)[0].slice(1, -1);
     }
 }

@@ -27,7 +27,7 @@
       }
     ],
     "_active": true,
-    "_level": 3,
+    "_level": 1,
     "_components": [
       {
         "__id__": 15
@@ -176,14 +176,14 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "a178340e-1f5d-4713-bbf4-0bd021d3429b"
     },
     "fileId": "000BqiiRlCH5ZnbraXmzq/",
     "sync": false
   },
   {
     "__type__": "cc.Node",
-    "_name": "button2",
+    "_name": "_Node$Login",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -348,7 +348,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "a178340e-1f5d-4713-bbf4-0bd021d3429b"
     },
     "fileId": "8cOCLpBu5Do4hpeKoqU3Wo",
     "sync": false
@@ -515,7 +515,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "a178340e-1f5d-4713-bbf4-0bd021d3429b"
     },
     "fileId": "929+LFdd9ChKi/8j3FzqBE",
     "sync": false
@@ -554,7 +554,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "a178340e-1f5d-4713-bbf4-0bd021d3429b"
     },
     "fileId": "24wFQNtChBdZEQKhDWPiCQ",
     "sync": false
@@ -567,9 +567,6 @@
       "__id__": 1
     },
     "_enabled": true,
-    "LoginButton": {
-      "__id__": 5
-    },
     "_id": ""
   },
   {
@@ -578,7 +575,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "a178340e-1f5d-4713-bbf4-0bd021d3429b"
     },
     "fileId": "56rCFUNatBDZwzjnwxhguz",
     "sync": false

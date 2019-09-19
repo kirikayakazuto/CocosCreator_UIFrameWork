@@ -49,10 +49,11 @@ export default class UIManager extends cc.Component {
         this.WaitingFormName = uiFormName;
     }
     /** 加载Form时显示等待页面 */
-    public async ShowUIFormWithWaiting(uiFormName: string) {
-        await UIManager.GetInstance().ShowUIForms(this.WaitingFormName);
+    public async ShowUIFormWithWaiting(uiFormName: string, waitFormName?: string) {
+        waitFormName = waitFormName ? waitFormName: this.WaitingFormName;
+        await UIManager.GetInstance().ShowUIForms(waitFormName);
         await UIManager.GetInstance().ShowUIForms(uiFormName);
-        UIManager.GetInstance().CloseUIForms(this.WaitingFormName);
+        UIManager.GetInstance().CloseUIForms(waitFormName);
     }
 
     /**
