@@ -59,7 +59,33 @@
         5, 通过UIManager.GetInstance().ShowUIForms("uiformname", null); 方法展示窗体
         6, 更多详细内容, 请见test中的示例
 
-
 ## 8月3日新增功能
-BaseUIForm中添加CloseAndDestory属性, 当此属性为true时, 关闭此窗体将会销毁此结点,并且释放结点资源
-对于已经显示的窗体, 不会二次显示
+
+        BaseUIForm中添加CloseAndDestory属性, 当此属性为true时, 关闭此窗体将会销毁此结点,并且释放结点资源
+        对于已经显示的窗体, 不会二次显示
+
+
+## 2019年9月19日新增功能
+
+        添加UIHelper自动绑定规范命名的结点, UIHelper的功能, 在用脚本控制UI的时候, 绑定UI是一件很烦人的事情, 尤其是将UI拖到面板上绑定, 就更加繁琐, 或者在onload, start上 使用getChildByName() 或者cc.find() 查找结点, 又会显得代码冗长大部分时候, 在我创建这个结点的时候, 我就已经想好要让这个结点完成什么功能了(针对渲染结点), 所有我希望在取名字的时候,通过特殊的命名规则, 就可以在脚本中直接使用此结点,  UIHelper就来完成此功能
+
+1. 给结点取一个规范的名字, 例如 _Label$NickName  _Sprite&HeadImage
+
+我分别解释每一部分的意思
+
+* _表示这个结点需要被自动绑定
+* Label表示脚本中属性的类型
+* $表示分隔符, 后面紧接这个表示变量名字
+* NickName就表示这个变量的名字
+
+所以在脚本中, 你可以通过 this._Labels.NickName 获得这个结点上的cc.Label组件
+
+需要注意的是 自动绑定的结点必须是是挂载脚本的结点或者子节点, 如图
+
+![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/UIBind_dist.png)
+
+
+只会在BindTest结点的子节点自动绑定结点, 那么我现在有一个结点希望自动绑定, 但是其父节点没有挂载脚本, 怎么办呢.
+UIHelper还提供了了bindNode()方法, 将对方结点或者其父节点传入, 那么你就可以在其他脚本将结点自动绑定
+
+还需要注意的是 重复绑定, 因为每次进行查询绑定操作时, 都会对其所有的子节点进行查找, 所有可能会出现重复绑定!
