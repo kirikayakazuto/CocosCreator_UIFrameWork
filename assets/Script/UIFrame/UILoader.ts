@@ -8,7 +8,24 @@ export default class UILoader {
         return UILoader.singleInstance;
     }
 
-    // 资源加载到内存不会进行引用计数管理
+    /** 加载 */
+    public load = function(resources: string | string[] | {
+        uuid?: string;
+        url?: string;
+        type?: string;
+    }) {
+        return new Promise((resolve, reject) => {
+            cc.loader.load(resources, (err, asset) => {
+                if (err) {
+                    cc.log(`[资源加载] 错误 ${err}`);
+                    return;
+                }
+                resolve(asset);
+            });
+        })
+    }
+
+    // 
     public loadRes = function(url: string, type: typeof cc.Asset) {
         if (!url || !type) {
             cc.log("参数错误", url, type);

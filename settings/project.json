@@ -4,7 +4,11 @@
       true
     ]
   ],
-  "excluded-modules": [],
+  "excluded-modules": [
+    "Geom Utils",
+    "3D",
+    "3D Primitive"
+  ],
   "group-list": [
     "default"
   ],
