@@ -8,10 +8,14 @@ export default class Test extends cc.Component {
     // onLoad () {}
 
     start () {
-        cc.loader.load({uuid:"", url: ""}, (err, data) => {
-
-        })
+        
     }
 
-    // update (dt) {}
+    updateRenderData() {
+
+    }
+
+    
+
+    update (dt) {}
 }

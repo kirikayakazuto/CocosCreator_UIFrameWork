@@ -19,7 +19,8 @@ export default class UIMaskScript extends cc.Component {
      * 初始化
      */
     public async init() {
-        let maskTexture = await UILoader.getInstance().load({uuid: "0275e94c-56a7-410f-bd1a-fc7483f7d14a", type: "png"}) as cc.Texture2D;        
+        // let maskTexture = await UILoader.getInstance().load({uuid: "0275e94c-56a7-410f-bd1a-fc7483f7d14a", type: "png"}) as cc.Texture2D;        
+        let maskTexture = UIManager.GetInstance().node.getChildByName("DefaultSprite").getComponent(cc.Sprite).spriteFrame;
         let size = cc.view.getVisibleSize();
         this.node.height = size.height;
         this.node.width = size.width;
@@ -28,7 +29,7 @@ export default class UIMaskScript extends cc.Component {
         
         let sprite = this.node.addComponent(cc.Sprite)
         sprite.sizeMode = cc.Sprite.SizeMode.CUSTOM;
-        sprite.spriteFrame = new cc.SpriteFrame(maskTexture);
+        sprite.spriteFrame = new cc.SpriteFrame(maskTexture.getTexture());
         this.node.color = new cc.Color(0, 0, 0);
         this.node.opacity = 0;
         this.node.active = true;
