@@ -4,8 +4,6 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Helloworld extends cc.Component {
-    @property
-    Text = ""
 
     onLoad() {
         
@@ -13,5 +11,9 @@ export default class Helloworld extends cc.Component {
 
     start () {
         UIManager.GetInstance().ShowUIForms("UIForm/LoginForm");
+    }
+
+    buttonPlus() {
+        cc.log('触发了点击事件'); 
     }
 }

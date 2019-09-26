@@ -67,7 +67,8 @@
 
 ## 2019年9月19日新增功能
 
-        添加UIHelper自动绑定规范命名的结点, UIHelper的功能, 在用脚本控制UI的时候, 绑定UI是一件很烦人的事情, 尤其是将UI拖到面板上绑定, 就更加繁琐, 或者在onload, start上 使用getChildByName() 或者cc.find() 查找结点, 又会显得代码冗长大部分时候, 在我创建这个结点的时候, 我就已经想好要让这个结点完成什么功能了(针对渲染结点), 所有我希望在取名字的时候,通过特殊的命名规则, 就可以在脚本中直接使用此结点,  UIHelper就来完成此功能
+ 添加UIHelper自动绑定规范命名的结点, UIHelper的功能, 在用脚本控制UI的
+ 时候, 绑定UI是一件很烦人的事情, 尤其是将UI拖到面板上绑定, 就更加繁琐, 或者在onload, start上 使用getChildByName() 或者cc.find() 查找结点, 又会显得代码冗长大部分时候, 在我创建这个结点的时候, 我就已经想好要让这个结点完成什么功能了(针对渲染结点), 所有我希望在取名字的时候,通过特殊的命名规则, 就可以在脚本中直接使用此结点,  UIHelper就来完成此功能
 
 1. 给结点取一个规范的名字, 例如 _Label$NickName  _Sprite&HeadImage
 
@@ -89,3 +90,15 @@
 UIHelper还提供了了bindNode()方法, 将对方结点或者其父节点传入, 那么你就可以在其他脚本将结点自动绑定
 
 还需要注意的是 重复绑定, 因为每次进行查询绑定操作时, 都会对其所有的子节点进行查找, 所有可能会出现重复绑定!
+
+
+## 2019年9月26日新增功能
+
+扩展button, 为button组件添加了
+
+1. 点击button播放音效
+2. 屏蔽连续点击
+
+需要注意的是, ButtonPlus.ts需要配合插件使用, 插件路径位于UIFrameWorld\packages\helloworld, 原因是
+在ButtonPlus中@inspector('packages://helloworld/inspector.js'), 需要引入插件中的inspector.js,
+用户也可以在inspector自定义编辑器上ButtonPlus显示格式.

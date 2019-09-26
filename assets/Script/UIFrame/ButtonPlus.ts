@@ -1,3 +1,5 @@
+import SoundManager from "./SoundManager";
+
 const {ccclass, property, requireComponent, executeInEditMode, menu, help, inspector} = cc._decorator;
 @ccclass
 @menu('i18n:MAIN_MENU.component.ui/Button')
@@ -39,7 +41,7 @@ export default class ButtonPlus extends cc.Button {
             this.continuous = this.openContinuous ? true : false;
             cc.Component.EventHandler.emitEvents(this.clickEvents, event);
             this.node.emit('click', this);
-            // AudioManager.playBtnEffect(this.audioUrl ? cc.url.raw(this.audioUrl): null)
+            SoundManager.getInstance().playEffectMusic(this.audioUrl ? cc.url.raw(this.audioUrl): null)
             if (this.openContinuous) {
                this._continuousTimer = setTimeout(function(){
                     this.continuous = false;
