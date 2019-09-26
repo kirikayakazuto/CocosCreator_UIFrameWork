@@ -1,0 +1,12 @@
+{
+  "name": "button_plus",
+  "version": "0.0.1",
+  "description": "一份简单的扩展包",
+  "author": "denglang",
+  "main": "main.js",
+  "main-menu": {
+    "Packages/Button Plus": {
+      "message": "button_plus:main"
+    }
+  }
+}

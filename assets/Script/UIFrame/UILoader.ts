@@ -1,4 +1,4 @@
-/** 来自cocos论坛 */
+/** 来自cocos论坛, 链接: https://github.com/1083921307/UILoader */
 export default class UILoader {
     static singleInstance: UILoader = null;
     static getInstance(): UILoader {

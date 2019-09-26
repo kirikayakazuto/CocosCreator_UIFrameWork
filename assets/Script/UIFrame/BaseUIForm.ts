@@ -32,8 +32,8 @@ export default class BaseUIForm extends BaseUIBinder {
     /** 关闭窗口后销毁 (注意, 此销毁会销毁结点资源,以及其依赖的资源,例如cc.Sprite的图片, 音频等等, 如果你只想销毁结点,请手动调用node的destory方法) */
     public CloseAndDestory = false;
 
-    public IsEasing = false;        // 是否播放缓动
-    public EasingTime = 0.3;
+    public IsEasing = false;        // 显示mask时是否播放缓动
+    public EasingTime = 0.3;        // 
     
     /**
      * 消息初始化
