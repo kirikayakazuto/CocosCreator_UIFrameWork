@@ -1,6 +1,6 @@
 import SoundManager from "./SoundManager";
 
-const {ccclass, property, requireComponent, executeInEditMode, menu, help, inspector} = cc._decorator;
+const {ccclass, property, executeInEditMode, menu, help, inspector} = cc._decorator;
 @ccclass
 @menu('i18n:MAIN_MENU.component.ui/Button')
 @executeInEditMode

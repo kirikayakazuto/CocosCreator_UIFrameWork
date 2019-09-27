@@ -80,6 +80,13 @@ export class MaskNodePool {
         this.pool.push(com);
         return true;
     }
+    /** 清除结点池 */
+    clear() {
+        for(const com of this.pool) {
+            com.unUse();
+        }
+        this.pool = [];
+    }
 
     
 

@@ -6,7 +6,7 @@ const {ccclass, property} = cc._decorator;
 export default class Helloworld extends cc.Component {
 
     onLoad() {
-        
+        // MemoryDetector.showMemoryStatus();
     }
 
     start () {
