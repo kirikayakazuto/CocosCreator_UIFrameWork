@@ -32,7 +32,7 @@ export default class SoundManager {
     }
     /** 播放音效,不用担心会重复loadRes会消耗网络, 有缓存 */
     public async playEffectMusic(url: string,  volume?: number) {
-        if(url === null) return ;
+        if(!url || url.length === 0) return ;
         let sound = await UILoader.getInstance().loadRes(url, cc.AudioClip) as cc.AudioClip;
         if(volume != undefined) {
             cc.audioEngine.setEffectsVolume(volume);

@@ -78,10 +78,10 @@
     "_level": 1,
     "_components": [
       {
-        "__id__": 32
+        "__id__": 31
       },
       {
-        "__id__": 33
+        "__id__": 32
       }
     ],
     "_prefab": null,
@@ -165,7 +165,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 409.3294218244413
+      "z": 419.0167984891179
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -1204,11 +1204,7 @@
     "_enabled": true,
     "duration": 0.1,
     "zoomScale": 1.1,
-    "clickEvents": [
-      {
-        "__id__": 31
-      }
-    ],
+    "clickEvents": [],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
     "_N$transition": 3,
@@ -1268,17 +1264,9 @@
     "_N$string": "",
     "openContinuous": true,
     "continuousTime": 1,
+    "openLongPress": true,
+    "longPressTime": 1,
     "_id": "9fw1fegflOtLrCoaiM04Nn"
-  },
-  {
-    "__type__": "cc.ClickEvent",
-    "target": {
-      "__id__": 2
-    },
-    "component": "",
-    "_componentId": "e1b90/rohdEk4SdmmEZANaD",
-    "handler": "buttonPlus",
-    "customEventData": ""
   },
   {
     "__type__": "cc.Canvas",
@@ -1305,6 +1293,9 @@
       "__id__": 2
     },
     "_enabled": true,
+    "buttonPlus": {
+      "__id__": 30
+    },
     "_id": "779e1HBVBFzZQH7DCo/0x8"
   }
 ]

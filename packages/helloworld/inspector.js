@@ -27,9 +27,12 @@ Vue.component("cc-button", {
     '</div>\n\n  '+
 
     // 自定义属性开始
-    '<ui-prop\n      v-prop="target.audioUrl"\n      :multi-values="multi"\n    >\n    </ui-prop>\n  '+
-    '<ui-prop\n      v-prop="target.openContinuous"\n      :multi-values="multi"\n    >\n    </ui-prop>\n  '+
-    '<ui-prop indent=1\n        v-prop="target.continuousTime"\n        :multi-values="multi"\n      ></ui-prop>\n '+
+    '<ui-prop\n      v-prop="target.audioUrl"\n         :multi-values="multi"\n    >\n    </ui-prop>\n  '+
+    '<ui-prop\n      v-prop="target.openContinuous"\n   :multi-values="multi"\n    >\n    </ui-prop>\n  '+
+    '<ui-prop\n      v-prop="target.continuousTime"\n   :multi-values="multi"\n    >\n    </ui-prop>\n  '+
+
+    '<ui-prop\n      v-prop="target.openLongPress"\n   :multi-values="multi"\n    >\n    </ui-prop>\n  '+
+    '<ui-prop\n      v-prop="target.longPressTime"\n   :multi-values="multi"\n    >\n    </ui-prop>\n  '+
     // 结束
 
     '<cc-array-prop :target.sync="target.clickEvents"></cc-array-prop>\n ' + 
