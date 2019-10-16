@@ -59,10 +59,35 @@
         5, 通过UIManager.GetInstance().ShowUIForms("uiformname", null); 方法展示窗体
         6, 更多详细内容, 请见test中的示例
 
-## 8月3日新增功能
+## 2019/10/16 新增功能
 
-        BaseUIForm中添加CloseAndDestory属性, 当此属性为true时, 关闭此窗体将会销毁此结点,并且释放结点资源
-        对于已经显示的窗体, 不会二次显示
+1, 将BaseUIBinder分离出来作为BaseUIView的父类, 如果希望使用BaseUIBinder的功能, 请为你的结点添加View组件
+
+为什么这么做?
+        对于UIForm的控制我尝试过多种方法, 这一次是希望实现一个类似MVC的控制结构, 对于一个UIForm, 我们为其添加C(控制)和V(视图)组件
+例如, 我在LoginForm预制体添加的组件一样, 将Form的动画, 显示放在View脚本中, 而事件的监听, 游戏逻辑则放在Control脚本中, 当然View脚本不是必须的
+你也可以只实现Control脚本
+
+2, 场景切换(在本单场景管理, 即是Normal结点的更换), 添加加载过度动画
+
+如何使用: 
+        1, 在游戏的Main脚本中设置UIIndependentManager.getInstance().setLoadingForm("UIForm/LoadingForm"); 过度场景
+        2, 在加载场景时使用UIManager.GetInstance().ShowUIFormWithLoading("UIForm/HallForm");
+如上, 在HallForm中需要提前加载的UIform或者其他资源, 可以放在HallForm的load方法中, 这样就会在load内资源加载完毕, 在关闭LoadingForm, 完美实现场景切换
+
+3, 新增了Independent结点与类型
+        Independent类似常驻结点, 是独立于其他窗体的特殊窗体, 不会受到其他窗体的影响, 例如加载过度窗体, 就属于独立窗体, 不会因为其他窗体设置了HideOther属性就将其隐藏
+
+## 2019年9月26日新增功能
+
+扩展button, 为button组件添加了
+
+1. 点击button播放音效
+2. 屏蔽连续点击
+
+需要注意的是, ButtonPlus.ts需要配合插件使用, 插件路径位于UIFrameWorld\packages\helloworld, 原因是
+在ButtonPlus中@inspector('packages://helloworld/inspector.js'), 需要引入插件中的inspector.js,
+用户也可以在inspector自定义编辑器上ButtonPlus显示格式.
 
 
 ## 2019年9月19日新增功能
@@ -92,13 +117,11 @@ UIHelper还提供了了bindNode()方法, 将对方结点或者其父节点传入
 还需要注意的是 重复绑定, 因为每次进行查询绑定操作时, 都会对其所有的子节点进行查找, 所有可能会出现重复绑定!
 
 
-## 2019年9月26日新增功能
 
-扩展button, 为button组件添加了
 
-1. 点击button播放音效
-2. 屏蔽连续点击
+## 8月3日新增功能
 
-需要注意的是, ButtonPlus.ts需要配合插件使用, 插件路径位于UIFrameWorld\packages\helloworld, 原因是
-在ButtonPlus中@inspector('packages://helloworld/inspector.js'), 需要引入插件中的inspector.js,
-用户也可以在inspector自定义编辑器上ButtonPlus显示格式.
+BaseUIForm中添加CloseAndDestory属性, 当此属性为true时, 关闭此窗体将会销毁此结点,并且释放结点资源
+对于已经显示的窗体, 不会二次显示
+
+

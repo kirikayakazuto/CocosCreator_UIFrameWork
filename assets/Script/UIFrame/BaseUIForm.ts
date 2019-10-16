@@ -12,12 +12,11 @@
  */
 import UIManager from "./UIManager";
 import UIType from "./UIType";
-import { UIFormType } from "./config/SysDefine";
+import { UIFormType, UIFormShowMode } from "./config/SysDefine";
 import UIMaskManager from "./UIMaskManager";
 import GEventManager from "./GEventManager";
 import BaseUIView from "./BaseUIView";
 import UIIndependentManager from "./UIIndependentManager";
-import CocosHelper from "./CocosHelper";
 
 
 const {ccclass, property} = cc._decorator;
@@ -46,7 +45,9 @@ export default class BaseUIForm extends cc.Component {
         }
         this.init(obj);
         await this.load();
-        UIIndependentManager.getInstance().hideLoadingForm();
+        if(this.CurrentUIType.UIForms_Type === UIFormType.Normal) {
+            UIIndependentManager.getInstance().hideLoadingForm();
+        }   
     }
     
     /**
