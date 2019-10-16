@@ -19,8 +19,7 @@ export default class HallSettingForm extends BaseUIForm {
     startPosition: cc.Vec2;
 
     init(obj: any) {
-        
-        this.startPosition = this.node.convertToNodeSpace(obj.startPosition);
+        this.startPosition = this.node.convertToNodeSpaceAR(obj.startPosition);
     }
 
     // LIFE-CYCLE CALLBACKS:
@@ -31,11 +30,12 @@ export default class HallSettingForm extends BaseUIForm {
         this.CloseNode.on('click', () => {
             this.CloseUIForm();
         }, this)
-    }
+    } 
 
     ShowPopUpAnimation(callBack: Function) {
         this.node.scale = 0;
         this.node.setPosition(this.startPosition);
+        // cc.log(this.startPosition)
         cc.tween(this.node)
         .to(0.3, {scale:1, position:cc.v2(0,0)})
         .call(() => {

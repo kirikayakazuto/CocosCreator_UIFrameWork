@@ -15,13 +15,15 @@ import UIType from "./UIType";
 import { UIFormType } from "./config/SysDefine";
 import UIMaskManager from "./UIMaskManager";
 import GEventManager from "./GEventManager";
-import BaseUIBinder from "./BaseUIBinder";
+import BaseUIView from "./BaseUIView";
+import UIIndependentManager from "./UIIndependentManager";
+import CocosHelper from "./CocosHelper";
 
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class BaseUIForm extends BaseUIBinder {
+export default class BaseUIForm extends cc.Component {
 
     /** 窗体名字,该窗体的唯一标示(请不要对这个值进行赋值操作, 内部已经实现了对应的赋值) */
     public UIFormName: string;
@@ -29,20 +31,36 @@ export default class BaseUIForm extends BaseUIBinder {
     public CurrentUIType = new UIType();
     /** 是否点击阴影关闭弹窗 */
     public ClickMaskClose = false;
-    /** 关闭窗口后销毁 (注意, 此销毁会销毁结点资源,以及其依赖的资源,例如cc.Sprite的图片, 音频等等, 如果你只想销毁结点,请手动调用node的destory方法) */
+    /** 关闭窗口后销毁 */
     public CloseAndDestory = false;
 
-    public IsEasing = false;        // 显示mask时是否播放缓动
-    public EasingTime = 0.3;        // 
+    public IsEasing = false;        // 显示mask时是否缓动显示
+    public EasingTime = 0.3;        // 缓动时长
+
+    public view: BaseUIView = null;
+    // public model: BaseUIModel = null;
+    public async __preInit(obj?: any) {
+        if(!this.view) {
+            this.view = this.getComponent(BaseUIView);
+            this.view && this.view._preInit();
+        }
+        this.init(obj);
+        await this.load();
+        UIIndependentManager.getInstance().hideLoadingForm();
+    }
     
     /**
      * 消息初始化
      * 子类需重写此方法
      * @param obj
      */
-    public init(obj?: any) {
-        // todo...
+    public init(obj?: any) {}
+
+    /** 异步加载 */
+    public async load() {
+        // 可以在这里进行一些资源的加载
     }
+
     /**
      * 显示窗体
      */

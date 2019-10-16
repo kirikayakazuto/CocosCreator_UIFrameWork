@@ -1,5 +1,6 @@
 import UIManager from "./UIFrame/UIManager";
 import ButtonPlus from "./UIFrame/ButtonPlus";
+import UIIndependentManager from "./UIFrame/UIIndependentManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -9,11 +10,10 @@ export default class Helloworld extends cc.Component {
     @property(ButtonPlus)
     buttonPlus: ButtonPlus = null;
 
-    onLoad() {
-        // MemoryDetector.showMemoryStatus();
-    }
+    onLoad() {}
 
     start () {
+        UIIndependentManager.getInstance().setLoadingForm("UIForm/LoadingForm");
         UIManager.GetInstance().ShowUIForms("UIForm/LoginForm");
 
         this.buttonPlus.addClick(() => {

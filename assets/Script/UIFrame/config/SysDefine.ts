@@ -5,7 +5,9 @@ export enum UIFormType {
     /** 固定窗口 */
     Fixed,                      
     /** 弹出窗口 */
-    PopUp,                      
+    PopUp,    
+    /** 独立窗口 */
+    Independent,                  
 }
 /**显示类型 */
 export enum UIFormShowMode {
@@ -14,7 +16,10 @@ export enum UIFormShowMode {
     /** 反向切换, 窗体关闭时, 会显示其他窗体 */
     ReverseChange,
     /** 隐藏其他, 窗体显示时, 会隐藏其他窗体 */
-    HideOther
+    HideOther,
+    /** 独立显示, 不受其他窗体影响 */
+    Independent,
+
 }
 /**透明度类型 */
 export enum UIFormLucenyType {
@@ -41,10 +46,12 @@ export class SysDefine {
     public static SYS_NORMAL_NODE = "Normal";
     public static SYS_FIXED_NODE = "Fixed";
     public static SYS_POPUP_NODE = "PopUp";  
+    public static SYS_INDEPENDENT_NODE = "Independent";
 
     /** 规范符号 */
     public static SYS_STANDARD_Prefix = '_';
     public static SYS_STANDARD_Separator = '$';
+    public static SYS_STANDARD_End = '#';
     
     public static SeparatorMap: {[key: string]: string} = {
         "_Node"        : "cc.Node",
@@ -70,9 +77,3 @@ export class SysDefine {
     };
 
 }
-/**
- * 第一个问题, 我还没想到很好的解决办法, 因为想要阻断其他的点击事件, 必须要先加载出弹出的UIForm, 再判断UIForm是否设置为不能穿透, 而加载UIForm是一个异步的过程, 没法立即显示
- * 可以尝试使用等待的UIForm, 对等待的UIform设置为不能穿透, 提前将等待UIForm加载到内存中, 应该能优化一丢丢
- * 
- * 
- */

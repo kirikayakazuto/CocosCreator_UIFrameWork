@@ -8,12 +8,12 @@ const {ccclass, property} = cc._decorator;
 export default class TestPanel extends BaseUIForm {
     
     CurrentUIType = new UIType(UIFormType.Normal, UIFormShowMode.HideOther, UIFormLucenyType.Lucency);
-    CloseAndDestory = true;         // 这里设置为true表示会将这个结点所依赖的资源销毁
-
+    CloseAndDestory = true;
 
     start() {
-        this._Nodes.Login.on('click', () => {
-            this.ShowUIForm("UIForm/HallForm", null);
+        this.view._Nodes.Login.on('click', () => {
+            this.CloseUIForm();
+            UIManager.GetInstance().ShowUIFormWithLoading("UIForm/HallForm");
         }, this)
     }
     

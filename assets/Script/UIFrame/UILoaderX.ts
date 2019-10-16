@@ -25,11 +25,10 @@ export default class UILoaderX {
             });
         });
     }
-    /** 释放一个结点 */
-    public releaseNode(node: cc.Node) {
-
+    /** 释放一个结点, 以及其依赖组件的资源 */
+    public releaseNode(nodeName: string) {
+        let deps = cc.loader.getDependsRecursively(nodeName);
+        if(deps) cc.loader.release(deps);
     }
-
-    public 
 
 }

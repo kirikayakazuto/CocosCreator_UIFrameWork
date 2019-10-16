@@ -1,6 +1,15 @@
 import { SysDefine } from "./config/SysDefine";
 
 export default class CocosHelper {
+
+    public static sleep = function(time: number) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve();
+            }, time * 1000)
+            
+        })
+    }
     /**
      * 寻找子节点
      */
@@ -24,6 +33,12 @@ export default class CocosHelper {
             return false;
         }
         return true;
+    }
+    public static checkBindChildren(name: string) {
+        if(name[name.length-1] !== SysDefine.SYS_STANDARD_End) {
+            return true;
+        }
+        return false;
     }
     /** 获得类型和name */
     public static getPrefixNames(name: string) {

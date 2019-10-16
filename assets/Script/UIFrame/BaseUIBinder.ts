@@ -21,14 +21,15 @@ export default class BaseUIBinder extends cc.Component {
     _ProgressBars : {[name: string]: cc.ProgressBar}   = {};
     _Sliders      : {[name: string]: cc.Slider}   = {};
 
-    __preload() {
+    __preInit() {
         UIHelper.getInstance().bindComponent(this);
     }
+
 
     // onLoad () {}
 
     start () {
-        cc.log(this._Labels.Text.string)
+        // cc.log(this._Labels.Text.string)
     }
 
     // update (dt) {}
