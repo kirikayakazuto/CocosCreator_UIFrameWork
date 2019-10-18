@@ -1,9 +1,7 @@
 
 import { UIFormLucenyType, SysDefine } from "./config/SysDefine";
-import UIManager from "./UIManager";
 import UIMaskScript from "./UIMaskScript";
 import BaseUIForm from "./BaseUIForm";
-import UILoader from "./UILoader";
 /**
  * 遮罩管理
  */
@@ -21,11 +19,11 @@ export default class UIMaskManager extends cc.Component {
     private uiMaskScript:UIMaskScript = null;
     maskTexture: cc.Texture2D = null;
     /** 添加mask, 这个时候会阻断点击事件 */
-    public async addMaskWindow(parent: cc.Node) {
+    public addMaskWindow(parent: cc.Node) {
         if(parent.getChildByName("UIMaskNode") || !parent.getComponent(BaseUIForm)) {
             return ;
         }
-        this.uiMaskScript = await MaskNodePool.getInstance().get(parent);
+        this.uiMaskScript = MaskNodePool.getInstance().get(parent, this.getComponent(cc.Sprite).spriteFrame.getTexture());
     }
     /** 为mask添加颜色 */
     public showMask(lucenyType: number, isEasing?: boolean, time?: number) {
@@ -49,18 +47,18 @@ export class MaskNodePool {
 
     private pool: Array<UIMaskScript> = [];
 
-    public async init() {
+    public init(texture: cc.Texture2D) {
         for(let i=0; i<3; i++) {
             let com = new cc.Node("UIMaskNode").addComponent(UIMaskScript);
-            com.init();
+            com.init(texture);
             this.pool.push(com);
         }
     }
 
     /** 释放一个 */
-    public async get(parent: cc.Node) {
+    public get(parent: cc.Node, texture: cc.Texture2D) {
         if(this.pool.length <= 0) {
-            await this.init();
+            this.init(texture);
         }
         let com = this.pool.pop();
         com.reUse(parent.getComponent(BaseUIForm).UIFormName);
