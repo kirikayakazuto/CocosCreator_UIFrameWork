@@ -1,7 +1,7 @@
 import BaseUIForm from "./BaseUIForm";
 import { SysDefine, UIFormType, UIFormShowMode } from "./config/SysDefine";
-import UILoader from "./UILoader";
 import UIIndependentManager from "./UIIndependentManager";
+import ResLoader from "./ResLoader";
 
 const {ccclass, property} = cc._decorator;
 
@@ -88,11 +88,11 @@ export default class UIManager extends cc.Component {
         baseUIForms.UIFormName = uiFormName;
         
         // 是否清理栈内窗口
-        if(baseUIForms.CurrentUIType.IsClearStack) {
+        if(baseUIForms.UIType.IsClearStack) {
             this.ClearStackArray();
         }
         
-        switch(baseUIForms.CurrentUIType.UIForms_ShowMode) {
+        switch(baseUIForms.UIType.UIForms_ShowMode) {
             case UIFormShowMode.Normal:                             // 普通模式显示
                 this.LoadUIToCurrentCache(uiFormName, obj);
             break;
@@ -119,7 +119,7 @@ export default class UIManager extends cc.Component {
         
         if(baseUIForm == null) return ;
         
-        switch(baseUIForm.CurrentUIType.UIForms_ShowMode) {
+        switch(baseUIForm.UIType.UIForms_ShowMode) {
             case UIFormShowMode.Normal:                             // 普通模式显示
                 this.ExitUIForms(uiFormName);
             break;
@@ -135,12 +135,11 @@ export default class UIManager extends cc.Component {
         }
         // 判断是否销毁该窗体
         if(baseUIForm.CloseAndDestory) {
-            baseUIForm.node.destroy();
-            // 从allmap中删除
-            this._MapAllUIForms[uiFormName] = null;
-            delete this._MapAllUIForms[uiFormName];
+            this.destoryForm(baseUIForm, uiFormName);
         }
     }
+
+
     /**
      * 从全部的UI窗口中加载, 并挂载到结点上
      */
@@ -162,14 +161,14 @@ export default class UIManager extends cc.Component {
             return ;
         }
         
-        let pre = await UILoader.getInstance().loadRes(strUIFormPath, cc.Prefab) as cc.Prefab;
+        let pre = await ResLoader.getInstance().loadForm(strUIFormPath);
         let node: cc.Node = cc.instantiate(pre);
         let baseUIForm = node.getComponent(BaseUIForm);
         if(baseUIForm == null) {
             return ;
         }
         node.active = false;
-        switch(baseUIForm.CurrentUIType.UIForms_Type) {
+        switch(baseUIForm.UIType.UIForms_Type) {
             case UIFormType.Normal:
                 UIManager.GetInstance()._NoNormal.addChild(node);
             break;
@@ -204,7 +203,7 @@ export default class UIManager extends cc.Component {
     public CloseStackTopUIForm() {
         if(this._StaCurrentUIForms != null && this._StaCurrentUIForms.length >= 1) {
             let uiFrom = this._StaCurrentUIForms[this._StaCurrentUIForms.length-1];
-            if(uiFrom.ClickMaskClose) {
+            if(uiFrom.MaskType.ClickMaskClose) {
                 uiFrom.CloseUIForm();
             }   
         }
@@ -317,14 +316,6 @@ export default class UIManager extends cc.Component {
         baseUIForm.Hiding();
         this._MapCurrentShowUIForms[uiFormName] = null;
         delete this._MapCurrentShowUIForms[uiFormName];
-
-        //  显示其他窗口 
-        /* for(let key in this._MapCurrentShowUIForms) {
-            this._MapCurrentShowUIForms[key].ReDisPlay();
-        }
-        this._StaCurrentUIForms.forEach(uiForm => {
-            uiForm.ReDisPlay();
-        }); */
     }
     private ExitIndependentForms(uiFormName: string) {
         let baseUIForm = this._MapAllUIForms[uiFormName];
@@ -332,6 +323,14 @@ export default class UIManager extends cc.Component {
         baseUIForm.Hiding();
         this._MapIndependentForms[uiFormName] = null;
         delete this._MapIndependentForms[uiFormName];
+    }
+
+    /** 销毁 */
+    private destoryForm(baseUIForm: BaseUIForm, uiFormName: string) {
+        ResLoader.getInstance().destoryForm(baseUIForm);
+        // 从allmap中删除
+        this._MapAllUIForms[uiFormName] = null;
+        delete this._MapAllUIForms[uiFormName];
     }
 
 

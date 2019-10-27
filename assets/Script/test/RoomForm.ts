@@ -1,7 +1,7 @@
 import BaseUIForm from "../UIFrame/BaseUIForm";
 import AdaptationManager, { AdaptationType } from "../UIFrame/AdaptationManager";
 import { UIFormType } from "../UIFrame/config/SysDefine";
-import UIType from "../UIFrame/UIType";
+import { UIType } from "../UIFrame/FormType";
 
 const {ccclass, property} = cc._decorator;
 
@@ -9,7 +9,7 @@ const {ccclass, property} = cc._decorator;
 export default class RoomForm extends BaseUIForm {
 
     ClickMaskClose = false;
-    CurrentUIType = new UIType(UIFormType.Fixed);
+    UIType = new UIType(UIFormType.Fixed);
 
     // LIFE-CYCLE CALLBACKS:
 

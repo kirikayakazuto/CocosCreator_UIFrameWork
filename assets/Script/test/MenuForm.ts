@@ -1,8 +1,8 @@
 import BaseUIForm from "../UIFrame/BaseUIForm";
 import { UIFormType } from "../UIFrame/config/SysDefine";
-import UIType from "../UIFrame/UIType";
 import AdaptationManager, { AdaptationType } from "../UIFrame/AdaptationManager";
 import UIManager from "../UIFrame/UIManager";
+import { UIType } from "../UIFrame/FormType";
 
 const {ccclass, property} = cc._decorator;
 
@@ -10,7 +10,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class MenuForm extends BaseUIForm {
 
-    CurrentUIType = new UIType(UIFormType.Fixed);
+    UIType = new UIType(UIFormType.Fixed);
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}

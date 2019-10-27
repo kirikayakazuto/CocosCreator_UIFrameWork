@@ -10,6 +10,23 @@ export default class CocosHelper {
             
         })
     }
+    /**  */
+    public static loadRes = function(url: string, type: typeof cc.Asset) {
+        if (!url || !type) {
+            cc.log("参数错误", url, type);
+            return;
+        }
+        return new Promise((resolve, reject) => {
+            cc.loader.loadRes(url, type, (err, asset) => {
+                if (err) {
+                    cc.log(`[资源加载] 错误 ${err}`);
+                    resolve(null);
+                    return;
+                }
+                resolve(asset);
+            });
+        });
+    }
     /**
      * 寻找子节点
      */

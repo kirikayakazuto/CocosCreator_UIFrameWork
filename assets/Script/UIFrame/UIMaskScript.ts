@@ -1,6 +1,5 @@
 import UIManager from "./UIManager";
 import { UIFormLucenyType } from "./config/SysDefine";
-import UILoader from "./UILoader";
 
 /**
  * @Author: 邓朗 
@@ -73,6 +72,4 @@ export default class UIMaskScript extends cc.Component {
     public _clickMaskWindow() {
         UIManager.GetInstance().CloseStackTopUIForm();
     }
-
-    // update(dt: number) {}
 }

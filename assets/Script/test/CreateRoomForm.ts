@@ -1,14 +1,15 @@
 import BaseUIForm from "../UIFrame/BaseUIForm";
-import UIType from "../UIFrame/UIType";
 import { UIFormType, UIFormLucenyType, UIFormShowMode } from "../UIFrame/config/SysDefine";
+import { UIType } from "../UIFrame/FormType";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class CreateRoomForm extends BaseUIForm {
 
-    CurrentUIType = new UIType(UIFormType.PopUp, UIFormShowMode.ReverseChange, UIFormLucenyType.ImPenetrable);
+    UIType = new UIType(UIFormType.PopUp, UIFormShowMode.ReverseChange, UIFormLucenyType.ImPenetrable);
     ClickMaskClose = false;
+    
     @property(cc.Node)
     CloseNode: cc.Node= null;
     // onLoad () {}
