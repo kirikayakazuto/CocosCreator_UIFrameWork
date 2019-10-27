@@ -29,6 +29,7 @@ export default class BaseUIBinder extends cc.Component {
     // onLoad () {}
 
     start () {
+        // 下一行可以直接打印出Text中的文本
         // cc.log(this._Labels.Text.string)
     }
 
