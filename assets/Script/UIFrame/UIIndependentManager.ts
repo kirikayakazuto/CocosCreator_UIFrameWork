@@ -21,6 +21,7 @@ export default class UIIndependentManager{
     public async showLoadingForm() {
         await UIManager.GetInstance().ShowUIForms(this.loadingFormName);
     }
+    /** 隐藏加载form */
     public hideLoadingForm() {
         UIManager.GetInstance().CloseUIForms(this.loadingFormName);
     }

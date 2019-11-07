@@ -11,7 +11,7 @@
  * 5, 关闭窗口请执行CloseUIForm方法, 调用了CloseUIForm方法, 会调用HidePopUpAnimation方法播放出场动画, 在将窗体从结点对应类型的窗体缓存中删除
  */
 import UIManager from "./UIManager";
-import { UIFormType, UIFormShowMode } from "./config/SysDefine";
+import { UIFormType } from "./config/SysDefine";
 import UIMaskManager from "./UIMaskManager";
 import GEventManager from "./GEventManager";
 import BaseUIView from "./BaseUIView";

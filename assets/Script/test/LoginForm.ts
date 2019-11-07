@@ -28,7 +28,7 @@ export default class TestPanel extends BaseUIForm {
         cc.log('start')
         this.view._Nodes.Login.on('click', () => {
             this.CloseUIForm();
-            UIManager.GetInstance().ShowUIFormWithLoading("UIForm/HallForm");
+            UIManager.GetInstance().ShowUIForms("UIForm/HallForm");
         }, this)
     }
 

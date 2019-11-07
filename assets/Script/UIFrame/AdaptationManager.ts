@@ -29,9 +29,7 @@ export default class AdaptationManager extends cc.Component {
         cc.log(`当前屏幕尺寸为${this.VisibleSize}`);
     }
 
-    start () {
-
-    }
+    start () {}
     /**
      * 适配靠边的UI
      * @param type 

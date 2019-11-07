@@ -81,11 +81,11 @@ export default class ResLoader {
 
     /** 销毁动态资源  没有做引用计数的处理 */
     public destoryDynamicRes(tag: string) {
-        if(!this.destoryDynamicRes[tag]) {       // 销毁
+        if(!this.dynamicDepends[tag]) {       // 销毁
             return false;
         }
-        for(const key in this.destoryDynamicRes) {
-            cc.loader.release(this.destoryDynamicRes[key]);
+        for(const key in this.dynamicDepends) {
+            cc.loader.release(this.dynamicDepends[key]);
         }
         return true;
     }

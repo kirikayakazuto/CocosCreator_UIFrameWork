@@ -2,6 +2,7 @@ import { SysDefine } from "./config/SysDefine";
 
 export default class CocosHelper {
 
+    /** 等待时间, 秒为单位 */
     public static sleep = function(time: number) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
