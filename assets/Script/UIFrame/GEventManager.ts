@@ -9,8 +9,11 @@ export default class GEventManager {
     private static _eventMap: {[key: string]: Array<ElementEvent>} = {};
     private static _bufferEventMap: {[key: string]: Array<any>} = {};          // 缓存的消息
 
+    private static clearTimers: Array<ElementTimer> = [];
+    private static autoClearTimeNumber = 10;                                   // 定时清理的间隔
+
     /**
-     * 发布一个事件
+     * 发布一个事件, 对于缓存的消息, 10s还没有被接收, 那么会定时回收
      * @param eventName 
      * @param parameter 
      */
@@ -22,6 +25,9 @@ export default class GEventManager {
                 this._bufferEventMap[eventName] = [];
             }
             this._bufferEventMap[eventName].push(parameter);
+
+            // 开始定时清理定时器, 如果不希望开启, 注释下面一行即可
+            this.autoClearBufferEvent(eventName);
             return ;
         }
         for(let i=0; i<array.length; i++) {
@@ -31,10 +37,10 @@ export default class GEventManager {
     }
 
     /**
-     * 订阅一个时间
+     * 订阅一个事件
      * @param eventName 
      * @param callback 
-     * @param target 
+     * @param target
      */
     public static on(eventName: string, callback: Function, target: any) {
         if(this._eventMap[eventName] === undefined) {
@@ -47,7 +53,8 @@ export default class GEventManager {
             for(let i=0; i<this._bufferEventMap[eventName].length; i++) {
                 callback.call(target, this._bufferEventMap[eventName][i]);
             }
-            this._bufferEventMap[eventName] = undefined;
+            this._bufferEventMap[eventName] = null;
+            delete this._bufferEventMap[eventName];
         }
     }
 
@@ -60,17 +67,62 @@ export default class GEventManager {
     public static off(eventName: string, callback: Function, target: any) {
         let array = this._eventMap[eventName];
         if(array === undefined) return ;
-        for(let i=0; i<array.length; i++) {
+        for(let i=array.length-1; i>0; i--) {
             let element = array[i];
             if(element && element.callback === callback && element.target === target) {
-                array[i] = undefined;
+                array.splice(i, 1);
                 break;
             }
         }
+        if(array.length === 0) {
+            this._eventMap[eventName] = null;
+            delete this._eventMap[eventName];
+        }
+    }
+
+
+    /** 自动清理bufferEventMap中的未接收消息 */
+    private static autoClearBufferEvent(eventName: string) {
+        
+        for(const e of this.clearTimers) {
+            if(e.eventName === eventName) { // 当前event已经开启了定时回收
+                return;
+            }
+        }
+
+        let clearTimer = setTimeout(() => {
+            clearEvent(eventName);
+        }, this.autoClearTimeNumber * 1000);
+
+        this.clearTimers.push(new ElementTimer(eventName, clearTimer));
+
+        let clearEvent = (eventName: string) => {
+            if(!this._bufferEventMap[eventName]) {
+                return ;
+            }
+            this._bufferEventMap[eventName] = null;
+            delete this._bufferEventMap[eventName];
+
+            for(let i=this.clearTimers.length-1; i>=0; i--) {
+                if(this.clearTimers[i].eventName === eventName) {
+                    this.clearTimers.splice(i, 1);
+                }
+            }
+        };
     }
 }
 
 export class ElementEvent {
     callback: Function;
     target: any;
+}
+
+class ElementTimer {
+    eventName: string;
+    timer: NodeJS.Timer;
+
+    constructor(evnetName: string, timer: NodeJS.Timer) {
+        this.eventName = evnetName;
+        this.timer = timer;
+    }
 }

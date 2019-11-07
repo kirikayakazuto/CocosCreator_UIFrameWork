@@ -35,7 +35,6 @@ export default class ButtonPlus extends cc.Button {
         this.continuous = false;
         super.onEnable();
         if (!CC_EDITOR) {
-            // ViewAction.getInstance().runButtonAction(this.action, this.node);
         }
     }
     onDisable() {

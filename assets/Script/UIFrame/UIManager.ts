@@ -19,7 +19,7 @@ export default class UIManager extends cc.Component {
     private _MapIndependentForms: {[key: string]: BaseUIForm} = {};        // 独立窗体 独立于其他窗体, 不受其他窗体的影响
 
     private static _Instance: UIManager = null;                     // 单例
-    static GetInstance(): UIManager {
+    public static GetInstance(): UIManager {
         if(this._Instance == null) {
             this._Instance = cc.find(SysDefine.SYS_UIROOT_NAME).addComponent<UIManager>(this);
             cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
@@ -75,7 +75,7 @@ export default class UIManager extends cc.Component {
      * @param obj 初始化信息, 可以不要
      */
     public async ShowUIForms(uiFormName: string, obj?: any) {
-        if(uiFormName == "" || uiFormName == null) return ;
+        if(uiFormName === "" || uiFormName == null) return ;
         if(this.UIFormIsShowing(uiFormName)) {
             cc.log(`${uiFormName}窗体已经在显示`);
             return ;        

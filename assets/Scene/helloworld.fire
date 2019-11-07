@@ -165,7 +165,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 358.41554738345616
+      "z": 289.24798897956157
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -1387,8 +1387,8 @@
       "width": 1280,
       "height": 720
     },
-    "_fitWidth": true,
-    "_fitHeight": false,
+    "_fitWidth": false,
+    "_fitHeight": true,
     "_id": "5b9UK/l/BP4Kc7/XTh8Pbb"
   },
   {

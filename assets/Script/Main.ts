@@ -25,13 +25,10 @@ export default class Helloworld extends cc.Component {
         }, () => {
             cc.log("触发长按事件 结束");
         }, this);
-
-        // ResLoader.getInstance().loadRes()
     }
-
 
     /** 释放资源 */
     onDestroy() {
-
+        cc.log('destory');
     }
 }

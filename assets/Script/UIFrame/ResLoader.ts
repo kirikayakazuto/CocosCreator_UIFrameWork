@@ -23,6 +23,7 @@ export default class ResLoader {
      * 采用计数管理的办法, 管理form所依赖的资源
      */
     private staticDepends:{[key: string]: number} = {};
+    private dynamicDepends: {[key: string]: Array<string>} = {};
 
     /** 加载窗体 */
     public async loadForm(formName: string) {
@@ -44,7 +45,6 @@ export default class ResLoader {
     }
 
 
-
     /** 静态资源的计数管理 */
     private addStaticDepends(deps: Array<string>) {
         for(let s of deps) {
@@ -64,5 +64,29 @@ export default class ResLoader {
                 cc.loader.release(s);
             }
         }
+    }
+
+
+    /** 动态资源管理, 通过tag标记当前资源, 统一释放 */
+    public async loadDynamicRes(url: string, type: typeof cc.Asset, tag: string) {
+        let sources = await CocosHelper.loadRes(url, type);
+        if(!tag) tag = url;
+        if(!this.dynamicDepends[tag]) {
+            this.dynamicDepends[tag] = [];
+        }
+        this.dynamicDepends[tag].push(url);
+
+        return sources;
+    }
+
+    /** 销毁动态资源  没有做引用计数的处理 */
+    public destoryDynamicRes(tag: string) {
+        if(!this.destoryDynamicRes[tag]) {       // 销毁
+            return false;
+        }
+        for(const key in this.destoryDynamicRes) {
+            cc.loader.release(this.destoryDynamicRes[key]);
+        }
+        return true;
     }
 }

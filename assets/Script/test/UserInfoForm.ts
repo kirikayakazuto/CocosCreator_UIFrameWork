@@ -2,6 +2,7 @@ import BaseUIForm from "../UIFrame/BaseUIForm";
 import { UIFormType } from "../UIFrame/config/SysDefine";
 import AdaptationManager, { AdaptationType } from "../UIFrame/AdaptationManager";
 import { UIType } from "../UIFrame/FormType";
+import GEventManager from "../UIFrame/GEventManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -22,6 +23,11 @@ export default class UserInfoForm extends BaseUIForm {
         this.backNode.on('click', () => {
             this.ShowUIForm("UIForm/LoginForm");
         });
+
+        /**  */
+        GEventManager.on('SendGold', (gold: number) => {
+            cc.log('收到了来自FriendRankForm的消息');
+        }, this);
     }
 
     // update (dt) {}
