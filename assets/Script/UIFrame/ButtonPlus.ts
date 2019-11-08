@@ -46,7 +46,7 @@ export default class ButtonPlus extends cc.Button {
             clearTimeout(this.longPressTimer);
             this.longPressTimer = null;
         }
-        super.onEnable();
+        super.onDisable();
     }
 
     /** 重写 */

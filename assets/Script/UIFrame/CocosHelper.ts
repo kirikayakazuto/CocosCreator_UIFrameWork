@@ -6,7 +6,7 @@ export default class CocosHelper {
     public static sleep = function(time: number) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve();
+                resolve(true);
             }, time * 1000)
             
         })
@@ -52,6 +52,7 @@ export default class CocosHelper {
         }
         return true;
     }
+    /** 检查后缀 */
     public static checkBindChildren(name: string) {
         if(name[name.length-1] !== SysDefine.SYS_STANDARD_End) {
             return true;
