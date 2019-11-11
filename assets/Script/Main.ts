@@ -28,6 +28,9 @@ export default class Helloworld extends cc.Component {
     }
 
     /** 释放资源 */
+    /**
+     * 
+     */
     onDestroy() {
         cc.log('destory');
     }

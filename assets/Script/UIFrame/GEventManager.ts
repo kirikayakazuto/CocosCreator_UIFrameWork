@@ -25,14 +25,15 @@ export default class GEventManager {
                 this._bufferEventMap[eventName] = [];
             }
             this._bufferEventMap[eventName].push(parameter);
-
             // 开始定时清理定时器, 如果不希望开启, 注释下面一行即可
             this.autoClearBufferEvent(eventName);
             return ;
         }
         for(let i=0; i<array.length; i++) {
             let element = array[i];
-            if(element) element.callback.call(element.target, parameter);
+            if(!element) continue;
+            element.callback.call(element.target, parameter);
+            element.once && array.splice(i, 1) && i--;
         }
     }
 
@@ -42,11 +43,11 @@ export default class GEventManager {
      * @param callback 
      * @param target
      */
-    public static on(eventName: string, callback: Function, target: any) {
+    public static on(eventName: string, callback: Function, target: any, once = false) {
         if(this._eventMap[eventName] === undefined) {
             this._eventMap[eventName] = [];
         }
-        this._eventMap[eventName].push({callback: callback, target: target});
+        this._eventMap[eventName].push(new ElementEvent(callback, target, once));
 
         // 新订阅一个事件, 那么看看是不是有缓存的消息, 发布出去
         if(this._bufferEventMap[eventName] != undefined) {
@@ -56,6 +57,9 @@ export default class GEventManager {
             this._bufferEventMap[eventName] = null;
             delete this._bufferEventMap[eventName];
         }
+    }
+    public static once(eventName: string, callback: Function, target: any) {
+        this.on(eventName, callback, target, true);
     }
 
     /**
@@ -79,13 +83,21 @@ export default class GEventManager {
             delete this._eventMap[eventName];
         }
     }
+    /**
+     * 清空一个事件
+     * @param eventName 
+     */
+    public static clear(eventName: string) {
+        this._eventMap[eventName] = null;
+        delete this._eventMap[eventName];
+    }
 
 
     /** 自动清理bufferEventMap中的未接收消息 */
     private static autoClearBufferEvent(eventName: string) {
         
         for(const e of this.clearTimers) {
-            if(e.eventName === eventName) { // 当前event已经开启了定时回收
+            if(e.eventName === eventName) {         // 当前event已经开启了定时回收
                 return;
             }
         }
@@ -115,6 +127,15 @@ export default class GEventManager {
 export class ElementEvent {
     callback: Function;
     target: any;
+    once: boolean;
+
+    constructor(callback: Function, target: Object, once: boolean) {
+        this.callback = callback;
+        this.target = target;
+        this.once = once;
+    }
+
+
 }
 
 class ElementTimer {
