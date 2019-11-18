@@ -27,7 +27,6 @@ export default class Helloworld extends cc.Component {
         }, this);
     }
 
-    /** 释放资源 */
     /**
      * 
      */

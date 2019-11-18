@@ -6,8 +6,8 @@
  * @Last Modified time: 2019-06-06 10:59:29 
  */
 export default class GEventManager {
-    private static _eventMap: {[key: string]: Array<ElementEvent>} = {};
-    private static _bufferEventMap: {[key: string]: Array<any>} = {};          // 缓存的消息
+    private static _eventMap: {[key: string]: Array<ElementEvent>} = cc.js.createMap();
+    private static _bufferEventMap: {[key: string]: Array<any>} = cc.js.createMap();          // 缓存的消息
 
     private static clearTimers: Array<ElementTimer> = [];
     private static autoClearTimeNumber = 10;                                   // 定时清理的间隔
@@ -33,7 +33,7 @@ export default class GEventManager {
             let element = array[i];
             if(!element) continue;
             element.callback.call(element.target, parameter);
-            element.once && array.splice(i, 1) && i--;
+            element.once && array.splice(i, 1) && --i;
         }
     }
 
@@ -134,8 +134,6 @@ export class ElementEvent {
         this.target = target;
         this.once = once;
     }
-
-
 }
 
 class ElementTimer {

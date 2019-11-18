@@ -6,14 +6,14 @@ export default class CWebSocket implements ISocket {
 
     /** 事件 */
     public onConnect: (event) => void = null;
-    public onMessage: (msg) => void = null;
+    public onMessage: (msg: IMsg) => void = null;
     public onError: (event) => void = null;
     public onClose: (event) => void = null;
 
     /** 连接网络 */
     public connect(option: string | {ip: string, port: number, protocol: string}) {
         if(this.ws && this.ws.readyState === WebSocket.CONNECTING) {
-            cc.log("已经连接上网络, 是否要重新连接!");
+            cc.log("已经连接上网络, 重新连接前请先调用close方法!");
             return false;
         }
         let url = "";
