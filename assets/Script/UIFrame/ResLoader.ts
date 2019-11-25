@@ -62,6 +62,7 @@ export default class ResLoader {
             if(this.staticDepends[s] === 0) {
                 // 可以销毁
                 cc.loader.release(s);
+                delete this.staticDepends[s];
             }
         }
     }

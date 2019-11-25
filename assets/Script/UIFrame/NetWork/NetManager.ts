@@ -24,7 +24,8 @@ export default class NetManager {
         }
         return this.instance;
     }
-    
+
+    /** 属性 */
     private state : SocketState = SocketState.Closed;       // 状态
     private socket: ISocket;                                // socket
 
@@ -34,6 +35,7 @@ export default class NetManager {
     /**  */
     private eventHandlers : {[key: number]: Array<EventHandler>} = cc.js.createMap();
     
+
     /** 连接网络 */
     public connect(connectOption: connectOption, reconnectTimes: number) {
         if(!this.socket) {
@@ -48,6 +50,20 @@ export default class NetManager {
         }
         this.state = SocketState.Connecting;   // 连接中
     }
+    /** 发送数据 */
+    public send(msg: IMsg) {
+        if(this.state !== SocketState.Connected) {
+            cc.log('网络未连接！无法发送数据');
+            return false;
+        }
+        return this.socket.send(msg);
+    }
+    /** 带回调的请求 */
+    public request(msg: IMsg, callback: Function, target?: Object) {
+        this.onEventHandler(msg.cmd, callback, target);
+        this.send(msg);
+    }
+
 
     /** 添加监听事件 */
     private addEventToSocket() {
@@ -83,24 +99,10 @@ export default class NetManager {
             self.reconnectTimes --;
             self.connect(self.connectOption, self.reconnectTimes);
         }
-
+        /** 网络错误 */
         this.socket.onError = function(e) {
             cc.log(`网络错误！`);
         }
-    }
-
-    /** 发送数据 */
-    public send(msg: IMsg) {
-        if(this.state !== SocketState.Connected) {
-            cc.log('网络未连接！无法发送数据');
-            return false;
-        }
-        return this.socket.send(msg);
-    }
-    /** 带回调的请求 */
-    public request(msg: IMsg, callback: Function, target?: Object) {
-        this.onEventHandler(msg.cmd, callback, target);
-        this.send(msg);
     }
 
     /**
@@ -140,7 +142,7 @@ export default class NetManager {
     }
 }
 
-/**  */
+/** 事件 */
 class EventHandler {
     callback: Function;
     target: Object;
