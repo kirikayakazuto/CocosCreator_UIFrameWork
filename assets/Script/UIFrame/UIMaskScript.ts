@@ -40,6 +40,7 @@ export default class UIMaskScript extends cc.Component {
     unUse() {
         this.UIFormName = "";
         this.node.opacity = 0;
+        this.node.active = true;
         cc.tween(this.node).stop();
     }
     // 
