@@ -72,7 +72,7 @@ export default class BaseUIForm extends cc.Component {
         }
     }
     /**
-     * 隐藏, 已经进行删除操作(在全局表中有缓存), 需要重新showUIForm
+     * 隐藏, 需要重新showUIForm
      */
     public Hiding() {
         if(this.UIType.UIForms_Type == UIFormType.PopUp) {
@@ -90,7 +90,7 @@ export default class BaseUIForm extends cc.Component {
         if(this.UIType.UIForms_Type == UIFormType.PopUp) {}
     }
     /**
-     * 暂时无效果,  预计实现成(冻结住窗口, 无妨响应任何点击事件)
+     * 暂时无效果,  预计实现成(冻结住窗口, 无法响应任何点击事件)
      */
     public Freeze() {
         if(this.UIType.UIForms_Type == UIFormType.PopUp) {}

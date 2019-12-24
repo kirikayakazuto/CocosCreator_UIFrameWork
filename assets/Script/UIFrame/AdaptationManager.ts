@@ -45,7 +45,7 @@ export default class AdaptationManager extends cc.Component {
         }
         switch(type) {
             case AdaptationType.Top:
-                if(CC_WECHATGAME) {     // 微信小游戏适配刘海屏
+                if(cc.sys.platform === cc.sys.WECHAT_GAME) {     // 微信小游戏适配刘海屏
                     let menuInfo = window["wx"].getMenuButtonBoundingClientRect();
                     let systemInfo = window["wx"].getSystemInfoSync();
                     distance = cc.find("Canvas").height * (menuInfo.top / systemInfo.screenHeight);

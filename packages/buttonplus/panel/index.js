@@ -8,7 +8,7 @@ Editor.Panel.extend({
 
   // html template for panel
   template: `
-    <h2>helloworld</h2>
+    <h2>buttonplus</h2>
     <hr />
     <div>State: <span id="label">--</span></div>
     <hr />
@@ -24,13 +24,13 @@ Editor.Panel.extend({
   // method executed when template and styles are successfully loaded and initialized
   ready () {
     this.$btn.addEventListener('confirm', () => {
-      Editor.Ipc.sendToMain('helloworld:clicked');
+      Editor.Ipc.sendToMain('buttonplus:clicked');
     });
   },
 
   // register your ipc messages here
   messages: {
-    'helloworld:hello' (event) {
+    'buttonplus:hello' (event) {
       this.$label.innerText = 'Hello!';
     }
   }

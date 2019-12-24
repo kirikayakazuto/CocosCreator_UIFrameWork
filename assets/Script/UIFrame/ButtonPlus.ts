@@ -5,7 +5,7 @@ const {ccclass, property, executeInEditMode, menu, help, inspector} = cc._decora
 @menu('i18n:MAIN_MENU.component.ui/Button')
 @executeInEditMode
 @help('i18n:COMPONENT.help_url.button')
-@inspector('packages://helloworld/inspector.js')
+@inspector('packages://buttonplus/inspector.js')
 export default class ButtonPlus extends cc.Button {
 
     @property({tooltip:"音效路径", type: '', multiline: true, formerlySerializedAs: '_N$string'})

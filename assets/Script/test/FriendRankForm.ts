@@ -1,9 +1,12 @@
 import BaseUIForm from "../UIFrame/BaseUIForm";
-import { UIFormType } from "../UIFrame/config/SysDefine";
+
 import AdaptationManager, { AdaptationType } from "../UIFrame/AdaptationManager";
-import { UIType } from "../UIFrame/FormType";
+
 import ButtonPlus from "../UIFrame/ButtonPlus";
+import { UIFormType } from "../UIFrame/config/SysDefine";
 import GEventManager from "../UIFrame/GEventManager";
+import { UIType } from "../UIFrame/FormType";
+
 
 const {ccclass, property} = cc._decorator;
 

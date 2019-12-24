@@ -1,7 +1,7 @@
 import BaseUIForm from "../UIFrame/BaseUIForm";
-import { UIFormShowMode, UIFormType } from "../UIFrame/config/SysDefine";
-import UIManager from "../UIFrame/UIManager";
 import { UIType } from "../UIFrame/FormType";
+import UIManager from "../UIFrame/UIManager";
+import { UIFormType, UIFormShowMode } from "../UIFrame/config/SysDefine";
 
 const {ccclass, property} = cc._decorator;
 

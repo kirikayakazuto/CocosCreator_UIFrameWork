@@ -1,7 +1,7 @@
 
 ## 使用过程中有任何问题 可以添加我的QQ 1099263878
 
-# 基于cocos creator的UI框架
+# 基于cocos creator的UI框架, 当前使用的cocos creator版本2.2.1版本
         中心思想, 将所有的UI窗体分为4类管理(普通窗体, 固定窗体, 弹出窗体, 独立窗体), 再将窗体制作成预制体, 动态加载与释放;
         使用UIManager.getInstance().showForms("窗体名字");
         -- UIROOT(UIManager脚本挂载结点)
@@ -13,17 +13,28 @@
         ---- UIAdaptationScript(AdaptationManager挂载结点, 用于窗体适配)
         不同类型的窗体放置在不同的节点上, 统一管理
 
-## 项目介绍
+## 项目介绍(主要脚本功能)
         -- UIManager ***
-                UI窗体管理类, 控制的所有窗体的加载, 显示和释放
+                UI窗体管理类, 控制的所有窗体的加载, 显示,隐藏和销毁等功能
         -- BaseUIForm **
-                UI窗体的基类, 所有的窗体应当继承它, 并重写init方法
+                UI窗体的基类, 你的自定义窗体脚本应当继承它, 设置脚本的UIType, MaskType属性, 并重写init方法
         -- UIMaskManager **
                 UI窗体的遮罩管理类, 为UI窗体添加一个背景阴影
         -- UIMaskScript *
                 设置遮罩样式和取消遮罩
         -- AdaptationManager **
                 适配管理, 用于适配固定窗体(Fixed)的贴边处理,上下左右贴边,并且可以适配刘海屏
+        -- BaseUIBinder **
+                自动绑定编辑器上的结点, 自定义脚本继承BaseUIView脚本即可使用, 你也可以手动继承BaseUIBinder脚本, 并且调用_preInit方法即可
+        -- ButtonPlus **
+                button组件扩展, 添加了统一的音效播放, 长按检查和屏蔽连续点击
+        -- CocosHelper **
+                封装了一些cocos的api, 方便使用
+        -- GEventManager **
+                订阅发布模式工具, 处理全局事件GEventManager.on("事件名称", 回调方法, target); target表示处理对象
+        -- ResLoader **
+                处理窗体的加载, 会对加载的窗体检查其引用的资源
+        
 
         -- ConfigUIFrame *
                 配置UI窗体 名称与路径的对应关系
@@ -48,14 +59,13 @@
 
 ## 使用方法
 
- 1, 下载项目, 将其中的assets\Script下的UIFrame文件夹拷贝到自己的项目
+ 1, 下载项目, 将其中的assets\Script下的UIFrame文件夹拷贝到自己的项目, 如果你希望使用ButtonPlus脚本, 那么还需将packages下的文件夹拷贝到你的项目packages下
 
- 2, 将assets\resources下的UIROOT复制到自己的项目, 然后挂载到场景上
- 需要注意的是UIMaskScript结点依赖一张图片, 注意要一同拷贝
+ 2, 将assets\resources下的UIROOT预制体复制到自己的项目, 然后挂载到场景上
 
  3, 制作自己的窗体Prefab, 在结点上挂载自定义的脚本, 并且这个脚本继承BaseUIForm
 
- 4, 在脚本中定义好UIType属性
+ 4, 在脚本中定义好UIType, MaskType等属性
 
  5, 使用UIManager.GetInstance().ShowUIForms("你的prefab路径");即可
 
@@ -63,7 +73,7 @@
 
 ## 2019/10/16 新增功能
 
-1, 将BaseUIBinder分离出来作为BaseUIView的父类, 如果希望使用BaseUIBinder的功能, 请为你的结点添加View组件
+1, 将BaseUIBinder分离出来作为BaseUIView的父类, 如果希望使用BaseUIBinder的功能, 请为你的结点添加BaseUIView组件, 你也可以自己继承BaseUIBinder, 然后调用_preInit方法
 
 为什么这么做?
         对于UIForm的控制我尝试过多种方法, 这一次是希望实现一个类似MVC的控制结构, 对于一个UIForm, 我们为其添加C(控制)和V(视图)组件
@@ -87,8 +97,8 @@
 1. 点击button播放音效
 2. 屏蔽连续点击
 
-需要注意的是, ButtonPlus.ts需要配合插件使用, 插件路径位于UIFrameWorld\packages\helloworld, 原因是
-在ButtonPlus中@inspector('packages://helloworld/inspector.js'), 需要引入插件中的inspector.js,
+需要注意的是, ButtonPlus.ts需要配合插件使用, 插件路径位于UIFrameWorld\packages\buttonplus, 原因是
+在ButtonPlus中@inspector('packages://buttonplus/inspector.js'), 需要引入插件中的inspector.js,
 用户也可以在inspector自定义编辑器上ButtonPlus显示格式.
 
 

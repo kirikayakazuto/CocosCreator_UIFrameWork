@@ -1,21 +1,21 @@
 {
-  "name": "helloworld",
+  "name": "buttonplus",
   "version": "0.0.1",
   "description": "The package template for getting started.",
   "author": "Cocos Creator",
   "main": "main.js",
   "main-menu": {
-    "i18n:MAIN_MENU.package.title/helloworld/open": {
-      "message": "helloworld:open"
+    "i18n:MAIN_MENU.package.title/buttonplus/open": {
+      "message": "buttonplus:open"
     },
-    "i18n:MAIN_MENU.package.title/helloworld/hello": {
-      "message": "helloworld:say-hello"
+    "i18n:MAIN_MENU.package.title/buttonplus/hello": {
+      "message": "buttonplus:say-hello"
     }
   },
   "panel": {
     "main": "panel/index.js",
     "type": "dockable",
-    "title": "helloworld",
+    "title": "buttonplus",
     "width": 400,
     "height": 300
   }
