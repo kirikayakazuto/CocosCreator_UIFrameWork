@@ -29,9 +29,7 @@ export default class UIManager extends cc.Component {
         return this._Instance;
     }
 
-    onLoad () {}
-
-    start() {
+    onLoad () {
         // 初始化结点
         this._NoNormal = this.node.getChildByName(SysDefine.SYS_NORMAL_NODE);
         this._NoFixed = this.node.getChildByName(SysDefine.SYS_FIXED_NODE);
@@ -39,29 +37,32 @@ export default class UIManager extends cc.Component {
         this._NoIndependent = this.node.getChildByName(SysDefine.SYS_INDEPENDENT_NODE);
     }
 
+    start() {        
+    }
+
     /** 预加载加载UIForm */
     public async loadUIForms(formName: string | Array<string>) {
         if(typeof(formName) === 'string') {
-            await this.LoadFormsToAllUIFormsCatch(formName);
+            await this.loadFormsToAllUIFormsCatch(formName);
         }else {
             for(const name of formName) {
-                await this.LoadFormsToAllUIFormsCatch(name);
+                await this.loadFormsToAllUIFormsCatch(name);
             }
         }
         return true;
     }
     
     /** 加载Form时显示等待页面 */
-    public async ShowUIFormWithLoading(uiFormName: string, waitFormName?: string) {
+    public async showUIFormWithLoading(uiFormName: string, waitFormName?: string) {
         await UIIndependentManager.getInstance().showLoadingForm();
-        await UIManager.GetInstance().ShowUIForms(uiFormName);
+        await UIManager.GetInstance().showUIForm(uiFormName);
     }
 
     /**
      * 窗体是否正在显示
      * @param uiFormName 
      */
-    public UIFormIsShowing(uiFormName: string) {
+    public checkUIFormIsShowing(uiFormName: string) {
         let baseUIForms = this._MapAllUIForms[uiFormName];
         if (baseUIForms == null) {
             return false;
@@ -74,14 +75,14 @@ export default class UIManager extends cc.Component {
      * @param uiFormName 
      * @param obj 初始化信息, 可以不要
      */
-    public async ShowUIForms(uiFormName: string, obj?: any) {
+    public async showUIForm(uiFormName: string, obj?: any) {
         if(uiFormName === "" || uiFormName == null) return ;
-        if(this.UIFormIsShowing(uiFormName)) {
+        if(this.checkUIFormIsShowing(uiFormName)) {
             cc.log(`${uiFormName}窗体已经在显示`);
             return ;        
         }
         
-        let baseUIForms = await this.LoadFormsToAllUIFormsCatch(uiFormName);
+        let baseUIForms = await this.loadFormsToAllUIFormsCatch(uiFormName);
         if(baseUIForms == null) return ;
 
         // 初始化窗体名称
@@ -89,21 +90,21 @@ export default class UIManager extends cc.Component {
         
         // 是否清理栈内窗口
         if(baseUIForms.UIType.IsClearStack) {
-            this.ClearStackArray();
+            this.clearStackArray();
         }
         
         switch(baseUIForms.UIType.UIForms_ShowMode) {
             case UIFormShowMode.Normal:                             // 普通模式显示
-                this.LoadUIToCurrentCache(uiFormName, obj);
+                this.loadUIToCurrentCache(uiFormName, obj);
             break;
             case UIFormShowMode.ReverseChange:                      // 反向切换
-                this.PushUIFormToStack(uiFormName, obj);
+                this.pushUIFormToStack(uiFormName, obj);
             break;
             case UIFormShowMode.HideOther:                          // 隐藏其他
-                this.EnterUIFormsAndHideOther(uiFormName, obj);
+                this.enterUIFormsAndHideOther(uiFormName, obj);
             break;
             case UIFormShowMode.Independent:                        // 独立显示
-                this.LoadUIFormsToIndependent(uiFormName, obj);
+                this.loadUIFormsToIndependent(uiFormName, obj);
             break;
         }
 
@@ -113,7 +114,7 @@ export default class UIManager extends cc.Component {
      * 重要方法 关闭一个UIForm
      * @param uiFormName 
      */
-    public CloseUIForms(uiFormName: string) {
+    public closeUIForm(uiFormName: string) {
         if(uiFormName == "" || uiFormName == null) return ;
         let baseUIForm = this._MapAllUIForms[uiFormName];
         
@@ -121,16 +122,16 @@ export default class UIManager extends cc.Component {
         
         switch(baseUIForm.UIType.UIForms_ShowMode) {
             case UIFormShowMode.Normal:                             // 普通模式显示
-                this.ExitUIForms(uiFormName);
+                this.exitUIForms(uiFormName);
             break;
             case UIFormShowMode.ReverseChange:                      // 反向切换
-                this.PopUIForm();
+                this.popUIForm();
             break;
             case UIFormShowMode.HideOther:                          // 隐藏其他
-                this.ExitUIFormsAndDisplayOther(uiFormName);
+                this.exitUIFormsAndDisplayOther(uiFormName);
             break;
             case UIFormShowMode.Independent:
-                this.ExitIndependentForms(uiFormName);
+                this.exitIndependentForms(uiFormName);
             break;
         }
         // 判断是否销毁该窗体
@@ -143,11 +144,11 @@ export default class UIManager extends cc.Component {
     /**
      * 从全部的UI窗口中加载, 并挂载到结点上
      */
-    private async LoadFormsToAllUIFormsCatch(uiFormName: string) {
+    private async loadFormsToAllUIFormsCatch(uiFormName: string) {
         let baseUIResult = this._MapAllUIForms[uiFormName];
         if (baseUIResult == null) {
             //加载指定名称的“UI窗体”
-            baseUIResult  = await this.LoadUIForm(uiFormName) as BaseUIForm;
+            baseUIResult  = await this.loadUIForm(uiFormName) as BaseUIForm;
         }
         return baseUIResult;
     }
@@ -156,7 +157,7 @@ export default class UIManager extends cc.Component {
      * 从resources中加载
      * @param uiFormName 
      */
-    private async LoadUIForm(strUIFormPath: string) {
+    private async loadUIForm(strUIFormPath: string) {
         if(strUIFormPath == "" || strUIFormPath == null){
             return ;
         }
@@ -190,7 +191,7 @@ export default class UIManager extends cc.Component {
     /**
      * 清除栈内所有窗口
      */
-    private ClearStackArray() {
+    private clearStackArray() {
         if(this._StaCurrentUIForms != null && this._StaCurrentUIForms.length >= 1) {
             this._StaCurrentUIForms = [];
             return true;
@@ -200,7 +201,7 @@ export default class UIManager extends cc.Component {
     /**
      * 关闭栈顶窗口
      */
-    public CloseStackTopUIForm() {
+    public closeStackTopUIForm() {
         if(this._StaCurrentUIForms != null && this._StaCurrentUIForms.length >= 1) {
             let uiFrom = this._StaCurrentUIForms[this._StaCurrentUIForms.length-1];
             if(uiFrom.MaskType.ClickMaskClose) {
@@ -213,7 +214,7 @@ export default class UIManager extends cc.Component {
      * 加载到缓存中, 
      * @param uiFormName 
      */
-    private LoadUIToCurrentCache(uiFormName: string, obj: any) {
+    private async loadUIToCurrentCache(uiFormName: string, obj: any) {
         let baseUIForm: BaseUIForm = null;
         let baseUIFormFromAllCache: BaseUIForm = null;
 
@@ -222,44 +223,43 @@ export default class UIManager extends cc.Component {
 
         baseUIFormFromAllCache = this._MapAllUIForms[uiFormName];
         if(baseUIFormFromAllCache != null) {
-            baseUIFormFromAllCache.__preInit(obj);
+            await baseUIFormFromAllCache.__preInit(obj);
             this._MapCurrentShowUIForms[uiFormName] = baseUIFormFromAllCache;
-            baseUIFormFromAllCache.DisPlay();
+            baseUIFormFromAllCache.disPlay();
         }
     }
     /**
      * 加载到栈中
      * @param uiFormName 
      */
-    private PushUIFormToStack(uiFormName: string, obj: any) {
+    private async pushUIFormToStack(uiFormName: string, obj: any) {
         if(this._StaCurrentUIForms.length > 0) {
             let topUIForm = this._StaCurrentUIForms[this._StaCurrentUIForms.length-1];
-            topUIForm.Freeze();
+            topUIForm.freeze();
         }
         let baseUIForm = this._MapAllUIForms[uiFormName];
         if(baseUIForm == null) return ;
-        baseUIForm.__preInit(obj);
+        await baseUIForm.__preInit(obj);
         // 加入栈中, 同时设置其zIndex 使得后进入的窗体总是显示在上面
         this._StaCurrentUIForms.push(baseUIForm);       
         baseUIForm.node.zIndex = this._StaCurrentUIForms.length;
-        baseUIForm.DisPlay();
+        baseUIForm.disPlay();
     }
     /**
      * 加载时, 关闭其他窗口
      */
-    private EnterUIFormsAndHideOther(uiFormName: string, obj: any) {
-
+    private async enterUIFormsAndHideOther(uiFormName: string, obj: any) {
         let baseUIForm = this._MapCurrentShowUIForms[uiFormName];
         if(baseUIForm != null) return ;
 
         // 隐藏其他窗口 
         for(let key in this._MapCurrentShowUIForms) {
-            this._MapCurrentShowUIForms[key].Hiding();
+            this._MapCurrentShowUIForms[key].hiding();
             this._MapCurrentShowUIForms[key] = null;
             delete this._MapCurrentShowUIForms[key];
         }
         this._StaCurrentUIForms.forEach(uiForm => {
-            uiForm.Hiding();
+            uiForm.hiding();
             this._MapCurrentShowUIForms[uiForm.UIFormName] = null;
             delete this._MapCurrentShowUIForms[uiForm.UIFormName];
         });
@@ -267,19 +267,19 @@ export default class UIManager extends cc.Component {
         let baseUIFormFromAll = this._MapAllUIForms[uiFormName];
         
         if(baseUIFormFromAll == null) return ;
-        baseUIFormFromAll.__preInit(obj);
+        await baseUIFormFromAll.__preInit(obj);
 
         this._MapCurrentShowUIForms[uiFormName] = baseUIFormFromAll;
-        baseUIFormFromAll.DisPlay();
+        baseUIFormFromAll.disPlay();
     }
 
     /** 加载到独立map中 */
-    private LoadUIFormsToIndependent(uiFormName: string, obj: any) {
+    private async loadUIFormsToIndependent(uiFormName: string, obj: any) {
         let baseUIForm = this._MapAllUIForms[uiFormName];
         if(baseUIForm == null) return ;
-        baseUIForm.__preInit(obj);
+        await baseUIForm.__preInit(obj);
         this._MapIndependentForms[uiFormName] = baseUIForm;
-        baseUIForm.DisPlay();
+        baseUIForm.disPlay();
     }
 
     /**
@@ -289,38 +289,38 @@ export default class UIManager extends cc.Component {
      * 关闭一个UIForm
      * @param uiFormName 
      */
-    private ExitUIForms(uiFormName: string) {
+    private exitUIForms(uiFormName: string) {
         let baseUIForm = this._MapAllUIForms[uiFormName];
         if(baseUIForm == null) return ;
-        baseUIForm.Hiding();
+        baseUIForm.hiding();
         this._MapCurrentShowUIForms[uiFormName] = null;
         delete this._MapCurrentShowUIForms[uiFormName];
         
     }
-    private PopUIForm() {
+    private popUIForm() {
         if(this._StaCurrentUIForms.length >= 2) {
             let topUIForm = this._StaCurrentUIForms.pop();
-            topUIForm.Hiding();
+            topUIForm.hiding();
             topUIForm = this._StaCurrentUIForms[this._StaCurrentUIForms.length-1];
-            topUIForm.ReDisPlay();
+            topUIForm.reDisPlay();
         }else if(this._StaCurrentUIForms.length >= 1) {
             let topUIForm = this._StaCurrentUIForms.pop();
-            topUIForm.Hiding();
+            topUIForm.hiding();
         }
     }
-    private ExitUIFormsAndDisplayOther(uiFormName: string) {
+    private exitUIFormsAndDisplayOther(uiFormName: string) {
         if(uiFormName == "" || uiFormName == null) return ;
 
         let baseUIForm = this._MapCurrentShowUIForms[uiFormName];
         if(baseUIForm == null) return ;
-        baseUIForm.Hiding();
+        baseUIForm.hiding();
         this._MapCurrentShowUIForms[uiFormName] = null;
         delete this._MapCurrentShowUIForms[uiFormName];
     }
-    private ExitIndependentForms(uiFormName: string) {
+    private exitIndependentForms(uiFormName: string) {
         let baseUIForm = this._MapAllUIForms[uiFormName];
         if(baseUIForm == null) return ;
-        baseUIForm.Hiding();
+        baseUIForm.hiding();
         this._MapIndependentForms[uiFormName] = null;
         delete this._MapIndependentForms[uiFormName];
     }

@@ -26,7 +26,7 @@ export default class MenuForm extends BaseUIForm {
         }
         switch(data) {
             case "sz":
-                UIManager.GetInstance().ShowUIForms("UIForm/HallSettingForm", obj);
+                UIManager.GetInstance().showUIForm("UIForm/HallSettingForm", obj);
             break;
         }
     }

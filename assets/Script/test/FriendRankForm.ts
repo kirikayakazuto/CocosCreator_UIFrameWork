@@ -2,7 +2,7 @@ import BaseUIForm from "../UIFrame/BaseUIForm";
 
 import AdaptationManager, { AdaptationType } from "../UIFrame/AdaptationManager";
 
-import ButtonPlus from "../UIFrame/ButtonPlus";
+import ButtonPlus from "../UIFrame/components/ButtonPlus";
 import { UIFormType } from "../UIFrame/config/SysDefine";
 import GEventManager from "../UIFrame/GEventManager";
 import { UIType } from "../UIFrame/FormType";

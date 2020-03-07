@@ -30,7 +30,7 @@ export default class HallSettingForm extends BaseUIForm {
         }, this)
     } 
 
-    ShowPopUpAnimation(callBack: Function) {
+    showPopUpAnimation(callBack: Function) {
         this.node.scale = 0;
         this.node.setPosition(this.startPosition);
         cc.tween(this.node)
@@ -42,7 +42,7 @@ export default class HallSettingForm extends BaseUIForm {
         .start();
     }
 
-    HidePopUpAnimation(callBack: Function) {
+    hidePopUpAnimation(callBack: Function) {
         callBack();
     }
 

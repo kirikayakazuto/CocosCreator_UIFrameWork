@@ -22,10 +22,10 @@ export default class UIIndependentManager{
         UIManager.GetInstance().loadUIForms(this.loadingFormName);
     }
     public async showLoadingForm() {
-        await UIManager.GetInstance().ShowUIForms(this.loadingFormName);
+        await UIManager.GetInstance().showUIForm(this.loadingFormName);
     }
     /** 隐藏加载form */
     public hideLoadingForm() {
-        UIManager.GetInstance().CloseUIForms(this.loadingFormName);
+        UIManager.GetInstance().closeUIForm(this.loadingFormName);
     }
 }

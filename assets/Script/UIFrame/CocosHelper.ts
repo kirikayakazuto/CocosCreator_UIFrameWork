@@ -11,7 +11,7 @@ export default class CocosHelper {
             
         })
     }
-    /**  */
+    /** 加载资源 */
     public static loadRes = function(url: string, type: typeof cc.Asset) {
         if (!url || !type) {
             cc.log("参数错误", url, type);
@@ -31,13 +31,13 @@ export default class CocosHelper {
     /**
      * 寻找子节点
      */
-    public static FindChildInNode(nodeName: string, rootNode: cc.Node): cc.Node {
+    public static findChildInNode(nodeName: string, rootNode: cc.Node): cc.Node {
         if(rootNode.name == nodeName) {
             return rootNode;
         }
 
         for(let i=0; i<rootNode.childrenCount; i++) {
-            let node = this.FindChildInNode(nodeName, rootNode.children[i]);
+            let node = this.findChildInNode(nodeName, rootNode.children[i]);
             if(node) {
                 return node;
             }

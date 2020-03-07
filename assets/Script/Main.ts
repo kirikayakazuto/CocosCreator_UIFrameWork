@@ -1,5 +1,5 @@
 import UIManager from "./UIFrame/UIManager";
-import ButtonPlus from "./UIFrame/ButtonPlus";
+import ButtonPlus from "./UIFrame/components/ButtonPlus";
 import UIIndependentManager from "./UIFrame/UIIndependentManager";
 
 const {ccclass, property} = cc._decorator;
@@ -14,7 +14,7 @@ export default class Helloworld extends cc.Component {
 
     start () {
         UIIndependentManager.getInstance().setLoadingForm("UIForm/LoadingForm");
-        UIManager.GetInstance().ShowUIForms("UIForm/LoginForm");
+        UIManager.GetInstance().showUIForm("UIForm/LoginForm");
 
         this.buttonPlus.addClick(() => {
             cc.log("点击事件!");

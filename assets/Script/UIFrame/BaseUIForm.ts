@@ -62,11 +62,11 @@ export default class BaseUIForm extends cc.Component {
     /**
      * 显示窗体
      */
-    public DisPlay() {
+    public disPlay() {
         this.node.active = true;
         if(this.UIType.UIForms_Type == UIFormType.PopUp) {
             UIMaskManager.getInstance().addMaskWindow(this.node); 
-            this.ShowPopUpAnimation(() => {
+            this.showPopUpAnimation(() => {
                 UIMaskManager.getInstance().showMask(this.UIType.UIForm_LucencyType, this.MaskType.IsEasing, this.MaskType.EasingTime);
             });
         }
@@ -74,55 +74,55 @@ export default class BaseUIForm extends cc.Component {
     /**
      * 隐藏, 需要重新showUIForm
      */
-    public Hiding() {
+    public hiding() {
         if(this.UIType.UIForms_Type == UIFormType.PopUp) {
             UIMaskManager.getInstance().removeMaskWindow(this.node); 
         }
-        this.HidePopUpAnimation(() => {
+        this.hidePopUpAnimation(() => {
             this.node.active = false;
         });
     }
     /**
      * 暂时无效果, 预计实现成(去除冻结的效果)
      */
-    public ReDisPlay() {
+    public reDisPlay() {
         this.node.active = true;
         if(this.UIType.UIForms_Type == UIFormType.PopUp) {}
     }
     /**
      * 暂时无效果,  预计实现成(冻结住窗口, 无法响应任何点击事件)
      */
-    public Freeze() {
+    public freeze() {
         if(this.UIType.UIForms_Type == UIFormType.PopUp) {}
     }
 
     /**
      * 显示与关闭
      */
-    public ShowUIForm(uiFormName: string, obj?: any) {
-        UIManager.GetInstance().ShowUIForms(uiFormName, obj);
+    public showUIForm(uiFormName: string, obj?: any) {
+        UIManager.GetInstance().showUIForm(uiFormName, obj);
     }
     public CloseUIForm() {
-        UIManager.GetInstance().CloseUIForms(this.UIFormName);
+        UIManager.GetInstance().closeUIForm(this.UIFormName);
     }
 
     /**
      * 弹窗动画
      */
-    public ShowPopUpAnimation(callback: Function) {
+    public showPopUpAnimation(callback: Function) {
         callback();
     }
-    public HidePopUpAnimation(callback: Function) {
+    public hidePopUpAnimation(callback: Function) {
         callback();
     }
 
     /**
      * 消息机制
      */
-    public SendMessage(messagType: string, parmas: any) {
+    public sendMessage(messagType: string, parmas: any) {
         GEventManager.emit(messagType, parmas);
     }
-    public ReceiveMessage(messagType: string, callback: Function, targer: any) {
+    public receiveMessage(messagType: string, callback: Function, targer: any) {
         GEventManager.on(messagType, callback, targer);
     }
 }
