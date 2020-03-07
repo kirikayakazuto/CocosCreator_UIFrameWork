@@ -87,10 +87,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 34
+        "__id__": 35
       },
       {
-        "__id__": 35
+        "__id__": 36
       }
     ],
     "_prefab": null,
@@ -820,7 +820,7 @@
     "_id": "95jlY40+BLlYw1nm8bhq46"
   },
   {
-    "__type__": "4d651YoIbdKJ6bwH2qRFJXa",
+    "__type__": "ed7f0aq02BCwbVMchVL2XKl",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -830,17 +830,17 @@
     "_normalMaterial": null,
     "_grayMaterial": null,
     "duration": 0.1,
-    "zoomScale": 1.1,
+    "zoomScale": 1.2,
     "clickEvents": [],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
-    "_N$transition": 3,
-    "transition": 3,
+    "_N$transition": 0,
+    "transition": 0,
     "_N$normalColor": {
       "__type__": "cc.Color",
-      "r": 214,
-      "g": 214,
-      "b": 214,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_N$pressedColor": {
@@ -884,16 +884,14 @@
     "_N$hoverSprite": null,
     "hoverSprite": null,
     "_N$disabledSprite": null,
-    "_N$target": {
-      "__id__": 14
-    },
+    "_N$target": null,
     "audioUrl": "",
     "_N$string": "",
     "openContinuous": true,
     "continuousTime": 1,
-    "openLongPress": true,
+    "openLongPress": false,
     "longPressTime": 1,
-    "_id": "9fw1fegflOtLrCoaiM04Nn"
+    "_id": "c12nxBh0NCOr+CvetKpASz"
   },
   {
     "__type__": "cc.Node",
@@ -923,9 +921,13 @@
       }
     ],
     "_active": true,
-    "_components": [],
+    "_components": [
+      {
+        "__id__": 33
+      }
+    ],
     "_prefab": {
-      "__id__": 33
+      "__id__": 34
     },
     "_opacity": 255,
     "_color": {
@@ -1435,6 +1437,16 @@
     },
     "fileId": "78Qk9LTcNB1rQQbDWGFoS0",
     "sync": false
+  },
+  {
+    "__type__": "8d13amH+wZOorG69icUpM6N",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 19
+    },
+    "_enabled": true,
+    "_id": "6aqobDcyFP64zY/HmUXpxV"
   },
   {
     "__type__": "cc.PrefabInfo",

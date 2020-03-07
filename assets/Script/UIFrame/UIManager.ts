@@ -14,9 +14,11 @@ export default class UIManager extends cc.Component {
     private _NoIndependent: cc.Node = null;                         // 独立窗体
 
     private _StaCurrentUIForms:Array<BaseUIForm> = [];                     // 存储反向切换的窗体
-    private _MapAllUIForms: {[key: string]: BaseUIForm} = {};              // 所有的窗体
-    private _MapCurrentShowUIForms: {[key: string]: BaseUIForm} = {};      // 正在显示的窗体(不包括弹窗)
-    private _MapIndependentForms: {[key: string]: BaseUIForm} = {};        // 独立窗体 独立于其他窗体, 不受其他窗体的影响
+    private _MapAllUIForms: {[key: string]: BaseUIForm} = cc.js.createMap();;              // 所有的窗体
+    private _MapCurrentShowUIForms: {[key: string]: BaseUIForm} = cc.js.createMap();;      // 正在显示的窗体(不包括弹窗)
+    private _MapIndependentForms: {[key: string]: BaseUIForm} = cc.js.createMap();;        // 独立窗体 独立于其他窗体, 不受其他窗体的影响
+
+    private _LoadingForm: {[key: string]: boolean} = cc.js.createMap();                     // 正在加载的form 
 
     private static _Instance: UIManager = null;                     // 单例
     public static GetInstance(): UIManager {
@@ -36,7 +38,7 @@ export default class UIManager extends cc.Component {
         this._NoPopUp = this.node.getChildByName(SysDefine.SYS_POPUP_NODE);
         this._NoIndependent = this.node.getChildByName(SysDefine.SYS_INDEPENDENT_NODE);
     }
-
+    
     start() {        
     }
 
@@ -49,11 +51,10 @@ export default class UIManager extends cc.Component {
                 await this.loadFormsToAllUIFormsCatch(name);
             }
         }
-        return true;
     }
     
     /** 加载Form时显示等待页面 */
-    public async showUIFormWithLoading(uiFormName: string, waitFormName?: string) {
+public async showUIFormWithLoading(uiFormName: string, waitFormName?: string) {
         await UIIndependentManager.getInstance().showLoadingForm();
         await UIManager.GetInstance().showUIForm(uiFormName);
     }
@@ -83,7 +84,10 @@ export default class UIManager extends cc.Component {
         }
         
         let baseUIForms = await this.loadFormsToAllUIFormsCatch(uiFormName);
-        if(baseUIForms == null) return ;
+        if(baseUIForms == null) {
+            cc.log(`${uiFormName}可能正在加载中`);
+            return ;
+        }
 
         // 初始化窗体名称
         baseUIForms.UIFormName = uiFormName;
@@ -146,9 +150,13 @@ export default class UIManager extends cc.Component {
      */
     private async loadFormsToAllUIFormsCatch(uiFormName: string) {
         let baseUIResult = this._MapAllUIForms[uiFormName];
-        if (baseUIResult == null) {
-            //加载指定名称的“UI窗体”
+        // 判断窗体不在mapAllUIForms中， 也不再loadingForms中
+        if (baseUIResult == null && !this._LoadingForm[uiFormName]) {
+            //加载指定名称的“UI窗体
+            this._LoadingForm[uiFormName] = true;
             baseUIResult  = await this.loadUIForm(uiFormName) as BaseUIForm;
+            this._LoadingForm[uiFormName] = false;
+            delete this._LoadingForm[uiFormName];
         }
         return baseUIResult;
     }
