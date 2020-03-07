@@ -18,7 +18,7 @@ export default class CreateRoomForm extends BaseUIForm {
 
     start () {
         this.CloseNode.on('click', () => {
-            this.CloseUIForm();
+            this.closeUIForm();
         }, this)
     }
 

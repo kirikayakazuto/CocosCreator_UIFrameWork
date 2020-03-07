@@ -213,7 +213,7 @@ public async showUIFormWithLoading(uiFormName: string, waitFormName?: string) {
         if(this._StaCurrentUIForms != null && this._StaCurrentUIForms.length >= 1) {
             let uiFrom = this._StaCurrentUIForms[this._StaCurrentUIForms.length-1];
             if(uiFrom.MaskType.ClickMaskClose) {
-                uiFrom.CloseUIForm();
+                uiFrom.closeUIForm();
             }   
         }
     }

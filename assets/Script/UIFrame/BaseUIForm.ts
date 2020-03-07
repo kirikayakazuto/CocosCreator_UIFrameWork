@@ -102,7 +102,7 @@ export default class BaseUIForm extends cc.Component {
     public showUIForm(uiFormName: string, obj?: any) {
         UIManager.GetInstance().showUIForm(uiFormName, obj);
     }
-    public CloseUIForm() {
+    public closeUIForm() {
         UIManager.GetInstance().closeUIForm(this.UIFormName);
     }
 
