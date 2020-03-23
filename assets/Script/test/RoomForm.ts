@@ -16,7 +16,7 @@ export default class RoomForm extends BaseUIForm {
     // onLoad () {}
 
     start () {
-        AdaptationManager.GetInstance().adaptationFormByType(AdaptationType.Right, this.node, 20);
+        AdaptationManager.getInstance().adaptationFormByType(AdaptationType.Right, this.node, 20);
     }
 
     // update (dt) {}

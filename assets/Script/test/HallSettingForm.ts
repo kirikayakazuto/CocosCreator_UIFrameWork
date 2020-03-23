@@ -1,6 +1,6 @@
 import { UIFormLucenyType, UIFormShowMode, UIFormType } from "../UIFrame/config/SysDefine";
 import BaseUIForm from "../UIFrame/BaseUIForm";
-import { UIType } from "../UIFrame/FormType";
+import { UIType, MaskType } from "../UIFrame/FormType";
 
 const {ccclass, property} = cc._decorator;
 
@@ -8,7 +8,6 @@ const {ccclass, property} = cc._decorator;
 export default class HallSettingForm extends BaseUIForm {
 
     UIType = new UIType(UIFormType.PopUp, UIFormShowMode.ReverseChange, UIFormLucenyType.Translucence);
-
 
     @property(cc.Node)
     CloseNode: cc.Node= null;

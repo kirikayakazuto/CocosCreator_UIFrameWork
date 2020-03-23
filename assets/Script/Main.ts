@@ -18,7 +18,7 @@ export default class Helloworld extends cc.Component {
 
     start () {
         UIIndependentManager.getInstance().setLoadingForm("UIForm/LoadingForm");
-        UIManager.GetInstance().showUIForm("UIForm/LoginForm");
+        UIManager.getInstance().showUIForm("UIForm/LoginForm");
 
         this.buttonPlus.addClick(() => {
             cc.log("点击事件!");
@@ -29,7 +29,6 @@ export default class Helloworld extends cc.Component {
         }, () => {
             cc.log("触发长按事件 结束");
         }, this);
-
 
         this.touchPlus.addEvent((e) => {
             console.log('触发点击事件');

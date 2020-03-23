@@ -16,10 +16,10 @@ export default class HallForm extends BaseUIForm {
     }
 
     async load() {
-        await UIManager.GetInstance().showUIForm("UIForm/UserInfoForm");
-        await UIManager.GetInstance().showUIForm("UIForm/FriendRankForm");
-        await UIManager.GetInstance().showUIForm("UIForm/MenuForm");
-        await UIManager.GetInstance().showUIForm("UIForm/RoomForm");
+        await UIManager.getInstance().showUIForm("UIForm/UserInfoForm");
+        await UIManager.getInstance().showUIForm("UIForm/FriendRankForm");
+        await UIManager.getInstance().showUIForm("UIForm/MenuForm");
+        await UIManager.getInstance().showUIForm("UIForm/RoomForm");
     }
 
     start () {

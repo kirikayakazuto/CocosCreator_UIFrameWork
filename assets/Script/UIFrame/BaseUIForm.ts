@@ -100,10 +100,10 @@ export default class BaseUIForm extends cc.Component {
      * 显示与关闭
      */
     public showUIForm(uiFormName: string, obj?: any) {
-        UIManager.GetInstance().showUIForm(uiFormName, obj);
+        UIManager.getInstance().showUIForm(uiFormName, obj);
     }
     public closeUIForm() {
-        UIManager.GetInstance().closeUIForm(this.UIFormName);
+        UIManager.getInstance().closeUIForm(this.UIFormName);
     }
 
     /**

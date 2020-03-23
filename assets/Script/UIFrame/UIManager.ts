@@ -14,14 +14,14 @@ export default class UIManager extends cc.Component {
     private _NoIndependent: cc.Node = null;                         // 独立窗体
 
     private _StaCurrentUIForms:Array<BaseUIForm> = [];                     // 存储反向切换的窗体
-    private _MapAllUIForms: {[key: string]: BaseUIForm} = cc.js.createMap();;              // 所有的窗体
-    private _MapCurrentShowUIForms: {[key: string]: BaseUIForm} = cc.js.createMap();;      // 正在显示的窗体(不包括弹窗)
-    private _MapIndependentForms: {[key: string]: BaseUIForm} = cc.js.createMap();;        // 独立窗体 独立于其他窗体, 不受其他窗体的影响
+    private _MapAllUIForms: {[key: string]: BaseUIForm} = cc.js.createMap();              // 所有的窗体
+    private _MapCurrentShowUIForms: {[key: string]: BaseUIForm} = cc.js.createMap();      // 正在显示的窗体(不包括弹窗)
+    private _MapIndependentForms: {[key: string]: BaseUIForm} = cc.js.createMap();        // 独立窗体 独立于其他窗体, 不受其他窗体的影响
 
     private _LoadingForm: {[key: string]: boolean} = cc.js.createMap();                     // 正在加载的form 
 
     private static _Instance: UIManager = null;                     // 单例
-    public static GetInstance(): UIManager {
+    public static getInstance(): UIManager {
         if(this._Instance == null) {
             this._Instance = cc.find(SysDefine.SYS_UIROOT_NAME).addComponent<UIManager>(this);
             cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
@@ -56,7 +56,7 @@ export default class UIManager extends cc.Component {
     /** 加载Form时显示等待页面 */
 public async showUIFormWithLoading(uiFormName: string, waitFormName?: string) {
         await UIIndependentManager.getInstance().showLoadingForm();
-        await UIManager.GetInstance().showUIForm(uiFormName);
+        await UIManager.getInstance().showUIForm(uiFormName);
     }
 
     /**
@@ -179,16 +179,16 @@ public async showUIFormWithLoading(uiFormName: string, waitFormName?: string) {
         node.active = false;
         switch(baseUIForm.UIType.UIForms_Type) {
             case UIFormType.Normal:
-                UIManager.GetInstance()._NoNormal.addChild(node);
+                UIManager.getInstance()._NoNormal.addChild(node);
             break;
             case UIFormType.Fixed:
-                UIManager.GetInstance()._NoFixed.addChild(node);
+                UIManager.getInstance()._NoFixed.addChild(node);
             break;
             case UIFormType.PopUp:
-                UIManager.GetInstance()._NoPopUp.addChild(node);
+                UIManager.getInstance()._NoPopUp.addChild(node);
             break;
             case UIFormType.Independent:
-                UIManager.GetInstance()._NoIndependent.addChild(node);
+                UIManager.getInstance()._NoIndependent.addChild(node);
             break;
         }
         this._MapAllUIForms[strUIFormPath] = baseUIForm;

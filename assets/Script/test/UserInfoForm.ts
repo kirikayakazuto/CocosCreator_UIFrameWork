@@ -19,7 +19,7 @@ export default class UserInfoForm extends BaseUIForm {
     // onLoad () {}
 
     start () {
-        AdaptationManager.GetInstance().adaptationFormByType(AdaptationType.Top, this.node);
+        AdaptationManager.getInstance().adaptationFormByType(AdaptationType.Top, this.node);
         this.backNode.on('click', () => {
             this.showUIForm("UIForm/LoginForm");
         });

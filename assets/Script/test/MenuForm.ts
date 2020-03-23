@@ -16,7 +16,7 @@ export default class MenuForm extends BaseUIForm {
     // onLoad () {}
 
     start () {
-        AdaptationManager.GetInstance().adaptationFormByType(AdaptationType.Bottom, this.node, -2);
+        AdaptationManager.getInstance().adaptationFormByType(AdaptationType.Bottom, this.node, -2);
     }
 
     menuClick(e: cc.Event.EventTouch, data) {
@@ -26,7 +26,7 @@ export default class MenuForm extends BaseUIForm {
         }
         switch(data) {
             case "sz":
-                UIManager.GetInstance().showUIForm("UIForm/HallSettingForm", obj);
+                UIManager.getInstance().showUIForm("UIForm/HallSettingForm", obj);
             break;
         }
     }

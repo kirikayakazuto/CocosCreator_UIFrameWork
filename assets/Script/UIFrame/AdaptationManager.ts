@@ -11,7 +11,7 @@ const {ccclass, property} = cc._decorator;
 export default class AdaptationManager extends cc.Component {
 
     private static _Instance: AdaptationManager = null;                     // 单例
-    static GetInstance(): AdaptationManager {
+    static getInstance(): AdaptationManager {
         if(this._Instance == null) {
             this._Instance = cc.find(SysDefine.SYS_UIAdaptation_NAME).addComponent<AdaptationManager>(this);
             cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {

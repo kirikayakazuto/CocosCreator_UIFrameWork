@@ -19,13 +19,13 @@ export default class UIIndependentManager{
     /** 设置加载页面 */
     public setLoadingForm(loadingName: string) {
         this.loadingFormName = loadingName;
-        UIManager.GetInstance().loadUIForms(this.loadingFormName);
+        UIManager.getInstance().loadUIForms(this.loadingFormName);
     }
     public async showLoadingForm() {
-        await UIManager.GetInstance().showUIForm(this.loadingFormName);
+        await UIManager.getInstance().showUIForm(this.loadingFormName);
     }
     /** 隐藏加载form */
     public hideLoadingForm() {
-        UIManager.GetInstance().closeUIForm(this.loadingFormName);
+        UIManager.getInstance().closeUIForm(this.loadingFormName);
     }
 }

@@ -22,7 +22,7 @@ export default class FriendRankForm extends BaseUIForm {
     // onLoad () {} 
 
     start () {
-        AdaptationManager.GetInstance().adaptationFormByType(AdaptationType.Left, this.node, 0);
+        AdaptationManager.getInstance().adaptationFormByType(AdaptationType.Left, this.node, 0);
         this.onSendGoldEvent();
     }
 
