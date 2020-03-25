@@ -14,11 +14,31 @@ export default class UIMaskScript extends cc.Component {
 
     UIFormName: string;
 
+    private _texture: cc.Texture2D = null;
+
+    private getSingleTexture() {
+        if(this._texture) return this._texture;
+        let data = new Uint8Array(2 * 2 * 4);
+        for(let i=0; i<2; i++) {
+            for(let j=0; j<2; j++) {
+                data[i*2*4 + j*4+0] = 255;
+                data[i*2*4 + j*4+1] = 255;
+                data[i*2*4 + j*4+2] = 255;
+                data[i*2*4 + j*4+3] = 255;
+            }
+        }
+        let texture = new cc.Texture2D();
+        texture.initWithData(data, cc.Texture2D.PixelFormat.RGBA8888, 2, 2);
+        texture.handleLoadedTexture();
+        this._texture = texture;
+        return this._texture;
+    }
+
     /**
      * 初始化
      */
-    public async init(texture: cc.Texture2D) {
-        let maskTexture = texture;
+    public async init() {
+        let maskTexture = this.getSingleTexture();
         let size = cc.view.getVisibleSize();
         this.node.height = size.height;
         this.node.width = size.width;

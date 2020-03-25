@@ -23,18 +23,18 @@ export default class UIMaskManager extends cc.Component {
         if(parent.getChildByName("UIMaskNode") || !parent.getComponent(BaseUIForm)) {
             return ;
         }
-        this.uiMaskScript = MaskNodePool.getInstance().get(parent, this.getComponent(cc.Sprite).spriteFrame.getTexture());
+        this.uiMaskScript = MaskNodePool.getInstance().get(parent);
     }
     /** 为mask添加颜色 */
     public showMask(lucenyType: number, isEasing?: boolean, time?: number) {
         this.uiMaskScript.showMaskUI(lucenyType, time, isEasing);
     }
-
     /** 去掉mask */
     public removeMaskWindow(parent: cc.Node) {
         MaskNodePool.getInstance().put(parent);
     }
 }
+
 /** 结点池 */
 export class MaskNodePool {
     public static instance: MaskNodePool = null;
@@ -47,18 +47,18 @@ export class MaskNodePool {
 
     private pool: Array<UIMaskScript> = [];
 
-    public init(texture: cc.Texture2D) {
+    public init() {
         for(let i=0; i<3; i++) {
             let com = new cc.Node("UIMaskNode").addComponent(UIMaskScript);
-            com.init(texture);
+            com.init();
             this.pool.push(com);
         }
     }
 
     /** 释放一个 */
-    public get(parent: cc.Node, texture: cc.Texture2D) {
+    public get(parent: cc.Node) {
         if(this.pool.length <= 0) {
-            this.init(texture);
+            this.init();
         }
         let com = this.pool.pop();
         com.reUse(parent.getComponent(BaseUIForm).UIFormName);

@@ -1,4 +1,5 @@
 import CocosHelper from "../CocosHelper";
+import { SysDefine } from "../config/SysDefine";
 
 const {ccclass, property} = cc._decorator;
 
@@ -7,9 +8,15 @@ export default class SoundManager extends cc.Component {
 
     private audioCache: {[key: string]: cc.AudioClip} = cc.js.createMap();
 
-    static instance: SoundManager = null;
+    private static _Instance: SoundManager = null;                     // 单例
+    public static getInstance(): SoundManager {
+        if(this._Instance == null) {
+            this._Instance = cc.find(SysDefine.SYS_UIROOT_NAME).addComponent<SoundManager>(this);
+        }
+        return this._Instance;
+    }
+
     onLoad () {
-        SoundManager.instance = this;
         let volume = this.getVolumeToLocal();
         if(volume) {
             this.volume = volume;

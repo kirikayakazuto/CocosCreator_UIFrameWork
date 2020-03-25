@@ -25,7 +25,7 @@ export default class AdaptationManager extends cc.Component {
     public VisibleSize: cc.Size;
 
     onLoad () {
-        this.VisibleSize = cc.view.getFrameSize();
+        this.VisibleSize = cc.view.getVisibleSize();
         cc.log(`当前屏幕尺寸为${this.VisibleSize}`);
     }
 

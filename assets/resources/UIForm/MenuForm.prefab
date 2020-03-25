@@ -324,7 +324,7 @@
         1,
         1,
         1,
-        1
+        0
       ]
     },
     "_eulerAngles": {
@@ -373,14 +373,16 @@
     "_id": ""
   },
   {
-    "__type__": "cc.Button",
+    "__type__": "ed7f0aq02BCwbVMchVL2XKl",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 6
     },
     "_enabled": true,
-    "_normalMaterial": null,
+    "_normalMaterial": {
+      "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+    },
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.1,
@@ -395,9 +397,9 @@
     "transition": 3,
     "_N$normalColor": {
       "__type__": "cc.Color",
-      "r": 214,
-      "g": 214,
-      "b": 214,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_N$pressedColor": {
@@ -441,9 +443,13 @@
     "_N$hoverSprite": null,
     "hoverSprite": null,
     "_N$disabledSprite": null,
-    "_N$target": {
-      "__id__": 6
-    },
+    "_N$target": null,
+    "audioUrl": "",
+    "_N$string": "",
+    "openContinuous": true,
+    "continuousTime": 1,
+    "openLongPress": false,
+    "longPressTime": 1,
     "_id": ""
   },
   {
@@ -567,14 +573,16 @@
     "_id": ""
   },
   {
-    "__type__": "cc.Button",
+    "__type__": "ed7f0aq02BCwbVMchVL2XKl",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 11
     },
     "_enabled": true,
-    "_normalMaterial": null,
+    "_normalMaterial": {
+      "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+    },
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.1,
@@ -589,9 +597,9 @@
     "transition": 3,
     "_N$normalColor": {
       "__type__": "cc.Color",
-      "r": 214,
-      "g": 214,
-      "b": 214,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_N$pressedColor": {
@@ -635,9 +643,13 @@
     "_N$hoverSprite": null,
     "hoverSprite": null,
     "_N$disabledSprite": null,
-    "_N$target": {
-      "__id__": 11
-    },
+    "_N$target": null,
+    "audioUrl": "",
+    "_N$string": "",
+    "openContinuous": true,
+    "continuousTime": 1,
+    "openLongPress": false,
+    "longPressTime": 1,
     "_id": ""
   },
   {
@@ -761,14 +773,16 @@
     "_id": ""
   },
   {
-    "__type__": "cc.Button",
+    "__type__": "ed7f0aq02BCwbVMchVL2XKl",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 16
     },
     "_enabled": true,
-    "_normalMaterial": null,
+    "_normalMaterial": {
+      "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+    },
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.1,
@@ -783,9 +797,9 @@
     "transition": 3,
     "_N$normalColor": {
       "__type__": "cc.Color",
-      "r": 214,
-      "g": 214,
-      "b": 214,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_N$pressedColor": {
@@ -829,9 +843,13 @@
     "_N$hoverSprite": null,
     "hoverSprite": null,
     "_N$disabledSprite": null,
-    "_N$target": {
-      "__id__": 16
-    },
+    "_N$target": null,
+    "audioUrl": "",
+    "_N$string": "",
+    "openContinuous": true,
+    "continuousTime": 1,
+    "openLongPress": false,
+    "longPressTime": 1,
     "_id": ""
   },
   {
@@ -955,14 +973,16 @@
     "_id": ""
   },
   {
-    "__type__": "cc.Button",
+    "__type__": "ed7f0aq02BCwbVMchVL2XKl",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 21
     },
     "_enabled": true,
-    "_normalMaterial": null,
+    "_normalMaterial": {
+      "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+    },
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.1,
@@ -977,9 +997,9 @@
     "transition": 3,
     "_N$normalColor": {
       "__type__": "cc.Color",
-      "r": 214,
-      "g": 214,
-      "b": 214,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_N$pressedColor": {
@@ -1023,9 +1043,13 @@
     "_N$hoverSprite": null,
     "hoverSprite": null,
     "_N$disabledSprite": null,
-    "_N$target": {
-      "__id__": 21
-    },
+    "_N$target": null,
+    "audioUrl": "",
+    "_N$string": "",
+    "openContinuous": true,
+    "continuousTime": 1,
+    "openLongPress": false,
+    "longPressTime": 1,
     "_id": ""
   },
   {
@@ -1149,14 +1173,16 @@
     "_id": ""
   },
   {
-    "__type__": "cc.Button",
+    "__type__": "ed7f0aq02BCwbVMchVL2XKl",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 26
     },
     "_enabled": true,
-    "_normalMaterial": null,
+    "_normalMaterial": {
+      "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+    },
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.1,
@@ -1171,9 +1197,9 @@
     "transition": 3,
     "_N$normalColor": {
       "__type__": "cc.Color",
-      "r": 214,
-      "g": 214,
-      "b": 214,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_N$pressedColor": {
@@ -1217,9 +1243,13 @@
     "_N$hoverSprite": null,
     "hoverSprite": null,
     "_N$disabledSprite": null,
-    "_N$target": {
-      "__id__": 26
-    },
+    "_N$target": null,
+    "audioUrl": "",
+    "_N$string": "",
+    "openContinuous": true,
+    "continuousTime": 1,
+    "openLongPress": false,
+    "longPressTime": 1,
     "_id": ""
   },
   {
@@ -1343,14 +1373,16 @@
     "_id": ""
   },
   {
-    "__type__": "cc.Button",
+    "__type__": "ed7f0aq02BCwbVMchVL2XKl",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 31
     },
     "_enabled": true,
-    "_normalMaterial": null,
+    "_normalMaterial": {
+      "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+    },
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.1,
@@ -1365,9 +1397,9 @@
     "transition": 3,
     "_N$normalColor": {
       "__type__": "cc.Color",
-      "r": 214,
-      "g": 214,
-      "b": 214,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_N$pressedColor": {
@@ -1411,9 +1443,13 @@
     "_N$hoverSprite": null,
     "hoverSprite": null,
     "_N$disabledSprite": null,
-    "_N$target": {
-      "__id__": 31
-    },
+    "_N$target": null,
+    "audioUrl": "",
+    "_N$string": "",
+    "openContinuous": true,
+    "continuousTime": 1,
+    "openLongPress": false,
+    "longPressTime": 1,
     "_id": ""
   },
   {
@@ -1537,14 +1573,16 @@
     "_id": ""
   },
   {
-    "__type__": "cc.Button",
+    "__type__": "ed7f0aq02BCwbVMchVL2XKl",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 36
     },
     "_enabled": true,
-    "_normalMaterial": null,
+    "_normalMaterial": {
+      "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+    },
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.1,
@@ -1559,9 +1597,9 @@
     "transition": 3,
     "_N$normalColor": {
       "__type__": "cc.Color",
-      "r": 214,
-      "g": 214,
-      "b": 214,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_N$pressedColor": {
@@ -1605,9 +1643,13 @@
     "_N$hoverSprite": null,
     "hoverSprite": null,
     "_N$disabledSprite": null,
-    "_N$target": {
-      "__id__": 36
-    },
+    "_N$target": null,
+    "audioUrl": "",
+    "_N$string": "",
+    "openContinuous": true,
+    "continuousTime": 1,
+    "openLongPress": false,
+    "longPressTime": 1,
     "_id": ""
   },
   {
