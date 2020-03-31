@@ -1,5 +1,6 @@
 import CocosHelper from "./CocosHelper";
 import BaseUIForm from "./BaseUIForm";
+import { timingSafeEqual } from "crypto";
 
 /**
  * 资源加载, 针对的是Form
@@ -22,14 +23,36 @@ export default class ResLoader {
     /** 
      * 采用计数管理的办法, 管理form所依赖的资源
      */
-    private staticDepends:{[key: string]: number} = {};
-    private dynamicDepends: {[key: string]: Array<string>} = {};
+    private staticDepends:{[key: string]: number} = cc.js.createMap();
+    private dynamicDepends: {[key: string]: Array<string>} = cc.js.createMap();
+    private tmpStaticDepends: Array<string> = [];
+
+    private _addTmpStaticDepends(completedCount: number, totalCount: number, item: any) {
+        this.tmpStaticDepends[this.tmpStaticDepends.length] = item.url;
+        if(this.staticDepends[item.url]) {
+            this.staticDepends[item.url] ++;
+        }else {
+            this.staticDepends[item.url] = 1;
+        }
+    }
+    private _clearTmpStaticDepends() {
+        for(let s of this.tmpStaticDepends) {
+            if(!this.staticDepends[s] || this.staticDepends[s] === 0) continue;
+            this.staticDepends[s] --;
+            if(this.staticDepends[s] === 0) {
+                delete this.staticDepends[s];           // 这里不清理缓存
+            }
+        }
+        this.tmpStaticDepends = [];
+    }
 
     /** 加载窗体 */
     public async loadForm(formName: string) {
-        let form: any = await CocosHelper.loadRes(formName, cc.Prefab);
+        let form: any = await CocosHelper.loadRes(formName, cc.Prefab, this._addTmpStaticDepends.bind(this));
+        this._clearTmpStaticDepends();
         let deps = cc.loader.getDependsRecursively(formName);
         this.addStaticDepends(deps);
+        
         return form;
     }
     /** 销毁窗体 */
@@ -66,8 +89,6 @@ export default class ResLoader {
             }
         }
     }
-
-
     /** 动态资源管理, 通过tag标记当前资源, 统一释放 */
     public async loadDynamicRes(url: string, type: typeof cc.Asset, tag: string) {
         let sources = await CocosHelper.loadRes(url, type);
@@ -90,4 +111,6 @@ export default class ResLoader {
         }
         return true;
     }
+
+    
 }

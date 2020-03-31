@@ -9,7 +9,7 @@ const {ccclass, property} = cc._decorator;
 export default class HallForm extends BaseUIForm {
 
     public UIType = new UIType(UIFormType.Normal, UIFormShowMode.HideOther);
-
+    CloseAndDestory = true;
 
     init() {
         

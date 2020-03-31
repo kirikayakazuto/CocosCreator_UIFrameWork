@@ -1,6 +1,14 @@
 import { SysDefine } from "./config/SysDefine";
+class LoadProgress {
+    public url: string;
+    public completedCount: number;
+    public totalCount: number;
+}
 
 export default class CocosHelper {
+
+    /** 加载进度 */
+    public static loadProgress = new LoadProgress();
 
     /** 等待时间, 秒为单位 */
     public static sleep = function(time: number) {
@@ -12,13 +20,15 @@ export default class CocosHelper {
         })
     }
     /** 加载资源 */
-    public static loadRes = function(url: string, type: typeof cc.Asset) {
+    public static loadRes = (url: string, type: typeof cc.Asset, progressCallback?: (completedCount: number, totalCount: number, item: any) => void) => {
         if (!url || !type) {
             cc.log("参数错误", url, type);
             return;
         }
+        CocosHelper.loadProgress.url = url;
+        progressCallback = progressCallback ? progressCallback : CocosHelper._progressCallback;
         return new Promise((resolve, reject) => {
-            cc.loader.loadRes(url, type, (err, asset) => {
+            cc.loader.loadRes(url, type, progressCallback, (err, asset) => {
                 if (err) {
                     cc.log(`[资源加载] 错误 ${err}`);
                     resolve(null);
@@ -27,6 +37,13 @@ export default class CocosHelper {
                 resolve(asset);
             });
         });
+    }
+
+    private static _progressCallback(completedCount: number, totalCount: number, item: any) {
+        CocosHelper.loadProgress.completedCount = completedCount;
+        CocosHelper.loadProgress.totalCount = totalCount;
+
+        
     }
     /**
      * 寻找子节点
