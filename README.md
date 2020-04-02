@@ -1,7 +1,7 @@
 
 ## 使用过程中有任何问题 可以添加我的QQ 1099263878
 
-# 基于cocos creator的UI框架, 当前使用的cocos creator版本2.2.1版本
+# 基于cocos creator的UI框架, 当前使用的cocos creator版本2.2.2版本
         中心思想, 将所有的UI窗体分为4类管理(普通窗体, 固定窗体, 弹出窗体, 独立窗体), 再将窗体制作成预制体, 动态加载与释放;
         使用UIManager.getInstance().showForms("窗体名字");
         -- UIROOT(UIManager脚本挂载结点)
