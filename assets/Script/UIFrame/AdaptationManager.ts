@@ -37,10 +37,8 @@ export default class AdaptationManager extends cc.Component {
      * @param distance 
      */
     adaptationFormByType(type: AdaptationType, node: cc.Node, distance?: number) {
-        let widget = node.getComponent(cc.Widget)
-        if(widget){
-            cc.log(`已经添加了widget组件`);
-        }else {
+        let widget = node.getComponent(cc.Widget);
+        if(!widget) {
             widget = node.addComponent(cc.Widget);
         }
         switch(type) {
