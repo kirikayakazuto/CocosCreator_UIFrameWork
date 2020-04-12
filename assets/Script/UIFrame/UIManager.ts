@@ -12,6 +12,8 @@ export default class UIManager extends cc.Component {
     private _NoFixed: cc.Node = null;                               // 固定显示的UI
     private _NoPopUp: cc.Node = null;                               // 弹出窗口
     private _NoIndependent: cc.Node = null;                         // 独立窗体
+    private _NoTips: cc.Node = null;                                // 提示信息
+    
 
     private _StaCurrentUIForms:Array<BaseUIForm> = [];                     // 存储反向切换的窗体
     private _MapAllUIForms: {[key: string]: BaseUIForm} = cc.js.createMap();              // 所有的窗体
@@ -37,9 +39,14 @@ export default class UIManager extends cc.Component {
         this._NoFixed = this.node.getChildByName(SysDefine.SYS_FIXED_NODE);
         this._NoPopUp = this.node.getChildByName(SysDefine.SYS_POPUP_NODE);
         this._NoIndependent = this.node.getChildByName(SysDefine.SYS_INDEPENDENT_NODE);
+        this._NoTips = this.node.getChildByName(SysDefine.SYS_TIPS_NODE);
     }
     
     start() {        
+    }
+
+    public addTips(tips: cc.Node, index?: number) {
+        this._NoTips.addChild(tips, index);
     }
 
     /** 预加载加载UIForm */
@@ -54,7 +61,7 @@ export default class UIManager extends cc.Component {
     }
     
     /** 加载Form时显示等待页面 */
-public async showUIFormWithLoading(uiFormName: string, waitFormName?: string) {
+    public async showUIFormWithLoading(uiFormName: string, waitFormName?: string) {
         await UIIndependentManager.getInstance().showLoadingForm();
         await UIManager.getInstance().showUIForm(uiFormName);
     }
@@ -262,12 +269,12 @@ public async showUIFormWithLoading(uiFormName: string, waitFormName?: string) {
 
         // 隐藏其他窗口 
         for(let key in this._MapCurrentShowUIForms) {
-            this._MapCurrentShowUIForms[key].hiding();
+            this._MapCurrentShowUIForms[key].hide();
             this._MapCurrentShowUIForms[key] = null;
             delete this._MapCurrentShowUIForms[key];
         }
         this._StaCurrentUIForms.forEach(uiForm => {
-            uiForm.hiding();
+            uiForm.hide();
             this._MapCurrentShowUIForms[uiForm.UIFormName] = null;
             delete this._MapCurrentShowUIForms[uiForm.UIFormName];
         });
@@ -300,7 +307,7 @@ public async showUIFormWithLoading(uiFormName: string, waitFormName?: string) {
     private exitUIForms(uiFormName: string) {
         let baseUIForm = this._MapAllUIForms[uiFormName];
         if(baseUIForm == null) return ;
-        baseUIForm.hiding();
+        baseUIForm.hide();
         this._MapCurrentShowUIForms[uiFormName] = null;
         delete this._MapCurrentShowUIForms[uiFormName];
         
@@ -308,12 +315,12 @@ public async showUIFormWithLoading(uiFormName: string, waitFormName?: string) {
     private popUIForm() {
         if(this._StaCurrentUIForms.length >= 2) {
             let topUIForm = this._StaCurrentUIForms.pop();
-            topUIForm.hiding();
+            topUIForm.hide();
             topUIForm = this._StaCurrentUIForms[this._StaCurrentUIForms.length-1];
             topUIForm.reDisPlay();
         }else if(this._StaCurrentUIForms.length >= 1) {
             let topUIForm = this._StaCurrentUIForms.pop();
-            topUIForm.hiding();
+            topUIForm.hide();
         }
     }
     private exitUIFormsAndDisplayOther(uiFormName: string) {
@@ -321,14 +328,14 @@ public async showUIFormWithLoading(uiFormName: string, waitFormName?: string) {
 
         let baseUIForm = this._MapCurrentShowUIForms[uiFormName];
         if(baseUIForm == null) return ;
-        baseUIForm.hiding();
+        baseUIForm.hide();
         this._MapCurrentShowUIForms[uiFormName] = null;
         delete this._MapCurrentShowUIForms[uiFormName];
     }
     private exitIndependentForms(uiFormName: string) {
         let baseUIForm = this._MapAllUIForms[uiFormName];
         if(baseUIForm == null) return ;
-        baseUIForm.hiding();
+        baseUIForm.hide();
         this._MapIndependentForms[uiFormName] = null;
         delete this._MapIndependentForms[uiFormName];
     }
@@ -340,10 +347,6 @@ public async showUIFormWithLoading(uiFormName: string, waitFormName?: string) {
         this._MapAllUIForms[uiFormName] = null;
         delete this._MapAllUIForms[uiFormName];
     }
-
-
-    
-    
 
     // update (dt) {}
 }

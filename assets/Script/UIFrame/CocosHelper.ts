@@ -15,10 +15,21 @@ export default class CocosHelper {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve(true);
-            }, time * 1000)
-            
-        })
+            }, time * 1000)    
+        });
     }
+
+    /**  */
+    public static async runSyncAction(node: cc.Node, ...actions: cc.FiniteTimeAction[]) {
+        if(!actions || actions.length <= 0) return ;
+        return new Promise((resolve, reject) => {
+            actions.push(cc.callFunc(() => {
+                resolve(true);
+            }))
+            node.runAction(cc.sequence(actions));
+        });
+    }
+    
     /** 加载资源 */
     public static loadRes = (url: string, type: typeof cc.Asset, progressCallback?: (completedCount: number, totalCount: number, item: any) => void) => {
         if (!url || !type) {
@@ -42,8 +53,6 @@ export default class CocosHelper {
     private static _progressCallback(completedCount: number, totalCount: number, item: any) {
         CocosHelper.loadProgress.completedCount = completedCount;
         CocosHelper.loadProgress.totalCount = totalCount;
-
-        
     }
     /**
      * 寻找子节点

@@ -62,25 +62,23 @@ export default class BaseUIForm extends cc.Component {
     /**
      * 显示窗体
      */
-    public disPlay() {
+    public async disPlay() {
         this.node.active = true;
         if(this.UIType.UIForms_Type == UIFormType.PopUp) {
             UIMaskManager.getInstance().addMaskWindow(this.node); 
-            this.showPopUpAnimation(() => {
-                UIMaskManager.getInstance().showMask(this.UIType.UIForm_LucencyType, this.MaskType.IsEasing, this.MaskType.EasingTime);
-            });
+            await this.showPopUpAnimation();
+            UIMaskManager.getInstance().showMask(this.UIType.UIForm_LucencyType, this.MaskType.IsEasing, this.MaskType.EasingTime);
         }
     }
     /**
      * 隐藏, 需要重新showUIForm
      */
-    public hiding() {
+    public async hide() {
         if(this.UIType.UIForms_Type == UIFormType.PopUp) {
             UIMaskManager.getInstance().removeMaskWindow(this.node); 
         }
-        this.hidePopUpAnimation(() => {
-            this.node.active = false;
-        });
+        await this.hidePopUpAnimation();
+        this.node.active = false;
     }
     /**
      * 暂时无效果, 预计实现成(去除冻结的效果)
@@ -109,11 +107,14 @@ export default class BaseUIForm extends cc.Component {
     /**
      * 弹窗动画
      */
-    public showPopUpAnimation(callback: Function) {
-        callback();
+    public async showPopUpAnimation() {
+        return new Promise((resolve, reject) => {
+            this.node.runAction(cc.sequence(cc.scaleTo(0.3, 1).easing(cc.easeBackOut()), cc.callFunc(() => {
+                resolve(true);
+            })));
+        });
     }
-    public hidePopUpAnimation(callback: Function) {
-        callback();
+    public async hidePopUpAnimation() {
     }
 
     /**
@@ -125,4 +126,5 @@ export default class BaseUIForm extends cc.Component {
     public receiveMessage(messagType: string, callback: Function, targer: any) {
         GEventManager.on(messagType, callback, targer);
     }
+
 }

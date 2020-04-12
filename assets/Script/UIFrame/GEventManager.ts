@@ -9,6 +9,7 @@ export default class GEventManager {
     private static _eventMap: {[key: string]: Array<ElementEvent>} = cc.js.createMap();
     private static _bufferEventMap: {[key: string]: Array<any>} = cc.js.createMap();          // 缓存的消息
 
+    private static openAutoClear = false;                                      // 开启定时清理监听事件
     private static clearTimers: Array<ElementTimer> = [];
     private static autoClearTimeNumber = 10;                                   // 定时清理的间隔
 
@@ -25,8 +26,7 @@ export default class GEventManager {
                 this._bufferEventMap[eventName] = [];
             }
             this._bufferEventMap[eventName].push(parameter);
-            // 开始定时清理定时器, 如果不希望开启, 注释下面一行即可
-            this.autoClearBufferEvent(eventName);
+            if(this.openAutoClear) this.autoClearBufferEvent(eventName);
             return ;
         }
         for(let i=0; i<array.length; i++) {

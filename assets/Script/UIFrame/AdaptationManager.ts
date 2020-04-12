@@ -22,11 +22,11 @@ export default class AdaptationManager extends cc.Component {
     }
     
     /** 屏幕尺寸 */
-    public VisibleSize: cc.Size;
+    public visibleSize: cc.Size;
 
     onLoad () {
-        this.VisibleSize = cc.view.getVisibleSize();
-        cc.log(`当前屏幕尺寸为${this.VisibleSize}`);
+        this.visibleSize = cc.view.getVisibleSize();
+        cc.log(`当前屏幕尺寸为${this.visibleSize}`);
     }
 
     start () {}

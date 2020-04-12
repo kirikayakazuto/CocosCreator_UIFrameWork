@@ -14,8 +14,8 @@ export default class UIMaskScript extends cc.Component {
 
     UIFormName: string;
 
+    /** 代码创建一个单色texture */
     private _texture: cc.Texture2D = null;
-
     private getSingleTexture() {
         if(this._texture) return this._texture;
         let data = new Uint8Array(2 * 2 * 4);

@@ -1,6 +1,7 @@
 import { UIFormLucenyType, UIFormShowMode, UIFormType } from "../UIFrame/config/SysDefine";
 import BaseUIForm from "../UIFrame/BaseUIForm";
 import { UIType, MaskType } from "../UIFrame/FormType";
+import CocosHelper from "../UIFrame/CocosHelper";
 
 const {ccclass, property} = cc._decorator;
 
@@ -29,20 +30,14 @@ export default class HallSettingForm extends BaseUIForm {
         }, this)
     } 
 
-    showPopUpAnimation(callBack: Function) {
+    async showPopUpAnimation() {
         this.node.scale = 0;
         this.node.setPosition(this.startPosition);
-        cc.tween(this.node)
-        .to(0.3, {scale:1, position:cc.v2(0,0)})
-        .call(() => {
-            // 显示mask
-            callBack();
-        })
-        .start();
+        await CocosHelper.runSyncAction(this.node, cc.spawn(cc.moveTo(0.3, 0, 0), cc.scaleTo(0.3, 1)));
     }
 
-    hidePopUpAnimation(callBack: Function) {
-        callBack();
+    async hidePopUpAnimation() {
+
     }
 
     // update (dt) {}

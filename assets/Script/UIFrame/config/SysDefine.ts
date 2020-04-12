@@ -47,6 +47,7 @@ export class SysDefine {
     public static SYS_FIXED_NODE = "Fixed";
     public static SYS_POPUP_NODE = "PopUp";  
     public static SYS_INDEPENDENT_NODE = "Independent";
+    public static SYS_TIPS_NODE = "Tips";
 
     /** 规范符号 */
     public static SYS_STANDARD_Prefix = '_';
