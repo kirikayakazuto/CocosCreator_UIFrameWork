@@ -29,6 +29,28 @@ export default class CocosHelper {
             node.runAction(cc.sequence(actions));
         });
     }
+
+    public static async runSyncAnim(node: cc.Node, animName?: string | number) {
+        let anim = node.getComponent(cc.Animation);
+        if(!anim) return ;
+        let clip: cc.AnimationClip = null;
+        if(!animName) clip = anim.defaultClip;
+        else {
+            let clips = anim.getClips();
+            if(typeof(animName) === "number") {
+                clip = clips[animName];
+            }else if(typeof(animName) === "string") {
+                for(let i=0; i<clips.length; i++) {
+                    if(clips[i].name === animName) {
+                        clip = clips[i];
+                        break;
+                    }
+                }
+            }   
+        }
+        if(!clip) return ;
+        await CocosHelper.sleep(clip.duration);
+    }
     
     /** 加载资源 */
     public static loadRes = (url: string, type: typeof cc.Asset, progressCallback?: (completedCount: number, totalCount: number, item: any) => void) => {
