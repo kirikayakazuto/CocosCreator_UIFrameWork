@@ -1,7 +1,7 @@
 import BaseUIForm from "./BaseUIForm";
 import { SysDefine, UIFormType, UIFormShowMode } from "./config/SysDefine";
 import UIIndependentManager from "./UIIndependentManager";
-import ResLoader from "./ResLoader";
+import UILoader from "./UILoader";
 
 const {ccclass, property} = cc._decorator;
 
@@ -177,7 +177,7 @@ export default class UIManager extends cc.Component {
             return ;
         }
         
-        let pre = await ResLoader.getInstance().loadForm(strUIFormPath);
+        let pre = await UILoader.getInstance().loadForm(strUIFormPath);
         let node: cc.Node = cc.instantiate(pre);
         let baseUIForm = node.getComponent(BaseUIForm);
         if(baseUIForm == null) {
@@ -342,7 +342,7 @@ export default class UIManager extends cc.Component {
 
     /** 销毁 */
     private destoryForm(baseUIForm: BaseUIForm, uiFormName: string) {
-        ResLoader.getInstance().destoryForm(baseUIForm);
+        UILoader.getInstance().destoryForm(baseUIForm);
         // 从allmap中删除
         this._MapAllUIForms[uiFormName] = null;
         delete this._MapAllUIForms[uiFormName];

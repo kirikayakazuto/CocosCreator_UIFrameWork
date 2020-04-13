@@ -1,6 +1,5 @@
 import CocosHelper from "./CocosHelper";
 import BaseUIForm from "./BaseUIForm";
-import { timingSafeEqual } from "crypto";
 
 /**
  * 资源加载, 针对的是Form
@@ -12,11 +11,11 @@ import { timingSafeEqual } from "crypto";
  * 1, 加载  在加载prefab时, cocos会将其依赖的图片一并加载, 所有不需要我们担心
  * 2, 释放  这里采用的引用计数的管理方法, 只需要调用destoryForm即可
  */
-export default class ResLoader {
-    private static instance: ResLoader = null;
+export default class UILoader {
+    private static instance: UILoader = null;
     public static getInstance() {
         if(this.instance === null) {
-            this.instance = new ResLoader();
+            this.instance = new UILoader();
         }
         return this.instance;
     }
