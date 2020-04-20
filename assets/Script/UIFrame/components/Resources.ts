@@ -1,3 +1,5 @@
+import ResManager from "../ResManager";
+
 /**
  * 进入场景前 就必须加载的资源可以从这里加载
  */
@@ -14,9 +16,13 @@ export default class Resources extends cc.Component {
 
     @property({type: [cc.AudioClip]})
     audioClips: cc.Texture2D[] = [];
-    
-    start () {
 
+    @property([cc.AnimationClip])
+    animClips: cc.AnimationClip[] = [];
+    
+    onLoad() {
+        // onload 执行， 那么表示上面的数据都加载到了
+        // todo...
     }
 
     // update (dt) {}

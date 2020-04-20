@@ -72,7 +72,7 @@ export default class AdaptationManager extends cc.Component {
         widget.updateAlignment();
     }
     /** 移除 */
-    removeAdaptationToForm(node: cc.Node) {
+    removeAdaptationFromForm(node: cc.Node) {
         if(node.getComponent(cc.Widget)) {
             node.removeComponent(cc.Widget);
         }

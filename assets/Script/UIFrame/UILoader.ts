@@ -63,7 +63,6 @@ export default class UILoader {
         let deps = cc.loader.getDependsRecursively(com.UIFormName);
         this.removeStaticDepends(deps);
         com.node.destroy();
-        cc.loader.releaseRes(com.UIFormName);
     }
 
 
