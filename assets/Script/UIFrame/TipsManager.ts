@@ -7,11 +7,11 @@ const {ccclass, property} = cc._decorator;
  * 这里专门用于处理  提示类窗体, 例如断线提示, 加载过场等
  */
 @ccclass
-export default class IndependentManager{
-    private static instance: IndependentManager = null;                     // 单例
-    static getInstance(): IndependentManager {
+export default class TipsManager{
+    private static instance: TipsManager = null;                     // 单例
+    static getInstance() {
         if(this.instance == null) {
-            this.instance = new IndependentManager();
+            this.instance = new TipsManager();
         }
         return this.instance;
     }
@@ -21,7 +21,10 @@ export default class IndependentManager{
         this.loadingFormName = loadingName;
         UIManager.getInstance().loadUIForms(this.loadingFormName);
     }
-    public async showLoadingForm() {
+    public async showLoadingForm(path?: string) {
+        if(path) {
+            this.loadingFormName = path;
+        }
         await UIManager.getInstance().showUIForm(this.loadingFormName);
     }
     /** 隐藏加载form */

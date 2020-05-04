@@ -6,7 +6,7 @@ import CocosHelper from "../UIFrame/CocosHelper";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class HallSettingForm extends UIBase {
+export default class UIHallSetting extends UIBase {
 
     formType = new UIType(UIFormType.PopUp, UIFormShowMode.ReverseChange, UIFormLucenyType.Translucence);
 

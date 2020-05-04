@@ -11,7 +11,7 @@ import { UIType } from "../UIFrame/FormType";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class FriendRankForm extends UIBase {
+export default class UIFriendRank extends UIBase {
 
     formType = new UIType(UIFormType.Fixed);
 

@@ -8,7 +8,7 @@ const {ccclass, property} = cc._decorator;
 
 
 @ccclass
-export default class MenuForm extends UIBase {
+export default class UIMenu extends UIBase {
 
     formType = new UIType(UIFormType.Fixed);
     // LIFE-CYCLE CALLBACKS:
@@ -24,7 +24,7 @@ export default class MenuForm extends UIBase {
 
         switch(data) {
             case "sz":
-                UIManager.getInstance().showUIForm("UIForm/HallSettingForm", pos);
+                UIManager.getInstance().showUIForm("UIForm/UIHallSetting", pos);
             break;
         }
     }

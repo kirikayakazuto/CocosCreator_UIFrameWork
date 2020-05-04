@@ -5,9 +5,9 @@ import { UIType } from "../UIFrame/FormType";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Loading extends UIBase {
+export default class UILoading extends UIBase {
 
-    formType = new UIType(UIFormType.Independent, UIFormShowMode.Independent);
+    formType = new UIType(UIFormType.Tips, UIFormShowMode.Tips);
 
     
     

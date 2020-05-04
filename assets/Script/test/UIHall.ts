@@ -6,17 +6,17 @@ import { UIFormType, UIFormShowMode } from "../UIFrame/config/SysDefine";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class HallForm extends UIBase {
+export default class UIHall extends UIBase {
 
     public formType = new UIType(UIFormType.Normal, UIFormShowMode.HideOther);
     public closeAndDestory = true;
 
 
     async load() {
-        await UIManager.getInstance().showUIForm("UIForm/UserInfoForm");
-        await UIManager.getInstance().showUIForm("UIForm/FriendRankForm");
-        await UIManager.getInstance().showUIForm("UIForm/MenuForm");
-        await UIManager.getInstance().showUIForm("UIForm/RoomForm");
+        await UIManager.getInstance().showUIForm("UIForm/UIUserInfo");
+        await UIManager.getInstance().showUIForm("UIForm/UIFriendRank");
+        await UIManager.getInstance().showUIForm("UIForm/UIMenu");
+        await UIManager.getInstance().showUIForm("UIForm/UIRoom");
     }
 
     start () {

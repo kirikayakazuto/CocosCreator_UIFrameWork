@@ -7,7 +7,7 @@ export enum UIFormType {
     /** 弹出窗口 */
     PopUp,    
     /** 独立窗口 */
-    Independent,                  
+    Tips,                  
 }
 /**显示类型 */
 export enum UIFormShowMode {
@@ -18,7 +18,7 @@ export enum UIFormShowMode {
     /** 隐藏其他, 窗体显示时, 会隐藏其他窗体 */
     HideOther,
     /** 独立显示, 不受其他窗体影响 */
-    Independent,
+    Tips,
 
 }
 /**透明度类型 */
@@ -46,7 +46,7 @@ export class SysDefine {
     public static SYS_NORMAL_NODE = "Normal";
     public static SYS_FIXED_NODE = "Fixed";
     public static SYS_POPUP_NODE = "PopUp";  
-    public static SYS_INDEPENDENT_NODE = "Independent";
+    public static SYS_TIPS_NODE = "Tips";
     /** 规范符号 */
     public static SYS_STANDARD_Prefix = '_';
     public static SYS_STANDARD_Separator = '$';

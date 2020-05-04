@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "UserInfoForm",
+    "_name": "UIUserInfo",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -1352,7 +1352,7 @@
     "sync": false
   },
   {
-    "__type__": "7331dgz5bRISYtv1Yo6o7r2",
+    "__type__": "4767fioXdJMfZ3xggzaX+3w",
     "_name": "",
     "_objFlags": 0,
     "node": {

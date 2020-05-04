@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "FriendRankForm",
+    "_name": "UIFriendRank",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -7363,7 +7363,7 @@
     "sync": false
   },
   {
-    "__type__": "6378fqL9P1I3IEwpfZLq4jh",
+    "__type__": "2d25aBRzAtPOJ+6X1P95lyr",
     "_name": "",
     "_objFlags": 0,
     "node": {

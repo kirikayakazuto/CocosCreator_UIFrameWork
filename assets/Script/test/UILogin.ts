@@ -35,7 +35,7 @@ export default class UILogin extends UIBase {
     start() {
         cc.log('start')
         this.closeUIForm();
-        UIManager.getInstance().showUIForm("UIForm/HallForm");
+        UIManager.getInstance().showUIForm("UIForm/UIHall");
     }
 
     onDestroy() {

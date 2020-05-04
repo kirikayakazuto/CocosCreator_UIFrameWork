@@ -6,7 +6,7 @@ import { UIType } from "../UIFrame/FormType";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class RoomForm extends UIBase {
+export default class UIRoom extends UIBase {
 
     ClickMaskClose = false;
     formType = new UIType(UIFormType.Fixed);

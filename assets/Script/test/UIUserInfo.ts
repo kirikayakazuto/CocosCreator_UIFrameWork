@@ -8,7 +8,7 @@ import UILogin from "./UILogin";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class UserInfoForm extends UIBase {
+export default class UIUserInfo extends UIBase {
 
     formType = new UIType(UIFormType.Fixed);   
     

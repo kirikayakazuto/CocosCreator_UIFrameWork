@@ -1,6 +1,5 @@
-import UIManager from "./UIFrame/UIManager";
 import ButtonPlus from "./UIFrame/components/ButtonPlus";
-import IndependentManager from "./UIFrame/IndependentManager";
+import TipsManager from "./UIFrame/TipsManager";
 import TouchPlus from "./UIFrame/components/TouchPlus";
 import UILogin from "./test/UILogin";
 import GEventManager from "./UIFrame/GEventManager";
@@ -23,7 +22,7 @@ export default class Main extends cc.Component {
     }
 
     start () {
-        IndependentManager.getInstance().setLoadingForm("UIForm/LoadingForm");
+        TipsManager.getInstance().setLoadingForm("UIForm/UILoading");
         UILogin.show(1, 2, 3);
     
         this.buttonPlus.addClick(() => {

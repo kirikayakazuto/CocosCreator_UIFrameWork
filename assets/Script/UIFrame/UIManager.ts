@@ -1,6 +1,6 @@
 import UIBase from "./UIBase";
 import { SysDefine, UIFormType, UIFormShowMode } from "./config/SysDefine";
-import IndependentManager from "./IndependentManager";
+import TipsManager from "./TipsManager";
 import ResManager from "./ResManager";
 
 const {ccclass, property} = cc._decorator;
@@ -11,7 +11,7 @@ export default class UIManager extends cc.Component {
     private _NoNormal: cc.Node = null;                              // 全屏显示的UI 挂载结点
     private _NoFixed: cc.Node = null;                               // 固定显示的UI
     private _NoPopUp: cc.Node = null;                               // 弹出窗口
-    private _NoIndependent: cc.Node = null;                         // 独立窗体
+    private _NoTips: cc.Node = null;                         // 独立窗体
 
     private _StaCurrentUIForms:Array<UIBase> = [];                     // 存储反向切换的窗体
     private _MapAllUIForms: {[key: string]: UIBase} = cc.js.createMap();              // 所有的窗体
@@ -35,7 +35,7 @@ export default class UIManager extends cc.Component {
         this._NoNormal = this.node.getChildByName(SysDefine.SYS_NORMAL_NODE);
         this._NoFixed = this.node.getChildByName(SysDefine.SYS_FIXED_NODE);
         this._NoPopUp = this.node.getChildByName(SysDefine.SYS_POPUP_NODE);
-        this._NoIndependent = this.node.getChildByName(SysDefine.SYS_INDEPENDENT_NODE);
+        this._NoTips = this.node.getChildByName(SysDefine.SYS_TIPS_NODE);
     }
     
     start() {        
@@ -53,10 +53,10 @@ export default class UIManager extends cc.Component {
     }
     
     /** 加载Form时显示等待页面 */
-    public async showUIFormWithLoading(prefabPath: string, waitFormName?: string) {
-        await IndependentManager.getInstance().showLoadingForm();
+    public async showUIFormWithLoading(prefabPath: string, path?: string) {
+        await TipsManager.getInstance().showLoadingForm(path);
         await UIManager.getInstance().showUIForm(prefabPath);
-        await IndependentManager.getInstance().hideLoadingForm();
+        TipsManager.getInstance().hideLoadingForm();
     }
 
     /**
@@ -95,7 +95,7 @@ export default class UIManager extends cc.Component {
             case UIFormShowMode.HideOther:                          // 隐藏其他
                 this.enterUIFormsAndHideOther(prefabPath, ...params);
             break;
-            case UIFormShowMode.Independent:                        // 独立显示
+            case UIFormShowMode.Tips:                        // 独立显示
                 this.loadUIFormsToIndependent(prefabPath, ...params);
             break;
         }
@@ -122,7 +122,7 @@ export default class UIManager extends cc.Component {
             case UIFormShowMode.HideOther:                          // 隐藏其他
                 this.exitUIFormsAndDisplayOther(prefabPath);
             break;
-            case UIFormShowMode.Independent:
+            case UIFormShowMode.Tips:
                 this.exitIndependentForms(prefabPath);
             break;
         }
@@ -178,8 +178,8 @@ export default class UIManager extends cc.Component {
             case UIFormType.PopUp:
                 UIManager.getInstance()._NoPopUp.addChild(node);
             break;
-            case UIFormType.Independent:
-                UIManager.getInstance()._NoIndependent.addChild(node);
+            case UIFormType.Tips:
+                UIManager.getInstance()._NoTips.addChild(node);
             break;
         }
         this._MapAllUIForms[formPath] = baseUI;

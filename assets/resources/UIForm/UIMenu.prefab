@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "MenuForm",
+    "_name": "UIMenu",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -324,7 +324,7 @@
         1,
         1,
         1,
-        0
+        1
       ]
     },
     "_eulerAngles": {
@@ -458,7 +458,7 @@
       "__id__": 1
     },
     "component": "",
-    "_componentId": "0a7c4DZ61VN6ax+GghBqTix",
+    "_componentId": "74dd4s9EsZOrrFIjBE/uujW",
     "handler": "menuClick",
     "customEventData": "sz"
   },
@@ -658,7 +658,7 @@
       "__id__": 1
     },
     "component": "",
-    "_componentId": "0a7c4DZ61VN6ax+GghBqTix",
+    "_componentId": "74dd4s9EsZOrrFIjBE/uujW",
     "handler": "menuClick",
     "customEventData": "sz"
   },
@@ -858,7 +858,7 @@
       "__id__": 1
     },
     "component": "",
-    "_componentId": "0a7c4DZ61VN6ax+GghBqTix",
+    "_componentId": "74dd4s9EsZOrrFIjBE/uujW",
     "handler": "menuClick",
     "customEventData": "sz"
   },
@@ -1058,7 +1058,7 @@
       "__id__": 1
     },
     "component": "",
-    "_componentId": "0a7c4DZ61VN6ax+GghBqTix",
+    "_componentId": "74dd4s9EsZOrrFIjBE/uujW",
     "handler": "menuClick",
     "customEventData": "sz"
   },
@@ -1258,7 +1258,7 @@
       "__id__": 1
     },
     "component": "",
-    "_componentId": "0a7c4DZ61VN6ax+GghBqTix",
+    "_componentId": "74dd4s9EsZOrrFIjBE/uujW",
     "handler": "menuClick",
     "customEventData": "sz"
   },
@@ -1458,7 +1458,7 @@
       "__id__": 1
     },
     "component": "",
-    "_componentId": "0a7c4DZ61VN6ax+GghBqTix",
+    "_componentId": "74dd4s9EsZOrrFIjBE/uujW",
     "handler": "menuClick",
     "customEventData": "sz"
   },
@@ -1658,7 +1658,7 @@
       "__id__": 1
     },
     "component": "",
-    "_componentId": "0a7c4DZ61VN6ax+GghBqTix",
+    "_componentId": "74dd4s9EsZOrrFIjBE/uujW",
     "handler": "menuClick",
     "customEventData": "sz"
   },
@@ -1718,7 +1718,7 @@
     "sync": false
   },
   {
-    "__type__": "0a7c4DZ61VN6ax+GghBqTix",
+    "__type__": "74dd4s9EsZOrrFIjBE/uujW",
     "_name": "",
     "_objFlags": 0,
     "node": {
