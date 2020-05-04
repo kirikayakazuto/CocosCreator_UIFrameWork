@@ -8,6 +8,8 @@ declare namespace cc {
      If you post a bug to forum, please attach this flag. */
     export var ENGINE_VERSION: string;
 
+    export var visibleSize: cc.Size;
+
     /**
      !#en
      Creates the speed action which changes the speed of an action, making it take longer (speed > 1)

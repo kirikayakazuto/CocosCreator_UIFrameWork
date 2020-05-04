@@ -1,6 +1,6 @@
 import CocosHelper from "./CocosHelper";
 import { SysDefine } from "./config/SysDefine";
-import BaseUIBinder from "./BaseUIBinder";
+import UIBinder from "./UIBinder";
 
 /*
  * @Author: 邓朗   基于论坛中的uikiller 
@@ -23,11 +23,11 @@ export default class UIHelper {
         return this.instance;
     }
     // 绑定组件
-    public bindComponent(component: BaseUIBinder) {
+    public bindComponent(component: UIBinder) {
         this.bindNode(component.node, component);
     }
     // 绑定node
-    public bindNode(node: cc.Node, component: BaseUIBinder) {
+    public bindNode(node: cc.Node, component: UIBinder) {
         if (component.$collector === node.uuid) {
             cc.warn(`重复绑定退出.${node.name}`)
             return;
@@ -37,7 +37,7 @@ export default class UIHelper {
     }
     
     // 绑定子节点
-    private _bindSubNode(node: cc.Node, component: BaseUIBinder) {
+    private _bindSubNode(node: cc.Node, component: UIBinder) {
         // 检测前缀是否符合绑定规范
         let name = node.name;
         if(CocosHelper.checkBindChildren(name)) {

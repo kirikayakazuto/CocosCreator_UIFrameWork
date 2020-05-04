@@ -1,15 +1,16 @@
-import BaseUIForm from "../UIFrame/BaseUIForm";
+import UIBase from "../UIFrame/UIBase";
 import { UIFormType } from "../UIFrame/config/SysDefine";
-import AdaptationManager, { AdaptationType } from "../UIFrame/AdaptationManager";
+import AdapterManager, { AdaptationType } from "../UIFrame/AdapterManager";
 import { UIType } from "../UIFrame/FormType";
 import GEventManager from "../UIFrame/GEventManager";
+import UILogin from "./UILogin";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class UserInfoForm extends BaseUIForm {
+export default class UserInfoForm extends UIBase {
 
-    UIType = new UIType(UIFormType.Fixed);   
+    formType = new UIType(UIFormType.Fixed);   
     
     @property(cc.Node)
     backNode: cc.Node = null;
@@ -19,9 +20,9 @@ export default class UserInfoForm extends BaseUIForm {
     // onLoad () {}
 
     start () {
-        AdaptationManager.getInstance().adaptationFormByType(AdaptationType.Top, this.node);
+        AdapterManager.getInstance().adapatByType(AdaptationType.Top, this.node);
         this.backNode.on('click', () => {
-            this.showUIForm("UIForm/LoginForm");
+            UILogin.show(1, 2, 3);
         });
 
         /**  */

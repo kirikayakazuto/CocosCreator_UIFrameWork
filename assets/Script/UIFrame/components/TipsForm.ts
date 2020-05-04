@@ -1,21 +1,25 @@
 import CocosHelper from "../CocosHelper";
-import UIManager from "../UIManager";
+import UIBase from "../UIBase";
+import { UIFormShowMode, UIFormType } from "../config/SysDefine";
+import { UIType } from "../FormType";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class TipsForm extends cc.Component {
-
+export default class TipsForm extends UIBase {
     @property(cc.Label)
     tips: cc.Label = null;
 
+    formType = new UIType(UIFormType.Independent, UIFormShowMode.Independent);
+
+
     public static async popUp(url: string, params: any) {
-        let prefab = await CocosHelper.loadRes(url, cc.Prefab) as cc.Prefab;
+        let prefab = await CocosHelper.loadRes<cc.Prefab>(url, cc.Prefab);
         if(!prefab) return ;
         let node = cc.instantiate(prefab);
         let com = node.getComponent(TipsForm);
         com.tips.string = params;
-        UIManager.getInstance().addTips(node);
+        // todo...
         await com.exitAnim();
     }
     // onLoad () {}

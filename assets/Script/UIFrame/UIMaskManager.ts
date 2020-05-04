@@ -1,7 +1,7 @@
 
 import { UIFormLucenyType, SysDefine } from "./config/SysDefine";
 import UIMaskScript from "./UIMaskScript";
-import BaseUIForm from "./BaseUIForm";
+import UIBase from "./UIBase";
 /**
  * 遮罩管理
  */
@@ -20,7 +20,7 @@ export default class UIMaskManager extends cc.Component {
     maskTexture: cc.Texture2D = null;
     /** 添加mask, 这个时候会阻断点击事件 */
     public addMaskWindow(parent: cc.Node) {
-        if(parent.getChildByName("UIMaskNode") || !parent.getComponent(BaseUIForm)) {
+        if(parent.getChildByName("UIMaskNode") || !parent.getComponent(UIBase)) {
             return ;
         }
         this.uiMaskScript = MaskNodePool.getInstance().get(parent);
@@ -61,7 +61,7 @@ export class MaskNodePool {
             this.init();
         }
         let com = this.pool.pop();
-        com.reUse(parent.getComponent(BaseUIForm).UIFormName);
+        com.reuse(parent.getComponent(UIBase).uid);
         parent.addChild(com.node, -1);
         return com;
     }
@@ -74,19 +74,15 @@ export class MaskNodePool {
         }
         node.removeFromParent();
         let com = node.getComponent(UIMaskScript);
-        com.unUse();
+        com.unuse();
         this.pool.push(com);
         return true;
     }
     /** 清除结点池 */
     clear() {
         for(const com of this.pool) {
-            com.unUse();
+            com.unuse();
         }
         this.pool = [];
     }
-
-    
-
-
 }

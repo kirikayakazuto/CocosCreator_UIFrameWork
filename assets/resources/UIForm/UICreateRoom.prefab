@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "CreateRoomForm",
+    "_name": "UICreateRoom",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -584,7 +584,7 @@
     "sync": false
   },
   {
-    "__type__": "766fc0upRdH1oCw1ONFMaVv",
+    "__type__": "2217c/3cL5Mlrl23xM3/ngA",
     "_name": "",
     "_objFlags": 0,
     "node": {

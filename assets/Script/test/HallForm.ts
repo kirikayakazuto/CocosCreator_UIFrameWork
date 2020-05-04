@@ -1,4 +1,4 @@
-import BaseUIForm from "../UIFrame/BaseUIForm";
+import UIBase from "../UIFrame/UIBase";
 import { UIType } from "../UIFrame/FormType";
 import UIManager from "../UIFrame/UIManager";
 import { UIFormType, UIFormShowMode } from "../UIFrame/config/SysDefine";
@@ -6,14 +6,11 @@ import { UIFormType, UIFormShowMode } from "../UIFrame/config/SysDefine";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class HallForm extends BaseUIForm {
+export default class HallForm extends UIBase {
 
-    public UIType = new UIType(UIFormType.Normal, UIFormShowMode.HideOther);
-    CloseAndDestory = true;
+    public formType = new UIType(UIFormType.Normal, UIFormShowMode.HideOther);
+    public closeAndDestory = true;
 
-    init() {
-        
-    }
 
     async load() {
         await UIManager.getInstance().showUIForm("UIForm/UserInfoForm");

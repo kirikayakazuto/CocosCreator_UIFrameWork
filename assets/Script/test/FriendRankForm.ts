@@ -1,6 +1,6 @@
-import BaseUIForm from "../UIFrame/BaseUIForm";
+import UIBase from "../UIFrame/UIBase";
 
-import AdaptationManager, { AdaptationType } from "../UIFrame/AdaptationManager";
+import AdapterManager, { AdaptationType } from "../UIFrame/AdapterManager";
 
 import ButtonPlus from "../UIFrame/components/ButtonPlus";
 import { UIFormType } from "../UIFrame/config/SysDefine";
@@ -11,9 +11,9 @@ import { UIType } from "../UIFrame/FormType";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class FriendRankForm extends BaseUIForm {
+export default class FriendRankForm extends UIBase {
 
-    UIType = new UIType(UIFormType.Fixed);
+    formType = new UIType(UIFormType.Fixed);
 
     @property(cc.Node)
     content: cc.Node = null;
@@ -22,7 +22,7 @@ export default class FriendRankForm extends BaseUIForm {
     // onLoad () {} 
 
     start () {
-        AdaptationManager.getInstance().adaptationFormByType(AdaptationType.Left, this.node, 0);
+        AdapterManager.getInstance().adapatByType(AdaptationType.Left, this.node, 0);
         this.onSendGoldEvent();
     }
 

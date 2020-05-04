@@ -1,8 +1,8 @@
 /** 优先队列， 可以通过优先级改变队列中物品的位置 */
 export class PrioritiyQueue<T extends {priority: number}> {
     public queue: Array<T>;
-    private front = 0;
-    private rear = 0;
+    public front = 0;
+    public rear = 0;                // rear 所指向的位置不存放item
     private size = 0;
     private length = 0;
 
@@ -12,7 +12,9 @@ export class PrioritiyQueue<T extends {priority: number}> {
     }
     /** 入队 对T进行优先级排序 */
     public enqueue(item: T) {
-        if(this.size >= this.length) return false;
+        if(this.size === this.length-1) {
+            this.alloc();
+        }
         let insertFlag = this.rear;
         for(let i=this.front; i<this.rear; i=(i+1)%this.length) {
             if(item.priority < this.queue[i].priority) { 
@@ -21,8 +23,8 @@ export class PrioritiyQueue<T extends {priority: number}> {
             }
         }
         // front到insertFlag不处理， insertFlag后面的依次向后移动一位
-        for(let i=insertFlag; i<this.rear; i=(i+1)%this.length) {
-            this.queue[(i+1)%this.length] = this.queue[i] ;
+        for(let i=this.getRealIndex(this.rear-1); i>=insertFlag; i=this.getRealIndex(i-1)) {
+            this.queue[this.getRealIndex(i+1)] = this.queue[i];
         }
         this.queue[insertFlag] = item; 
 
@@ -53,16 +55,27 @@ export class PrioritiyQueue<T extends {priority: number}> {
             if(!cb(count++, this.queue[i])) break;
         }
     }
+
+    /** 分配空间 */
+    private alloc() {
+        let newQueue = new Array<T>(this.length * 2);
+        this.walkAllItem((index, item) => {
+            newQueue[index] = item;
+            return true;
+        });
+        console.log(newQueue)
+        this.front = 0;
+        this.rear = this.length-1;
+        this.length = this.length * 2;
+        this.queue = newQueue;
+    }
+
+    private getRealIndex(index: number) {
+        if(index < 0) {
+            return index + this.length;
+        }
+        if(index >= this.length) {
+            return index % this.length;
+        }
+    }
 }
-
-let queue = new PrioritiyQueue();
-queue.enqueue({priority: 10});
-queue.enqueue({priority: 10});
-queue.enqueue({priority: 10});
-queue.enqueue({priority: 9});
-queue.enqueue({priority: 11});
-
-queue.walkAllItem((index, item) => {
-    console.log(index, item);
-    return true;
-});

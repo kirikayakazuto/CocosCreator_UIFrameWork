@@ -1,12 +1,14 @@
 import UIManager from "./UIFrame/UIManager";
 import ButtonPlus from "./UIFrame/components/ButtonPlus";
-import UIIndependentManager from "./UIFrame/UIIndependentManager";
+import IndependentManager from "./UIFrame/IndependentManager";
 import TouchPlus from "./UIFrame/components/TouchPlus";
+import UILogin from "./test/UILogin";
+import GEventManager from "./UIFrame/GEventManager";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Helloworld extends cc.Component {
+export default class Main extends cc.Component {
 
     @property(ButtonPlus)
     buttonPlus: ButtonPlus = null;
@@ -14,12 +16,16 @@ export default class Helloworld extends cc.Component {
     @property(TouchPlus)
     touchPlus: TouchPlus = null;
 
-    onLoad() {}
+    onLoad() {
+        GEventManager.on("Event_Login", (a: number, b: number, c: number) => {
+            console.log("Event ", a, b, c);
+        }, this);
+    }
 
     start () {
-        UIIndependentManager.getInstance().setLoadingForm("UIForm/LoadingForm");
-        UIManager.getInstance().showUIForm("UIForm/LoginForm");
-
+        IndependentManager.getInstance().setLoadingForm("UIForm/LoadingForm");
+        UILogin.show(1, 2, 3);
+    
         this.buttonPlus.addClick(() => {
             cc.log("点击事件!");
         }, this);

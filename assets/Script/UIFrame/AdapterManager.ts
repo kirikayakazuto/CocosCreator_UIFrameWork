@@ -8,17 +8,17 @@ import { SysDefine } from './config/SysDefine';
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class AdaptationManager extends cc.Component {
+export default class AdapterManager extends cc.Component {
 
-    private static _Instance: AdaptationManager = null;                     // 单例
-    static getInstance(): AdaptationManager {
-        if(this._Instance == null) {
-            this._Instance = cc.find(SysDefine.SYS_UIAdaptation_NAME).addComponent<AdaptationManager>(this);
+    private static instance: AdapterManager = null;                     // 单例
+    static getInstance() {
+        if(this.instance == null) {
+            this.instance = cc.find(SysDefine.SYS_UIAdaptation_NAME).addComponent<AdapterManager>(this);
             cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
-                this._Instance = null;
+                this.instance = null;
             });
         }
-        return this._Instance;
+        return this.instance;
     }
     
     /** 屏幕尺寸 */
@@ -26,6 +26,7 @@ export default class AdaptationManager extends cc.Component {
 
     onLoad () {
         this.visibleSize = cc.view.getVisibleSize();
+        cc.visibleSize = this.visibleSize;
         cc.log(`当前屏幕尺寸为${this.visibleSize}`);
     }
 
@@ -36,7 +37,7 @@ export default class AdaptationManager extends cc.Component {
      * @param node 
      * @param distance 
      */
-    adaptationFormByType(type: AdaptationType, node: cc.Node, distance?: number) {
+    adapatByType(type: AdaptationType, node: cc.Node, distance?: number) {
         let widget = node.getComponent(cc.Widget);
         if(!widget) {
             widget = node.addComponent(cc.Widget);

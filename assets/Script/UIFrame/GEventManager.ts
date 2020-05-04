@@ -9,16 +9,16 @@ export default class GEventManager {
     private static _eventMap: {[key: string]: Array<ElementEvent>} = cc.js.createMap();
     private static _bufferEventMap: {[key: string]: Array<any>} = cc.js.createMap();          // 缓存的消息
 
-    private static openAutoClear = false;                                      // 开启定时清理监听事件
-    private static clearTimers: Array<ElementTimer> = [];
-    private static autoClearTimeNumber = 10;                                   // 定时清理的间隔
+    private static _openAutoClear = false;                                      // 开启定时清理监听事件
+    private static _clearTimers: Array<ElementTimer> = [];
+    private static _autoClearTimeNumber = 10;                                   // 定时清理的间隔
 
     /**
      * 发布一个事件, 对于缓存的消息, 10s还没有被接收, 那么会定时回收
      * @param eventName 
      * @param parameter 
      */
-    public static emit(eventName: string, parameter: any) {
+    public static emit(eventName: string, ...parameter: any) {
         let array = this._eventMap[eventName];
         if(array === undefined) {
             // 将消息存入
@@ -26,13 +26,13 @@ export default class GEventManager {
                 this._bufferEventMap[eventName] = [];
             }
             this._bufferEventMap[eventName].push(parameter);
-            if(this.openAutoClear) this.autoClearBufferEvent(eventName);
+            if(this._openAutoClear) this.autoClearBufferEvent(eventName);
             return ;
         }
         for(let i=0; i<array.length; i++) {
             let element = array[i];
             if(!element) continue;
-            element.callback.call(element.target, parameter);
+            element.callback.call(element.target, ...parameter);
             element.once && array.splice(i, 1) && --i;
         }
     }
@@ -52,7 +52,7 @@ export default class GEventManager {
         // 新订阅一个事件, 那么看看是不是有缓存的消息, 发布出去
         if(this._bufferEventMap[eventName] != undefined) {
             for(let i=0; i<this._bufferEventMap[eventName].length; i++) {
-                callback.call(target, this._bufferEventMap[eventName][i]);
+                callback.call(target, ...this._bufferEventMap[eventName][i]);
             }
             this._bufferEventMap[eventName] = null;
             delete this._bufferEventMap[eventName];
@@ -96,7 +96,7 @@ export default class GEventManager {
     /** 自动清理bufferEventMap中的未接收消息 */
     private static autoClearBufferEvent(eventName: string) {
         
-        for(const e of this.clearTimers) {
+        for(const e of this._clearTimers) {
             if(e.eventName === eventName) {         // 当前event已经开启了定时回收
                 return;
             }
@@ -104,9 +104,9 @@ export default class GEventManager {
 
         let clearTimer = setTimeout(() => {
             clearEvent(eventName);
-        }, this.autoClearTimeNumber * 1000);
+        }, this._autoClearTimeNumber * 1000);
 
-        this.clearTimers.push(new ElementTimer(eventName, clearTimer));
+        this._clearTimers.push(new ElementTimer(eventName, clearTimer));
 
         let clearEvent = (eventName: string) => {
             if(!this._bufferEventMap[eventName]) {
@@ -115,9 +115,9 @@ export default class GEventManager {
             this._bufferEventMap[eventName] = null;
             delete this._bufferEventMap[eventName];
 
-            for(let i=this.clearTimers.length-1; i>=0; i--) {
-                if(this.clearTimers[i].eventName === eventName) {
-                    this.clearTimers.splice(i, 1);
+            for(let i=this._clearTimers.length-1; i>=0; i--) {
+                if(this._clearTimers[i].eventName === eventName) {
+                    this._clearTimers.splice(i, 1);
                 }
             }
         };

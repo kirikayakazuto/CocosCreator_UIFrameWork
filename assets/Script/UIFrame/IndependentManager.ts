@@ -7,13 +7,13 @@ const {ccclass, property} = cc._decorator;
  * 这里专门用于处理  提示类窗体, 例如断线提示, 加载过场等
  */
 @ccclass
-export default class UIIndependentManager{
-    private static Instance: UIIndependentManager = null;                     // 单例
-    static getInstance(): UIIndependentManager {
-        if(this.Instance == null) {
-            this.Instance = new UIIndependentManager();
+export default class IndependentManager{
+    private static instance: IndependentManager = null;                     // 单例
+    static getInstance(): IndependentManager {
+        if(this.instance == null) {
+            this.instance = new IndependentManager();
         }
-        return this.Instance;
+        return this.instance;
     }
     private loadingFormName: string;
     /** 设置加载页面 */
@@ -27,5 +27,12 @@ export default class UIIndependentManager{
     /** 隐藏加载form */
     public hideLoadingForm() {
         UIManager.getInstance().closeUIForm(this.loadingFormName);
+    }
+
+    public showStringTips() {
+        
+    }
+    public showOfflineTips() {
+
     }
 }

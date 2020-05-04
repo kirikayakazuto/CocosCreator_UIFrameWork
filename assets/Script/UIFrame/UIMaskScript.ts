@@ -1,5 +1,6 @@
 import UIManager from "./UIManager";
 import { UIFormLucenyType } from "./config/SysDefine";
+import CocosHelper from "./CocosHelper";
 
 /**
  * @Author: 邓朗 
@@ -43,7 +44,7 @@ export default class UIMaskScript extends cc.Component {
         this.node.height = size.height;
         this.node.width = size.width;
         this.node.addComponent(cc.Button);
-        this.node.on('click', this._clickMaskWindow, this);
+        this.node.on('click', this.clickMaskWindow, this);
         
         let sprite = this.node.addComponent(cc.Sprite)
         sprite.sizeMode = cc.Sprite.SizeMode.CUSTOM;
@@ -53,18 +54,18 @@ export default class UIMaskScript extends cc.Component {
         this.node.active = true;
     }
     /** 使用 */
-    reUse(uiFormName: string) {
+    reuse(uiFormName: string) {
         this.UIFormName = uiFormName;
     }
     /** 释放 */
-    unUse() {
+    unuse() {
         this.UIFormName = "";
         this.node.opacity = 0;
         this.node.active = true;
         cc.tween(this.node).stop();
     }
     // 
-    public showMaskUI(lucenyType: number, time: number = 0.6, isEasing: boolean = true) {
+    public async showMaskUI(lucenyType: number, time: number = 0.6, isEasing: boolean = true) {
         let o = 0;
         switch (lucenyType) {
             case UIFormLucenyType.Lucency:   
@@ -80,17 +81,15 @@ export default class UIMaskScript extends cc.Component {
                 this.node.active = false;
             break;        
         }
+        if(!this.node.active) return ;
         if(isEasing) {
-            cc.tween(this.node)
-            .to(time, {opacity: o})
-            .start();
+            await CocosHelper.runSyncAction(this.node, cc.fadeTo(time, o));
         }else {
             this.node.opacity = o;
         }
     }
-    
 
-    public _clickMaskWindow() {
+    public clickMaskWindow() {
         UIManager.getInstance().closeStackTopUIForm();
     }
 }

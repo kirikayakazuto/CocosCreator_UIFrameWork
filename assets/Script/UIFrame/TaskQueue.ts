@@ -16,7 +16,6 @@ export class Command {
     constructor(commandType: CommandType, data: any, prioritiy: number = 10) {
         this.commandType = commandType;
         this.data = data;
-        this.prioritiy;
     }
 }
 /** 命令队列 */

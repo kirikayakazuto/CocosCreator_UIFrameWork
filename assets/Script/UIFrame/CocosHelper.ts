@@ -15,7 +15,7 @@ export default class CocosHelper {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve(true);
-            }, time * 1000)    
+            }, time * 1000);
         });
     }
 
@@ -25,7 +25,7 @@ export default class CocosHelper {
         return new Promise((resolve, reject) => {
             actions.push(cc.callFunc(() => {
                 resolve(true);
-            }))
+            }));
             node.runAction(cc.sequence(actions));
         });
     }
@@ -53,7 +53,7 @@ export default class CocosHelper {
     }
     
     /** 加载资源 */
-    public static loadRes = (url: string, type: typeof cc.Asset, progressCallback?: (completedCount: number, totalCount: number, item: any) => void) => {
+    public static loadRes<T>(url: string, type: typeof cc.Asset, progressCallback?: (completedCount: number, totalCount: number, item: any) => void): Promise<T>{
         if (!url || !type) {
             cc.log("参数错误", url, type);
             return;
@@ -63,11 +63,11 @@ export default class CocosHelper {
         return new Promise((resolve, reject) => {
             cc.loader.loadRes(url, type, progressCallback, (err, asset) => {
                 if (err) {
-                    cc.log(`[资源加载] 错误 ${err}`);
+                    cc.log(`${url} [资源加载] 错误 ${err}`);
                     resolve(null);
-                    return;
+                }else {
+                    resolve(asset);
                 }
-                resolve(asset);
             });
         });
     }
