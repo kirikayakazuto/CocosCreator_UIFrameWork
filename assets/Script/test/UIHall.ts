@@ -2,6 +2,10 @@ import UIBase from "../UIFrame/UIBase";
 import { UIType } from "../UIFrame/FormType";
 import UIManager from "../UIFrame/UIManager";
 import { UIFormType, UIFormShowMode } from "../UIFrame/config/SysDefine";
+import UIUserInfo from "./UIUserInfo";
+import UIFriendRank from "./UIFriendRank";
+import UIMenu from "./UIMenu";
+import UIRoom from "./UIRoom";
 
 const {ccclass, property} = cc._decorator;
 
@@ -12,11 +16,13 @@ export default class UIHall extends UIBase {
     public closeAndDestory = true;
 
 
+    static prefabPath = "UIForm/UIHall";
+
     async load() {
-        await UIManager.getInstance().showUIForm("UIForm/UIUserInfo");
-        await UIManager.getInstance().showUIForm("UIForm/UIFriendRank");
-        await UIManager.getInstance().showUIForm("UIForm/UIMenu");
-        await UIManager.getInstance().showUIForm("UIForm/UIRoom");
+        await UIUserInfo.show();
+        await UIFriendRank.show();
+        await UIMenu.show();
+        await UIRoom.show();
     }
 
     start () {

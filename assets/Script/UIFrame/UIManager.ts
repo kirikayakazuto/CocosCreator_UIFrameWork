@@ -78,7 +78,7 @@ export default class UIManager extends cc.Component {
         }
 
         // 初始化窗体名称
-        UIBases.uid = prefabPath + Math.random();
+        UIBases.uid = prefabPath;
         
         // 是否清理栈内窗口
         if(UIBases.formType.IsClearStack) {

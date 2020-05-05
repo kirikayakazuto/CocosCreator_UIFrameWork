@@ -11,7 +11,7 @@ export default class UIRoom extends UIBase {
     ClickMaskClose = false;
     formType = new UIType(UIFormType.Fixed);
 
-    // LIFE-CYCLE CALLBACKS:
+    static prefabPath = "UIForm/UIRoom";
 
     // onLoad () {}
 

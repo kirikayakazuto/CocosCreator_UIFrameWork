@@ -15,7 +15,7 @@ export default class UIUserInfo extends UIBase {
     @property(cc.Node)
     backNode: cc.Node = null;
 
-    // LIFE-CYCLE CALLBACKS:
+    static prefabPath = "UIForm/UIUserInfo";
 
     // onLoad () {}
 

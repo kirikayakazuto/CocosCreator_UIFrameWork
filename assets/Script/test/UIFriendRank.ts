@@ -17,7 +17,9 @@ export default class UIFriendRank extends UIBase {
 
     @property(cc.Node)
     content: cc.Node = null;
-    // LIFE-CYCLE CALLBACKS:
+    
+
+    static prefabPath = "UIForm/UIFriendRank";
 
     // onLoad () {} 
 

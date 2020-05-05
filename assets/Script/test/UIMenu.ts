@@ -3,6 +3,7 @@ import { UIFormType } from "../UIFrame/config/SysDefine";
 import AdapterManager, { AdaptationType } from "../UIFrame/AdapterManager";
 import UIManager from "../UIFrame/UIManager";
 import { UIType } from "../UIFrame/FormType";
+import UIHallSetting from "./UIHallSetting";
 
 const {ccclass, property} = cc._decorator;
 
@@ -11,9 +12,8 @@ const {ccclass, property} = cc._decorator;
 export default class UIMenu extends UIBase {
 
     formType = new UIType(UIFormType.Fixed);
-    // LIFE-CYCLE CALLBACKS:
-
-    // onLoad () {}
+    
+    static prefabPath = "UIForm/UIMenu";
 
     start () {
         AdapterManager.getInstance().adapatByType(AdaptationType.Bottom, this.node, -2);
@@ -24,7 +24,7 @@ export default class UIMenu extends UIBase {
 
         switch(data) {
             case "sz":
-                UIManager.getInstance().showUIForm("UIForm/UIHallSetting", pos);
+                UIHallSetting.show(pos);
             break;
         }
     }

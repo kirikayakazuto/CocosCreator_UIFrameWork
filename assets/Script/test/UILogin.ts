@@ -3,6 +3,7 @@ import UIBase from "../UIFrame/UIBase";
 import UIManager from '../UIFrame/UIManager';
 import { UIType } from '../UIFrame/FormType';
 import GEventManager from '../UIFrame/GEventManager';
+import UIHall from './UIHall';
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -34,12 +35,15 @@ export default class UILogin extends UIBase {
 
     start() {
         cc.log('start')
-        this.closeUIForm();
-        UIManager.getInstance().showUIForm("UIForm/UIHall");
     }
 
     onDestroy() {
         cc.log('destory');
         // 这里可以执行你的销毁操作, 在该窗体执行destory时, 会调用onDestory方法
+    }
+
+    onClickLogin() {
+        this.closeUIForm();
+        UIHall.show();
     }
 }

@@ -15,7 +15,7 @@ export default class UIHallSetting extends UIBase {
 
     startPosition: cc.Vec2;
 
-    static prefabPath = "";
+    static prefabPath = "UIForm/UIHallSetting";
 
 
     preShow(startPosition: cc.Vec2) {
@@ -24,6 +24,7 @@ export default class UIHallSetting extends UIBase {
 
     start () {
         this.CloseNode.on('click', () => {
+            console.log("=========",this.uid);
             this.closeUIForm();
         }, this)
     } 
