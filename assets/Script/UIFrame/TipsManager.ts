@@ -32,6 +32,9 @@ export default class TipsManager{
         UIManager.getInstance().closeUIForm(this.loadingFormName);
     }
 
+    public setStringTipsName() {
+        
+    }
     public showStringTips() {
         
     }

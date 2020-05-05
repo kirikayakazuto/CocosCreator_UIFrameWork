@@ -23,6 +23,8 @@ export default class Resources extends cc.Component {
     onLoad() {
         // onload 执行， 那么表示上面的数据都加载到了
         // todo...
+
+        
     }
 
     // update (dt) {}

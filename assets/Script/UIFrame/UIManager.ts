@@ -53,8 +53,8 @@ export default class UIManager extends cc.Component {
     }
     
     /** 加载Form时显示等待页面 */
-    public async showUIFormWithLoading(prefabPath: string, path?: string) {
-        await TipsManager.getInstance().showLoadingForm(path);
+    public async showUIFormWithLoading(prefabPath: string, loadingPath?: string) {
+        await TipsManager.getInstance().showLoadingForm(loadingPath);
         await UIManager.getInstance().showUIForm(prefabPath);
         TipsManager.getInstance().hideLoadingForm();
     }
@@ -78,7 +78,7 @@ export default class UIManager extends cc.Component {
         }
 
         // 初始化窗体名称
-        UIBases.uid = prefabPath;
+        UIBases.uid = prefabPath + Math.random();
         
         // 是否清理栈内窗口
         if(UIBases.formType.IsClearStack) {
@@ -87,16 +87,16 @@ export default class UIManager extends cc.Component {
         
         switch(UIBases.formType.UIForms_ShowMode) {
             case UIFormShowMode.Normal:                             // 普通模式显示
-                this.loadUIToCurrentCache(prefabPath, ...params);
+                await this.loadUIToCurrentCache(prefabPath, ...params);
             break;
             case UIFormShowMode.ReverseChange:                      // 反向切换
-                this.pushUIFormToStack(prefabPath, ...params);
+                await this.pushUIFormToStack(prefabPath, ...params);
             break;
             case UIFormShowMode.HideOther:                          // 隐藏其他
-                this.enterUIFormsAndHideOther(prefabPath, ...params);
+                await this.enterUIFormsAndHideOther(prefabPath, ...params);
             break;
             case UIFormShowMode.Tips:                        // 独立显示
-                this.loadUIFormsToIndependent(prefabPath, ...params);
+                await this.loadUIFormsToIndependent(prefabPath, ...params);
             break;
         }
 

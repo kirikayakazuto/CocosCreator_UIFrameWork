@@ -25,9 +25,6 @@ export default class UIBase extends UIBinder {
 
     static prefabPath = "";
     static async show(...parmas: any) {
-        // 如何在代码中获得 prefab 的路径
-        // todo...
-
         let baseUIForm = await UIManager.getInstance().showUIForm(this.prefabPath, ...parmas);
         return baseUIForm;
     }

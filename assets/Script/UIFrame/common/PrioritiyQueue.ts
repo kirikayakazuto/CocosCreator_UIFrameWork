@@ -23,8 +23,11 @@ export class PrioritiyQueue<T extends {priority: number}> {
             }
         }
         // front到insertFlag不处理， insertFlag后面的依次向后移动一位
-        for(let i=this.getRealIndex(this.rear-1); i>=insertFlag; i=this.getRealIndex(i-1)) {
-            this.queue[this.getRealIndex(i+1)] = this.queue[i];
+        //for(let i=this.getRealIndex(this.rear-1); i!=insertFlag; i=this.getRealIndex(i-1)) {
+            //this.queue[this.getRealIndex(i+1)] = this.queue[i];
+        //}
+        for(let i=insertFlag; i<this.rear; i=this.getRealIndex(i+1)) {
+            console.log(this.queue[i]);
         }
         this.queue[insertFlag] = item; 
 
