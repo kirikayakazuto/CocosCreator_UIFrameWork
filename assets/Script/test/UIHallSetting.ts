@@ -1,6 +1,6 @@
-import { UIFormLucenyType, UIFormShowMode, UIFormType } from "../UIFrame/config/SysDefine";
+import { ShowLuceny, ShowMode, ShowType } from "../UIFrame/config/SysDefine";
 import UIBase from "../UIFrame/UIBase";
-import { UIType, MaskType } from "../UIFrame/FormType";
+import { FormType, MaskType } from "../UIFrame/FormType";
 import CocosHelper from "../UIFrame/CocosHelper";
 
 const {ccclass, property} = cc._decorator;
@@ -8,7 +8,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIHallSetting extends UIBase {
 
-    formType = new UIType(UIFormType.PopUp, UIFormShowMode.ReverseChange, UIFormLucenyType.Translucence);
+    formType = new FormType(ShowType.PopUp, ShowMode.ReverseChange, ShowLuceny.Translucence);
 
     @property(cc.Node)
     CloseNode: cc.Node= null;
@@ -18,13 +18,12 @@ export default class UIHallSetting extends UIBase {
     static prefabPath = "UIForm/UIHallSetting";
 
 
-    preShow(startPosition: cc.Vec2) {
+    onPreShow(startPosition: cc.Vec2) {
         this.startPosition = this.node.convertToNodeSpaceAR(startPosition);
     }
 
     start () {
         this.CloseNode.on('click', () => {
-            console.log("=========",this.uid);
             this.closeUIForm();
         }, this)
     } 

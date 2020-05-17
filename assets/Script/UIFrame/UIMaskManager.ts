@@ -1,5 +1,5 @@
 
-import { UIFormLucenyType, SysDefine } from "./config/SysDefine";
+import { ShowLuceny, SysDefine } from "./config/SysDefine";
 import UIMaskScript from "./UIMaskScript";
 import UIBase from "./UIBase";
 /**

@@ -1,8 +1,8 @@
 import UIBase from "../UIFrame/UIBase";
-import { UIFormType } from "../UIFrame/config/SysDefine";
+import { ShowType } from "../UIFrame/config/SysDefine";
 import AdapterManager, { AdaptaterType } from "../UIFrame/AdapterManager";
 import UIManager from "../UIFrame/UIManager";
-import { UIType } from "../UIFrame/FormType";
+import { FormType } from "../UIFrame/FormType";
 import UIHallSetting from "./UIHallSetting";
 
 const {ccclass, property} = cc._decorator;
@@ -11,7 +11,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIMenu extends UIBase {
 
-    formType = new UIType(UIFormType.Fixed);
+    formType = new FormType(ShowType.Fixed);
     
     static prefabPath = "UIForm/UIMenu";
 

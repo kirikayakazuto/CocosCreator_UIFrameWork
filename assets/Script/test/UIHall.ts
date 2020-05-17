@@ -1,7 +1,7 @@
 import UIBase from "../UIFrame/UIBase";
-import { UIType } from "../UIFrame/FormType";
+import { FormType } from "../UIFrame/FormType";
 import UIManager from "../UIFrame/UIManager";
-import { UIFormType, UIFormShowMode } from "../UIFrame/config/SysDefine";
+import { ShowType, ShowMode } from "../UIFrame/config/SysDefine";
 import UIUserInfo from "./UIUserInfo";
 import UIFriendRank from "./UIFriendRank";
 import UIMenu from "./UIMenu";
@@ -12,7 +12,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIHall extends UIBase {
 
-    public formType = new UIType(UIFormType.Normal, UIFormShowMode.HideOther);
+    public formType = new FormType(ShowType.Normal, ShowMode.HideOther);
     public closeAndDestory = true;
 
 

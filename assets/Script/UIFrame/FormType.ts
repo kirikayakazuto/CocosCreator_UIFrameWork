@@ -1,16 +1,16 @@
-import { UIFormType, UIFormShowMode, UIFormLucenyType } from "./config/SysDefine";
+import { ShowType, ShowMode, ShowLuceny } from "./config/SysDefine";
 
-export class UIType {
+export class FormType {
     //是否清空“栈集合”
     public IsClearStack = false;
     //UI窗体（位置）类型
-    public UIForms_Type = UIFormType.Normal;
+    public UIForms_Type = ShowType.Normal;
     //UI窗体显示类型
-    public UIForms_ShowMode = UIFormShowMode.Normal;
+    public UIForms_ShowMode = ShowMode.Normal;
     //UI窗体透明度类型
-    public UIForm_LucencyType = UIFormLucenyType.Lucency;
+    public UIForm_LucencyType = ShowLuceny.Pentrate;
 
-    constructor(formtype?: UIFormType, showMode?: UIFormShowMode, lucencyType?: UIFormLucenyType, isClearStack?: boolean) {
+    constructor(formtype?: ShowType, showMode?: ShowMode, lucencyType?: ShowLuceny, isClearStack?: boolean) {
         this.UIForms_Type = formtype || this.UIForms_Type;
         this.UIForms_ShowMode = showMode || this.UIForms_ShowMode;
         this.UIForm_LucencyType = lucencyType || this.UIForm_LucencyType;

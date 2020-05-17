@@ -3,9 +3,9 @@ import UIBase from "../UIFrame/UIBase";
 import AdapterManager, { AdaptaterType } from "../UIFrame/AdapterManager";
 
 import ButtonPlus from "../UIFrame/components/ButtonPlus";
-import { UIFormType } from "../UIFrame/config/SysDefine";
+import { ShowType } from "../UIFrame/config/SysDefine";
 import GEventManager from "../UIFrame/GEventManager";
-import { UIType } from "../UIFrame/FormType";
+import { FormType } from "../UIFrame/FormType";
 
 
 const {ccclass, property} = cc._decorator;
@@ -13,7 +13,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIFriendRank extends UIBase {
 
-    formType = new UIType(UIFormType.Fixed);
+    formType = new FormType(ShowType.Fixed);
 
     @property(cc.Node)
     content: cc.Node = null;

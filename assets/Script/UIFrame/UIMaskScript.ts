@@ -1,5 +1,5 @@
 import UIManager from "./UIManager";
-import { UIFormLucenyType } from "./config/SysDefine";
+import { ShowLuceny } from "./config/SysDefine";
 import CocosHelper from "./CocosHelper";
 
 /**
@@ -68,16 +68,16 @@ export default class UIMaskScript extends cc.Component {
     public async showMaskUI(lucenyType: number, time: number = 0.6, isEasing: boolean = true) {
         let o = 0;
         switch (lucenyType) {
-            case UIFormLucenyType.Lucency:   
+            case ShowLuceny.Lucency:   
                 o = 0;
             break;
-            case UIFormLucenyType.ImPenetrable:    
+            case ShowLuceny.ImPenetrable:    
                 o = 63;
             break;
-            case UIFormLucenyType.Translucence:   
+            case ShowLuceny.Translucence:   
                 o = 126;
             break;
-            case UIFormLucenyType.Pentrate:    
+            case ShowLuceny.Pentrate:    
                 this.node.active = false;
             break;        
         }
@@ -90,6 +90,9 @@ export default class UIMaskScript extends cc.Component {
     }
 
     public clickMaskWindow() {
-        UIManager.getInstance().closeStackTopUIForm();
+        let com = UIManager.getInstance().getUIComponent(this.UIFormName);
+        if(com.maskType.ClickMaskClose) {
+            UIManager.getInstance().closeUIForm(this.UIFormName);
+        }
     }
 }

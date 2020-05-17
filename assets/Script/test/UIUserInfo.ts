@@ -1,7 +1,7 @@
 import UIBase from "../UIFrame/UIBase";
-import { UIFormType } from "../UIFrame/config/SysDefine";
+import { ShowType } from "../UIFrame/config/SysDefine";
 import AdapterManager, { AdaptaterType } from "../UIFrame/AdapterManager";
-import { UIType } from "../UIFrame/FormType";
+import { FormType } from "../UIFrame/FormType";
 import GEventManager from "../UIFrame/GEventManager";
 import UILogin from "./UILogin";
 
@@ -10,7 +10,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIUserInfo extends UIBase {
 
-    formType = new UIType(UIFormType.Fixed);   
+    formType = new FormType(ShowType.Fixed);   
     
     @property(cc.Node)
     backNode: cc.Node = null;

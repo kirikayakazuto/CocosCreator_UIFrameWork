@@ -1,7 +1,7 @@
-import { UIFormType, UIFormShowMode, UIFormLucenyType } from '../UIFrame/config/SysDefine';
+import { ShowType, ShowMode, ShowLuceny } from '../UIFrame/config/SysDefine';
 import UIBase from "../UIFrame/UIBase";
 import UIManager from '../UIFrame/UIManager';
-import { UIType } from '../UIFrame/FormType';
+import { FormType } from '../UIFrame/FormType';
 import GEventManager from '../UIFrame/GEventManager';
 import UIHall from './UIHall';
 const {ccclass, property} = cc._decorator;
@@ -9,12 +9,10 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UILogin extends UIBase {
     
-    formType = new UIType(UIFormType.Normal, UIFormShowMode.HideOther, UIFormLucenyType.Lucency);
+    formType = new FormType(ShowType.Normal, ShowMode.HideOther, ShowLuceny.Lucency);
     closeAndDestory = true;
 
-    static prefabPath = "UIForm/UILogin";
-
-    preShow(a: number, b: number, c: number) {
+    onPreShow(a: number, b: number, c: number) {
         console.log(a, b, c);
         GEventManager.emit("Event_Login", 1, 2, 3);
     }

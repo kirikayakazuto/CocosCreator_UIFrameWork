@@ -115,7 +115,11 @@ export default class CocosHelper {
         return name.split(SysDefine.SYS_STANDARD_Separator);
     }
 
-    public static getComponentName(component) {
-        return component.name.match(/<.*>$/)[0].slice(1, -1);
+    public static getComponentName(com: Function) {
+        let arr = com.name.match(/<.*>$/);
+        if(arr) {
+            return arr[0].slice(1, -1);
+        }
+        return com.name;
     }
 }

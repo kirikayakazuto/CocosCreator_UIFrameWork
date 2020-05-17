@@ -1,7 +1,7 @@
 import UIBase from "../UIFrame/UIBase";
 import AdapterManager, { AdaptaterType } from "../UIFrame/AdapterManager";
-import { UIFormType } from "../UIFrame/config/SysDefine";
-import { UIType } from "../UIFrame/FormType";
+import { ShowType } from "../UIFrame/config/SysDefine";
+import { FormType } from "../UIFrame/FormType";
 
 const {ccclass, property} = cc._decorator;
 
@@ -9,7 +9,7 @@ const {ccclass, property} = cc._decorator;
 export default class UIRoom extends UIBase {
 
     ClickMaskClose = false;
-    formType = new UIType(UIFormType.Fixed);
+    formType = new FormType(ShowType.Fixed);
 
     static prefabPath = "UIForm/UIRoom";
 

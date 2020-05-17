@@ -1,5 +1,5 @@
 /**窗体类型 */
-export enum UIFormType {
+export enum ShowType {
     /** 普通窗口 */
     Normal,
     /** 固定窗口 */
@@ -10,7 +10,7 @@ export enum UIFormType {
     Tips,                  
 }
 /**显示类型 */
-export enum UIFormShowMode {
+export enum ShowMode {
     /** 普通, 窗体的显示和关闭并不会影响其他窗体 */
     Normal,
     /** 反向切换, 窗体关闭时, 会显示其他窗体 */
@@ -22,7 +22,7 @@ export enum UIFormShowMode {
 
 }
 /**透明度类型 */
-export enum UIFormLucenyType {
+export enum ShowLuceny {
     /** 完全透明，不能穿透 */
     Lucency,
     /** 半透明，不能穿透 */
@@ -51,6 +51,8 @@ export class SysDefine {
     public static SYS_STANDARD_Prefix = '_';
     public static SYS_STANDARD_Separator = '$';
     public static SYS_STANDARD_End = '#';
+
+    public static UI_PATH_ROOT = 'UIForm/';
     
     public static SeparatorMap: {[key: string]: string} = {
         "_Node"        : "cc.Node",

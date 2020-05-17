@@ -1,7 +1,7 @@
 import CocosHelper from "../CocosHelper";
 import UIBase from "../UIBase";
-import { UIFormShowMode, UIFormType } from "../config/SysDefine";
-import { UIType } from "../FormType";
+import { ShowMode, ShowType } from "../config/SysDefine";
+import { FormType } from "../FormType";
 
 const {ccclass, property} = cc._decorator;
 
@@ -10,7 +10,7 @@ export default class TipsForm extends UIBase {
     @property(cc.Label)
     tips: cc.Label = null;
 
-    formType = new UIType(UIFormType.Tips, UIFormShowMode.Tips);
+    formType = new FormType(ShowType.Tips, ShowMode.Tips);
 
 
     public static async popUp(url: string, params: any) {
