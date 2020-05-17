@@ -1,6 +1,6 @@
-import UIBase from "../UIFrame/UIBase";
 import { ShowType, ShowMode } from "../UIFrame/config/SysDefine";
 import { FormType } from "../UIFrame/FormType";
+import UIBase from "../UIFrame/UIBase";
 
 const {ccclass, property} = cc._decorator;
 

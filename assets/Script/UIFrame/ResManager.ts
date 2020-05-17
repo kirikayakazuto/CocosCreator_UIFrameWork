@@ -1,6 +1,6 @@
 import CocosHelper from "./CocosHelper";
-import UIBase from "./UIBase";
 import GEventManager from "./GEventManager";
+import UIBase from "./UIBase";
 
 /**
  * 资源加载, 针对的是Form
