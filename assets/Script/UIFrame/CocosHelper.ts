@@ -115,7 +115,7 @@ export default class CocosHelper {
         return name.split(SysDefine.SYS_STANDARD_Separator);
     }
 
-    private static _getComponentName(component: cc.Component) {
+    public static getComponentName(component) {
         return component.name.match(/<.*>$/)[0].slice(1, -1);
     }
 }

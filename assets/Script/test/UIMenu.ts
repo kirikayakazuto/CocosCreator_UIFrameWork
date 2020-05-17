@@ -1,6 +1,6 @@
 import UIBase from "../UIFrame/UIBase";
 import { UIFormType } from "../UIFrame/config/SysDefine";
-import AdapterManager, { AdaptationType } from "../UIFrame/AdapterManager";
+import AdapterManager, { AdaptaterType } from "../UIFrame/AdapterManager";
 import UIManager from "../UIFrame/UIManager";
 import { UIType } from "../UIFrame/FormType";
 import UIHallSetting from "./UIHallSetting";
@@ -16,7 +16,7 @@ export default class UIMenu extends UIBase {
     static prefabPath = "UIForm/UIMenu";
 
     start () {
-        AdapterManager.getInstance().adapatByType(AdaptationType.Bottom, this.node, -2);
+        AdapterManager.getInstance().adapatByType(AdaptaterType.Bottom, this.node, -2);
     }
 
     menuClick(e: cc.Event.EventTouch, data) {

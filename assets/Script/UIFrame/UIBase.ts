@@ -25,6 +25,9 @@ export default class UIBase extends UIBinder {
 
     static prefabPath = "";
     static async show(...parmas: any) {
+        if(this.prefabPath.length <= 0) {
+            this.prefabPath += "UI/" + CocosHelper.getComponentName(this);
+        }
         let baseUIForm = await UIManager.getInstance().showUIForm(this.prefabPath, ...parmas);
         return baseUIForm;
     }

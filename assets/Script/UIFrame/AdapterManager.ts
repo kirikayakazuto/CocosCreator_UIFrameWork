@@ -37,13 +37,13 @@ export default class AdapterManager extends cc.Component {
      * @param node 
      * @param distance 
      */
-    adapatByType(type: AdaptationType, node: cc.Node, distance?: number) {
+    adapatByType(type: AdaptaterType, node: cc.Node, distance?: number) {
         let widget = node.getComponent(cc.Widget);
         if(!widget) {
             widget = node.addComponent(cc.Widget);
         }
         switch(type) {
-            case AdaptationType.Top:
+            case AdaptaterType.Top:
                 if(cc.sys.platform === cc.sys.WECHAT_GAME) {     // 微信小游戏适配刘海屏
                     let menuInfo = window["wx"].getMenuButtonBoundingClientRect();
                     let systemInfo = window["wx"].getSystemInfoSync();
@@ -53,20 +53,30 @@ export default class AdapterManager extends cc.Component {
                 widget.isAbsoluteTop = true;
                 widget.isAlignTop = true;
             break;
-            case AdaptationType.Bottom:
+            case AdaptaterType.Bottom:
                 widget.bottom = distance ? distance : 0;
                 widget.isAbsoluteBottom = true;
                 widget.isAlignBottom = true;
             break;
-            case AdaptationType.Left:
+            case AdaptaterType.Left:
                 widget.left = distance ? distance : 0;
                 widget.isAbsoluteLeft = true;
                 widget.isAlignLeft = true;
             break;
-            case AdaptationType.Right:
+            case AdaptaterType.Right:
                 widget.right = distance ? distance : 0;
                 widget.isAbsoluteRight = true;
                 widget.isAlignRight = true;
+            break;
+            case AdaptaterType.FullScreen:
+                widget.right = 0;
+                widget.left = 0;
+                widget.top = 0;
+                widget.bottom = 0;
+                widget.isAlignLeft = true;
+                widget.isAlignRight = true;
+                widget.isAlignBottom = true;
+                widget.isAlignTop = true;
             break;
         }
         widget.target = cc.find("Canvas");
@@ -80,9 +90,10 @@ export default class AdapterManager extends cc.Component {
     }
 }
 /**  */
-export enum AdaptationType {
+export enum AdaptaterType {
     Top = 1,
     Bottom = 2,
     Left = 3,
     Right = 4,
+    FullScreen = 5,
 }

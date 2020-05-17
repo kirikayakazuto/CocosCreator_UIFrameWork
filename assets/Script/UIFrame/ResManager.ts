@@ -1,5 +1,6 @@
 import CocosHelper from "./CocosHelper";
-import BaseUIForm from "./UIBase";
+import UIBase from "./UIBase";
+import GEventManager from "./GEventManager";
 
 /**
  * 资源加载, 针对的是Form
@@ -56,11 +57,12 @@ export default class ResManager {
         return form;
     }
     /** 销毁窗体 */
-    public destoryForm(com: BaseUIForm) {
+    public destoryForm(com: UIBase) {
         if(!com) {
-            cc.log("只支持销毁继承了BaseUIForm的窗体!");
+            cc.log("只支持销毁继承了UIBase的窗体!");
             return;
         }
+        GEventManager.targetOff(com);
         let deps = cc.loader.getDependsRecursively(com.uid);
         this.removeStaticDepends(deps);
         com.node.destroy();
