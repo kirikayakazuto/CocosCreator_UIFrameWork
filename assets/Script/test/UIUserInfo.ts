@@ -1,7 +1,7 @@
 import UIBase from "../UIFrame/UIBase";
 import { ShowType } from "../UIFrame/config/SysDefine";
 import AdapterManager, { AdaptaterType } from "../UIFrame/AdapterManager";
-import { FormType } from "../UIFrame/FormType";
+import { FormType } from "../UIFrame/FrameType";
 import GEventManager from "../UIFrame/GEventManager";
 import UILogin from "./UILogin";
 

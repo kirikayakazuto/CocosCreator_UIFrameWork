@@ -1,7 +1,7 @@
 import UIBase from "../UIFrame/UIBase";
 import AdapterManager, { AdaptaterType } from "../UIFrame/AdapterManager";
 import { ShowType } from "../UIFrame/config/SysDefine";
-import { FormType } from "../UIFrame/FormType";
+import { FormType } from "../UIFrame/FrameType";
 
 const {ccclass, property} = cc._decorator;
 

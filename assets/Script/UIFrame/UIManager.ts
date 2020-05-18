@@ -13,7 +13,7 @@ export default class UIManager extends cc.Component {
     private _NoPopUp: cc.Node = null;                               // 弹出窗口
     private _NoTips: cc.Node = null;                         // 独立窗体
 
-    private _StaCurrentUIForms:Array<UIBase> = [];                     // 存储反向切换的窗体
+    private _StaCurrentUIForms:Array<UIBase> = [];                     // 存储弹出的窗体
     private _MapAllUIForms: {[key: string]: UIBase} = cc.js.createMap();              // 所有的窗体
     private _MapCurrentShowUIForms: {[key: string]: UIBase} = cc.js.createMap();      // 正在显示的窗体(不包括弹窗)
     private _MapIndependentForms: {[key: string]: UIBase} = cc.js.createMap();        // 独立窗体 独立于其他窗体, 不受其他窗体的影响
@@ -53,10 +53,11 @@ export default class UIManager extends cc.Component {
     }
     
     /** 加载Form时显示等待页面 */
-    public async showUIFormWithLoading(prefabPath: string, loadingPath?: string) {
-        await TipsManager.getInstance().showLoadingForm(loadingPath);
-        await UIManager.getInstance().showUIForm(prefabPath);
-        TipsManager.getInstance().hideLoadingForm();
+    public async showUIFormWithLoading(prefabPath: string, ...params: any) {
+        await TipsManager.getInstance().showLoadingForm();
+        let uiBase = await UIManager.getInstance().showUIForm(prefabPath, ...params);
+        await TipsManager.getInstance().hideLoadingForm();
+        return uiBase;
     }
 
     /**
@@ -73,7 +74,7 @@ export default class UIManager extends cc.Component {
         
         let UIBases = await this.loadFormsToAllUIFormsCatch(prefabPath);
         if(UIBases == null) {
-            cc.log(`${prefabPath}可能正在加载中`);
+            cc.log(`${prefabPath}未加载到，或者正在加载中!`);
             return ;
         }
 
@@ -85,7 +86,7 @@ export default class UIManager extends cc.Component {
             this.clearStackArray();
         }
         
-        switch(UIBases.formType.UIForms_ShowMode) {
+        switch(UIBases.formType.showMode) {
             case ShowMode.Normal:                             // 普通模式显示
                 await this.loadUIToCurrentCache(prefabPath, ...params);
             break;
@@ -102,32 +103,32 @@ export default class UIManager extends cc.Component {
 
         return UIBases;
     }
+    /**  */
     public getUIComponent(uiname: string) {
-        let com = this._MapAllUIForms[uiname];
-        return com;
+        return this._MapAllUIForms[uiname];
     }
     /**
      * 重要方法 关闭一个UIForm
      * @param prefabPath 
      */
-    public closeUIForm(prefabPath: string) {
+    public async closeUIForm(prefabPath: string) {
         if(prefabPath == "" || prefabPath == null) return ;
         let UIBase = this._MapAllUIForms[prefabPath];
         
         if(UIBase == null) return ;
         
-        switch(UIBase.formType.UIForms_ShowMode) {
+        switch(UIBase.formType.showMode) {
             case ShowMode.Normal:                             // 普通模式显示
-                this.exitUIForms(prefabPath);
+                await this.exitUIForms(prefabPath);
             break;
             case ShowMode.ReverseChange:                      // 反向切换
-                this.popUIForm();
+                await this.popUIForm();
             break;
             case ShowMode.HideOther:                          // 隐藏其他
-                this.exitUIFormsAndDisplayOther(prefabPath);
+                await this.exitUIFormsAndDisplayOther(prefabPath);
             break;
             case ShowMode.Tips:
-                this.exitIndependentForms(prefabPath);
+                await this.exitIndependentForms(prefabPath);
             break;
         }
         // 判断是否销毁该窗体
@@ -173,7 +174,7 @@ export default class UIManager extends cc.Component {
             return ;
         }
         node.active = false;
-        switch(baseUI.formType.UIForms_Type) {
+        switch(baseUI.formType.showType) {
             case ShowType.Normal:
                 UIManager.getInstance()._NoNormal.addChild(node);
             break;
@@ -205,7 +206,7 @@ export default class UIManager extends cc.Component {
     /**
      * 关闭栈顶窗口
      */
-    public closeStackTopUIForm() {
+    public closeTopStackUIForm() {
         if(this._StaCurrentUIForms != null && this._StaCurrentUIForms.length >= 1) {
             let uiFrom = this._StaCurrentUIForms[this._StaCurrentUIForms.length-1];
             if(uiFrom.maskType.ClickMaskClose) {
@@ -249,7 +250,7 @@ export default class UIManager extends cc.Component {
         this._StaCurrentUIForms.push(UIBase);       
         UIBase.node.zIndex = this._StaCurrentUIForms.length;
         UIBase.onPreShow(...params);
-        UIBase.show();
+        await UIBase.show();
         UIBase.onAfterShow(...params);
     }
     /**
@@ -278,7 +279,7 @@ export default class UIManager extends cc.Component {
 
         this._MapCurrentShowUIForms[prefabPath] = UIBaseFromAll;
         UIBaseFromAll.onPreShow(...params);
-        UIBaseFromAll.show();
+        await UIBaseFromAll.show();
         UIBaseFromAll.onAfterShow(...params);
     }
 
@@ -289,7 +290,7 @@ export default class UIManager extends cc.Component {
         await UIBase._preInit();
         this._MapIndependentForms[prefabPath] = UIBase;
         UIBase.onPreShow(...params);
-        UIBase.show();
+        await UIBase.show();
         UIBase.onAfterShow(...params);
     }
 

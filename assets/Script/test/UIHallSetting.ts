@@ -1,6 +1,6 @@
 import { ShowLuceny, ShowMode, ShowType } from "../UIFrame/config/SysDefine";
 import UIBase from "../UIFrame/UIBase";
-import { FormType, MaskType } from "../UIFrame/FormType";
+import { FormType, MaskType } from "../UIFrame/FrameType";
 import CocosHelper from "../UIFrame/CocosHelper";
 
 const {ccclass, property} = cc._decorator;

@@ -19,7 +19,7 @@ export default class UIMaskScript extends cc.Component {
     private _texture: cc.Texture2D = null;
     private getSingleTexture() {
         if(this._texture) return this._texture;
-        let data = new Uint8Array(2 * 2 * 4);
+        let data: any = new Uint8Array(2 * 2 * 4);
         for(let i=0; i<2; i++) {
             for(let j=0; j<2; j++) {
                 data[i*2*4 + j*4+0] = 255;
@@ -89,10 +89,10 @@ export default class UIMaskScript extends cc.Component {
         }
     }
 
-    public clickMaskWindow() {
+    public async clickMaskWindow() {
         let com = UIManager.getInstance().getUIComponent(this.UIFormName);
         if(com.maskType.ClickMaskClose) {
-            UIManager.getInstance().closeUIForm(this.UIFormName);
+           await UIManager.getInstance().closeUIForm(this.UIFormName);
         }
     }
 }

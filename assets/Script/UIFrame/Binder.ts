@@ -14,14 +14,8 @@ import UIBinder from "./UIBinder";
  * 时候,通过特殊的命名规则, 就可以在脚本中直接使用此结点,  UIHelper就来完成此功能
  */
 
-export default class UIHelper {
-    private static instance: UIHelper = null;
-    public static getInstance() {
-        if(this.instance === null) {
-            this.instance = new UIHelper();
-        }
-        return this.instance;
-    }
+
+class Binder {
     // 绑定组件
     public bindComponent(component: UIBinder) {
         this.bindNode(component.node, component);
@@ -29,7 +23,7 @@ export default class UIHelper {
     // 绑定node
     public bindNode(node: cc.Node, component: UIBinder) {
         if (component.$collector === node.uuid) {
-            cc.warn(`重复绑定退出.${node.name}`)
+            // cc.warn(`重复绑定退出.${node.name}`)
             return;
         }
         component.$collector = node.uuid;
@@ -45,7 +39,8 @@ export default class UIHelper {
                 // 获得这个组件的类型 和 名称
                 let names = CocosHelper.getPrefixNames(name);
                 if(names === null || names.length !== 2 || !SysDefine.SeparatorMap[names[0]]) {
-                    cc.log(`${name} 命令不规范, 请使用_lab$xxx的格式!`);
+                    console.log(names);
+                    cc.log(`${name} 命令不规范, 请使用_lab$xxx的格式!, 或者是在SysDefine中没有定义`);
                     return ;
                 }
                 // 未定义的类型
@@ -71,3 +66,4 @@ export default class UIHelper {
         
     }
 }
+export default new Binder();

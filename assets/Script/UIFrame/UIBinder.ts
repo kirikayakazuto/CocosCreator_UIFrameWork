@@ -1,4 +1,4 @@
-import UIHelper from "./UIHelper";
+import Binder from "./Binder";
 
 const {ccclass, property} = cc._decorator;
 

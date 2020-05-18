@@ -1,5 +1,5 @@
 import UIBase from "../UIFrame/UIBase";
-import { FormType } from "../UIFrame/FormType";
+import { FormType } from "../UIFrame/FrameType";
 import UIManager from "../UIFrame/UIManager";
 import { ShowType, ShowMode } from "../UIFrame/config/SysDefine";
 import UIUserInfo from "./UIUserInfo";

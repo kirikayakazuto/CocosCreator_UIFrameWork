@@ -2,7 +2,7 @@ import UIBase from "../UIFrame/UIBase";
 import { ShowType } from "../UIFrame/config/SysDefine";
 import AdapterManager, { AdaptaterType } from "../UIFrame/AdapterManager";
 import UIManager from "../UIFrame/UIManager";
-import { FormType } from "../UIFrame/FormType";
+import { FormType } from "../UIFrame/FrameType";
 import UIHallSetting from "./UIHallSetting";
 
 const {ccclass, property} = cc._decorator;

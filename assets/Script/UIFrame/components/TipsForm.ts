@@ -1,7 +1,7 @@
 import CocosHelper from "../CocosHelper";
 import UIBase from "../UIBase";
 import { ShowMode, ShowType } from "../config/SysDefine";
-import { FormType } from "../FormType";
+import { FormType } from "../FrameType";
 
 const {ccclass, property} = cc._decorator;
 

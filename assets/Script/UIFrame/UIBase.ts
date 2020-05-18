@@ -1,11 +1,11 @@
-import { ShowType, SysDefine } from "./config/SysDefine";
 import UIMaskManager from "./UIMaskManager";
 import GEventManager from "./GEventManager";
-import { FormType, MaskType } from "./FormType";
 import UIBinder from "./UIBinder";
 import CocosHelper from "./CocosHelper";
-import UIHelper from "./UIHelper";
 import UIManager from "./UIManager";
+import { ShowType, SysDefine } from "./config/SysDefine";
+import { FormType, MaskType } from "./FrameType";
+import Binder from "./Binder";
 
 const {ccclass, property} = cc._decorator;
 
@@ -21,20 +21,37 @@ export default class UIBase extends UIBinder {
     /** 关闭窗口后销毁, 会将其依赖的资源一并销毁, 采用了引用计数的管理, 不用担心会影响其他窗体 */
     public destoryAfterClose = false;
     /** 自动绑定结点 */
-    public autoBind = false;
-
+    public autoBind = true;
+    /** 资源路径，如果没写的话就是类名 */
     static prefabPath = "";
+    /** 回调 */
+    private _cb: (confirm: any) => void;
     static async show(...parmas: any) {
-        if(!this.prefabPath || this.prefabPath.length <= 0) {
-            this.prefabPath = SysDefine.UI_PATH_ROOT + CocosHelper.getComponentName(this);
-        }
         let baseUIForm = await UIManager.getInstance().showUIForm(this.prefabPath, ...parmas);
-        return baseUIForm;
+        return new Promise((resolve, reject) => {
+            baseUIForm._cb = (confirm) => {
+                resolve(confirm);
+            };
+        });;
+    }
+    static async showWithLoading(...parmas: any) {
+        let baseUIForm = await UIManager.getInstance().showUIFormWithLoading(this.prefabPath, ...parmas);
+        return new Promise((resolve, reject) => {
+            baseUIForm._cb = (confirm) => {
+                resolve(confirm);
+            };
+        });;
+    }
+    public static async close() {
+        await UIManager.getInstance().closeUIForm(this.prefabPath);
     }
     /** 预先初始化 */
     public async _preInit() {
         if(this.autoBind) {
-            UIHelper.getInstance().bindComponent(this);
+            Binder.bindComponent(this);
+        }
+        if(!UIBase.prefabPath || UIBase.prefabPath.length <= 0) {
+            UIBase.prefabPath = SysDefine.UI_PATH_ROOT + CocosHelper.getComponentName(UIBase);
         }
         await this.load();
     }
@@ -57,8 +74,10 @@ export default class UIBase extends UIBinder {
         this.node.active = true;
         UIMaskManager.getInstance().addMaskWindow(this.node); 
         await this.showAnimation();
-        UIMaskManager.getInstance().showMask(this.formType.UIForm_LucencyType, this.maskType.IsEasing, this.maskType.EasingTime);
+        UIMaskManager.getInstance().showMask(this.formType.showLucency, this.maskType.IsEasing, this.maskType.EasingTime);
+        
     }
+    
     /**
      * 隐藏, 需要重新showUIForm
      */
@@ -71,18 +90,19 @@ export default class UIBase extends UIBinder {
     /**
      * 显示与关闭
      */
-    public showUIForm(uiFormName: string, ...obj: any) {
-        UIManager.getInstance().showUIForm(uiFormName, obj);
+    public async showUIForm(uiFormName: string, ...obj: any) {
+       await UIManager.getInstance().showUIForm(uiFormName, obj);
     }
-    public closeUIForm() {
-        UIManager.getInstance().closeUIForm(this.uid);
+    public async closeUIForm() {
+       await UIManager.getInstance().closeUIForm(this.uid);
     }
 
     /**
      * 弹窗动画
      */
     public async showAnimation() {
-        if(this.formType.UIForms_Type === ShowType.PopUp) {
+        if(this.formType.showType === ShowType.PopUp) {
+            this.node.scale = 0;
             await CocosHelper.runSyncAction(this.node, cc.scaleTo(0.3, 1).easing(cc.easeBackOut()));
         }
     }

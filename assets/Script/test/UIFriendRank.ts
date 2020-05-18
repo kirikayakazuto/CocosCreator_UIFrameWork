@@ -5,7 +5,7 @@ import AdapterManager, { AdaptaterType } from "../UIFrame/AdapterManager";
 import ButtonPlus from "../UIFrame/components/ButtonPlus";
 import { ShowType } from "../UIFrame/config/SysDefine";
 import GEventManager from "../UIFrame/GEventManager";
-import { FormType } from "../UIFrame/FormType";
+import { FormType } from "../UIFrame/FrameType";
 
 
 const {ccclass, property} = cc._decorator;

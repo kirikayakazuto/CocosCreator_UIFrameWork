@@ -4,16 +4,16 @@ export class FormType {
     //是否清空“栈集合”
     public IsClearStack = false;
     //UI窗体（位置）类型
-    public UIForms_Type = ShowType.Normal;
+    public showType = ShowType.Normal;
     //UI窗体显示类型
-    public UIForms_ShowMode = ShowMode.Normal;
+    public showMode = ShowMode.Normal;
     //UI窗体透明度类型
-    public UIForm_LucencyType = ShowLuceny.Pentrate;
+    public showLucency = ShowLuceny.Pentrate;
 
     constructor(formtype?: ShowType, showMode?: ShowMode, lucencyType?: ShowLuceny, isClearStack?: boolean) {
-        this.UIForms_Type = formtype || this.UIForms_Type;
-        this.UIForms_ShowMode = showMode || this.UIForms_ShowMode;
-        this.UIForm_LucencyType = lucencyType || this.UIForm_LucencyType;
+        this.showType = formtype || this.showType;
+        this.showMode = showMode || this.showMode;
+        this.showLucency = lucencyType || this.showLucency;
         this.IsClearStack = isClearStack || this.IsClearStack;
     }
 }

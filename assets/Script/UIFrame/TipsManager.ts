@@ -1,4 +1,5 @@
 import UIManager from "./UIManager";
+import CocosHelper from "./CocosHelper";
 
 const {ccclass, property} = cc._decorator;
 /***
@@ -26,14 +27,16 @@ export default class TipsManager{
             this.loadingFormName = path;
         }
         await UIManager.getInstance().showUIForm(this.loadingFormName);
+        await CocosHelper.sleep(0.5);
     }
     /** 隐藏加载form */
-    public hideLoadingForm() {
-        UIManager.getInstance().closeUIForm(this.loadingFormName);
+    public async hideLoadingForm() {
+        await UIManager.getInstance().closeUIForm(this.loadingFormName);
     }
 
-    public setStringTipsName() {
-        
+    private tipsFormName: string;
+    public setTipsForm(tipsFormName: string) {
+        this.tipsFormName = tipsFormName;
     }
     public showStringTips() {
         
