@@ -1,6 +1,5 @@
 import { ShowType, ShowMode, ShowLuceny } from '../UIFrame/config/SysDefine';
 import UIBase from "../UIFrame/UIBase";
-import UIManager from '../UIFrame/UIManager';
 import { FormType } from '../UIFrame/FrameType';
 import GEventManager from '../UIFrame/GEventManager';
 import UIHall from './UIHall';
@@ -11,6 +10,8 @@ export default class UILogin extends UIBase {
     
     formType = new FormType(ShowType.Normal, ShowMode.HideOther, ShowLuceny.Lucency);
     closeAndDestory = true;
+
+    static prefabPath = "UIForm/UILogin";
 
     onPreShow(a: number, b: number, c: number) {
         console.log(a, b, c);

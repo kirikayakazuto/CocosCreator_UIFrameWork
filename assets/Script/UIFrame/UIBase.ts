@@ -27,20 +27,10 @@ export default class UIBase extends UIBinder {
     /** 回调 */
     private _cb: (confirm: any) => void;
     static async show(...parmas: any) {
-        let baseUIForm = await UIManager.getInstance().showUIForm(this.prefabPath, ...parmas);
-        return new Promise((resolve, reject) => {
-            baseUIForm._cb = (confirm) => {
-                resolve(confirm);
-            };
-        });;
+        return await UIManager.getInstance().showUIForm(this.prefabPath, ...parmas);
     }
     static async showWithLoading(...parmas: any) {
-        let baseUIForm = await UIManager.getInstance().showUIFormWithLoading(this.prefabPath, ...parmas);
-        return new Promise((resolve, reject) => {
-            baseUIForm._cb = (confirm) => {
-                resolve(confirm);
-            };
-        });;
+        return await UIManager.getInstance().showUIFormWithLoading(this.prefabPath, ...parmas);
     }
     public static async close() {
         await UIManager.getInstance().closeUIForm(this.prefabPath);
