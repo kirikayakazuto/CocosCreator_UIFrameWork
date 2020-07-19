@@ -5,6 +5,8 @@
  * @Date: 2019-06-06 10:59:29  
  * @Last Modified time: 2019-06-06 10:59:29 
  */
+
+let idSeed = 1;
 export default class GEventManager {
     private static _allEvents: {[key: string]: Array<ElementEvent>} = cc.js.createMap();
     private static _bufferEventMap: {[key: string]: Array<any>} = cc.js.createMap();          // 缓存的消息
@@ -12,6 +14,7 @@ export default class GEventManager {
     private static _openAutoClear = false;                                      // 开启定时清理监听事件
     private static _clearTimers: Array<ElementTimer> = [];
     private static _autoClearTimeNumber = 10;                                   // 定时清理的间隔
+
 
     /**
      * 发布一个事件, 对于缓存的消息, 10s还没有被接收, 那么会定时回收
