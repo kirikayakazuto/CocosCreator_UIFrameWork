@@ -9,7 +9,7 @@ const {ccclass, property} = cc._decorator;
 export default class UIRoom extends UIBase {
 
     ClickMaskClose = false;
-    formType = new FormType(ShowType.Fixed);
+    formType = new FormType(ShowType.FixedUI);
 
     static prefabPath = "UIForm/UIRoom";
 

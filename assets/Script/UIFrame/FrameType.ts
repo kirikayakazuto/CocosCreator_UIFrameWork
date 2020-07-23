@@ -1,18 +1,15 @@
-import { ShowType, ShowMode, ShowLuceny } from "./config/SysDefine";
+import { ShowType, ShowLuceny } from "./config/SysDefine";
 
 export class FormType {
     //是否清空“栈集合”
     public IsClearStack = false;
     //UI窗体（位置）类型
-    public showType = ShowType.Normal;
-    //UI窗体显示类型
-    public showMode = ShowMode.Normal;
+    public showType = ShowType.SceneBase;
     //UI窗体透明度类型
     public showLucency = ShowLuceny.Pentrate;
 
-    constructor(formtype?: ShowType, showMode?: ShowMode, lucencyType?: ShowLuceny, isClearStack?: boolean) {
+    constructor(formtype?: ShowType, lucencyType?: ShowLuceny, isClearStack?: boolean) {
         this.showType = formtype || this.showType;
-        this.showMode = showMode || this.showMode;
         this.showLucency = lucencyType || this.showLucency;
         this.IsClearStack = isClearStack || this.IsClearStack;
     }

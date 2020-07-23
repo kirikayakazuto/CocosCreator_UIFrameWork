@@ -10,7 +10,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIUserInfo extends UIBase {
 
-    formType = new FormType(ShowType.Fixed);   
+    formType = new FormType(ShowType.FixedUI);   
     
     @property(cc.Node)
     backNode: cc.Node = null;

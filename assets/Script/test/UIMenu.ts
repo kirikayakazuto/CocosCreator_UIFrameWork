@@ -11,7 +11,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIMenu extends UIBase {
 
-    formType = new FormType(ShowType.Fixed);
+    formType = new FormType(ShowType.FixedUI);
     
     static prefabPath = "UIForm/UIMenu";
 

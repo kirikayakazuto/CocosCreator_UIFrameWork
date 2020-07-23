@@ -1,4 +1,4 @@
-import { ShowLuceny, ShowMode, ShowType } from "../UIFrame/config/SysDefine";
+import { ShowLuceny, ShowType } from "../UIFrame/config/SysDefine";
 import UIBase from "../UIFrame/UIBase";
 import { FormType, MaskType } from "../UIFrame/FrameType";
 import CocosHelper from "../UIFrame/CocosHelper";
@@ -8,7 +8,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIHallSetting extends UIBase {
 
-    formType = new FormType(ShowType.PopUp, ShowMode.ReverseChange, ShowLuceny.Translucence);
+    formType = new FormType(ShowType.PopUp, ShowLuceny.Translucence);
 
     @property(cc.Node)
     CloseNode: cc.Node= null;

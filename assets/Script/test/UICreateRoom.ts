@@ -1,6 +1,6 @@
 import UIBase from "../UIFrame/UIBase";
 import { FormType } from "../UIFrame/FrameType";
-import { ShowType, ShowMode, ShowLuceny } from "../UIFrame/config/SysDefine";
+import { ShowType, ShowLuceny } from "../UIFrame/config/SysDefine";
 
 
 const {ccclass, property} = cc._decorator;
@@ -8,7 +8,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UICreateRoom extends UIBase {
 
-    formType = new FormType(ShowType.PopUp, ShowMode.ReverseChange, ShowLuceny.ImPenetrable);
+    formType = new FormType(ShowType.PopUp, ShowLuceny.ImPenetrable);
     
     ClickMaskClose = false;
 

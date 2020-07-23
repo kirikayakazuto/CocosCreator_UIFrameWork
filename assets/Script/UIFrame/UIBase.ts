@@ -22,11 +22,14 @@ export default class UIBase extends UIBinder {
     public destoryAfterClose = false;
     /** 自动绑定结点 */
     public autoBind = true;
+    /** 当前ui的状态 */
+    public state: string = null;
     /** 资源路径，如果没写的话就是类名 */
     static prefabPath = "";
     /** 回调 */
     private _cb: (confirm: any) => void;
-    static async show(...parmas: any) {
+
+    static async show(...parmas: any): Promise<UIBase> {
         return await UIManager.getInstance().showUIForm(this.prefabPath, ...parmas);
     }
     static async showWithLoading(...parmas: any) {
@@ -57,21 +60,27 @@ export default class UIBase extends UIBinder {
     public onPreHide() {}
     public onAfterHide() {}
 
+    public waitPromise() {
+        return new Promise((resolve, reject) => {
+            this._cb = (confirm) => {
+                resolve(confirm);
+            }
+        });
+    }
     /**
      * 显示窗体
      */
-    public async show() {
+    public async onShow() {
         this.node.active = true;
         UIMaskManager.getInstance().addMaskWindow(this.node); 
         await this.showAnimation();
         UIMaskManager.getInstance().showMask(this.formType.showLucency, this.maskType.IsEasing, this.maskType.EasingTime);
-        
     }
     
     /**
      * 隐藏, 需要重新showUIForm
      */
-    public async hide() {
+    public async onHide() {
         UIMaskManager.getInstance().removeMaskWindow(this.node); 
         await this.hideAnimation();
         this.node.active = false;
@@ -98,15 +107,4 @@ export default class UIBase extends UIBinder {
     }
     public async hideAnimation() {
     }
-
-    /**
-     * 消息机制
-     */
-    public sendMessage(messagType: string, parmas: any) {
-        GEventManager.emit(messagType, parmas);
-    }
-    public receiveMessage(messagType: string, callback: Function, targer: any) {
-        GEventManager.on(messagType, callback, targer);
-    }
-
 }

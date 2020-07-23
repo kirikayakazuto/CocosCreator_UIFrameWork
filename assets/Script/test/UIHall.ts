@@ -1,6 +1,6 @@
 import UIBase from "../UIFrame/UIBase";
 import { FormType } from "../UIFrame/FrameType";
-import { ShowType, ShowMode } from "../UIFrame/config/SysDefine";
+import { ShowType } from "../UIFrame/config/SysDefine";
 import UIUserInfo from "./UIUserInfo";
 import UIFriendRank from "./UIFriendRank";
 import UIMenu from "./UIMenu";
@@ -11,8 +11,14 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIHall extends UIBase {
 
-    public formType = new FormType(ShowType.Normal, ShowMode.HideOther);
-    public closeAndDestory = true;
+    public formType = new FormType(ShowType.SceneBase);
+    public destoryAfterClose = true;
+
+    @property(cc.Label)
+    lbClick: cc.Label = null;
+
+    @observable
+    public clickCount = 0;
 
     static prefabPath = "UIForm/UIHall";
 
@@ -23,8 +29,20 @@ export default class UIHall extends UIBase {
         await UIRoom.show();
     }
 
+    onPreShow() {
+        autorun(this.refreshClickView.bind(this));
+    }
+
+    refreshClickView() {
+        this.lbClick.string = `${this.clickCount}`;
+    }
+
     start () {
         this.playRoleAnim();
+    }
+
+    onClick() {
+        this.clickCount ++;
     }
 
     playRoleAnim() {

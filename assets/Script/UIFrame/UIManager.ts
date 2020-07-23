@@ -1,5 +1,5 @@
 import UIBase from "./UIBase";
-import { SysDefine, ShowType, ShowMode } from "./config/SysDefine";
+import { SysDefine, ShowType } from "./config/SysDefine";
 import TipsManager from "./TipsManager";
 import ResManager from "./ResManager";
 
@@ -68,13 +68,13 @@ export default class UIManager extends cc.Component {
     public async showUIForm(prefabPath: string, ...params: any) {
         if(prefabPath === "" || prefabPath == null) return ;
         if(this.checkUIFormIsShowing(prefabPath) || this.checkUIFormIsLoading(prefabPath)) {
-            cc.log(`${prefabPath}窗体已经在显示`);
+            cc.log(`${prefabPath}窗体已经在显示,或者正在加载中!`);
             return ;
         }
         
         let UIBases = await this.loadFormsToAllUIFormsCatch(prefabPath);
         if(UIBases == null) {
-            cc.log(`${prefabPath}未加载到，或者正在加载中!`);
+            cc.log(`${prefabPath}未加载到!`);
             return ;
         }
 
@@ -86,17 +86,17 @@ export default class UIManager extends cc.Component {
             this.clearStackArray();
         }
         
-        switch(UIBases.formType.showMode) {
-            case ShowMode.Normal:                             // 普通模式显示
-                await this.loadUIToCurrentCache(prefabPath, ...params);
-            break;
-            case ShowMode.ReverseChange:                      // 反向切换
-                await this.pushUIFormToStack(prefabPath, ...params);
-            break;
-            case ShowMode.HideOther:                          // 隐藏其他
+        switch(UIBases.formType.showType) {
+            case ShowType.SceneBase:
                 await this.enterUIFormsAndHideOther(prefabPath, ...params);
             break;
-            case ShowMode.Tips:                        // 独立显示
+            case ShowType.FixedUI:
+                await this.loadUIToCurrentCache(prefabPath, ...params);
+            break;
+            case ShowType.PopUp:
+                await this.pushUIFormToStack(prefabPath, ...params);
+            break;
+            case ShowType.Tips:                        // 独立显示
                 await this.loadUIFormsToIndependent(prefabPath, ...params);
             break;
         }
@@ -117,17 +117,17 @@ export default class UIManager extends cc.Component {
         
         if(UIBase == null) return ;
         
-        switch(UIBase.formType.showMode) {
-            case ShowMode.Normal:                             // 普通模式显示
-                await this.exitUIForms(prefabPath);
-            break;
-            case ShowMode.ReverseChange:                      // 反向切换
-                await this.popUIForm();
-            break;
-            case ShowMode.HideOther:                          // 隐藏其他
+        switch(UIBase.formType.showType) {
+            case ShowType.SceneBase:
                 await this.exitUIFormsAndDisplayOther(prefabPath);
             break;
-            case ShowMode.Tips:
+            case ShowType.FixedUI:                             // 普通模式显示
+                await this.exitUIForms(prefabPath);
+            break;
+            case ShowType.PopUp:
+                await this.popUIForm();
+            break;
+            case ShowType.Tips:
                 await this.exitIndependentForms(prefabPath);
             break;
         }
@@ -175,10 +175,10 @@ export default class UIManager extends cc.Component {
         }
         node.active = false;
         switch(baseUI.formType.showType) {
-            case ShowType.Normal:
+            case ShowType.SceneBase:
                 UIManager.getInstance()._NoNormal.addChild(node);
             break;
-            case ShowType.Fixed:
+            case ShowType.FixedUI:
                 UIManager.getInstance()._NoFixed.addChild(node);
             break;
             case ShowType.PopUp:
@@ -231,7 +231,7 @@ export default class UIManager extends cc.Component {
             await UIBaseFromAllCache._preInit();
             this._MapCurrentShowUIForms[prefabPath] = UIBaseFromAllCache;
             UIBaseFromAllCache.onPreShow(...params);
-            await UIBaseFromAllCache.show();
+            await UIBaseFromAllCache.onShow();
             UIBaseFromAllCache.onAfterShow(...params);
         }
     }
@@ -250,7 +250,7 @@ export default class UIManager extends cc.Component {
         this._StaCurrentUIForms.push(UIBase);       
         UIBase.node.zIndex = this._StaCurrentUIForms.length;
         UIBase.onPreShow(...params);
-        await UIBase.show();
+        await UIBase.onShow();
         UIBase.onAfterShow(...params);
     }
     /**
@@ -262,12 +262,12 @@ export default class UIManager extends cc.Component {
 
         // 隐藏其他窗口 
         for(let key in this._MapCurrentShowUIForms) {
-            this._MapCurrentShowUIForms[key].hide();
+            this._MapCurrentShowUIForms[key].onHide();
             this._MapCurrentShowUIForms[key] = null;
             delete this._MapCurrentShowUIForms[key];
         }
         this._StaCurrentUIForms.forEach(uiForm => {
-            uiForm.hide();
+            uiForm.onHide();
             this._MapCurrentShowUIForms[uiForm.uid] = null;
             delete this._MapCurrentShowUIForms[uiForm.uid];
         });
@@ -279,7 +279,7 @@ export default class UIManager extends cc.Component {
 
         this._MapCurrentShowUIForms[prefabPath] = UIBaseFromAll;
         UIBaseFromAll.onPreShow(...params);
-        await UIBaseFromAll.show();
+        await UIBaseFromAll.onShow();
         UIBaseFromAll.onAfterShow(...params);
     }
 
@@ -290,7 +290,7 @@ export default class UIManager extends cc.Component {
         await UIBase._preInit();
         this._MapIndependentForms[prefabPath] = UIBase;
         UIBase.onPreShow(...params);
-        await UIBase.show();
+        await UIBase.onShow();
         UIBase.onAfterShow(...params);
     }
 
@@ -305,7 +305,7 @@ export default class UIManager extends cc.Component {
         let UIBase = this._MapAllUIForms[prefabPath];
         if(UIBase == null) return ;
         UIBase.onPreHide();
-        await UIBase.hide();
+        await UIBase.onHide();
         UIBase.onAfterHide();
         this._MapCurrentShowUIForms[prefabPath] = null;
         delete this._MapCurrentShowUIForms[prefabPath];
@@ -315,7 +315,7 @@ export default class UIManager extends cc.Component {
         if(this._StaCurrentUIForms.length >= 1) {
             let topUIForm = this._StaCurrentUIForms.pop();
             topUIForm.onPreHide();
-            await topUIForm.hide();
+            await topUIForm.onHide();
             topUIForm.onAfterHide();
         }
     }
@@ -325,7 +325,7 @@ export default class UIManager extends cc.Component {
         let UIBase = this._MapCurrentShowUIForms[prefabPath];
         if(UIBase == null) return ;
         UIBase.onPreHide();
-        await UIBase.hide();
+        await UIBase.onHide();
         UIBase.onAfterHide();
         this._MapCurrentShowUIForms[prefabPath] = null;
         delete this._MapCurrentShowUIForms[prefabPath];
@@ -334,7 +334,7 @@ export default class UIManager extends cc.Component {
         let UIBase = this._MapAllUIForms[prefabPath];
         if(UIBase == null) return ;
         UIBase.onPreHide();
-        await UIBase.hide();
+        await UIBase.onHide();
         UIBase.onAfterHide();
         this._MapIndependentForms[prefabPath] = null;
         delete this._MapIndependentForms[prefabPath];
