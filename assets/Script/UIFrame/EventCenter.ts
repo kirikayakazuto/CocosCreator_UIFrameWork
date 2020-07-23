@@ -17,9 +17,21 @@ export class EventInfo implements IPool {
         this.once = once;
     }
 }
+class RemoveCommand {
+    public eventName:string;
+    public targetId:string;
+    public callback: Function;
+
+    constructor(eventName: string, callback: Function, targetId: string) {
+        this.eventName = eventName;
+        this.callback = callback;
+        this.targetId = targetId;
+    }
+}
 
 let idSeed = 1;         // 这里有一个小缺陷就是idSeed有最大值,Number.MAX_VALUE
 export class EventCenter {
+
     private static _listeners: {[eventName: string]: {[id: string]: Array<EventInfo>}} = cc.js.createMap();
     private static _dispatching : number = 0;
     private static _removeCommands : RemoveCommand[] = [];
@@ -104,30 +116,24 @@ export class EventCenter {
         this._removeCommands.length = 0;
     }
     
-    public static emit(eventId: string, ...param: any[]) {
-        let collection = this._listeners[eventId];
+    public static emit(eventName: string, ...param: any[]) {
+        let collection = this._listeners[eventName];
         if(!collection) return false;
         this._dispatching ++;
         for(let targetId in collection) {
             for(let eventInfo of collection[targetId]) {
                 eventInfo.callback.call(eventInfo.target, ...param);
+                if(eventInfo.once) {
+                    let cmd = new RemoveCommand(eventName, eventInfo.callback, targetId);
+                    this._removeCommands.push(cmd);
+                }
             }
         }
         this._dispatching --;
         this.doRemoveCommands();
     }
 }
-class RemoveCommand {
-    public eventName:string;
-    public targetId:string;
-    public callback: Function;
 
-    constructor(eventName: string, callback: Function, targetId: string) {
-        this.eventName = eventName;
-        this.callback = callback;
-        this.targetId = targetId;
-    }
-}
 export class EventCollection {
 
 }

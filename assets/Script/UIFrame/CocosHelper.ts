@@ -20,6 +20,10 @@ export default class CocosHelper {
     }
 
     /**  */
+    public static async runSyncTween(target: any, ...tweens: cc.Tween[]) {
+    }
+
+    /** 同步的动作 */
     public static async runSyncAction(node: cc.Node, ...actions: cc.FiniteTimeAction[]) {
         if(!actions || actions.length <= 0) return ;
         return new Promise((resolve, reject) => {
@@ -30,6 +34,7 @@ export default class CocosHelper {
         });
     }
 
+    /** 同步的动画 */
     public static async runSyncAnim(node: cc.Node, animName?: string | number) {
         let anim = node.getComponent(cc.Animation);
         if(!anim) return ;
@@ -114,7 +119,7 @@ export default class CocosHelper {
         }
         return name.split(SysDefine.SYS_STANDARD_Separator);
     }
-
+    /** 获得Component的类名 */
     public static getComponentName(com: Function) {
         let arr = com.name.match(/<.*>$/);
         if(arr) {
