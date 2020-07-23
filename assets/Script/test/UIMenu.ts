@@ -18,6 +18,9 @@ export default class UIMenu extends UIBase {
     start () {
         AdapterManager.getInstance().adapatByType(AdaptaterType.Bottom, this.node, -2);
     }
+    
+    onHide() {
+    }
 
     menuClick(e: cc.Event.EventTouch, data) {
         let pos = e.getLocation();

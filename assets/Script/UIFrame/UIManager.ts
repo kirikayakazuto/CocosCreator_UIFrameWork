@@ -54,9 +54,9 @@ export default class UIManager extends cc.Component {
     }
     
     /** 加载Form时显示等待页面 */
-    public async showUIFormWithLoading(prefabPath: string, ...params: any) {
+    public async openUIFormWithLoading(prefabPath: string, ...params: any) {
         await TipsManager.getInstance().showLoadingForm();
-        let uiBase = await UIManager.getInstance().showUIForm(prefabPath, ...params);
+        let uiBase = await UIManager.getInstance().openUIForm(prefabPath, ...params);
         await TipsManager.getInstance().hideLoadingForm();
         return uiBase;
     }
@@ -66,7 +66,7 @@ export default class UIManager extends cc.Component {
      * @param prefabPath 
      * @param obj 初始化信息, 可以不要
      */
-    public async showUIForm(prefabPath: string, ...params: any) {
+    public async openUIForm(prefabPath: string, ...params: any) {
         if(prefabPath === "" || prefabPath == null) return ;
         if(this.checkUIFormIsShowing(prefabPath) || this.checkUIFormIsLoading(prefabPath)) {
             cc.log(`${prefabPath}窗体已经在显示,或者正在加载中!`);
@@ -133,7 +133,7 @@ export default class UIManager extends cc.Component {
             break;
         }
         // 判断是否销毁该窗体
-        if(UIBase.destoryAfterClose) {
+        if(UIBase.canDestory) {
             this.destoryForm(UIBase, prefabPath);
         }
     }
@@ -263,14 +263,10 @@ export default class UIManager extends cc.Component {
 
         // 隐藏其他窗口 
         for(let key in this._MapCurrentShowUIForms) {
-            this._MapCurrentShowUIForms[key].onHide();
-            this._MapCurrentShowUIForms[key] = null;
-            delete this._MapCurrentShowUIForms[key];
+            await this._MapCurrentShowUIForms[key].closeUIForm();
         }
-        this._StaCurrentUIForms.forEach(uiForm => {
-            uiForm.onHide();
-            this._MapCurrentShowUIForms[uiForm.uid] = null;
-            delete this._MapCurrentShowUIForms[uiForm.uid];
+        this._StaCurrentUIForms.forEach(async uiForm => {
+            await uiForm.closeUIForm();
         });
 
         let UIBaseFromAll = this._MapAllUIForms[prefabPath];
@@ -307,9 +303,9 @@ export default class UIManager extends cc.Component {
         if(UIBase == null) return ;
         UIBase.onHide();
         await this.hideForm(UIBase);
+
         this._MapCurrentShowUIForms[prefabPath] = null;
         delete this._MapCurrentShowUIForms[prefabPath];
-        
     }
     private async popUIForm() {
         if(this._StaCurrentUIForms.length >= 1) {

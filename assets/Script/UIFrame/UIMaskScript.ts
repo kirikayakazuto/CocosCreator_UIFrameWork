@@ -13,7 +13,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIMaskScript extends cc.Component {
 
-    UIFormName: string;
+    uid: string;
 
     /** 代码创建一个单色texture */
     private _texture: cc.Texture2D = null;
@@ -54,12 +54,12 @@ export default class UIMaskScript extends cc.Component {
         this.node.active = true;
     }
     /** 使用 */
-    reuse(uiFormName: string) {
-        this.UIFormName = uiFormName;
+    reuse(uid: string) {
+        this.uid = uid;
     }
     /** 释放 */
     unuse() {
-        this.UIFormName = "";
+        this.uid = "";
         this.node.opacity = 0;
         this.node.active = true;
         cc.tween(this.node).stop();
@@ -90,9 +90,9 @@ export default class UIMaskScript extends cc.Component {
     }
 
     public async clickMaskWindow() {
-        let com = UIManager.getInstance().getUIComponent(this.UIFormName);
+        let com = UIManager.getInstance().getUIComponent(this.uid);
         if(com.maskType.ClickMaskClose) {
-           await UIManager.getInstance().closeUIForm(this.UIFormName);
+           await UIManager.getInstance().closeUIForm(this.uid);
         }
     }
 }

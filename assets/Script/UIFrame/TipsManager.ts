@@ -26,7 +26,7 @@ export default class TipsManager{
         if(path) {
             this.loadingFormName = path;
         }
-        await UIManager.getInstance().showUIForm(this.loadingFormName);
+        await UIManager.getInstance().openUIForm(this.loadingFormName);
         await CocosHelper.sleep(0.5);
     }
     /** 隐藏加载form */

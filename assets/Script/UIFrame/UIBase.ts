@@ -19,21 +19,19 @@ export default class UIBase extends UIBinder {
     /** 阴影类型, 只对PopUp类型窗体启用 */
     public maskType = new MaskType();
     /** 关闭窗口后销毁, 会将其依赖的资源一并销毁, 采用了引用计数的管理, 不用担心会影响其他窗体 */
-    public destoryAfterClose = false;
+    public canDestory = false;
     /** 自动绑定结点 */
     public autoBind = true;
-    /** 当前ui的状态 */
-    public state: UIState = 0;
     /** 回调 */
     private _cb: (confirm: any) => void;
 
     /** 资源路径，如果没写的话就是类名 */
     public static prefabPath = "";
     public static async openView(...parmas: any): Promise<UIBase> {
-        return await UIManager.getInstance().showUIForm(this.prefabPath, ...parmas);
+        return await UIManager.getInstance().openUIForm(this.prefabPath, ...parmas);
     }
     public static async openViewWithLoading(...parmas: any) {
-        return await UIManager.getInstance().showUIFormWithLoading(this.prefabPath, ...parmas);
+        return await UIManager.getInstance().openUIFormWithLoading(this.prefabPath, ...parmas);
     }
     public static async closeView() {
         await UIManager.getInstance().closeUIForm(this.prefabPath);
@@ -47,6 +45,7 @@ export default class UIBase extends UIBinder {
         if(!UIBase.prefabPath || UIBase.prefabPath.length <= 0) {
             UIBase.prefabPath = SysDefine.UI_PATH_ROOT + CocosHelper.getComponentName(UIBase);
         }
+        // 加载这个UI依赖的其他资源，其他资源可以也是UI
         await this.load();
     }
     
@@ -72,7 +71,7 @@ export default class UIBase extends UIBinder {
      * 显示与关闭
      */
     public async showUIForm(uiFormName: string, ...obj: any) {
-       await UIManager.getInstance().showUIForm(uiFormName, obj);
+       await UIManager.getInstance().openUIForm(uiFormName, obj);
     }
     public async closeUIForm() {
        await UIManager.getInstance().closeUIForm(this.uid);

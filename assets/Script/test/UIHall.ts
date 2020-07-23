@@ -12,7 +12,7 @@ const {ccclass, property} = cc._decorator;
 export default class UIHall extends UIBase {
 
     public formType = new FormType(ShowType.SceneBase);
-    public destoryAfterClose = true;
+    public canDestory = true;
 
     @property(cc.Label)
     lbClick: cc.Label = null;
@@ -23,10 +23,7 @@ export default class UIHall extends UIBase {
     static prefabPath = "UIForm/UIHall";
 
     async load() {
-        await UIUserInfo.openView();
-        await UIFriendRank.openView();
-        await UIMenu.openView();
-        await UIRoom.openView();
+        await Promise.all([UIUserInfo.openView(), UIFriendRank.openView(), UIMenu.openView(), UIRoom.openView()]);
     }
 
     onShow() {
