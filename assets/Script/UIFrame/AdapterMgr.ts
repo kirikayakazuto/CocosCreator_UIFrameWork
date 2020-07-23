@@ -8,17 +8,17 @@ import { SysDefine } from './config/SysDefine';
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class AdapterManager extends cc.Component {
+export default class AdapterMgr extends cc.Component {
 
-    private static instance: AdapterManager = null;                     // 单例
-    static getInstance() {
-        if(this.instance == null) {
-            this.instance = cc.find(SysDefine.SYS_UIAdaptation_NAME).addComponent<AdapterManager>(this);
+    private static _instance: AdapterMgr = null;                     // 单例
+    public static get inst() {
+        if(this._instance == null) {
+            this._instance = cc.find(SysDefine.SYS_UIAdaptation_NAME).addComponent<AdapterMgr>(this);
             cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
-                this.instance = null;
+                this._instance = null;
             });
         }
-        return this.instance;
+        return this._instance;
     }
     
     /** 屏幕尺寸 */

@@ -1,6 +1,6 @@
 import UIBase from "../UIFrame/UIBase";
 import { ShowType } from "../UIFrame/config/SysDefine";
-import AdapterManager, { AdaptaterType } from "../UIFrame/AdapterManager";
+import AdapterMgr, { AdaptaterType } from "../UIFrame/AdapterMgr";
 import { FormType } from "../UIFrame/FrameType";
 import GEventManager from "../UIFrame/GEventManager";
 import UILogin from "./UILogin";
@@ -20,7 +20,7 @@ export default class UIUserInfo extends UIBase {
     // onLoad () {}
 
     start () {
-        AdapterManager.getInstance().adapatByType(AdaptaterType.Top, this.node);
+        AdapterMgr.inst.adapatByType(AdaptaterType.Top, this.node);
         this.backNode.on('click', () => {
             UILogin.openView(1, 2, 3);
         });

@@ -1,6 +1,6 @@
 import UIBase from "../UIFrame/UIBase";
 import { ShowType } from "../UIFrame/config/SysDefine";
-import AdapterManager, { AdaptaterType } from "../UIFrame/AdapterManager";
+import AdapterMgr, { AdaptaterType } from "../UIFrame/AdapterMgr";
 import UIManager from "../UIFrame/UIManager";
 import { FormType } from "../UIFrame/FrameType";
 import UIHallSetting from "./UIHallSetting";
@@ -16,7 +16,7 @@ export default class UIMenu extends UIBase {
     static prefabPath = "UIForm/UIMenu";
 
     start () {
-        AdapterManager.getInstance().adapatByType(AdaptaterType.Bottom, this.node, -2);
+        AdapterMgr.inst.adapatByType(AdaptaterType.Bottom, this.node, -2);
     }
     
     onHide() {

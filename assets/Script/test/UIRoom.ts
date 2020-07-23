@@ -1,5 +1,5 @@
 import UIBase from "../UIFrame/UIBase";
-import AdapterManager, { AdaptaterType } from "../UIFrame/AdapterManager";
+import AdapterMgr, { AdaptaterType } from "../UIFrame/AdapterMgr";
 import { ShowType } from "../UIFrame/config/SysDefine";
 import { FormType } from "../UIFrame/FrameType";
 
@@ -16,7 +16,7 @@ export default class UIRoom extends UIBase {
     // onLoad () {}
 
     start () {
-        AdapterManager.getInstance().adapatByType(AdaptaterType.Right, this.node, 20);
+        AdapterMgr.inst.adapatByType(AdaptaterType.Right, this.node, 20);
     }
 
     // update (dt) {}

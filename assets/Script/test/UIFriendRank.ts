@@ -1,6 +1,6 @@
 import UIBase from "../UIFrame/UIBase";
 
-import AdapterManager, { AdaptaterType } from "../UIFrame/AdapterManager";
+import AdapterMgr, { AdaptaterType } from "../UIFrame/AdapterMgr";
 
 import ButtonPlus from "../UIFrame/components/ButtonPlus";
 import { ShowType } from "../UIFrame/config/SysDefine";
@@ -24,7 +24,7 @@ export default class UIFriendRank extends UIBase {
     // onLoad () {} 
 
     start () {
-        AdapterManager.getInstance().adapatByType(AdaptaterType.Left, this.node, 0);
+        AdapterMgr.inst.adapatByType(AdaptaterType.Left, this.node, 0);
         this.onSendGoldEvent();
     }
 
