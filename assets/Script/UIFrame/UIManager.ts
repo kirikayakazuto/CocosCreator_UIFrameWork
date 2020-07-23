@@ -42,7 +42,7 @@ export default class UIManager extends cc.Component {
     start() {        
     }
 
-    /** 预加载加载UIForm */
+    /** 预加载UIForm */
     public async loadUIForms(formName: string | Array<string>) {
         if(typeof(formName) === 'string') {
             await this.loadFormsToAllUIFormsCatch(formName);
@@ -73,21 +73,21 @@ export default class UIManager extends cc.Component {
             return ;
         }
         
-        let UIBases = await this.loadFormsToAllUIFormsCatch(prefabPath);
-        if(UIBases == null) {
+        let UIBase = await this.loadFormsToAllUIFormsCatch(prefabPath);
+        if(UIBase == null) {
             cc.log(`${prefabPath}未加载到!`);
             return ;
         }
 
         // 初始化窗体名称
-        UIBases.uid = prefabPath;
+        UIBase.uid = prefabPath;
         
         // 是否清理栈内窗口
-        if(UIBases.formType.IsClearStack) {
-            this.clearStackArray();
+        if(UIBase.formType.IsClearStack) {
+            await this.clearStackArray();
         }
         
-        switch(UIBases.formType.showType) {
+        switch(UIBase.formType.showType) {
             case ShowType.SceneBase:
                 await this.enterUIFormsAndHideOther(prefabPath, ...params);
             break;
@@ -102,7 +102,7 @@ export default class UIManager extends cc.Component {
             break;
         }
 
-        return UIBases;
+        return UIBase;
     }
     /**  */
     public getUIComponent(uiname: string) {
@@ -197,12 +197,15 @@ export default class UIManager extends cc.Component {
     /**
      * 清除栈内所有窗口
      */
-    private clearStackArray() {
-        if(this._StaCurrentUIForms != null && this._StaCurrentUIForms.length >= 1) {
-            this._StaCurrentUIForms = [];
-            return true;
+    private async clearStackArray() {
+        if(this._StaCurrentUIForms == null || this._StaCurrentUIForms.length <= 0) {
+            return ;
         }
-        return false;
+        for(const baseUI of this._StaCurrentUIForms) {
+            await baseUI.closeUIForm();
+        }
+        this._StaCurrentUIForms = [];
+        return ;
     }
     /**
      * 关闭栈顶窗口
