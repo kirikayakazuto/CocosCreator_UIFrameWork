@@ -11,7 +11,7 @@ export enum CommandType {
 export class Command {
     public commandType: CommandType;
     public data: any;
-    public prioritiy: number;               // 优先级， 数值越小， 优先级越高
+    public prioritiy: number;               // 优先级， 数值越大， 优先级越高
 
     constructor(commandType: CommandType, data: any, prioritiy: number = 10) {
         this.commandType = commandType;

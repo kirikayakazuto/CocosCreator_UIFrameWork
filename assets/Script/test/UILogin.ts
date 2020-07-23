@@ -13,19 +13,17 @@ export default class UILogin extends UIBase {
 
     static prefabPath = "UIForm/UILogin";
 
-    onPreShow(a: number, b: number, c: number) {
-        console.log(a, b, c);
-        GEventManager.emit("Event_Login", 1, 2, 3);
-    }
-
     /** 下面表示 生命周期顺序 */
-    init() {
-        cc.log('init');
-    }
-
     async load() {
         cc.log('load');
-        // 在这里执行你的加载操作, 如HallForm中的await UIManager.GetInstance().ShowUIForms("UIForm/UserInfoForm");
+        // 在这里执行你的加载操作
+    }
+
+    onShow(a: number, b: number, c: number) {
+        // 初始化操作
+        cc.log('onShow');
+        console.log(a, b, c);
+        GEventManager.emit("Event_Login", 1, 2, 3);
     }
 
     onLoad() {
@@ -36,6 +34,10 @@ export default class UILogin extends UIBase {
         cc.log('start')
     }
 
+    onHide() {
+        cc.log('onHide');
+    }
+
     onDestroy() {
         cc.log('destory');
         // 这里可以执行你的销毁操作, 在该窗体执行destory时, 会调用onDestory方法
@@ -43,6 +45,6 @@ export default class UILogin extends UIBase {
 
     onClickLogin() {
         this.closeUIForm();
-        UIHall.show();
+        UIHall.openView();
     }
 }

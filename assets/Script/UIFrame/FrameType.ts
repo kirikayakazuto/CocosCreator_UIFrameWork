@@ -5,12 +5,12 @@ export class FormType {
     public IsClearStack = false;
     //UI窗体（位置）类型
     public showType = ShowType.SceneBase;
-    //UI窗体透明度类型
-    public showLucency = ShowLuceny.Pentrate;
+    //UI mask透明度类型
+    public showMask = ShowLuceny.Pentrate;
 
     constructor(formtype?: ShowType, lucencyType?: ShowLuceny, isClearStack?: boolean) {
         this.showType = formtype || this.showType;
-        this.showLucency = lucencyType || this.showLucency;
+        this.showMask = lucencyType || this.showMask;
         this.IsClearStack = isClearStack || this.IsClearStack;
     }
 }

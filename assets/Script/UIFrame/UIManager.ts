@@ -2,6 +2,7 @@ import UIBase from "./UIBase";
 import { SysDefine, ShowType } from "./config/SysDefine";
 import TipsManager from "./TipsManager";
 import ResManager from "./ResManager";
+import UIMaskManager from "./UIMaskManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -230,9 +231,9 @@ export default class UIManager extends cc.Component {
         if(UIBaseFromAllCache != null) {
             await UIBaseFromAllCache._preInit();
             this._MapCurrentShowUIForms[prefabPath] = UIBaseFromAllCache;
-            UIBaseFromAllCache.onPreShow(...params);
-            await UIBaseFromAllCache.onShow();
-            UIBaseFromAllCache.onAfterShow(...params);
+            
+            UIBaseFromAllCache.onShow(...params);
+            await this.showForm(UIBaseFromAllCache);
         }
     }
     /**
@@ -249,9 +250,9 @@ export default class UIManager extends cc.Component {
         // 加入栈中, 同时设置其zIndex 使得后进入的窗体总是显示在上面
         this._StaCurrentUIForms.push(UIBase);       
         UIBase.node.zIndex = this._StaCurrentUIForms.length;
-        UIBase.onPreShow(...params);
-        await UIBase.onShow();
-        UIBase.onAfterShow(...params);
+        
+        UIBase.onShow(...params);
+        await this.showForm(UIBase);
     }
     /**
      * 加载时, 关闭其他窗口
@@ -278,9 +279,9 @@ export default class UIManager extends cc.Component {
         await UIBaseFromAll._preInit();
 
         this._MapCurrentShowUIForms[prefabPath] = UIBaseFromAll;
-        UIBaseFromAll.onPreShow(...params);
-        await UIBaseFromAll.onShow();
-        UIBaseFromAll.onAfterShow(...params);
+        
+        UIBaseFromAll.onShow(...params);
+        await this.showForm(UIBaseFromAll);
     }
 
     /** 加载到独立map中 */
@@ -289,9 +290,9 @@ export default class UIManager extends cc.Component {
         if(UIBase == null) return ;
         await UIBase._preInit();
         this._MapIndependentForms[prefabPath] = UIBase;
-        UIBase.onPreShow(...params);
-        await UIBase.onShow();
-        UIBase.onAfterShow(...params);
+        
+        UIBase.onShow(...params);
+        await this.showForm(UIBase);
     }
 
     /**
@@ -304,9 +305,8 @@ export default class UIManager extends cc.Component {
     private async exitUIForms(prefabPath: string) {
         let UIBase = this._MapAllUIForms[prefabPath];
         if(UIBase == null) return ;
-        UIBase.onPreHide();
-        await UIBase.onHide();
-        UIBase.onAfterHide();
+        UIBase.onHide();
+        await this.hideForm(UIBase);
         this._MapCurrentShowUIForms[prefabPath] = null;
         delete this._MapCurrentShowUIForms[prefabPath];
         
@@ -314,9 +314,8 @@ export default class UIManager extends cc.Component {
     private async popUIForm() {
         if(this._StaCurrentUIForms.length >= 1) {
             let topUIForm = this._StaCurrentUIForms.pop();
-            topUIForm.onPreHide();
-            await topUIForm.onHide();
-            topUIForm.onAfterHide();
+            topUIForm.onHide();
+            await this.hideForm(topUIForm);
         }
     }
     private async exitUIFormsAndDisplayOther(prefabPath: string) {
@@ -324,18 +323,18 @@ export default class UIManager extends cc.Component {
 
         let UIBase = this._MapCurrentShowUIForms[prefabPath];
         if(UIBase == null) return ;
-        UIBase.onPreHide();
-        await UIBase.onHide();
-        UIBase.onAfterHide();
+        UIBase.onHide();
+        await this.hideForm(UIBase);
+
         this._MapCurrentShowUIForms[prefabPath] = null;
         delete this._MapCurrentShowUIForms[prefabPath];
     }
     private async exitIndependentForms(prefabPath: string) {
         let UIBase = this._MapAllUIForms[prefabPath];
         if(UIBase == null) return ;
-        UIBase.onPreHide();
-        await UIBase.onHide();
-        UIBase.onAfterHide();
+        UIBase.onHide();
+        await this.hideForm(UIBase);
+
         this._MapIndependentForms[prefabPath] = null;
         delete this._MapIndependentForms[prefabPath];
     }
@@ -363,6 +362,19 @@ export default class UIManager extends cc.Component {
     public checkUIFormIsLoading(prefabPath: string) {
         let UIBase = this._LoadingForm[prefabPath];
         return !!UIBase;
+    }
+
+
+    private async showForm(baseUI: UIBase) {
+        baseUI.node.active = true;
+        UIMaskManager.getInstance().addMaskWindow(baseUI.node); 
+        await baseUI.showAnimation();
+        UIMaskManager.getInstance().showMask(baseUI.formType.showMask, baseUI.maskType.IsEasing, baseUI.maskType.EasingTime);
+    }
+    private async hideForm(baseUI: UIBase) {
+        UIMaskManager.getInstance().removeMaskWindow(baseUI.node); 
+        await baseUI.hideAnimation();
+        baseUI.node.active = false;
     }
 
     // update (dt) {}

@@ -5,9 +5,6 @@ export class EventInfo implements IPool {
     target: any;
     once: boolean;
 
-    use() {
-
-    }
     free() {
         this.callback = null;
         this.target = null;

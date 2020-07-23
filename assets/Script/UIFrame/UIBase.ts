@@ -3,7 +3,7 @@ import GEventManager from "./GEventManager";
 import UIBinder from "./UIBinder";
 import CocosHelper from "./CocosHelper";
 import UIManager from "./UIManager";
-import { ShowType, SysDefine } from "./config/SysDefine";
+import { ShowType, SysDefine, UIState } from "./config/SysDefine";
 import { FormType, MaskType } from "./FrameType";
 import Binder from "./Binder";
 
@@ -23,21 +23,22 @@ export default class UIBase extends UIBinder {
     /** 自动绑定结点 */
     public autoBind = true;
     /** 当前ui的状态 */
-    public state: string = null;
-    /** 资源路径，如果没写的话就是类名 */
-    static prefabPath = "";
+    public state: UIState = 0;
     /** 回调 */
     private _cb: (confirm: any) => void;
 
-    static async show(...parmas: any): Promise<UIBase> {
+    /** 资源路径，如果没写的话就是类名 */
+    public static prefabPath = "";
+    public static async openView(...parmas: any): Promise<UIBase> {
         return await UIManager.getInstance().showUIForm(this.prefabPath, ...parmas);
     }
-    static async showWithLoading(...parmas: any) {
+    public static async openViewWithLoading(...parmas: any) {
         return await UIManager.getInstance().showUIFormWithLoading(this.prefabPath, ...parmas);
     }
-    public static async close() {
+    public static async closeView() {
         await UIManager.getInstance().closeUIForm(this.prefabPath);
     }
+    
     /** 预先初始化 */
     public async _preInit() {
         if(this.autoBind) {
@@ -54,11 +55,10 @@ export default class UIBase extends UIBinder {
         // 可以在这里进行一些资源的加载, 具体实现可以看test下的代码
     }
 
-    public onPreShow(...obj: any) {}
-    public onAfterShow(...obj: any) {}
+    public onShow(...obj: any) {}
+
+    public onHide() {}
     
-    public onPreHide() {}
-    public onAfterHide() {}
 
     public waitPromise() {
         return new Promise((resolve, reject) => {
@@ -66,24 +66,6 @@ export default class UIBase extends UIBinder {
                 resolve(confirm);
             }
         });
-    }
-    /**
-     * 显示窗体
-     */
-    public async onShow() {
-        this.node.active = true;
-        UIMaskManager.getInstance().addMaskWindow(this.node); 
-        await this.showAnimation();
-        UIMaskManager.getInstance().showMask(this.formType.showLucency, this.maskType.IsEasing, this.maskType.EasingTime);
-    }
-    
-    /**
-     * 隐藏, 需要重新showUIForm
-     */
-    public async onHide() {
-        UIMaskManager.getInstance().removeMaskWindow(this.node); 
-        await this.hideAnimation();
-        this.node.active = false;
     }
 
     /**

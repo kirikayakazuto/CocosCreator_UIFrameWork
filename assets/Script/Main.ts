@@ -23,7 +23,7 @@ export default class Main extends cc.Component {
 
     start () {
         TipsManager.getInstance().setLoadingForm("UIForm/UILoading");
-        UILogin.show(1, 2, 3);
+        UILogin.openView(1, 2, 3);
     
         this.buttonPlus.addClick(() => {
             cc.log("点击事件!");

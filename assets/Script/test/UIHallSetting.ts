@@ -18,7 +18,7 @@ export default class UIHallSetting extends UIBase {
     static prefabPath = "UIForm/UIHallSetting";
 
 
-    onPreShow(startPosition: cc.Vec2) {
+    onShow(startPosition: cc.Vec2) {
         this.startPosition = this.node.convertToNodeSpaceAR(startPosition);
     }
 

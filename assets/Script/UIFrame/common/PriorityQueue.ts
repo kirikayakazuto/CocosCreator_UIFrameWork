@@ -1,3 +1,7 @@
+/**
+ * @author denglang
+ * 优先队列
+ */
 export class PriorityElement<T> {
     public data: T;
     public pIdx: number;
@@ -81,15 +85,3 @@ export default class PriorityQueue<T> {
         return s;
     }
 }
-
-// let q = new PriorityQueue<string>();
-// q.enqueue('a', 3);
-// q.enqueue('b', 2);
-// q.enqueue('c', 6);
-// q.enqueue('g', 4);
-// q.enqueue('k', 5);
-// console.log(q.dequeue());
-// console.log(q.dequeue());
-// console.log(q.dequeue());
-// console.log(q.toString());
-

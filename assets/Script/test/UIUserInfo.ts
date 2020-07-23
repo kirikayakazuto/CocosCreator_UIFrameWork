@@ -22,7 +22,7 @@ export default class UIUserInfo extends UIBase {
     start () {
         AdapterManager.getInstance().adapatByType(AdaptaterType.Top, this.node);
         this.backNode.on('click', () => {
-            UILogin.show(1, 2, 3);
+            UILogin.openView(1, 2, 3);
         });
 
         /**  */

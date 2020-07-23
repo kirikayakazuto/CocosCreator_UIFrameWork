@@ -24,7 +24,7 @@ export default class UIMenu extends UIBase {
 
         switch(data) {
             case "sz":
-                UIHallSetting.show(pos);
+                UIHallSetting.openView(pos);
             break;
         }
     }

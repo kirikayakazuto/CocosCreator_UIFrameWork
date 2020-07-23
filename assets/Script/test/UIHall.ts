@@ -23,13 +23,13 @@ export default class UIHall extends UIBase {
     static prefabPath = "UIForm/UIHall";
 
     async load() {
-        await UIUserInfo.show();
-        await UIFriendRank.show();
-        await UIMenu.show();
-        await UIRoom.show();
+        await UIUserInfo.openView();
+        await UIFriendRank.openView();
+        await UIMenu.openView();
+        await UIRoom.openView();
     }
 
-    onPreShow() {
+    onShow() {
         autorun(this.refreshClickView.bind(this));
     }
 

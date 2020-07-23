@@ -20,6 +20,13 @@ export enum ShowLuceny {
     /** 可以穿透 */
     Pentrate,
 }
+/** UI的状态 */
+export enum UIState {
+    None = 0,
+    Loading = 1,
+    Showing = 2,
+    Hiding = 3
+}
 /** 常量 */
 export class SysDefine {
     /* 路径常量 */
