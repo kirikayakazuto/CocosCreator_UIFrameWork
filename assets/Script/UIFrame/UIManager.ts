@@ -12,13 +12,13 @@ export default class UIManager extends cc.Component {
     private _NoNormal: cc.Node = null;                              // 全屏显示的UI 挂载结点
     private _NoFixed: cc.Node = null;                               // 固定显示的UI
     private _NoPopUp: cc.Node = null;                               // 弹出窗口
-    private _NoTips: cc.Node = null;                         // 独立窗体
+    private _NoTips: cc.Node = null;                                // 独立窗体
 
-    private _StaCurrentUIForms:Array<UIBase> = [];                     // 存储弹出的窗体
-    private _MapAllUIForms: {[key: string]: UIBase} = cc.js.createMap();              // 所有的窗体
-    private _MapCurrentShowUIForms: {[key: string]: UIBase} = cc.js.createMap();      // 正在显示的窗体(不包括弹窗)
-    private _MapIndependentForms: {[key: string]: UIBase} = cc.js.createMap();        // 独立窗体 独立于其他窗体, 不受其他窗体的影响
-    private _LoadingForm: {[key: string]: boolean} = cc.js.createMap();                   // 正在加载的form 
+    private _StaCurrentUIForms:Array<UIBase> = [];                                      // 存储弹出的窗体
+    private _MapAllUIForms: {[key: string]: UIBase} = cc.js.createMap();                // 所有的窗体
+    private _MapCurrentShowUIForms: {[key: string]: UIBase} = cc.js.createMap();        // 正在显示的窗体(不包括弹窗)
+    private _MapIndependentForms: {[key: string]: UIBase} = cc.js.createMap();          // 独立窗体 独立于其他窗体, 不受其他窗体的影响
+    private _LoadingForm: {[key: string]: boolean} = cc.js.createMap();                 // 正在加载的form 
 
     private static instance: UIManager = null;                     // 单例
     public static getInstance(): UIManager {
@@ -69,13 +69,13 @@ export default class UIManager extends cc.Component {
     public async openUIForm(prefabPath: string, ...params: any) {
         if(prefabPath === "" || prefabPath == null) return ;
         if(this.checkUIFormIsShowing(prefabPath) || this.checkUIFormIsLoading(prefabPath)) {
-            cc.log(`${prefabPath}窗体已经在显示,或者正在加载中!`);
+            cc.warn(`${prefabPath}窗体已经在显示,或者正在加载中!`);
             return ;
         }
         
         let UIBase = await this.loadFormsToAllUIFormsCatch(prefabPath);
         if(UIBase == null) {
-            cc.log(`${prefabPath}未加载到!`);
+            cc.warn(`${prefabPath}未加载到!`);
             return ;
         }
 
@@ -137,7 +137,6 @@ export default class UIManager extends cc.Component {
             this.destoryForm(UIBase, prefabPath);
         }
     }
-
 
     /**
      * 从全部的UI窗口中加载, 并挂载到结点上
@@ -338,6 +337,20 @@ export default class UIManager extends cc.Component {
         delete this._MapIndependentForms[prefabPath];
     }
 
+    private async showForm(baseUI: UIBase) {
+        baseUI.node.active = true;
+        UIMaskManager.getInstance().addMaskWindow(baseUI.node); 
+        await baseUI.showAnimation();
+        UIMaskManager.getInstance().showMask(baseUI.formType.showMask, baseUI.maskType.IsEasing, baseUI.maskType.EasingTime);
+    }
+
+    private async hideForm(baseUI: UIBase) {
+        UIMaskManager.getInstance().removeMaskWindow(baseUI.node); 
+        await baseUI.hideAnimation();
+        baseUI.node.active = false;
+    }
+
+
     /** 销毁 */
     private destoryForm(UIBase: UIBase, prefabPath: string) {
         ResManager.getInstance().destoryForm(UIBase);
@@ -346,10 +359,7 @@ export default class UIManager extends cc.Component {
         delete this._MapAllUIForms[prefabPath];
     }
 
-    /**
-     * 窗体是否正在显示
-     * @param prefabPath 
-     */
+    /** 窗体是否正在显示 */
     public checkUIFormIsShowing(prefabPath: string) {
         let UIBases = this._MapAllUIForms[prefabPath];
         if (UIBases == null) {
@@ -362,19 +372,4 @@ export default class UIManager extends cc.Component {
         let UIBase = this._LoadingForm[prefabPath];
         return !!UIBase;
     }
-
-
-    private async showForm(baseUI: UIBase) {
-        baseUI.node.active = true;
-        UIMaskManager.getInstance().addMaskWindow(baseUI.node); 
-        await baseUI.showAnimation();
-        UIMaskManager.getInstance().showMask(baseUI.formType.showMask, baseUI.maskType.IsEasing, baseUI.maskType.EasingTime);
-    }
-    private async hideForm(baseUI: UIBase) {
-        UIMaskManager.getInstance().removeMaskWindow(baseUI.node); 
-        await baseUI.hideAnimation();
-        baseUI.node.active = false;
-    }
-
-    // update (dt) {}
 }

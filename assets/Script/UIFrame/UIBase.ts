@@ -28,9 +28,12 @@ export default class UIBase extends UIBinder {
     /** 资源路径，如果没写的话就是类名 */
     public static prefabPath = "";
     public static async openView(...parmas: any): Promise<UIBase> {
+        if(!this.prefabPath || this.prefabPath.length <= 0) {
+            this.prefabPath = SysDefine.UI_PATH_ROOT + CocosHelper.getComponentName(this);
+        }
         return await UIManager.getInstance().openUIForm(this.prefabPath, ...parmas);
     }
-    public static async openViewWithLoading(...parmas: any) {
+    public static async openViewWithLoading(...parmas: any): Promise<UIBase> {
         return await UIManager.getInstance().openUIFormWithLoading(this.prefabPath, ...parmas);
     }
     public static async closeView() {
@@ -41,9 +44,6 @@ export default class UIBase extends UIBinder {
     public async _preInit() {
         if(this.autoBind) {
             Binder.bindComponent(this);
-        }
-        if(!UIBase.prefabPath || UIBase.prefabPath.length <= 0) {
-            UIBase.prefabPath = SysDefine.UI_PATH_ROOT + CocosHelper.getComponentName(UIBase);
         }
         // 加载这个UI依赖的其他资源，其他资源可以也是UI
         await this.load();
@@ -58,7 +58,7 @@ export default class UIBase extends UIBinder {
 
     public onHide() {}
     
-
+    /** 通过闭包，保留resolve.在合适的时间调用cb方法 */
     public waitPromise() {
         return new Promise((resolve, reject) => {
             this._cb = (confirm) => {
