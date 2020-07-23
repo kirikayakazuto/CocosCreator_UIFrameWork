@@ -1,12 +1,31 @@
 import { Pool, IPool } from "./common/Pool";
 
+export class EventInfo implements IPool {
+    callback: Function;
+    target: any;
+    once: boolean;
+
+    use() {
+
+    }
+    free() {
+        this.callback = null;
+        this.target = null;
+        this.once = false;
+    }
+
+    init(callback: Function, target: Object, once: boolean) {
+        this.callback = callback;
+        this.target = target;
+        this.once = once;
+    }
+}
 
 let idSeed = 1;         // 这里有一个小缺陷就是idSeed有最大值,Number.MAX_VALUE
 export class EventCenter {
     private static _listeners: {[eventName: string]: {[id: string]: Array<EventInfo>}} = cc.js.createMap();
     private static _dispatching : number = 0;
     private static _removeCommands : RemoveCommand[] = [];
-    private static uuid : string = "0";
 
     private static _eventPool: Pool<EventInfo> = new Pool<EventInfo>(() => {
         return new EventInfo();
@@ -36,6 +55,8 @@ export class EventCenter {
         eventInfo.init(cb, target, once);
         events.push(eventInfo);
     }
+
+
     public static off(eventName: string, callback: Function, target: any = undefined) {
         target = target || this;
         let targetId = target['uuid'] || target['id'];
@@ -112,24 +133,4 @@ class RemoveCommand {
 }
 export class EventCollection {
 
-}
-export class EventInfo implements IPool {
-    callback: Function;
-    target: any;
-    once: boolean;
-
-    use() {
-
-    }
-    free() {
-        this.callback = null;
-        this.target = null;
-        this.once = false;
-    }
-
-    init(callback: Function, target: Object, once: boolean) {
-        this.callback = callback;
-        this.target = target;
-        this.once = once;
-    }
 }
