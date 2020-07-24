@@ -1,4 +1,6 @@
 import Game from "../Logic/Game";
+import { EventCenter } from "../UIFrame/EventCenter";
+import { EventType } from "../UIFrame/EventType";
 
 const {ccclass, property} = cc._decorator;
 
@@ -13,10 +15,21 @@ export default class Scene extends cc.Component {
         this._started = true;
 
         if(CC_WECHATGAME) {
-            wx.onShow((param) => {
-                
-            });
+            wx.onShow(this.onGameShow.bind(this));
+            wx.onHide(this.onGameHide.bind(this));
+        }else {
+            cc.game.on(cc.game.EVENT_SHOW, this.onGameShow, this);
+            cc.game.on(cc.game.EVENT_HIDE, this.onGameHide, this);
         }
+    }
+
+    onGameShow(param) {
+        EventCenter.emit(EventType.GameShow);
+        cc.director.resume()
+    }
+    onGameHide() {
+        EventCenter.emit(EventType.GameHide);
+        cc.director.pause();
     }
 
     public update(dt: number) {
