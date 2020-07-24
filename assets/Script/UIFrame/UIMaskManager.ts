@@ -2,6 +2,7 @@
 import { SysDefine } from "./config/SysDefine";
 import UIMaskScript from "./UIMaskScript";
 import UIBase from "./UIBase";
+import { MaskType } from "./FrameType";
 /**
  * 遮罩管理
  */
@@ -26,8 +27,8 @@ export default class UIMaskManager extends cc.Component {
         this.uiMaskScript = MaskNodePool.getInstance().get(parent);
     }
     /** 为mask添加颜色 */
-    public showMask(lucenyType: number, isEasing?: boolean, time?: number) {
-        this.uiMaskScript.showMaskUI(lucenyType, time, isEasing);
+    public async showMask(maskType: MaskType) {
+        await this.uiMaskScript.showMaskUI(maskType.opacity, maskType.easingTime, maskType.isEasing);
     }
     /** 去掉mask */
     public removeMaskWindow(parent: cc.Node) {

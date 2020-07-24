@@ -1,5 +1,5 @@
 import UIManager from "./UIManager";
-import { ShowLuceny } from "./config/SysDefine";
+import { MaskOpacity } from "./config/SysDefine";
 import CocosHelper from "./CocosHelper";
 
 /**
@@ -38,7 +38,7 @@ export default class UIMaskScript extends cc.Component {
     /**
      * 初始化
      */
-    public async init() {
+    public init() {
         let maskTexture = this.getSingleTexture();
         let size = cc.view.getVisibleSize();
         this.node.height = size.height;
@@ -68,18 +68,20 @@ export default class UIMaskScript extends cc.Component {
     public async showMaskUI(lucenyType: number, time: number = 0.6, isEasing: boolean = true) {
         let o = 0;
         switch (lucenyType) {
-            case ShowLuceny.Lucency:   
+            case MaskOpacity.Pentrate:    
+                this.node.active = false;
+                console.log(this.node);
+                return;
+            break;        
+            case MaskOpacity.Lucency:   
                 o = 0;
             break;
-            case ShowLuceny.ImPenetrable:    
+            case MaskOpacity.ImPenetrable:    
                 o = 63;
             break;
-            case ShowLuceny.Translucence:   
+            case MaskOpacity.Translucence:   
                 o = 126;
             break;
-            case ShowLuceny.Pentrate:    
-                this.node.active = false;
-            break;        
         }
         if(!this.node.active) return ;
         if(isEasing) {
@@ -91,7 +93,7 @@ export default class UIMaskScript extends cc.Component {
 
     public async clickMaskWindow() {
         let com = UIManager.getInstance().getComponentByUid(this.uid);
-        if(com && com.maskType.ClickMaskClose) {
+        if(com && com.maskType.clickMaskClose) {
            await UIManager.getInstance().closeUIForm(this.uid);
         }
     }

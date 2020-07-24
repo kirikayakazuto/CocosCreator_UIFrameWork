@@ -1,5 +1,4 @@
-import { ShowType, } from "../UIFrame/config/SysDefine";
-import { FormType } from "../UIFrame/FrameType";
+import { FormType, } from "../UIFrame/config/SysDefine";
 import UIBase from "../UIFrame/UIBase";
 
 const {ccclass, property} = cc._decorator;
@@ -7,7 +6,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UILoading extends UIBase {
 
-    formType = new FormType(ShowType.TopTips);
+    formType = FormType.TopTips;
 
     
     

@@ -1,8 +1,8 @@
 import UIBinder from "./UIBinder";
 import CocosHelper from "./CocosHelper";
 import UIManager from "./UIManager";
-import { ShowType, SysDefine, UIState } from "./config/SysDefine";
-import { FormType, MaskType } from "./FrameType";
+import { FormType, SysDefine, UIState, MaskOpacity } from "./config/SysDefine";
+import { MaskType } from "./FrameType";
 import Binder from "./Binder";
 import AdapterMgr from "./AdapterMgr";
 import TipsManager from "./TipsManager";
@@ -15,7 +15,7 @@ export default class UIBase extends UIBinder {
     /** 窗体id,该窗体的唯一标示(请不要对这个值进行赋值操作, 内部已经实现了对应的赋值) */
     public uid: string;
     /** 窗体类型 */
-    public formType = new FormType();
+    public formType: FormType = 0;
     /** 阴影类型, 只对PopUp类型窗体启用 */
     public maskType = new MaskType();
     /** 关闭窗口后销毁, 会将其依赖的资源一并销毁, 采用了引用计数的管理, 不用担心会影响其他窗体 */
@@ -101,7 +101,7 @@ export default class UIBase extends UIBinder {
      * 弹窗动画
      */
     public async showAnimation() {
-        if(this.formType.showType === ShowType.PopUp) {
+        if(this.formType === FormType.PopUp) {
             this.node.scale = 0;
             await CocosHelper.runSyncAction(this.node, cc.scaleTo(0.3, 1).easing(cc.easeBackOut()));
         }

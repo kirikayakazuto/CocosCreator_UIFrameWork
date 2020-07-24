@@ -20,7 +20,6 @@ export default class TipsManager{
     /** 设置加载页面 */
     public setLoadingForm(loadingName: string) {
         this.loadingFormName = loadingName;
-        UIManager.getInstance().loadUIForms(this.loadingFormName);
     }
     public async showLoadingForm(path?: string) {
         if(path) {

@@ -1,6 +1,5 @@
-import { ShowType, ShowLuceny } from '../UIFrame/config/SysDefine';
+import { FormType, MaskOpacity } from '../UIFrame/config/SysDefine';
 import UIBase from "../UIFrame/UIBase";
-import { FormType } from '../UIFrame/FrameType';
 import UIHall from './UIHall';
 import { EventCenter } from '../UIFrame/EventCenter';
 const {ccclass, property} = cc._decorator;
@@ -8,7 +7,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UILogin extends UIBase {
     
-    formType = new FormType(ShowType.SceneBase, ShowLuceny.Lucency);
+    formType = FormType.SceneBase;
     canDestory = true;
 
     static prefabPath = "UIForm/UILogin";

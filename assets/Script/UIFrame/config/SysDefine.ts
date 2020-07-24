@@ -1,5 +1,6 @@
 /**窗体类型 */
-export enum ShowType {
+export enum FormType {
+    Empty,
     /** 普通窗口 */
     SceneBase,
     /** 固定窗口 */
@@ -10,15 +11,15 @@ export enum ShowType {
     TopTips,
 }
 /**透明度类型 */
-export enum ShowLuceny {
+export enum MaskOpacity {
+    /** 没有mask, 可以穿透 */
+    Pentrate,
     /** 完全透明，不能穿透 */
     Lucency,
     /** 半透明，不能穿透 */
     Translucence,
     /** 低透明度，不能穿透 */
     ImPenetrable,
-    /** 可以穿透 */
-    Pentrate,
 }
 /** UI的状态 */
 export enum UIState {

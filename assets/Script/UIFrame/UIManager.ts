@@ -1,8 +1,9 @@
 import UIBase from "./UIBase";
-import { SysDefine, ShowType } from "./config/SysDefine";
+import { SysDefine, FormType, MaskOpacity } from "./config/SysDefine";
 import TipsManager from "./TipsManager";
 import ResMgr from "./ResMgr";
 import UIMaskManager from "./UIMaskManager";
+import { MaskType } from "./FrameType";
 
 const {ccclass, property} = cc._decorator;
 
@@ -48,13 +49,9 @@ export default class UIManager extends cc.Component {
     }
 
     /** 预加载UIForm */
-    public async loadUIForms(formName: string | Array<string>) {
-        if(typeof(formName) === 'string') {
-            await this.loadFormsToAllUIFormsCatch(formName);
-        }else {
-            for(const name of formName) {
-                await this.loadFormsToAllUIFormsCatch(name);
-            }
+    public async loadUIForms(...uibases: typeof UIBase[]) {
+        for(const uibase of uibases) {
+            await this.loadFormsToAllUIFormsCatch(uibase.prefabPath);
         }
     }
     
@@ -85,21 +82,21 @@ export default class UIManager extends cc.Component {
         // 初始化窗体名称
         UIBase.uid = prefabPath;
         // 是否清理栈内窗口
-        if(UIBase.formType.IsClearStack) {
-            await this.clearStackArray();
-        }
+        // if(UIBase.formType.IsClearStack) {
+            // await this.clearStackArray();
+        // }
         
-        switch(UIBase.formType.showType) {
-            case ShowType.SceneBase:
+        switch(UIBase.formType) {
+            case FormType.SceneBase:
                 await this.enterUIFormsAndHideOther(prefabPath, ...params);
             break;
-            case ShowType.FixedUI:
+            case FormType.FixedUI:
                 await this.loadUIToCurrentCache(prefabPath, ...params);
             break;
-            case ShowType.PopUp:
+            case FormType.PopUp:
                 await this.pushUIFormToStack(prefabPath, ...params);
             break;
-            case ShowType.TopTips:                        // 独立显示
+            case FormType.TopTips:                        // 独立显示
                 await this.loadUIFormsToIndependent(prefabPath, ...params);
             break;
         }
@@ -116,17 +113,17 @@ export default class UIManager extends cc.Component {
         
         if(UIBase == null) return true;
         
-        switch(UIBase.formType.showType) {
-            case ShowType.SceneBase:
+        switch(UIBase.formType) {
+            case FormType.SceneBase:
                 await this.exitUIFormsAndDisplayOther(prefabPath);
             break;
-            case ShowType.FixedUI:                             // 普通模式显示
+            case FormType.FixedUI:                             // 普通模式显示
                 await this.exitUIForms(prefabPath);
             break;
-            case ShowType.PopUp:
+            case FormType.PopUp:
                 await this.popUIForm();
             break;
-            case ShowType.TopTips:
+            case FormType.TopTips:
                 await this.exitIndependentForms(prefabPath);
             break;
         }
@@ -173,17 +170,17 @@ export default class UIManager extends cc.Component {
             return ;
         }
         node.active = false;
-        switch(baseUI.formType.showType) {
-            case ShowType.SceneBase:
+        switch(baseUI.formType) {
+            case FormType.SceneBase:
                 UIManager.getInstance()._NoNormal.addChild(node);
             break;
-            case ShowType.FixedUI:
+            case FormType.FixedUI:
                 UIManager.getInstance()._NoFixed.addChild(node);
             break;
-            case ShowType.PopUp:
+            case FormType.PopUp:
                 UIManager.getInstance()._NoPopUp.addChild(node);
             break;
-            case ShowType.TopTips:
+            case FormType.TopTips:
                 UIManager.getInstance()._NoTips.addChild(node);
             break;
         }
@@ -211,7 +208,7 @@ export default class UIManager extends cc.Component {
     public closeTopStackUIForm() {
         if(this._StaCurrentUIForms != null && this._StaCurrentUIForms.length >= 1) {
             let uiFrom = this._StaCurrentUIForms[this._StaCurrentUIForms.length-1];
-            if(uiFrom.maskType.ClickMaskClose) {
+            if(uiFrom.maskType.clickMaskClose) {
                 uiFrom.closeUIForm();
             }   
         }
@@ -336,11 +333,12 @@ export default class UIManager extends cc.Component {
         delete this._MapIndependentForms[prefabPath];
     }
 
+    /** bug点，这里的showForm会被多次调用，在showMask的时候，baseUI可能会被改变 */
     private async showForm(baseUI: UIBase) {
         baseUI.node.active = true;
-        UIMaskManager.getInstance().addMaskWindow(baseUI.node); 
+        UIMaskManager.getInstance().addMaskWindow(baseUI.node);
         await baseUI.showAnimation();
-        UIMaskManager.getInstance().showMask(baseUI.formType.showMask, baseUI.maskType.IsEasing, baseUI.maskType.EasingTime);
+        await UIMaskManager.getInstance().showMask(baseUI.maskType);
     }
 
     private async hideForm(baseUI: UIBase) {
