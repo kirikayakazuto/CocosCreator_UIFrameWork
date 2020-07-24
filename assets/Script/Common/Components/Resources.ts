@@ -1,4 +1,4 @@
-import ResManager from "../ResManager";
+import ResManager from "../../UIFrame/ResManager";
 
 /**
  * 进入场景前 就必须加载的资源可以从这里加载

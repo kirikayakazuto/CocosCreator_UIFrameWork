@@ -1,6 +1,6 @@
-import ButtonPlus from "./UIFrame/components/ButtonPlus";
+import ButtonPlus from "./Common/Components/ButtonPlus";
 import TipsManager from "./UIFrame/TipsManager";
-import TouchPlus from "./UIFrame/components/TouchPlus";
+import TouchPlus from "./Common/Components/TouchPlus";
 import UILogin from "./test/UILogin";
 import { EventCenter } from "./UIFrame/EventCenter";
 

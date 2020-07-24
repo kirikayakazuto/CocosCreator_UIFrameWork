@@ -1,4 +1,4 @@
-import { Pool, IPool } from "./common/Pool";
+import { Pool, IPool } from "../Common/Utils/Pool";
 
 export class EventInfo implements IPool {
     callback: Function;

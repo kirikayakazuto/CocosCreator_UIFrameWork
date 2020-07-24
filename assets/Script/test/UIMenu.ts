@@ -24,12 +24,7 @@ export default class UIMenu extends UIBase {
 
     menuClick(e: cc.Event.EventTouch, data) {
         let pos = e.getLocation();
-
-        switch(data) {
-            case "sz":
-                UIHallSetting.openView(pos);
-            break;
-        }
+        UIHallSetting.openView(pos);
     }
 
     // update (dt) {}

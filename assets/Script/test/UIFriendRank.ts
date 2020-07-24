@@ -2,7 +2,7 @@ import UIBase from "../UIFrame/UIBase";
 
 import AdapterMgr, { AdaptaterType } from "../UIFrame/AdapterMgr";
 
-import ButtonPlus from "../UIFrame/components/ButtonPlus";
+import ButtonPlus from "../Common/Components/ButtonPlus";
 import { ShowType } from "../UIFrame/config/SysDefine";
 import { FormType } from "../UIFrame/FrameType";
 import { EventCenter } from "../UIFrame/EventCenter";

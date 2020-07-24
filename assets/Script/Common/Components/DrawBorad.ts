@@ -1,4 +1,4 @@
-import DrawingBoard from "../common/DrawingBoard";
+import DrawingBoard from "../Utils/DrawingBoard";
 
 const {ccclass, property} = cc._decorator;
 

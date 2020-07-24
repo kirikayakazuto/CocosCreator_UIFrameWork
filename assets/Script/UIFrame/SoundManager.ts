@@ -1,5 +1,5 @@
-import CocosHelper from "../CocosHelper";
-import { SysDefine } from "../config/SysDefine";
+import CocosHelper from "./CocosHelper";
+import { SysDefine } from "./config/SysDefine";
 
 const {ccclass, property} = cc._decorator;
 
