@@ -42,9 +42,9 @@ export class EventCenter {
 
     public static on(eventName: string, callback: Function, target: any = undefined, once = false) {
         target = target || this;
-        let targetId = target['uuid'] || target['id'];
+        let targetId: string = target['uuid'] || target['id'];
         if(targetId === undefined) {
-            target['uuid'] = targetId = idSeed++;
+            target['uuid'] = targetId = '' + idSeed++;
         }
         this.onById(eventName, targetId, target, callback, once);
     }

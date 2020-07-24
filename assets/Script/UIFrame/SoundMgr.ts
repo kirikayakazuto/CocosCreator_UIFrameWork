@@ -31,7 +31,6 @@ export default class SoundMgr extends cc.Component {
     getVolume() {
         return this.volume;
     }
-        
 
     start () {
 
