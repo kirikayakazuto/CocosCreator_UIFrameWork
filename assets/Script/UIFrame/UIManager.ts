@@ -42,6 +42,11 @@ export default class UIManager extends cc.Component {
     start() {        
     }
 
+    /**  */
+    public getComponentByUid(uid: string) {
+        return this._MapAllUIForms[uid];
+    }
+
     /** 预加载UIForm */
     public async loadUIForms(formName: string | Array<string>) {
         if(typeof(formName) === 'string') {
@@ -72,16 +77,13 @@ export default class UIManager extends cc.Component {
             cc.warn(`${prefabPath}窗体已经在显示,或者正在加载中!`);
             return ;
         }
-        
         let UIBase = await this.loadFormsToAllUIFormsCatch(prefabPath);
         if(UIBase == null) {
             cc.warn(`${prefabPath}未加载到!`);
             return ;
         }
-
         // 初始化窗体名称
         UIBase.uid = prefabPath;
-        
         // 是否清理栈内窗口
         if(UIBase.formType.IsClearStack) {
             await this.clearStackArray();
@@ -97,16 +99,12 @@ export default class UIManager extends cc.Component {
             case ShowType.PopUp:
                 await this.pushUIFormToStack(prefabPath, ...params);
             break;
-            case ShowType.Tips:                        // 独立显示
+            case ShowType.TopTips:                        // 独立显示
                 await this.loadUIFormsToIndependent(prefabPath, ...params);
             break;
         }
 
         return UIBase;
-    }
-    /**  */
-    public getUIComponent(uiname: string) {
-        return this._MapAllUIForms[uiname];
     }
     /**
      * 重要方法 关闭一个UIForm
@@ -128,7 +126,7 @@ export default class UIManager extends cc.Component {
             case ShowType.PopUp:
                 await this.popUIForm();
             break;
-            case ShowType.Tips:
+            case ShowType.TopTips:
                 await this.exitIndependentForms(prefabPath);
             break;
         }
@@ -184,7 +182,7 @@ export default class UIManager extends cc.Component {
             case ShowType.PopUp:
                 UIManager.getInstance()._NoPopUp.addChild(node);
             break;
-            case ShowType.Tips:
+            case ShowType.TopTips:
                 UIManager.getInstance()._NoTips.addChild(node);
             break;
         }

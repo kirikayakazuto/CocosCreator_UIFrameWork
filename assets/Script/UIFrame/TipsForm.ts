@@ -10,7 +10,7 @@ export default class TipsForm extends UIBase {
     @property(cc.Label)
     tips: cc.Label = null;
 
-    formType = new FormType(ShowType.Tips);
+    formType = new FormType(ShowType.TopTips);
 
 
     public static async popUp(url: string, params: any) {

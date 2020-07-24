@@ -13,7 +13,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIMaskScript extends cc.Component {
 
-    uid: string;
+    private uid: string;
 
     /** 代码创建一个单色texture */
     private _texture: cc.Texture2D = null;
@@ -90,7 +90,7 @@ export default class UIMaskScript extends cc.Component {
     }
 
     public async clickMaskWindow() {
-        let com = UIManager.getInstance().getUIComponent(this.uid);
+        let com = UIManager.getInstance().getComponentByUid(this.uid);
         if(com.maskType.ClickMaskClose) {
            await UIManager.getInstance().closeUIForm(this.uid);
         }

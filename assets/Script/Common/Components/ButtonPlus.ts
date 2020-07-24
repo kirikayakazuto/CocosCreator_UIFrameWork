@@ -1,4 +1,4 @@
-import SoundManager from "../../UIFrame/SoundManager";
+import SoundMgr from "../../UIFrame/SoundManager";
 
 const {ccclass, property, executeInEditMode, menu, help, inspector} = cc._decorator;
 @ccclass
@@ -77,7 +77,7 @@ export default class ButtonPlus extends cc.Button {
             this.continuous = this.openContinuous ? true : false;
             cc.Component.EventHandler.emitEvents(this.clickEvents, event);
             this.node.emit('click', this);
-            SoundManager.getInstance().playEffectMusic(this.audioUrl ? cc.url.raw(this.audioUrl): null)
+            SoundMgr.inst.playEffectMusic(this.audioUrl ? cc.url.raw(this.audioUrl): null)
             if (this.openContinuous) {
                this._continuousTimer = setTimeout(function(){
                     this.continuous = false;

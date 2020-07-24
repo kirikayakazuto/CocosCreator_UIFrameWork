@@ -43,8 +43,8 @@ export default class UILogin extends UIBase {
         // 这里可以执行你的销毁操作, 在该窗体执行destory时, 会调用onDestory方法
     }
 
-    onClickLogin() {
+    async onClickLogin() {
         this.closeUIForm();
-        UIHall.openView();
+        await UIHall.openViewWithLoading();
     }
 }

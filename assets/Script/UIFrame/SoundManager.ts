@@ -4,14 +4,14 @@ import { SysDefine } from "./config/SysDefine";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class SoundManager extends cc.Component {
+export default class SoundMgr extends cc.Component {
 
     private audioCache: {[key: string]: cc.AudioClip} = cc.js.createMap();
 
-    private static _Instance: SoundManager = null;                     // 单例
-    public static getInstance(): SoundManager {
+    private static _Instance: SoundMgr = null;                     // 单例
+    public static get inst(): SoundMgr {
         if(this._Instance == null) {
-            this._Instance = cc.find(SysDefine.SYS_UIROOT_NAME).addComponent<SoundManager>(this);
+            this._Instance = cc.find(SysDefine.SYS_UIROOT_NAME).addComponent<SoundMgr>(this);
         }
         return this._Instance;
     }
@@ -72,7 +72,7 @@ export default class SoundManager extends cc.Component {
 
     /** 从本地读取 */
     private getVolumeToLocal() {
-        let objStr = cc.sys.localStorage.getItem("Waitting_Volume");
+        let objStr = cc.sys.localStorage.getItem("Volume_For_Creator");
         if(!objStr) {
             return null;
         }
@@ -83,7 +83,7 @@ export default class SoundManager extends cc.Component {
         cc.audioEngine.setMusicVolume(this.volume.musicVolume);
         cc.audioEngine.setEffectsVolume(this.volume.effectVolume);
 
-        cc.sys.localStorage.setItem("Waitting_Volume", JSON.stringify(this.volume));
+        cc.sys.localStorage.setItem("Volume_For_Creator", JSON.stringify(this.volume));
     }
 
     // update (dt) {}

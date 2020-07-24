@@ -7,7 +7,7 @@ export enum ShowType {
     /** 弹出窗口 */
     PopUp,
     /** 独立窗口 */
-    Tips,
+    TopTips,
 }
 /**透明度类型 */
 export enum ShowLuceny {

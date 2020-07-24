@@ -122,7 +122,7 @@ export default class CocosHelper {
     /** 获得Component的类名 */
     public static getComponentName(com: Function) {
         let arr = com.name.match(/<.*>$/);
-        if(arr) {
+        if(arr && arr.length > 0) {
             return arr[0].slice(1, -1);
         }
         return com.name;
