@@ -3,6 +3,7 @@ import TipsManager from "./UIFrame/TipsManager";
 import TouchPlus from "./Common/Components/TouchPlus";
 import UILogin from "./test/UILogin";
 import { EventCenter } from "./UIFrame/EventCenter";
+import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
 
 const {ccclass, property} = cc._decorator;
 
@@ -22,6 +23,10 @@ export default class Main extends cc.Component {
     }
 
     start () {
+        if (CC_DEBUG) {
+            DebugWindowUtil.init();
+        }
+
         TipsManager.getInstance().setLoadingForm("UIForm/UILoading");
         UILogin.openView(1, 2, 3);
     

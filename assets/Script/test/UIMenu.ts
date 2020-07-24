@@ -1,7 +1,6 @@
 import UIBase from "../UIFrame/UIBase";
 import { ShowType } from "../UIFrame/config/SysDefine";
 import AdapterMgr, { AdaptaterType } from "../UIFrame/AdapterMgr";
-import UIManager from "../UIFrame/UIManager";
 import { FormType } from "../UIFrame/FrameType";
 import UIHallSetting from "./UIHallSetting";
 
