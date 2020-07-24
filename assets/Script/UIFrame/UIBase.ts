@@ -5,6 +5,7 @@ import { ShowType, SysDefine, UIState } from "./config/SysDefine";
 import { FormType, MaskType } from "./FrameType";
 import Binder from "./Binder";
 import AdapterMgr from "./AdapterMgr";
+import TipsManager from "./TipsManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -33,11 +34,15 @@ export default class UIBase extends UIBinder {
         return await UIManager.getInstance().openUIForm(this.prefabPath, ...parmas);
     }
     public static async openViewWithLoading(...parmas: any): Promise<UIBase> {
-        return await UIManager.getInstance().openUIFormWithLoading(this.prefabPath, ...parmas);
+        await TipsManager.getInstance().showLoadingForm();
+        let uiBase = await this.openView(...parmas);
+        await TipsManager.getInstance().hideLoadingForm();
+        return uiBase;
     }
-    public static async closeView() {
-        await UIManager.getInstance().closeUIForm(this.prefabPath);
+    public static async closeView(): Promise<boolean> {
+        return await UIManager.getInstance().closeUIForm(this.prefabPath);
     }
+
     
     /** 预先初始化 */
     public async _preInit() {
@@ -58,22 +63,24 @@ export default class UIBase extends UIBinder {
     public onHide() {}
     
     /** 通过闭包，保留resolve.在合适的时间调用cb方法 */
-    public waitPromise() {
+    public waitPromise(): Promise<any> {
         return new Promise((resolve, reject) => {
-            this._cb = (confirm) => {
+            this._cb = (confirm: any) => {
                 resolve(confirm);
             }
         });
     }
 
     /**
-     * 显示与关闭
+     * 
+     * @param uiFormName 窗体名称
+     * @param obj 参数
      */
-    public async showUIForm(uiFormName: string, ...obj: any) {
-       await UIManager.getInstance().openUIForm(uiFormName, obj);
+    public async showUIForm(uiFormName: string, ...obj: any): Promise<UIBase> {
+       return await UIManager.getInstance().openUIForm(uiFormName, obj);
     }
-    public async closeUIForm() {
-       await UIManager.getInstance().closeUIForm(this.uid);
+    public async closeUIForm(): Promise<boolean> {
+       return await UIManager.getInstance().closeUIForm(this.uid);
     }
 
     /**

@@ -40,7 +40,7 @@ export default class UILogin extends UIBase {
 
     onDestroy() {
         cc.log('destory');
-        // 这里可以执行你的销毁操作, 在该窗体执行destory时, 会调用onDestory方法
+        // 这里可以执行你的销毁操作, 在该窗体执行destory时, 会先调用onDestory方法
     }
 
     async onClickLogin() {

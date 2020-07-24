@@ -12,11 +12,11 @@ import { EventCenter } from "./EventCenter";
  * 1, 加载  在加载prefab时, cocos会将其依赖的图片一并加载, 所有不需要我们担心
  * 2, 释放  这里采用的引用计数的管理方法, 只需要调用destoryForm即可
  */
-export default class ResManager {
-    private static instance: ResManager = null;
-    public static getInstance() {
+export default class ResMgr {
+    private static instance: ResMgr = null;
+    public static get inst() {
         if(this.instance === null) {
-            this.instance = new ResManager();
+            this.instance = new ResMgr();
         }
         return this.instance;
     }
@@ -26,6 +26,22 @@ export default class ResManager {
     private staticDepends:{[key: string]: number} = cc.js.createMap();
     private dynamicDepends: {[key: string]: Array<string>} = cc.js.createMap();
     private tmpStaticDepends: Array<string> = [];
+
+    private _stubRes: {[type: string]: {[name: string]: cc.Asset}} = {};
+    public addStub(res: cc.Asset, type: typeof cc.Asset) {
+        let content = this._stubRes[type.name];
+        if(!content) {
+            content = this._stubRes[type.name] = {};
+        }
+        content[res.name] = res;
+    }
+    public getStubRes(resName: string, type: typeof cc.Asset) {
+        let content = this._stubRes[type.name];
+        if(!content) {
+            return null;
+        }
+        return content[resName];
+    }
 
     private _addTmpStaticDepends(completedCount: number, totalCount: number, item: any) {
         this.tmpStaticDepends[this.tmpStaticDepends.length] = item.url;

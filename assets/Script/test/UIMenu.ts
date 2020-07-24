@@ -15,11 +15,16 @@ export default class UIMenu extends UIBase {
     
     static prefabPath = "UIForm/UIMenu";
 
+    onShow() {
+        
+    }
+
     start () {
         AdapterMgr.inst.adapatByType(AdaptaterType.Bottom, this.node, -2);
     }
     
     onHide() {
+        
     }
 
     menuClick(e: cc.Event.EventTouch, data) {

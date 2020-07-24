@@ -33,6 +33,7 @@ export default class TipsManager{
         await UIManager.getInstance().closeUIForm(this.loadingFormName);
     }
 
+    /** 提示窗体 */
     private tipsFormName: string;
     public setTipsForm(tipsFormName: string) {
         this.tipsFormName = tipsFormName;

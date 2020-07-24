@@ -1,7 +1,7 @@
 import UIBase from "./UIBase";
 import { SysDefine, ShowType } from "./config/SysDefine";
 import TipsManager from "./TipsManager";
-import ResManager from "./ResManager";
+import ResMgr from "./ResMgr";
 import UIMaskManager from "./UIMaskManager";
 
 const {ccclass, property} = cc._decorator;
@@ -114,7 +114,7 @@ export default class UIManager extends cc.Component {
         if(prefabPath == "" || prefabPath == null) return ;
         let UIBase = this._MapAllUIForms[prefabPath];
         
-        if(UIBase == null) return ;
+        if(UIBase == null) return true;
         
         switch(UIBase.formType.showType) {
             case ShowType.SceneBase:
@@ -134,6 +134,7 @@ export default class UIManager extends cc.Component {
         if(UIBase.canDestory) {
             this.destoryForm(UIBase, prefabPath);
         }
+        return true;
     }
 
     /**
@@ -161,7 +162,7 @@ export default class UIManager extends cc.Component {
             return ;
         }
         
-        let pre = await ResManager.getInstance().loadForm(formPath);
+        let pre = await ResMgr.inst.loadForm(formPath);
         if(!pre) {
             cc.warn(`${formPath} 资源加载失败, 请确认路径是否正确`);
             return ;
@@ -351,7 +352,7 @@ export default class UIManager extends cc.Component {
 
     /** 销毁 */
     private destoryForm(UIBase: UIBase, prefabPath: string) {
-        ResManager.getInstance().destoryForm(UIBase);
+        ResMgr.inst.destoryForm(UIBase);
         // 从allmap中删除
         this._MapAllUIForms[prefabPath] = null;
         delete this._MapAllUIForms[prefabPath];
