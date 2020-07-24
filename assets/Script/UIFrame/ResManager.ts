@@ -1,6 +1,6 @@
 import CocosHelper from "./CocosHelper";
-import GEventManager from "./GEventManager";
 import UIBase from "./UIBase";
+import { EventCenter } from "./EventCenter";
 
 /**
  * 资源加载, 针对的是Form
@@ -62,7 +62,7 @@ export default class ResManager {
             cc.log("只支持销毁继承了UIBase的窗体!");
             return;
         }
-        GEventManager.targetOff(com);
+        EventCenter.targetOff(com);
         let deps = cc.loader.getDependsRecursively(com.uid);
         this.removeStaticDepends(deps);
         com.node.destroy();

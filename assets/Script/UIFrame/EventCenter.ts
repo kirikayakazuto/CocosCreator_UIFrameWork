@@ -78,8 +78,8 @@ export class EventCenter {
         if(!targetId) return ;
         for(let event in this._listeners) {
             let collection = this._listeners[event];
-            if(collection.listenerMap[targetId] !== undefined) {
-                delete collection.listenerMap[targetId];
+            if(collection[targetId] !== undefined) {
+                delete collection[targetId];
             }
         }
     }
@@ -102,6 +102,7 @@ export class EventCenter {
             }
         }
         if(events.length === 0) {
+            collection[targetId] = null;
             delete collection[targetId];
         }
     }
@@ -134,6 +135,23 @@ export class EventCenter {
     }
 }
 
-export class EventCollection {
 
-}
+// EventCenter.on("Event1", eventCb);
+
+// function eventCb(param) {
+//     console.log(param);
+// }
+
+// EventCenter.once('EventOnce', eventOnceCb);
+
+// function eventOnceCb(param) {
+//     console.log(param);
+// }
+
+// EventCenter.emit('Event1', '123');
+// EventCenter.emit('EventOnce', '121233');
+
+// EventCenter.off('Event1', eventCb);
+
+// EventCenter.emit('Event1', '123');
+// EventCenter.emit('EventOnce', '123');

@@ -2,8 +2,8 @@ import UIBase from "../UIFrame/UIBase";
 import { ShowType } from "../UIFrame/config/SysDefine";
 import AdapterMgr, { AdaptaterType } from "../UIFrame/AdapterMgr";
 import { FormType } from "../UIFrame/FrameType";
-import GEventManager from "../UIFrame/GEventManager";
 import UILogin from "./UILogin";
+import { EventCenter } from "../UIFrame/EventCenter";
 
 const {ccclass, property} = cc._decorator;
 
@@ -26,7 +26,7 @@ export default class UIUserInfo extends UIBase {
         });
 
         /**  */
-        GEventManager.on('SendGold', (gold: number) => {
+        EventCenter.on('SendGold', (gold: number) => {
             cc.log('收到了来自FriendRankForm的消息');
         }, this);
     }

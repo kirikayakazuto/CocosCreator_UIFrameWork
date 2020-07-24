@@ -1,5 +1,3 @@
-import UIMaskManager from "./UIMaskManager";
-import GEventManager from "./GEventManager";
 import UIBinder from "./UIBinder";
 import CocosHelper from "./CocosHelper";
 import UIManager from "./UIManager";

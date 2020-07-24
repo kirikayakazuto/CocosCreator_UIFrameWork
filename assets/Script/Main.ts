@@ -2,7 +2,7 @@ import ButtonPlus from "./UIFrame/components/ButtonPlus";
 import TipsManager from "./UIFrame/TipsManager";
 import TouchPlus from "./UIFrame/components/TouchPlus";
 import UILogin from "./test/UILogin";
-import GEventManager from "./UIFrame/GEventManager";
+import { EventCenter } from "./UIFrame/EventCenter";
 
 const {ccclass, property} = cc._decorator;
 
@@ -16,7 +16,7 @@ export default class Main extends cc.Component {
     touchPlus: TouchPlus = null;
 
     onLoad() {
-        GEventManager.on("Event_Login", (a: number, b: number, c: number) => {
+        EventCenter.on("Event_Login", (a: number, b: number, c: number) => {
             console.log("Event ", a, b, c);
         }, this);
     }

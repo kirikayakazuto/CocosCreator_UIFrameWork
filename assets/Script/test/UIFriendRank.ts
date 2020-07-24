@@ -4,8 +4,8 @@ import AdapterMgr, { AdaptaterType } from "../UIFrame/AdapterMgr";
 
 import ButtonPlus from "../UIFrame/components/ButtonPlus";
 import { ShowType } from "../UIFrame/config/SysDefine";
-import GEventManager from "../UIFrame/GEventManager";
 import { FormType } from "../UIFrame/FrameType";
+import { EventCenter } from "../UIFrame/EventCenter";
 
 
 const {ccclass, property} = cc._decorator;
@@ -32,7 +32,7 @@ export default class UIFriendRank extends UIBase {
     onSendGoldEvent() {
         for(const item of this.content.children) {
             item.getChildByName("排行榜-送金币").getComponent(ButtonPlus).addClick(() => {
-                GEventManager.emit('SendGold', 10);
+                EventCenter.emit('SendGold', 10);
             }, this);
         }
     }

@@ -1,6 +1,6 @@
 import { ISocket, IMsg } from "./NetInterface";
-import GEventManager from "../GEventManager";
 import CWebSocket from "./CWebSocket";
+import { EventCenter } from "../EventCenter";
 
 enum SocketState {
     Closed,             // 已关闭
@@ -72,7 +72,7 @@ export default class NetManager {
         this.socket.onConnect = function(e) {
             cc.log('连接网络成功!');
             self.state = SocketState.Connected;
-            GEventManager.emit('NetWork_Connect', null);
+            EventCenter.emit('NetWork_Connect', null);
         }
         /** 收到消息 */
         this.socket.onMessage = function(msg: IMsg) {

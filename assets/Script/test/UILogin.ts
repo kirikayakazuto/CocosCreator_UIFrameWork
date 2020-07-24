@@ -1,8 +1,8 @@
 import { ShowType, ShowLuceny } from '../UIFrame/config/SysDefine';
 import UIBase from "../UIFrame/UIBase";
 import { FormType } from '../UIFrame/FrameType';
-import GEventManager from '../UIFrame/GEventManager';
 import UIHall from './UIHall';
+import { EventCenter } from '../UIFrame/EventCenter';
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -23,7 +23,7 @@ export default class UILogin extends UIBase {
         // 初始化操作
         cc.log('onShow');
         console.log(a, b, c);
-        GEventManager.emit("Event_Login", 1, 2, 3);
+        EventCenter.emit("Event_Login", 1, 2, 3);
     }
 
     onLoad() {
