@@ -11,6 +11,12 @@ export default class Scene extends cc.Component {
     public start() {
         Scene.inst = this;
         this._started = true;
+
+        if(CC_WECHATGAME) {
+            wx.onShow((param) => {
+                
+            });
+        }
     }
 
     public update(dt: number) {

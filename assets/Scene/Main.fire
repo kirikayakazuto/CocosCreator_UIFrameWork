@@ -133,11 +133,7 @@
       "__id__": 2
     },
     "_enabled": true,
-    "prefabs": [
-      {
-        "__uuid__": "a8e25420-b314-434f-8588-24922056ca12"
-      }
-    ],
+    "prefabs": [],
     "textures": [],
     "audioClips": [],
     "animClips": [],

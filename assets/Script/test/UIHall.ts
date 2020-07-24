@@ -12,13 +12,12 @@ const {ccclass, property} = cc._decorator;
 export default class UIHall extends UIBase {
 
     public formType = new FormType(ShowType.SceneBase);
-    public canDestory = true;
+    public canDestory = false;
 
     @property(cc.Label)
     lbClick: cc.Label = null;
 
-    @observable
-    public clickCount = 0;
+    model: number = 1;
 
     static prefabPath = "UIForm/UIHall";
 
@@ -27,11 +26,11 @@ export default class UIHall extends UIBase {
     }
 
     onShow() {
-        autorun(this.refreshClickView.bind(this));
+
     }
 
-    refreshClickView() {
-        this.lbClick.string = `${this.clickCount}`;
+    refreshView() {
+        this.lbClick.string = `${this.model}`;
     }
 
     start () {
@@ -39,7 +38,7 @@ export default class UIHall extends UIBase {
     }
 
     onClick() {
-        this.clickCount ++;
+        this.model ++;
     }
 
     playRoleAnim() {

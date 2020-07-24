@@ -24,6 +24,8 @@ export default class UIBase extends UIBinder {
     public autoBind = true;
     /** 回调 */
     private _cb: (confirm: any) => void;
+    /** 是否已经调用过preinit方法 */
+    private _inited = false;
 
     /** 资源路径，如果没写的话就是类名 */
     public static prefabPath = "";
@@ -42,15 +44,27 @@ export default class UIBase extends UIBinder {
     public static async closeView(): Promise<boolean> {
         return await UIManager.getInstance().closeUIForm(this.prefabPath);
     }
-
     
     /** 预先初始化 */
     public async _preInit() {
+        if(this._inited) return ;
+        this._inited = true;
         if(this.autoBind) {
             Binder.bindComponent(this);
         }
+        autorun(this.refreshView.bind(this));
         // 加载这个UI依赖的其他资源，其他资源可以也是UI
         await this.load();
+    }
+
+    @observable
+    model: any = null;
+    /**
+     * 这个函数在model的数值发生变化时（前提条件是在这个函数中用到了model），会自动执行，无需手动调用
+     * @param r 
+     */
+    public refreshView(r: IReactionPublic) {
+        
     }
     
     /** 异步加载 */
