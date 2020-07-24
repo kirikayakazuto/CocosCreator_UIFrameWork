@@ -4,6 +4,7 @@ import UIManager from "./UIManager";
 import { ShowType, SysDefine, UIState } from "./config/SysDefine";
 import { FormType, MaskType } from "./FrameType";
 import Binder from "./Binder";
+import AdapterMgr from "./AdapterMgr";
 
 const {ccclass, property} = cc._decorator;
 
@@ -85,5 +86,19 @@ export default class UIBase extends UIBinder {
         }
     }
     public async hideAnimation() {
+    }
+
+    /** 设置是否挡住触摸事件 */
+    private _blocker: cc.BlockInputEvents = null;
+    public setBlockInput(block: boolean) {
+        if(block && !this._blocker) {
+            let node = new cc.Node('block_input_events');
+            this._blocker = node.addComponent(cc.BlockInputEvents);
+            this._blocker.node.setContentSize(AdapterMgr.inst.visibleSize);
+            this.node.addChild(this._blocker.node, cc.macro.MAX_ZINDEX);
+        }else if(!block && this._blocker) {
+            this._blocker.node.destroy();
+            this._blocker = null;
+        }
     }
 }
