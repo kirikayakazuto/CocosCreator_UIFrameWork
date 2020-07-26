@@ -76,7 +76,7 @@ export default class ButtonPlus extends cc.Button {
         } else if (this["_pressed"] && !this.continuous) {
             this.continuous = this.openContinuous ? true : false;
             cc.Component.EventHandler.emitEvents(this.clickEvents, event);
-            this.node.emit('click', this);
+            this.node.emit('click', event);
             SoundMgr.inst.playEffectMusic(this.audioUrl ? cc.url.raw(this.audioUrl): null)
             if (this.openContinuous) {
                this._continuousTimer = setTimeout(function(){

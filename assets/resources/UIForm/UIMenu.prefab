@@ -324,7 +324,7 @@
         1,
         1,
         1,
-        1
+        0
       ]
     },
     "_eulerAngles": {
@@ -373,22 +373,24 @@
     "_id": ""
   },
   {
-    "__type__": "c0d79JDPZBHTo4pbyzXuuIE",
+    "__type__": "3eaf8iLxgtDEKVcEmFvrbqy",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 6
     },
     "_enabled": true,
-    "_normalMaterial": null,
+    "_normalMaterial": {
+      "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+    },
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.2,
     "clickEvents": [],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
-    "_N$transition": 0,
-    "transition": 0,
+    "_N$transition": 3,
+    "transition": 3,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -557,7 +559,7 @@
     "_id": ""
   },
   {
-    "__type__": "c0d79JDPZBHTo4pbyzXuuIE",
+    "__type__": "3eaf8iLxgtDEKVcEmFvrbqy",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -741,7 +743,7 @@
     "_id": ""
   },
   {
-    "__type__": "c0d79JDPZBHTo4pbyzXuuIE",
+    "__type__": "3eaf8iLxgtDEKVcEmFvrbqy",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -925,7 +927,7 @@
     "_id": ""
   },
   {
-    "__type__": "c0d79JDPZBHTo4pbyzXuuIE",
+    "__type__": "3eaf8iLxgtDEKVcEmFvrbqy",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -1109,7 +1111,7 @@
     "_id": ""
   },
   {
-    "__type__": "c0d79JDPZBHTo4pbyzXuuIE",
+    "__type__": "3eaf8iLxgtDEKVcEmFvrbqy",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -1293,7 +1295,7 @@
     "_id": ""
   },
   {
-    "__type__": "c0d79JDPZBHTo4pbyzXuuIE",
+    "__type__": "3eaf8iLxgtDEKVcEmFvrbqy",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -1477,7 +1479,7 @@
     "_id": ""
   },
   {
-    "__type__": "c0d79JDPZBHTo4pbyzXuuIE",
+    "__type__": "3eaf8iLxgtDEKVcEmFvrbqy",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -1613,6 +1615,9 @@
       "__id__": 1
     },
     "_enabled": true,
+    "ndMenu": {
+      "__id__": 5
+    },
     "_id": ""
   },
   {

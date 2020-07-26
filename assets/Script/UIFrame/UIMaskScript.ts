@@ -70,8 +70,6 @@ export default class UIMaskScript extends cc.Component {
         switch (lucenyType) {
             case MaskOpacity.Pentrate:    
                 this.node.active = false;
-                console.log(this.node);
-                return;
             break;        
             case MaskOpacity.Lucency:   
                 o = 0;
