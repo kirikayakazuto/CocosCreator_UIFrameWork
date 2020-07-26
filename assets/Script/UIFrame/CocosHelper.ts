@@ -21,6 +21,16 @@ export default class CocosHelper {
 
     /**  */
     public static async runSyncTween(target: any, ...tweens: cc.Tween[]) {
+        return new Promise((resolve, reject) => {
+            let selfTween = cc.tween(target);
+            for(const tmpTween of tweens) {
+                selfTween = selfTween.then(tmpTween);
+            }
+            selfTween.call(() => {
+                resolve();
+            }).start();
+        });
+        
     }
 
     /** 同步的动作 */

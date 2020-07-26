@@ -47,7 +47,7 @@ export default class UIHall extends UIBase {
     playRoleAnim() {
         let role = cc.find("role", this.node)
         let scaleAnim = cc.tween(role).to(5, {scale: 1.1}).to(5, {scale: 1});
-        scaleAnim.repeatForever().start();
+        cc.tween(role).repeatForever(scaleAnim).start();
     }
 
     // update (dt) {}
