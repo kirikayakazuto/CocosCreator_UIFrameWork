@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.5",
   "uuid": "385ec3d8-e2ef-40f8-819a-0c2668e42559",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 167,
+  "height": 30,
   "platformSettings": {},
   "subMetas": {
     "用户栏-房卡底框": {

@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.5",
   "uuid": "e62649b2-dc0d-4596-9a56-fd6ec13ab2e2",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 433,
+  "height": 652,
   "platformSettings": {},
   "subMetas": {
     "角色": {

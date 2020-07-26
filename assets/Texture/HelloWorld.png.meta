@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.5",
   "uuid": "6aa0aa6a-ebee-4155-a088-a687a6aadec4",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 195,
+  "height": 270,
   "platformSettings": {},
   "subMetas": {
     "HelloWorld": {

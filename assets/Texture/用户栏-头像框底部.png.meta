@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.5",
   "uuid": "ae3b2304-f14b-4d7d-9155-0e96989c19ea",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 83,
+  "height": 81,
   "platformSettings": {},
   "subMetas": {
     "用户栏-头像框底部": {

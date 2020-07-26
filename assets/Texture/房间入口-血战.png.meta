@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.5",
   "uuid": "fb3a2ba0-55a0-4bbe-be97-3ebd1a70d8c9",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 411,
+  "height": 185,
   "platformSettings": {},
   "subMetas": {
     "房间入口-血战": {

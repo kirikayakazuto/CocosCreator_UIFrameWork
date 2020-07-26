@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.5",
   "uuid": "e5acc6a9-a355-4c3a-b939-04fb82958ec3",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 148,
+  "height": 31,
   "platformSettings": {},
   "subMetas": {
     "排行榜-创建好友房标题": {

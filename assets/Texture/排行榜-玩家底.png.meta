@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.5",
   "uuid": "925719af-83ff-4fec-814f-477ff4bf39e1",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 332,
+  "height": 75,
   "platformSettings": {},
   "subMetas": {
     "排行榜-玩家底": {

@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.5",
   "uuid": "387fd32d-59c2-4841-b481-0c22377703d1",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 119,
+  "height": 52,
   "platformSettings": {},
   "subMetas": {
     "排行榜-邀请好友": {

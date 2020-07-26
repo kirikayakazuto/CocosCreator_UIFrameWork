@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.5",
   "uuid": "8dcfe6a7-51a6-4169-8e47-f27eeeaf0bd3",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 334,
+  "height": 149,
   "platformSettings": {},
   "subMetas": {
     "房间入口-斗地主": {

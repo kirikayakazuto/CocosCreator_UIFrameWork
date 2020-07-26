@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.5",
   "uuid": "8c4aaa93-2fe3-4a89-b4a9-0de9b92e2438",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 411,
+  "height": 185,
   "platformSettings": {},
   "subMetas": {
     "房间入口-创建": {

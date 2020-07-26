@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.5",
   "uuid": "36f5e791-e00a-4ab8-88b3-ccc291a4ef37",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 41,
+  "height": 40,
   "platformSettings": {},
   "subMetas": {
     "用户栏-金币": {

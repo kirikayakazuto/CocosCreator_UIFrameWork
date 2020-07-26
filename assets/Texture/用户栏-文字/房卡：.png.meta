@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.5",
   "uuid": "83a15fcc-a8b5-4912-8de2-691ab1b9c1a5",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 51,
+  "height": 22,
   "platformSettings": {},
   "subMetas": {
     "房卡：": {
