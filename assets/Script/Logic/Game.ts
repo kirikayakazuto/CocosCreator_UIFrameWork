@@ -1,5 +1,5 @@
 /**
- * 掌管逻辑层的逻辑
+ * 掌管逻辑层
  */
 export default class Game {
     private static _inst: Game = null;

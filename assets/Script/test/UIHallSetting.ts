@@ -1,6 +1,7 @@
 import { MaskOpacity, FormType } from "../UIFrame/config/SysDefine";
 import UIBase from "../UIFrame/UIBase";
 import CocosHelper from "../UIFrame/CocosHelper";
+import UIHallSetting2 from "./UIHallSetting2";
 
 const {ccclass, property} = cc._decorator;
 
@@ -36,6 +37,14 @@ export default class UIHallSetting extends UIBase {
 
     async hideAnimation() {
 
+    }
+
+    async onClickOpen2UI() {
+        let hallSetting2 = await UIHallSetting2.openView();
+        let result = await hallSetting2.waitPromise();
+        if(result) {
+            this.closeUIForm();
+        }
     }
 
     // update (dt) {}

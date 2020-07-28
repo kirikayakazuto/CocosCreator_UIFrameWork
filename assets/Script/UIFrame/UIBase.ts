@@ -23,7 +23,7 @@ export default class UIBase extends UIBinder {
     /** 自动绑定结点 */
     public autoBind = true;
     /** 回调 */
-    private _cb: (confirm: any) => void;
+    protected _cb: (confirm: any) => void;
     /** 是否已经调用过preinit方法 */
     private _inited = false;
 
