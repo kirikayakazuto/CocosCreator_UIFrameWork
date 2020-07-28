@@ -1,7 +1,7 @@
 
 ## 使用过程中有任何问题 可以添加我的QQ 1099263878
 
-# 基于cocos creator的UI框架, 当前使用的cocos creator版本2.2.2版本
+# 基于cocos creator的UI框架, 当前使用的cocos creator版本2.4.0版本
         中心思想, 将所有的UI窗体分为4类管理(普通窗体, 固定窗体, 弹出窗体, 独立窗体), 再将窗体制作成预制体, 动态加载与释放;
         使用UIManager.getInstance().showForms("窗体名字");
         -- UIROOT(UIManager脚本挂载结点)
@@ -70,6 +70,24 @@
  5, 使用UIManager.GetInstance().ShowUIForms("你的prefab路径");即可
 
 ![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/UIROOT_dist.png)
+
+## 2020/7/10 新增功能
+集成Mobx，对于Mobx的使用详情可以前往Mobx的官网了解，github地址 https://github.com/mobxjs/mobx
+对于cocos使用例子可以看项目中UIHall的实现
+
+注意事项：将mobx导入为插件时需要将允许编辑器加载打上勾✅
+
+## 2020/5/10 项目结构修改
+UIManager -> UIBase             UIManager控制UIBase的加载，释放，显示，隐藏
+UIMaskManager -> UIMaskScript   UIMaskManager控制UIMaskScript的显示，隐藏
+
+UIBase继承UIBinder，默认自动绑定UI节点，添加onShow, onHide，showAnimation, hideAnimation的接口
+生命周期 load -> onShow -> onLoad -> start -> onHide -> onDestory
+
+EventCenter替换GEventManager，EventCenter使用双层Map，优化了emit的速度
+
+去掉了一些冗余属性和方法，优化了属性，方法名称，精简才是王道
+
 
 ## 2019/10/16 新增功能
 

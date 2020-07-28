@@ -2,7 +2,7 @@ import { SysDefine } from './config/SysDefine';
 /**
  * @Author: 邓朗 
  * @Date: 2019-06-12 17:18:04  
- * @Describe: 适配组件, 主要适配背景大小, fixed类型窗体的位置
+ * @Describe: 适配组件, 主要适配背景大小,窗体的位置
  */
 
 const {ccclass, property} = cc._decorator;
@@ -26,7 +26,7 @@ export default class AdapterMgr extends cc.Component {
 
     onLoad () {
         this.visibleSize = cc.view.getVisibleSize();
-        cc.visibleSize = this.visibleSize;
+        cc['visibleSize'] = this.visibleSize;
         cc.log(`当前屏幕尺寸为${this.visibleSize}`);
     }
 

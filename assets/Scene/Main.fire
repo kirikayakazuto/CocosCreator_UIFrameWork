@@ -1178,7 +1178,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Normal",
+    "_name": "SceneBase",
     "_objFlags": 0,
     "_parent": {
       "__id__": 24
@@ -1249,7 +1249,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Fixed",
+    "_name": "FixedUI",
     "_objFlags": 512,
     "_parent": {
       "__id__": 24
@@ -1391,7 +1391,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Tips",
+    "_name": "TopTips",
     "_objFlags": 0,
     "_parent": {
       "__id__": 24

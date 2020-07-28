@@ -127,6 +127,7 @@ export default class NetManager {
         for(let i=arr.length-1; i>=0; i--) {
             if(arr[i] && arr[i].callback === callback && arr[i].target === target) {
                 arr.splice(i, 1);
+                break;
             }
         }
         if(arr.length === 0) {

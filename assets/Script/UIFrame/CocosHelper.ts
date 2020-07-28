@@ -19,7 +19,7 @@ export default class CocosHelper {
         });
     }
 
-    /**  */
+    /** 同步的tween */
     public static async runSyncTween(target: any, ...tweens: cc.Tween[]) {
         return new Promise((resolve, reject) => {
             let selfTween = cc.tween(target);

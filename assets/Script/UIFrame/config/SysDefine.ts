@@ -39,10 +39,10 @@ export class SysDefine {
     public static SYS_UIMASK_NAME = "Canvas/UIROOT/UIMaskScript"
     public static SYS_UIAdaptation_NAME = "Canvas/UIROOT/UIAdaptationScript"
     /* 节点常量 */
-    public static SYS_NORMAL_NODE = "Normal";
-    public static SYS_FIXED_NODE = "Fixed";
+    public static SYS_SCENEBASE_NODE = "SceneBase";
+    public static SYS_FIXEDUI_NODE = "FixedUI";
     public static SYS_POPUP_NODE = "PopUp";  
-    public static SYS_TIPS_NODE = "Tips";
+    public static SYS_TOPTIPS_NODE = "TopTips";
     /** 规范符号 */
     public static SYS_STANDARD_Prefix = '_';
     public static SYS_STANDARD_Separator = '$';
