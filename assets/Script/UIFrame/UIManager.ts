@@ -73,19 +73,19 @@ export default class UIManager extends cc.Component {
             cc.warn(`${prefabPath}窗体已经在显示,或者正在加载中!`);
             return ;
         }
-        let UIBase = await this.loadFormsToAllUIFormsCatch(prefabPath);
-        if(UIBase == null) {
+        let uiBase = await this.loadFormsToAllUIFormsCatch(prefabPath);
+        if(uiBase == null) {
             cc.warn(`${prefabPath}未加载到!`);
             return ;
         }
         // 初始化窗体名称
-        UIBase.uid = prefabPath;
+        uiBase.uid = prefabPath;
         // 是否清理栈内窗口
         // if(UIBase.formType.IsClearStack) {
             // await this.clearStackArray();
         // }
         
-        switch(UIBase.formType) {
+        switch(uiBase.formType) {
             case FormType.SceneBase:
                 await this.enterUIFormsAndHideOther(prefabPath, ...params);
             break;
@@ -100,7 +100,7 @@ export default class UIManager extends cc.Component {
             break;
         }
 
-        return UIBase;
+        return uiBase;
     }
     /**
      * 重要方法 关闭一个UIForm

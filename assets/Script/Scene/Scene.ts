@@ -1,4 +1,4 @@
-import Game from "../Logic/Game";
+import GameLogic from "../Logic/Game";
 import { EventCenter } from "../UIFrame/EventCenter";
 import { EventType } from "../UIFrame/EventType";
 
@@ -10,9 +10,12 @@ export default class Scene extends cc.Component {
     public static inst: Scene = null;
 
     private _started = false;
-    public start() {
+    public async start() {
         Scene.inst = this;
         this._started = true;
+
+        // 初始化game逻辑
+        await GameLogic.init(this.node);
 
         if(CC_WECHATGAME) {
             wx.onShow(this.onGameShow.bind(this));
@@ -33,7 +36,12 @@ export default class Scene extends cc.Component {
     }
 
     public update(dt: number) {
-        Game.inst.update(dt);
+        if(this._started && GameLogic.inited) {
+            // 游戏加载完毕了，可以正式进入游戏, 关闭loading界面
+            // todo...
+
+        }
+        GameLogic.update(dt);
     }
 
     public lateUpdate() {

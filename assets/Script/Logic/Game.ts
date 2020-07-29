@@ -1,36 +1,31 @@
+import ConfigMgr from "./Manager/ConfigMgr";
+import PlayerMgr from "./Manager/PlayerMgr";
+
 /**
  * 掌管逻辑层
  */
-export default class Game {
-    private static _inst: Game = null;
-    public static get inst() {
-        if(!this._inst) {
-            this._inst = new Game();
-        }
-        return this._inst;
-    }
+class GameLogic {
 
-    private inited = false;
+    public inited = false;
+    public configMgr: ConfigMgr = null;
+    public playerMgr: PlayerMgr = null;
     public async init(uiRoot: cc.Node) {
-        if(this.inited) return;
-        this.inited = true;
         // 初始化Manager, 例如new ConfigMgr();
-
+        this.configMgr = new ConfigMgr();
+        this.playerMgr = new PlayerMgr();
+        // 初始化平台sdk
+        // todo...
         // 加载配置
+        await this.configMgr.loadConfig();
 
         // 
 
-        
+        this.inited = true;
     }
 
     onGameShow() {
 
     }
-
-    public onGameConfig() {
-        // 初始化配置
-    }
-
 
     /**
      * 逻辑层的时间更新控制
@@ -40,3 +35,5 @@ export default class Game {
         // 例如Task.update(dt);,更新任务进度
     }
 }
+
+export default new GameLogic();
