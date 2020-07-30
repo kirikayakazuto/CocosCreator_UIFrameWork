@@ -128,7 +128,5 @@ export default class ResMgr {
         }
         return true;
     }
-
-
     
 }

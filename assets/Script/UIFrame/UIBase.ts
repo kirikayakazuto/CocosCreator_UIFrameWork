@@ -1,7 +1,7 @@
 import UIBinder from "./UIBinder";
 import CocosHelper from "./CocosHelper";
 import UIManager from "./UIManager";
-import { FormType, SysDefine, UIState, MaskOpacity } from "./config/SysDefine";
+import { FormType, SysDefine } from "./config/SysDefine";
 import { MaskType } from "./FrameType";
 import Binder from "./Binder";
 import AdapterMgr from "./AdapterMgr";
@@ -38,7 +38,8 @@ export default class UIBase extends UIBinder {
         }
         return this._prefabPath;
     }
-    
+
+    /** 打开关闭UIBase */
     public static async openView(...parmas: any): Promise<UIBase> {
         return await UIManager.getInstance().openUIForm(this.prefabPath, ...parmas);
     }
@@ -74,10 +75,8 @@ export default class UIBase extends UIBinder {
         
     }
     
-    /** 异步加载 */
-    public async load() {
-        // 可以在这里进行一些资源的加载, 具体实现可以看test下的代码
-    }
+    /** 可以在这里进行一些资源的加载, 具体实现可以看test下的代码 */
+    public async load() {}
 
     public onShow(...obj: any) {}
 

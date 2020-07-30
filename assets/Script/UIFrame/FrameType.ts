@@ -12,13 +12,4 @@ export class MaskType {
         this.isEasing = IsEasing;
         this.easingTime = EasingTime;
     }
-
-    static deepColne(maskType: MaskType) {
-        let newMaskType = new MaskType();
-        newMaskType.opacity = maskType.opacity;
-        newMaskType.clickMaskClose = maskType.clickMaskClose;
-        newMaskType.isEasing = maskType.isEasing;
-        newMaskType.easingTime = maskType.easingTime;
-        return newMaskType;
-    }
 }

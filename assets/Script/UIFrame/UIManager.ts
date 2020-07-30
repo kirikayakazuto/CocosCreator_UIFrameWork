@@ -50,7 +50,10 @@ export default class UIManager extends cc.Component {
     /** 预加载UIForm */
     public async loadUIForms(...uibases: typeof UIBase[]) {
         for(const uibase of uibases) {
-            await this.loadFormsToAllUIFormsCatch(uibase.prefabPath);
+            let uiBase = await this.loadFormsToAllUIFormsCatch(uibase.prefabPath);
+            if(!uiBase) {
+                console.warn(`${uiBase}没有被成功加载`);
+            }
         }
     }
     
@@ -63,19 +66,15 @@ export default class UIManager extends cc.Component {
         if(prefabPath === "" || prefabPath == null) return ;
         if(this.checkUIFormIsShowing(prefabPath) || this.checkUIFormIsLoading(prefabPath)) {
             cc.warn(`${prefabPath}窗体已经在显示,或者正在加载中!`);
-            return ;
+            return null;
         }
         let uiBase = await this.loadFormsToAllUIFormsCatch(prefabPath);
         if(uiBase == null) {
-            cc.warn(`${prefabPath}未加载到!`);
-            return ;
+            cc.warn(`${prefabPath}未加载!`);
+            return null;
         }
         // 初始化窗体名称
         uiBase.uid = prefabPath;
-        // 是否清理栈内窗口
-        // if(UIBase.formType.IsClearStack) {
-            // await this.clearStackArray();
-        // }
         
         switch(uiBase.formType) {
             case FormType.SceneBase:
@@ -158,6 +157,7 @@ export default class UIManager extends cc.Component {
         let node: cc.Node = cc.instantiate(pre);
         let baseUI = node.getComponent(UIBase);
         if(baseUI == null) {
+            cc.warn(`${formPath} 没有绑定UIBase的Component`);
             return ;
         }
         node.active = false;
@@ -324,20 +324,26 @@ export default class UIManager extends cc.Component {
         delete this._MapIndependentForms[prefabPath];
     }
 
-    /** bug点，这里的showForm会被多次调用，在showMask的时候，baseUI可能会被改变 */
+    /** bug点，这里的showForm可能会被多次调用，在showMask的时候，baseUI可能会被改变 */
     private async showForm(baseUI: UIBase) {
         baseUI.node.active = true;
         UIMaskManager.getInstance().addMaskWindow(baseUI.node);
         await baseUI.showAnimation();
         await UIMaskManager.getInstance().showMask(baseUI.maskType);
+        
+        // baseUI.node.active = true;
+        // return new Promise(async (resolve, reject) => {
+        //     UIMaskManager.getInstance().addMaskWindow(baseUI.node);
+        //     await baseUI.showAnimation();
+        //     await UIMaskManager.getInstance().showMask(baseUI.maskType);
+        //     resolve();
+        // });
     }
-
     private async hideForm(baseUI: UIBase) {
-        UIMaskManager.getInstance().removeMaskWindow(baseUI.node); 
+        UIMaskManager.getInstance().removeMaskWindow(baseUI.node);
         await baseUI.hideAnimation();
         baseUI.node.active = false;
     }
-
 
     /** 销毁 */
     private destoryForm(UIBase: UIBase, prefabPath: string) {
@@ -346,7 +352,6 @@ export default class UIManager extends cc.Component {
         this._MapAllUIForms[prefabPath] = null;
         delete this._MapAllUIForms[prefabPath];
     }
-
     /** 窗体是否正在显示 */
     public checkUIFormIsShowing(prefabPath: string) {
         let UIBases = this._MapAllUIForms[prefabPath];
