@@ -1,8 +1,10 @@
 import { SysDefine } from "./config/SysDefine";
-class LoadProgress {
+export class LoadProgress {
     public url: string;
     public completedCount: number;
     public totalCount: number;
+    public item: any;
+    public cb?: Function;
 }
 
 export default class CocosHelper {
@@ -74,22 +76,35 @@ export default class CocosHelper {
             return;
         }
         CocosHelper.loadProgress.url = url;
-        progressCallback = progressCallback ? progressCallback : CocosHelper._progressCallback;
+        if(progressCallback) {
+            this.loadProgress.cb = progressCallback;
+        }
         return new Promise((resolve, reject) => {
-            cc.loader.loadRes(url, type, progressCallback, (err, asset) => {
+            cc.loader.loadRes(url, type, this._progressCallback, (err, asset) => {
                 if (err) {
                     cc.log(`${url} [资源加载] 错误 ${err}`);
                     resolve(null);
                 }else {
                     resolve(asset);
                 }
+                // 加载完毕了，清理进度数据
+                CocosHelper.loadProgress.url = '';
+                CocosHelper.loadProgress.completedCount = 0;
+                CocosHelper.loadProgress.totalCount = 0;
+                CocosHelper.loadProgress.item = null;
+                CocosHelper.loadProgress.cb = null;
             });
         });
     }
-
+    /** 
+     * 加载进度
+     * cb方法 其实目的是可以将loader方法的progress
+     */
     private static _progressCallback(completedCount: number, totalCount: number, item: any) {
         CocosHelper.loadProgress.completedCount = completedCount;
         CocosHelper.loadProgress.totalCount = totalCount;
+        CocosHelper.loadProgress.item = item;
+        CocosHelper.loadProgress.cb && CocosHelper.loadProgress.cb(completedCount, totalCount, item);
     }
     /**
      * 寻找子节点

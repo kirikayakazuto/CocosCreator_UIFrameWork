@@ -16,7 +16,7 @@ class GameLogic {
         // 初始化平台sdk
         // todo...
         // 加载配置
-        await this.configMgr.loadConfig();
+        await this.configMgr.loadConfigs();
 
         // 
 

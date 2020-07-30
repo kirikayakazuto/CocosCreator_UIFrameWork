@@ -28,15 +28,22 @@ export default class UIBase extends UIBinder {
     private _inited = false;
 
     /** 资源路径，如果没写的话就是类名 */
-    public static prefabPath = "";
-    public static async openView(...parmas: any): Promise<UIBase> {
-        if(!this.prefabPath || this.prefabPath.length <= 0) {
-            this.prefabPath = SysDefine.UI_PATH_ROOT + CocosHelper.getComponentName(this);
+    public static _prefabPath = "";
+    public static set prefabPath(path: string) {
+        this._prefabPath = path;
+    }
+    public static get prefabPath() {
+        if(!this._prefabPath || this._prefabPath.length <= 0) {
+            this._prefabPath = SysDefine.UI_PATH_ROOT + CocosHelper.getComponentName(this);
         }
+        return this._prefabPath;
+    }
+    
+    public static async openView(...parmas: any): Promise<UIBase> {
         return await UIManager.getInstance().openUIForm(this.prefabPath, ...parmas);
     }
     public static async openViewWithLoading(...parmas: any): Promise<UIBase> {
-        await TipsManager.getInstance().showLoadingForm();
+        await TipsManager.getInstance().showLoadingForm(this.prefabPath);
         let uiBase = await this.openView(...parmas);
         await TipsManager.getInstance().hideLoadingForm();
         return uiBase;

@@ -9,14 +9,25 @@ export default class Scene extends cc.Component {
 
     public static inst: Scene = null;
 
-    private _started = false;
     public async start() {
         Scene.inst = this;
-        this._started = true;
 
-        // 初始化game逻辑
+        await this.onGameInit();
+        this.registerEvent();
+    }
+    /** 游戏初始化 */
+    public async onGameInit() {
+        // 第一步 展示loading页面，当然有些默认就是loading页面
+
+        // 第二步 初始化游戏（Managers，Configs，SDKs）
         await GameLogic.init(this.node);
+        // 第三步 构建初始场景（加载必要的prefab，音频，texture）
 
+        // 第四步 关掉loading页面，正式进入游戏
+
+    }
+    /** 初始化事件 */
+    private registerEvent() {
         if(CC_WECHATGAME) {
             wx.onShow(this.onGameShow.bind(this));
             wx.onHide(this.onGameHide.bind(this));
@@ -26,21 +37,16 @@ export default class Scene extends cc.Component {
         }
     }
 
-    onGameShow(param) {
+    private onGameShow(param) {
         EventCenter.emit(EventType.GameShow);
         cc.director.resume()
     }
-    onGameHide() {
+    private onGameHide() {
         EventCenter.emit(EventType.GameHide);
         cc.director.pause();
     }
 
     public update(dt: number) {
-        if(this._started && GameLogic.inited) {
-            // 游戏加载完毕了，可以正式进入游戏, 关闭loading界面
-            // todo...
-
-        }
         GameLogic.update(dt);
     }
 

@@ -21,11 +21,8 @@ export default class TipsManager{
     public setLoadingForm(loadingName: string) {
         this.loadingFormName = loadingName;
     }
-    public async showLoadingForm(path?: string) {
-        if(path) {
-            this.loadingFormName = path;
-        }
-        await UIManager.getInstance().openUIForm(this.loadingFormName);
+    public async showLoadingForm(...params: any[]) {
+        await UIManager.getInstance().openUIForm(this.loadingFormName, ...params);
     }
     /** 隐藏加载form */
     public async hideLoadingForm() {

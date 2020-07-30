@@ -8,10 +8,7 @@ const {ccclass, property} = cc._decorator;
 export default class UICreateRoom extends UIBase {
 
     formType = FormType.PopUp;
-    
     ClickMaskClose = false;
-
-
     static prefabPath = "UIForm/UICreateRoom";
 
     @property(cc.Node)

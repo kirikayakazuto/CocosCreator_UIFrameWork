@@ -54,14 +54,6 @@ export default class UIManager extends cc.Component {
         }
     }
     
-    /** 加载Form时显示等待页面 */
-    public async openUIFormWithLoading(prefabPath: string, ...params: any) {
-        await TipsManager.getInstance().showLoadingForm();
-        let uiBase = await UIManager.getInstance().openUIForm(prefabPath, ...params);
-        await TipsManager.getInstance().hideLoadingForm();
-        return uiBase;
-    }
-
     /**
      * 重要方法 加载显示一个UIForm
      * @param prefabPath 
