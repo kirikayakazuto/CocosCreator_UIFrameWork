@@ -1,5 +1,5 @@
 export default class GlobalHelper {
-    private static _globalMap: { [k: string]: any };
+    private static _globalMap: { [k: string]: any } = {};
     public static Register(name: string, inst: any) {
         GlobalHelper[name] = inst;
     }

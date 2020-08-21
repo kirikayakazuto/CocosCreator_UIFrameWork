@@ -30,6 +30,7 @@ export default class UIHall extends UIBase {
         await UIFriendRank.openView();
         await UIMenu.openView(); 
         await UIRoom.openView()
+        // await Promise.all([UIUserInfo.openView(), UIFriendRank.openView(), UIMenu.openView(), UIRoom.openView()]);
     }
 
     refreshView() {

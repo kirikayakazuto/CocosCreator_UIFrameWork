@@ -1,4 +1,5 @@
 import Binder from "./Binder";
+import ButtonPlus from "../Common/Components/ButtonPlus";
 
 const {ccclass, property} = cc._decorator;
 
@@ -19,6 +20,8 @@ export default class UIBinder extends cc.Component {
     _ScrollViews  : {[name: string]: cc.ScrollView}   = cc.js.createMap();
     _ProgressBars : {[name: string]: cc.ProgressBar}   = cc.js.createMap();
     _Sliders      : {[name: string]: cc.Slider}   = cc.js.createMap();
+    _ButtonPlus   : {[name: string]: ButtonPlus}   = cc.js.createMap();
+    _PageViews    : {[name: string]: cc.PageView}   = cc.js.createMap();
 
 
 

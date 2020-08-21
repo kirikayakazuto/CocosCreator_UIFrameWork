@@ -125,6 +125,7 @@ export default class UIBase extends UIBinder {
             this.node.addChild(this._blocker.node, cc.macro.MAX_ZINDEX);
         }else if(!block && this._blocker) {
             this._blocker.node.destroy();
+            this._blocker.node.removeFromParent();
             this._blocker = null;
         }
     }

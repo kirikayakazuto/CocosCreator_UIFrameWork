@@ -4,7 +4,7 @@ import PlayerMgr from "./Manager/PlayerMgr";
 /**
  * 掌管逻辑层
  */
-class GameLogic {
+class Game {
 
     public inited = false;
     public configMgr: ConfigMgr = null;
@@ -26,6 +26,9 @@ class GameLogic {
     onGameShow() {
 
     }
+    onGameHide() {
+        
+    }
 
     /**
      * 逻辑层的时间更新控制
@@ -36,4 +39,4 @@ class GameLogic {
     }
 }
 
-export default new GameLogic();
+export default new Game();

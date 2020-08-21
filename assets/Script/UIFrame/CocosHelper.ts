@@ -21,6 +21,26 @@ export default class CocosHelper {
         });
     }
 
+    /**
+     * 
+     * @param target 
+     * @param repeat -1，表示永久执行
+     * @param tweens 
+     */
+    public static async runRepeatTween(target: any, repeat: number, ...tweens: cc.Tween[]) {
+        return new Promise((resolve, reject) => {
+            let selfTween = cc.tween(target);
+            for(const tmpTween of tweens) {
+                selfTween = selfTween.then(tmpTween);
+            }
+            if(repeat < 0) {
+                cc.tween(target).repeatForever(selfTween).start();
+            }else {
+                cc.tween(target).repeat(repeat, selfTween).start();
+            }
+        });
+        
+    }
     /** 同步的tween */
     public static async runSyncTween(target: any, ...tweens: cc.Tween[]) {
         return new Promise((resolve, reject) => {

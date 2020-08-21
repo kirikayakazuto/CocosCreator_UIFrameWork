@@ -1,4 +1,4 @@
-import GameLogic from "../Logic/Game";
+import Game from "../Logic/Game";
 import { EventCenter } from "../UIFrame/EventCenter";
 import { EventType } from "../UIFrame/EventType";
 
@@ -20,7 +20,7 @@ export default class Scene extends cc.Component {
         // 第一步 展示loading页面，当然有些默认就是loading页面
 
         // 第二步 初始化游戏（Managers，Configs，SDKs）
-        await GameLogic.init(this.node);
+        await Game.init(this.node);
         // 第三步 构建初始场景（加载必要的prefab，音频，texture）
 
         // 第四步 关掉loading页面，正式进入游戏
@@ -47,7 +47,7 @@ export default class Scene extends cc.Component {
     }
 
     public update(dt: number) {
-        GameLogic.update(dt);
+        Game.update(dt);
     }
 
     public lateUpdate() {

@@ -1,9 +1,5 @@
 import CocosHelper from "../../UIFrame/CocosHelper";
 
-/*
- * @Author: liuhandong
- * @Date: 2019-09-27 17:19:29
- */
 export interface TypeConstructor<T> {
     new():T;
 }

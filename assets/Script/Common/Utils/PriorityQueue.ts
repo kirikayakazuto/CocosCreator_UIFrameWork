@@ -19,6 +19,17 @@ export default class PriorityQueue<T> {
     constructor() {
     }
 
+    /** 是否有这个元素 */
+    public hasElement(t: T) {
+        for(const e of this.queue) {
+            if(e.data === t) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** 入队 */
     public enqueue(e: T, pIdx: number = 0) {
         if(this.size > this.queue.length) {
             this._expand();
@@ -27,6 +38,7 @@ export default class PriorityQueue<T> {
         this.upAdjust();
     }
 
+    /** 出队 */
     public dequeue() {
         if(this.size <= 0) return null;
         const head = this.queue[0];
@@ -34,7 +46,7 @@ export default class PriorityQueue<T> {
         this.downAdjust();
         return head.data;
     }
-
+    /** 上调, 入队时判断入队元素优先级 */
     private upAdjust() {
         let childIndex = this.size - 1;
         let parentIndex = Math.floor(childIndex/2);
@@ -48,7 +60,7 @@ export default class PriorityQueue<T> {
 
         this.queue[childIndex] = tmp;
     }
-
+    /** 出队 */
     private downAdjust() {
         let parentIndex = 0;
         let tmp = this.queue[parentIndex];
@@ -67,7 +79,7 @@ export default class PriorityQueue<T> {
         }
         this.queue[parentIndex] = tmp;
     }
-
+    /** 扩列 */
     private _expand() {
         let newSize = Math.round(this.queue.length * 1.2) + 1;
         const oldQueue = this.queue;
@@ -77,10 +89,15 @@ export default class PriorityQueue<T> {
         }
     }
 
-    toString() {
+    public toString() {
         let s = '';
         for(let i=0; i<this.size; i++) {
-            s += this.queue[i].data;
+            let data = this.queue[i].data;
+            if(data.toString) {
+                s += data.toString();
+            }else {
+                s += typeof data === "object" ? JSON.stringify(data) : data;
+            }
         }
         return s;
     }

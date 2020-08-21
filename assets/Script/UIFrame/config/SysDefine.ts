@@ -60,7 +60,7 @@ export class SysDefine {
         "_MotionStreak": "cc.MotionStreak",
         "_TiledMap"    : "cc.TiledMap",
         "_TiledTile"   : "cc.TiledTile",
-        "_Spine"       : "sp.Spine",
+        "_Spine"       : "sp.Skeleton",
         "_Graphics"    : "cc.Graphics",
         "_Animation"   : "cc.Animation",
         "_WebView"     : "cc.WebView",
@@ -71,6 +71,7 @@ export class SysDefine {
         "_PageView"    : "cc.PageView",
         "_Slider"      : "cc.Slider",
         "_Toggle"      : "cc.Toggle",
+        "_ButtonPlus"  : "ButtonPlus",
     };
 
 }
