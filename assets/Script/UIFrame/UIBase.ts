@@ -109,7 +109,7 @@ export default class UIBase extends UIBinder {
     public async showAnimation() {
         if(this.formType === FormType.PopUp) {
             this.node.scale = 0;
-            await CocosHelper.runSyncAction(this.node, cc.scaleTo(0.3, 1).easing(cc.easeBackOut()));
+            await CocosHelper.runSyncTween(this.node, cc.tween().to(0.3, {scale: 1}, cc.easeBackOut()));
         }
     }
     public async hideAnimation() {
