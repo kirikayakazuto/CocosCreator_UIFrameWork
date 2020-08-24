@@ -328,9 +328,8 @@ export default class UIManager extends cc.Component {
     private async showForm(baseUI: UIBase) {
         baseUI.node.active = true;
         UIMaskManager.getInstance().addMaskWindow(baseUI.node);
+        UIMaskManager.getInstance().showMask(baseUI.maskType);
         await baseUI.showAnimation();
-        await UIMaskManager.getInstance().showMask(baseUI.maskType);
-        
         // baseUI.node.active = true;
         // return new Promise(async (resolve, reject) => {
         //     UIMaskManager.getInstance().addMaskWindow(baseUI.node);

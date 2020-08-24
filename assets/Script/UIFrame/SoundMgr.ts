@@ -16,6 +16,9 @@ export default class SoundMgr extends cc.Component {
         return this._Instance;
     }
 
+    private currEffectId: number = -1;
+    private currMusicId: number = -1;
+
     onLoad () {
         let volume = this.getVolumeToLocal();
         if(volume) {
@@ -25,6 +28,13 @@ export default class SoundMgr extends cc.Component {
             this.volume.effectVolume = 1;
         }
         this.setVolumeToLocal();
+
+        cc.game.on(cc.game.EVENT_HIDE, () => {
+            cc.audioEngine.pauseAll();
+        }, this);
+        cc.game.on(cc.game.EVENT_SHOW, () => {
+            cc.audioEngine.resumeAll();
+        }, this);
     }
     /** volume */
     private volume: Volume = new Volume();
@@ -45,19 +55,19 @@ export default class SoundMgr extends cc.Component {
         this.setVolumeToLocal();
     }
     /** 播放背景音乐 */
-    public async playBackGroundMusic(url: string) {
+    public async playMusic(url: string, loop = true) {
         if(!url || url === '') return ;
         
         if(this.audioCache[url]) {
-            cc.audioEngine.playMusic(this.audioCache[url], true);
+            cc.audioEngine.playMusic(this.audioCache[url], loop);
             return ;
         }
         let sound = await CocosHelper.loadRes<cc.AudioClip>(url, cc.AudioClip);
         this.audioCache[url] = sound;
-        cc.audioEngine.playMusic(sound, true);
+        this.currMusicId = cc.audioEngine.playMusic(sound, loop);
     }
     /** 播放音效 */
-    public async playEffectMusic(url: string) {
+    public async playEffect(url: string, loop = false) {
         if(!url || url === '') return ;
         
         if(this.audioCache[url]) {
@@ -66,7 +76,7 @@ export default class SoundMgr extends cc.Component {
         }
         let sound = await CocosHelper.loadRes<cc.AudioClip>(url, cc.AudioClip);
         this.audioCache[url] = sound;
-        cc.audioEngine.playEffect(sound, false);
+        this.currEffectId = cc.audioEngine.playEffect(sound, loop);
     }
 
     /** 从本地读取 */
@@ -83,6 +93,14 @@ export default class SoundMgr extends cc.Component {
         cc.audioEngine.setEffectsVolume(this.volume.effectVolume);
 
         cc.sys.localStorage.setItem("Volume_For_Creator", JSON.stringify(this.volume));
+    }
+
+    public setEffectActive(active: boolean, id: number = -1) {
+        if(active) {
+            cc.audioEngine.stop(id < 0 ? this.currEffectId : id);
+        }else {
+            cc.audioEngine.resume(id < 0 ? this.currEffectId : id);
+        }
     }
 
     // update (dt) {}

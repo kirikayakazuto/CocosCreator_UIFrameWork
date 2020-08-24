@@ -19,7 +19,6 @@ class Game {
         await this.configMgr.loadConfigs();
 
         // 
-
         this.inited = true;
     }
 
@@ -35,6 +34,7 @@ class Game {
      * @param dt 
      */
     public update(dt: number) {
+        if(!this.inited) return ;
         // 例如Task.update(dt);,更新任务进度
     }
 }

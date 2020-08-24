@@ -68,16 +68,16 @@ export default class UIMaskScript extends cc.Component {
     public async showMaskUI(lucenyType: number, time: number = 0.6, isEasing: boolean = true) {
         let o = 0;
         switch (lucenyType) {
-            case MaskOpacity.Pentrate:    
+            case MaskOpacity.None:    
                 this.node.active = false;
             break;        
-            case MaskOpacity.Lucency:   
+            case MaskOpacity.OpacityZero:   
                 o = 0;
             break;
-            case MaskOpacity.ImPenetrable:    
+            case MaskOpacity.OpacityLow:    
                 o = 63;
             break;
-            case MaskOpacity.Translucence:   
+            case MaskOpacity.OpacityHalf:   
                 o = 126;
             break;
         }

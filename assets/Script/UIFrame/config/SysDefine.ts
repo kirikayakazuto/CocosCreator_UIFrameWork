@@ -13,13 +13,13 @@ export enum FormType {
 /**透明度类型 */
 export enum MaskOpacity {
     /** 没有mask, 可以穿透 */
-    Pentrate,
+    None,
     /** 完全透明，不能穿透 */
-    Lucency,
+    OpacityZero,
     /** 半透明，不能穿透 */
-    Translucence,
+    OpacityHalf,
     /** 低透明度，不能穿透 */
-    ImPenetrable,
+    OpacityLow,
 }
 /** UI的状态 */
 export enum UIState {
