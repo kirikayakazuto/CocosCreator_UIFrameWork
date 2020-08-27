@@ -1,9 +1,5 @@
 import { ScrollViewHelper, ScrollViewElementProxy } from "../../Common/Components/ScrollViewHelper";
 
-/*
- * @Author: liuhandong
- * @Date: 2020-01-02 17:46:49
- */
 const {ccclass, property} = cc._decorator;
 
 enum RowDirection {

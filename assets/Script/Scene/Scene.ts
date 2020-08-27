@@ -6,6 +6,8 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Scene extends cc.Component {
+    @property(cc.Node)
+    ndBlock: cc.Node = null;
 
     public static inst: Scene = null;
 
@@ -38,7 +40,7 @@ export default class Scene extends cc.Component {
     }
 
     private onGameShow(param) {
-        EventCenter.emit(EventType.GameShow);
+        EventCenter.emit(EventType.GameShow, param);
         cc.director.resume()
     }
     private onGameHide() {
@@ -52,5 +54,16 @@ export default class Scene extends cc.Component {
 
     public lateUpdate() {
 
+    }
+
+    /** 设置游戏触摸输入 */
+    private _block = 0;
+    public setInputBlock(bool: boolean) {
+        if(!this.ndBlock) {
+            cc.log("未启用 block input");
+            return ;
+        }
+        bool ? ++ this._block : -- this._block;
+        this.ndBlock.active = this._block > 0;
     }
 }

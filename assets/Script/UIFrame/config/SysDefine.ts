@@ -36,8 +36,8 @@ export class SysDefine {
     public static SYS_PATH_CONFIG_INFO = "SysConfigInfo";
     /* 标签常量 */
     public static SYS_UIROOT_NAME = "Canvas/UIROOT";
-    public static SYS_UIMASK_NAME = "Canvas/UIROOT/UIMaskScript"
-    public static SYS_UIAdaptation_NAME = "Canvas/UIROOT/UIAdaptationScript"
+    public static SYS_UIMASK_NAME = "Canvas/UIROOT/UIMaskScript";
+    public static SYS_UIAdaptation_NAME = "Canvas/UIROOT/UIAdaptationScript";
     /* 节点常量 */
     public static SYS_SCENEBASE_NODE = "SceneBase";
     public static SYS_FIXEDUI_NODE = "FixedUI";

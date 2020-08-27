@@ -1,7 +1,3 @@
-/*
- * @Author: liuhandong
- * @Date: 2019-11-19 11:20:52
- */
 const {ccclass, property} = cc._decorator;
 
 //help:

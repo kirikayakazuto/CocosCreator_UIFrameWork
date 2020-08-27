@@ -1,6 +1,5 @@
 import UIBase from "./UIBase";
-import { SysDefine, FormType, MaskOpacity } from "./config/SysDefine";
-import TipsManager from "./TipsManager";
+import { SysDefine, FormType } from "./config/SysDefine";
 import ResMgr from "./ResMgr";
 import UIMaskManager from "./UIMaskManager";
 
@@ -20,7 +19,7 @@ export default class UIManager extends cc.Component {
     private _MapIndependentForms: {[key: string]: UIBase} = cc.js.createMap();          // 独立窗体 独立于其他窗体, 不受其他窗体的影响
     private _LoadingForm: {[key: string]: boolean} = cc.js.createMap();                 // 正在加载的form 
 
-    private static instance: UIManager = null;                     // 单例
+    private static instance: UIManager = null;                                          // 单例
     public static getInstance(): UIManager {
         if(this.instance == null) {
             this.instance = cc.find(SysDefine.SYS_UIROOT_NAME).addComponent<UIManager>(this);
@@ -323,7 +322,6 @@ export default class UIManager extends cc.Component {
         this._MapIndependentForms[prefabPath] = null;
         delete this._MapIndependentForms[prefabPath];
     }
-
     /** bug点，这里的showForm可能会被多次调用，在showMask的时候，baseUI可能会被改变 */
     private async showForm(baseUI: UIBase) {
         baseUI.node.active = true;
@@ -343,7 +341,6 @@ export default class UIManager extends cc.Component {
         await baseUI.hideAnimation();
         baseUI.node.active = false;
     }
-
     /** 销毁 */
     private destoryForm(UIBase: UIBase, prefabPath: string) {
         ResMgr.inst.destoryForm(UIBase);

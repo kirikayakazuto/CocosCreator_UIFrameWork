@@ -88,7 +88,11 @@ export default class CocosHelper {
         if(!clip) return ;
         await CocosHelper.sleep(clip.duration);
     }
-    
+    /** 加载资源异常时抛出错误 */
+    public static loadResThrowError<T>(url: string, type: typeof cc.Asset, progressCallback?: (completedCount: number, totalCount: number, item: any) => void): Promise<T> {
+        return null;
+
+    }
     /** 加载资源 */
     public static loadRes<T>(url: string, type: typeof cc.Asset, progressCallback?: (completedCount: number, totalCount: number, item: any) => void): Promise<T>{
         if (!url || !type) {
