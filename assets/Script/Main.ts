@@ -27,7 +27,7 @@ export default class Main extends cc.Component {
             DebugWindowUtil.init();
         }
 
-        TipsManager.getInstance().setLoadingForm("UIForm/UILoading");
+        TipsManager.getInstance().setLoadingForm("UIForms/UILoading");
         UILogin.openView(1, 2, 3);
     
         this.buttonPlus.addClick(() => {

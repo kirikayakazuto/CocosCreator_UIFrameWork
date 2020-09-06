@@ -15,7 +15,7 @@ export default class UIMenu extends UIBase {
 
     formType = FormType.FixedUI;
     
-    static prefabPath = "UIForm/UIMenu";
+    static prefabPath = "UIForms/UIMenu";
 
     onShow() {
         

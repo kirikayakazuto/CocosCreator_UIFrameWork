@@ -10,7 +10,7 @@ export default class UIRoom extends UIBase {
     ClickMaskClose = false;
     formType = FormType.FixedUI;
 
-    static prefabPath = "UIForm/UIRoom";
+    static prefabPath = "UIForms/UIRoom";
 
     // onLoad () {}
 

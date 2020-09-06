@@ -1,4 +1,4 @@
-import { FormType, MaskOpacity } from '../UIFrame/config/SysDefine';
+import { FormType, ModalOpacity } from '../UIFrame/config/SysDefine';
 import UIBase from "../UIFrame/UIBase";
 import UIHall from './UIHall';
 import { EventCenter } from '../UIFrame/EventCenter';
@@ -10,7 +10,7 @@ export default class UILogin extends UIBase {
     formType = FormType.Screen;
     canDestory = true;
 
-    static prefabPath = "UIForm/UILogin";
+    static prefabPath = "UIForms/UILogin";
 
     /** 下面表示 生命周期顺序 */
     async load() {

@@ -1,5 +1,5 @@
 import UIBase from "../UIFrame/UIBase";
-import { FormType, MaskOpacity } from "../UIFrame/config/SysDefine";
+import { FormType, ModalOpacity } from "../UIFrame/config/SysDefine";
 import { MaskType } from "../UIFrame/FrameType";
 
 const {ccclass, property} = cc._decorator;
@@ -8,7 +8,7 @@ const {ccclass, property} = cc._decorator;
 export default class UIHallSetting2 extends UIBase {
 
     formType = FormType.PopUp;
-    maskType = new MaskType(MaskOpacity.OpacityHalf, false);
+    maskType = new MaskType(ModalOpacity.OpacityHalf, false);
 
     public start() {
 

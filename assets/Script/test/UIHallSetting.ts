@@ -1,4 +1,4 @@
-import { MaskOpacity, FormType } from "../UIFrame/config/SysDefine";
+import { ModalOpacity, FormType } from "../UIFrame/config/SysDefine";
 import UIBase from "../UIFrame/UIBase";
 import CocosHelper from "../UIFrame/CocosHelper";
 import UIHallSetting2 from "./UIHallSetting2";
@@ -10,13 +10,13 @@ const {ccclass, property} = cc._decorator;
 export default class UIHallSetting extends UIBase {
 
     formType = FormType.PopUp;
-    maskType = new MaskType(MaskOpacity.OpacityHalf, false);
+    maskType = new MaskType(ModalOpacity.OpacityHalf, false);
     @property(cc.Node)
     CloseNode: cc.Node= null;
 
     startPosition: cc.Vec2;
 
-    static prefabPath = "UIForm/UIHallSetting";
+    static prefabPath = "UIForms/UIHallSetting";
 
 
     onShow(startPosition: cc.Vec2) {

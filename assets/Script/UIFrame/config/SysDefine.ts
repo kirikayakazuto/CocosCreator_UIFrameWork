@@ -10,7 +10,7 @@ export enum FormType {
     TopTips,
 }
 /**透明度类型 */
-export enum MaskOpacity {
+export enum ModalOpacity {
     /** 没有mask, 可以穿透 */
     None,
     /** 完全透明，不能穿透 */
@@ -38,11 +38,11 @@ export class SysDefine {
     public static SYS_PATH_UIFORMS_CONFIG_INFO = "UIFormsConfigInfo";
     public static SYS_PATH_CONFIG_INFO = "SysConfigInfo";
     /* 标签常量 */
-    public static SYS_UIROOT_NAME = "Canvas/UIROOT";
-    public static SYS_UIMODAL_NAME = "Canvas/UIROOT/UIModalManager";
-    public static SYS_UIAdapter_NAME = "Canvas/UIROOT/UIAdapterManager";
+    public static SYS_UIROOT_NAME = "Canvas/Scene/UIROOT";
+    public static SYS_UIMODAL_NAME = "Canvas/Scene/UIROOT/UIModalManager";
+    public static SYS_UIAdapter_NAME = "Canvas/Scene/UIROOT/UIAdapterManager";
     /* 节点常量 */
-    public static SYS_SCENEBASE_NODE = "SceneBase";
+    public static SYS_SCREEN_NODE = "Screen";
     public static SYS_FIXEDUI_NODE = "FixedUI";
     public static SYS_POPUP_NODE = "PopUp";  
     public static SYS_TOPTIPS_NODE = "TopTips";
@@ -51,7 +51,7 @@ export class SysDefine {
     public static SYS_STANDARD_Separator = '$';
     public static SYS_STANDARD_End = '#';
 
-    public static UI_PATH_ROOT = 'UIForm/';
+    public static UI_PATH_ROOT = 'UIForms/';
     
     public static SeparatorMap: {[key: string]: string} = {
         "_Node"        : "cc.Node",

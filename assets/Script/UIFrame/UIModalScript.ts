@@ -1,5 +1,5 @@
 import UIManager from "./UIManager";
-import { MaskOpacity } from "./config/SysDefine";
+import { ModalOpacity } from "./config/SysDefine";
 import CocosHelper from "./CocosHelper";
 
 /**
@@ -57,22 +57,22 @@ export default class UIModalScript extends cc.Component {
     public async showModal(lucenyType: number, time: number = 0.6, isEasing: boolean = true) {
         let o = 0;
         switch (lucenyType) {
-            case MaskOpacity.None:    
+            case ModalOpacity.None:    
                 this.node.active = false;
             break;        
-            case MaskOpacity.OpacityZero:   
+            case ModalOpacity.OpacityZero:   
                 o = 0;
             break;
-            case MaskOpacity.OpacityLow:    
+            case ModalOpacity.OpacityLow:    
                 o = 63;
             break;
-            case MaskOpacity.OpacityHalf:   
+            case ModalOpacity.OpacityHalf:   
                 o = 126;
             break;
-            case MaskOpacity.OpacityHigh:
+            case ModalOpacity.OpacityHigh:
                 o = 189;
             break;
-            case MaskOpacity.OpacityFull:
+            case ModalOpacity.OpacityFull:
                 o = 255;
             break;
         }

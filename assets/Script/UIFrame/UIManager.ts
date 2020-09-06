@@ -32,7 +32,7 @@ export default class UIManager extends cc.Component {
 
     onLoad () {
         // 初始化结点
-        this._NoNormal = this.node.getChildByName(SysDefine.SYS_SCENEBASE_NODE);
+        this._NoNormal = this.node.getChildByName(SysDefine.SYS_SCREEN_NODE);
         this._NoFixed = this.node.getChildByName(SysDefine.SYS_FIXEDUI_NODE);
         this._NoPopUp = this.node.getChildByName(SysDefine.SYS_POPUP_NODE);
         this._NoTips = this.node.getChildByName(SysDefine.SYS_TOPTIPS_NODE);

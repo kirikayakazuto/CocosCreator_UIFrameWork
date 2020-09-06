@@ -1,5 +1,5 @@
 import UIBase from "../UIFrame/UIBase";
-import { FormType, MaskOpacity } from "../UIFrame/config/SysDefine";
+import { FormType, ModalOpacity } from "../UIFrame/config/SysDefine";
 
 
 const {ccclass, property} = cc._decorator;

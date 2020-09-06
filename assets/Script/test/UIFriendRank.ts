@@ -18,7 +18,7 @@ export default class UIFriendRank extends UIBase {
     content: cc.Node = null;
     
 
-    static prefabPath = "UIForm/UIFriendRank";
+    static prefabPath = "UIForms/UIFriendRank";
 
     // onLoad () {} 
 

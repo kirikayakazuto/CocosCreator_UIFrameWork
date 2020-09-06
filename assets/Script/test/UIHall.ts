@@ -19,7 +19,7 @@ export default class UIHall extends UIBase {
 
     model: number = 1;
 
-    static prefabPath = "UIForm/UIHall";
+    static prefabPath = "UIForms/UIHall";
 
     async load() {
         await UIManager.getInstance().loadUIForms(UIUserInfo, UIFriendRank, UIMenu, UIRoom);
