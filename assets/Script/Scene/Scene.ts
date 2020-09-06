@@ -13,7 +13,6 @@ export default class Scene extends cc.Component {
 
     public async start() {
         Scene.inst = this;
-
         await this.onGameInit();
         this.registerEvent();
     }
