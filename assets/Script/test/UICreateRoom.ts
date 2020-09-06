@@ -9,7 +9,7 @@ export default class UICreateRoom extends UIBase {
 
     formType = FormType.PopUp;
     ClickMaskClose = false;
-    static prefabPath = "UIForm/UICreateRoom";
+    static prefabPath = "UIForms/UICreateRoom";
 
     @property(cc.Node)
     CloseNode: cc.Node= null;
