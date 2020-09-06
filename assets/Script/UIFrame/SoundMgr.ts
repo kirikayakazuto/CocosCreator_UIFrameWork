@@ -71,7 +71,7 @@ export default class SoundMgr extends cc.Component {
         if(!url || url === '') return ;
         
         if(this.audioCache[url]) {
-            cc.audioEngine.playEffect(this.audioCache[url], true);
+            cc.audioEngine.playEffect(this.audioCache[url], loop);
             return ;
         }
         let sound = await CocosHelper.loadRes<cc.AudioClip>(url, cc.AudioClip);
