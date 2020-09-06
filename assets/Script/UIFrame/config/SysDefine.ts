@@ -1,8 +1,7 @@
 /**窗体类型 */
 export enum FormType {
-    Empty,
-    /** 普通窗口 */
-    SceneBase,
+    /** 屏幕 */
+    Screen,
     /** 固定窗口 */
     FixedUI,
     /** 弹出窗口 */
@@ -16,10 +15,14 @@ export enum MaskOpacity {
     None,
     /** 完全透明，不能穿透 */
     OpacityZero,
+    /** 高透明度，不能穿透 */
+    OpacityLow,
     /** 半透明，不能穿透 */
     OpacityHalf,
-    /** 低透明度，不能穿透 */
-    OpacityLow,
+    /** 低透明度, 不能穿透 */
+    OpacityHigh,
+    /** 完全不透明 */
+    OpacityFull,
 }
 /** UI的状态 */
 export enum UIState {
@@ -36,8 +39,8 @@ export class SysDefine {
     public static SYS_PATH_CONFIG_INFO = "SysConfigInfo";
     /* 标签常量 */
     public static SYS_UIROOT_NAME = "Canvas/UIROOT";
-    public static SYS_UIMASK_NAME = "Canvas/UIROOT/UIMaskScript";
-    public static SYS_UIAdaptation_NAME = "Canvas/UIROOT/UIAdaptationScript";
+    public static SYS_UIMODAL_NAME = "Canvas/UIROOT/UIModalManager";
+    public static SYS_UIAdapter_NAME = "Canvas/UIROOT/UIAdapterManager";
     /* 节点常量 */
     public static SYS_SCENEBASE_NODE = "SceneBase";
     public static SYS_FIXEDUI_NODE = "FixedUI";

@@ -4,17 +4,16 @@ import CocosHelper from "./CocosHelper";
 
 /**
  * @Author: 邓朗 
- * @Describe: mask设置
+ * @Describe: modal
  * @Date: 2019-05-30 23:35:26  
  * @Last Modified time: 2019-05-30 23:35:26 
  */
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class UIMaskScript extends cc.Component {
+export default class UIModalScript extends cc.Component {
 
-    private uid: string;
-
+    public uid: string;
     /** 代码创建一个单色texture */
     private _texture: cc.Texture2D = null;
     private getSingleTexture() {
@@ -53,19 +52,9 @@ export default class UIMaskScript extends cc.Component {
         this.node.opacity = 0;
         this.node.active = true;
     }
-    /** 使用 */
-    reuse(uid: string) {
-        this.uid = uid;
-    }
-    /** 释放 */
-    unuse() {
-        this.uid = "";
-        this.node.opacity = 0;
-        this.node.active = true;
-        cc.tween(this.node).stop();
-    }
+
     // 
-    public async showMaskUI(lucenyType: number, time: number = 0.6, isEasing: boolean = true) {
+    public async showModal(lucenyType: number, time: number = 0.6, isEasing: boolean = true) {
         let o = 0;
         switch (lucenyType) {
             case MaskOpacity.None:    
@@ -80,10 +69,16 @@ export default class UIMaskScript extends cc.Component {
             case MaskOpacity.OpacityHalf:   
                 o = 126;
             break;
+            case MaskOpacity.OpacityHigh:
+                o = 189;
+            break;
+            case MaskOpacity.OpacityFull:
+                o = 255;
+            break;
         }
         if(!this.node.active) return ;
         if(isEasing) {
-            await CocosHelper.runSyncAction(this.node, cc.fadeTo(time, o));
+            await CocosHelper.runSyncTween(this.node, cc.tween().to(time, {opacity: o}));
         }else {
             this.node.opacity = o;
         }

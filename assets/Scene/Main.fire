@@ -1462,7 +1462,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "UIMaskScript",
+    "_name": "UIModalManager",
     "_objFlags": 0,
     "_parent": {
       "__id__": 24
@@ -1533,7 +1533,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "UIAdaptationScript",
+    "_name": "UIAdapterManager",
     "_objFlags": 0,
     "_parent": {
       "__id__": 24

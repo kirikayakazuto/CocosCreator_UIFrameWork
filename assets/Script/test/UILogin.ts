@@ -7,7 +7,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UILogin extends UIBase {
     
-    formType = FormType.SceneBase;
+    formType = FormType.Screen;
     canDestory = true;
 
     static prefabPath = "UIForm/UILogin";

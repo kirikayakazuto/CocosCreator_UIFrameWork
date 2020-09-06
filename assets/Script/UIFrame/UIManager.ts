@@ -1,7 +1,7 @@
 import UIBase from "./UIBase";
 import { SysDefine, FormType } from "./config/SysDefine";
 import ResMgr from "./ResMgr";
-import UIMaskManager from "./UIMaskManager";
+import UIModalMgr from "./UIModalMgr";
 
 const {ccclass, property} = cc._decorator;
 
@@ -76,7 +76,7 @@ export default class UIManager extends cc.Component {
         uiBase.uid = prefabPath;
         
         switch(uiBase.formType) {
-            case FormType.SceneBase:
+            case FormType.Screen:
                 await this.enterUIFormsAndHideOther(prefabPath, ...params);
             break;
             case FormType.FixedUI:
@@ -103,7 +103,7 @@ export default class UIManager extends cc.Component {
         if(UIBase == null) return true;
         
         switch(UIBase.formType) {
-            case FormType.SceneBase:
+            case FormType.Screen:
                 await this.exitUIFormsAndDisplayOther(prefabPath);
             break;
             case FormType.FixedUI:                             // 普通模式显示
@@ -161,7 +161,7 @@ export default class UIManager extends cc.Component {
         }
         node.active = false;
         switch(baseUI.formType) {
-            case FormType.SceneBase:
+            case FormType.Screen:
                 UIManager.getInstance()._NoNormal.addChild(node);
             break;
             case FormType.FixedUI:
@@ -232,15 +232,17 @@ export default class UIManager extends cc.Component {
         if(this._StaCurrentUIForms.length > 0) {
             let topUIForm = this._StaCurrentUIForms[this._StaCurrentUIForms.length-1];
         }
-        let UIBase = this._MapAllUIForms[prefabPath];
-        if(UIBase == null) return ;
-        await UIBase._preInit();
+        let baseUI = this._MapAllUIForms[prefabPath];
+        if(baseUI == null) return ;
+        await baseUI._preInit();
         // 加入栈中, 同时设置其zIndex 使得后进入的窗体总是显示在上面
-        this._StaCurrentUIForms.push(UIBase);       
-        UIBase.node.zIndex = this._StaCurrentUIForms.length;
+        this._StaCurrentUIForms.push(baseUI);       
+        baseUI.node.zIndex = this._StaCurrentUIForms.length;
         
-        UIBase.onShow(...params);
-        await this.showForm(UIBase);
+        baseUI.onShow(...params);
+
+        UIModalMgr.inst.checkModalWindow(this._StaCurrentUIForms);
+        await this.showForm(baseUI);
     }
     /**
      * 加载时, 关闭其他窗口
@@ -299,6 +301,7 @@ export default class UIManager extends cc.Component {
         if(this._StaCurrentUIForms.length >= 1) {
             let topUIForm = this._StaCurrentUIForms.pop();
             topUIForm.onHide();
+            UIModalMgr.inst.checkModalWindow(this._StaCurrentUIForms);
             await this.hideForm(topUIForm);
         }
     }
@@ -322,22 +325,12 @@ export default class UIManager extends cc.Component {
         this._MapIndependentForms[prefabPath] = null;
         delete this._MapIndependentForms[prefabPath];
     }
-    /** bug点，这里的showForm可能会被多次调用，在showMask的时候，baseUI可能会被改变 */
+
     private async showForm(baseUI: UIBase) {
         baseUI.node.active = true;
-        UIMaskManager.getInstance().addMaskWindow(baseUI.node);
-        UIMaskManager.getInstance().showMask(baseUI.maskType);
         await baseUI.showAnimation();
-        // baseUI.node.active = true;
-        // return new Promise(async (resolve, reject) => {
-        //     UIMaskManager.getInstance().addMaskWindow(baseUI.node);
-        //     await baseUI.showAnimation();
-        //     await UIMaskManager.getInstance().showMask(baseUI.maskType);
-        //     resolve();
-        // });
     }
     private async hideForm(baseUI: UIBase) {
-        UIMaskManager.getInstance().removeMaskWindow(baseUI.node);
         await baseUI.hideAnimation();
         baseUI.node.active = false;
     }

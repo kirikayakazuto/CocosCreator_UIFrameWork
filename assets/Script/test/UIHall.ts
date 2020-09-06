@@ -11,7 +11,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIHall extends UIBase {
 
-    public formType = FormType.SceneBase;
+    public formType = FormType.Screen;
     public canDestory = true;
 
     @property(cc.Label)
@@ -26,11 +26,11 @@ export default class UIHall extends UIBase {
     }
 
     async onShow() {
-        await UIUserInfo.openView()
-        await UIFriendRank.openView();
-        await UIMenu.openView(); 
-        await UIRoom.openView()
-        // await Promise.all([UIUserInfo.openView(), UIFriendRank.openView(), UIMenu.openView(), UIRoom.openView()]);
+        // await UIUserInfo.openView()
+        // await UIFriendRank.openView();
+        // await UIMenu.openView(); 
+        // await UIRoom.openView()
+        await Promise.all([UIUserInfo.openView(), UIFriendRank.openView(), UIMenu.openView(), UIRoom.openView()]);
     }
 
     refreshView() {

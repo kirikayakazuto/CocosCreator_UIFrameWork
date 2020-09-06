@@ -13,7 +13,7 @@ export default class AdapterMgr extends cc.Component {
     private static _instance: AdapterMgr = null;                     // 单例
     public static get inst() {
         if(this._instance == null) {
-            this._instance = cc.find(SysDefine.SYS_UIAdaptation_NAME).addComponent<AdapterMgr>(this);
+            this._instance = cc.find(SysDefine.SYS_UIAdapter_NAME).addComponent<AdapterMgr>(this);
             cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
                 this._instance = null;
             });

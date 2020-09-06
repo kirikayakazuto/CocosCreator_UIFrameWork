@@ -374,7 +374,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "UIMaskScript",
+    "_name": "UIMaskManager",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -445,7 +445,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "UIAdaptationScript",
+    "_name": "UIAdapterManager",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1

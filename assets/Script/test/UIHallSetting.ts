@@ -2,6 +2,7 @@ import { MaskOpacity, FormType } from "../UIFrame/config/SysDefine";
 import UIBase from "../UIFrame/UIBase";
 import CocosHelper from "../UIFrame/CocosHelper";
 import UIHallSetting2 from "./UIHallSetting2";
+import { MaskType } from "../UIFrame/FrameType";
 
 const {ccclass, property} = cc._decorator;
 
@@ -9,7 +10,7 @@ const {ccclass, property} = cc._decorator;
 export default class UIHallSetting extends UIBase {
 
     formType = FormType.PopUp;
-
+    maskType = new MaskType(MaskOpacity.OpacityHalf, false);
     @property(cc.Node)
     CloseNode: cc.Node= null;
 
