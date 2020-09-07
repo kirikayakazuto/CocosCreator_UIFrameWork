@@ -38,7 +38,7 @@ export default class Scene extends cc.Component {
         }
     }
 
-    private onGameShow(param) {
+    private onGameShow(param: any) {
         EventCenter.emit(EventType.GameShow, param);
         cc.director.resume()
     }

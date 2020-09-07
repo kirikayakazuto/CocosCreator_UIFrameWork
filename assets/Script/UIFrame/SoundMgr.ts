@@ -8,12 +8,12 @@ export default class SoundMgr extends cc.Component {
 
     private audioCache: {[key: string]: cc.AudioClip} = cc.js.createMap();
 
-    private static _Instance: SoundMgr = null;                     // 单例
+    private static _inst: SoundMgr = null;                     // 单例
     public static get inst(): SoundMgr {
-        if(this._Instance == null) {
-            this._Instance = cc.find(SysDefine.SYS_UIROOT_NAME).addComponent<SoundMgr>(this);
+        if(this._inst == null) {
+            this._inst = cc.find(SysDefine.SYS_UIROOT_NAME).addComponent<SoundMgr>(this);
         }
-        return this._Instance;
+        return this._inst;
     }
 
     private currEffectId: number = -1;

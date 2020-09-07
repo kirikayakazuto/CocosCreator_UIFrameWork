@@ -1,5 +1,4 @@
 import UIManager from "./UIManager";
-import CocosHelper from "./CocosHelper";
 import UIToast from "../test/UIToast";
 
 const {ccclass, property} = cc._decorator;
