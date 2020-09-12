@@ -5,7 +5,7 @@ import { FormType, SysDefine } from "./config/SysDefine";
 import { MaskType } from "./FrameType";
 import Binder from "./Binder";
 import AdapterMgr from "./AdapterMgr";
-import TipsManager from "./TipsManager";
+import TipsMgr from "./TipsMgr";
 
 const {ccclass, property} = cc._decorator;
 
@@ -44,9 +44,9 @@ export default class UIBase extends UIBinder {
         return await UIManager.getInstance().openUIForm(this.prefabPath, ...parmas);
     }
     public static async openViewWithLoading(...parmas: any): Promise<UIBase> {
-        await TipsManager.getInstance().showLoadingForm(this.prefabPath);
+        await TipsMgr.inst.showLoadingForm(this.prefabPath);
         let uiBase = await this.openView(...parmas);
-        await TipsManager.getInstance().hideLoadingForm();
+        await TipsMgr.inst.hideLoadingForm();
         return uiBase;
     }
     public static async closeView(): Promise<boolean> {

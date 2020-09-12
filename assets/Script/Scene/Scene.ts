@@ -24,7 +24,7 @@ export default class Scene extends cc.Component {
         await Game.init(this.node);
         // 第三步 构建初始场景（加载必要的prefab，音频，texture）
 
-        // 第四步 关掉loading页面，正式进入游戏
+        // 第四步 加载主界面UI,关掉loading页面,正式进入游戏
 
     }
     /** 初始化事件 */
@@ -55,7 +55,7 @@ export default class Scene extends cc.Component {
 
     }
 
-    /** 设置游戏触摸输入 */
+    /** 设置是否阻挡游戏触摸输入 */
     private _block = 0;
     public setInputBlock(bool: boolean) {
         if(!this.ndBlock) {

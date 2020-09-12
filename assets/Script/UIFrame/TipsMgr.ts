@@ -8,13 +8,13 @@ const {ccclass, property} = cc._decorator;
  * 这里专门用于处理  提示类窗体, 例如断线提示, 加载过场等
  */
 @ccclass
-export default class TipsManager{
-    private static instance: TipsManager = null;                     // 单例
-    static getInstance() {
-        if(this.instance == null) {
-            this.instance = new TipsManager();
+export default class TipsMgr{
+    private static _instance: TipsMgr = null;                     // 单例
+    static get inst() {
+        if(this._instance == null) {
+            this._instance = new TipsMgr();
         }
-        return this.instance;
+        return this._instance;
     }
     private loadingFormName: string;
     /** 设置加载页面 */
