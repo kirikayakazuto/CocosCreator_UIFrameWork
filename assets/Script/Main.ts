@@ -53,9 +53,4 @@ export default class Main extends cc.Component {
     onDestroy() {
         cc.log('destory');
     }
-
-    /** 测试遴选 */
-    testForGit() {
-        console.log('测试');
-    }
 }
