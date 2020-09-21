@@ -62,7 +62,7 @@ export default class SoundMgr extends cc.Component {
             cc.audioEngine.playMusic(this.audioCache[url], loop);
             return ;
         }
-        let sound = await CocosHelper.loadRes<cc.AudioClip>(url, cc.AudioClip);
+        let sound = await CocosHelper.loadResSync<cc.AudioClip>(url, cc.AudioClip);
         this.audioCache[url] = sound;
         this.currMusicId = cc.audioEngine.playMusic(sound, loop);
     }
@@ -74,7 +74,7 @@ export default class SoundMgr extends cc.Component {
             cc.audioEngine.playEffect(this.audioCache[url], loop);
             return ;
         }
-        let sound = await CocosHelper.loadRes<cc.AudioClip>(url, cc.AudioClip);
+        let sound = await CocosHelper.loadResSync<cc.AudioClip>(url, cc.AudioClip);
         this.audioCache[url] = sound;
         this.currEffectId = cc.audioEngine.playEffect(sound, loop);
     }

@@ -64,7 +64,7 @@ export default class ResMgr {
 
     /** 加载窗体 */
     public async loadForm(formName: string) {
-        let form = await CocosHelper.loadRes<cc.Prefab>(formName, cc.Prefab, this._addTmpStaticDepends.bind(this));
+        let form = await CocosHelper.loadResSync<cc.Prefab>(formName, cc.Prefab, this._addTmpStaticDepends.bind(this));
 
         this._clearTmpStaticDepends();
         let deps = cc.loader.getDependsRecursively(formName);
@@ -108,7 +108,7 @@ export default class ResMgr {
     }
     /** 动态资源管理, 通过tag标记当前资源, 统一释放 */
     public async loadDynamicRes(url: string, type: typeof cc.Asset, tag?: string) {
-        let sources = await CocosHelper.loadRes<cc.Asset>(url, type);
+        let sources = await CocosHelper.loadResSync<cc.Asset>(url, type);
         if(!tag) tag = url;
         if(!this.dynamicDepends[tag]) {
             this.dynamicDepends[tag] = [];

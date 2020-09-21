@@ -173,7 +173,7 @@ export class CommonUtils {
 
     public static setItemSpriteFrame(sprite:cc.Sprite, url:string, successCB:(sprite:cc.Sprite)=>void = null) {
         sprite["spriteFrameName"] = url;
-        CocosHelper.loadRes(url, cc.SpriteFrame).then((spriteFrame:cc.SpriteFrame)=>{
+        CocosHelper.loadResSync(url, cc.SpriteFrame).then((spriteFrame:cc.SpriteFrame)=>{
             if(sprite.isValid && sprite["spriteFrameName"] == url) {
                 sprite.spriteFrame = spriteFrame;
                 if(successCB) {

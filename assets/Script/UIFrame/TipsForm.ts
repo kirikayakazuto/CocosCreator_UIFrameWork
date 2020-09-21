@@ -13,7 +13,7 @@ export default class TipsForm extends UIBase {
 
 
     public static async popUp(url: string, params: any) {
-        let prefab = await CocosHelper.loadRes<cc.Prefab>(url, cc.Prefab);
+        let prefab = await CocosHelper.loadResSync<cc.Prefab>(url, cc.Prefab);
         if(!prefab) return ;
         let node = cc.instantiate(prefab);
         let com = node.getComponent(TipsForm);
@@ -28,7 +28,7 @@ export default class TipsForm extends UIBase {
     }
 
     async exitAnim() {
-        await CocosHelper.runSyncAction(this.node, cc.moveBy(1.2, 0, 30));
+        await CocosHelper.runActionSync(this.node, cc.moveBy(1.2, 0, 30));
         this.node.removeFromParent();
         this.node.destroy();
     }

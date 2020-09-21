@@ -78,7 +78,7 @@ export default class UIModalScript extends cc.Component {
         }
         if(!this.node.active) return ;
         if(isEasing) {
-            await CocosHelper.runSyncTween(this.node, cc.tween().to(time, {opacity: o}));
+            await CocosHelper.runTweenSync(this.node, cc.tween().to(time, {opacity: o}));
         }else {
             this.node.opacity = o;
         }

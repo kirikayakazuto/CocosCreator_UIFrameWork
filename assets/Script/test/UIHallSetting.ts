@@ -33,7 +33,7 @@ export default class UIHallSetting extends UIBase {
         this.node.scale = 0;
         this.node.setPosition(this.startPosition);
 
-        await CocosHelper.runSyncTween(this.node, cc.tween().to(0.2, {position: cc.v3(0, 0, 0), scale: 1}));
+        await CocosHelper.runTweenSync(this.node, cc.tween().to(0.2, {position: cc.v3(0, 0, 0), scale: 1}));
     }
 
     async hideAnimation() {

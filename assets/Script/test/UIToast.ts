@@ -10,7 +10,7 @@ export default class UIToast extends UIBase {
     static async popUp() {
         Scene.inst.setInputBlock(true);
         try {
-            let p = await CocosHelper.loadRes<cc.Prefab>("", cc.Prefab);
+            let p = await CocosHelper.loadResSync<cc.Prefab>("", cc.Prefab);
             let node = cc.instantiate(p);    
             let parent = cc.find(SysDefine.UI_PATH_ROOT + "/" + SysDefine.SYS_TOPTIPS_NODE);
             if(!parent) return;
