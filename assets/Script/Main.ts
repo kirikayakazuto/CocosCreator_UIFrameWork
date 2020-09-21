@@ -4,6 +4,7 @@ import TouchPlus from "./Common/Components/TouchPlus";
 import UILogin from "./test/UILogin";
 import { EventCenter } from "./UIFrame/EventCenter";
 import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
+import CocosHelper from "./UIFrame/CocosHelper";
 
 const {ccclass, property} = cc._decorator;
 
@@ -15,7 +16,7 @@ export default class Main extends cc.Component {
 
     @property(TouchPlus)
     touchPlus: TouchPlus = null;
-
+    
     onLoad() {
         EventCenter.on("Event_Login", (a: number, b: number, c: number) => {
             console.log("Event ", a, b, c);
@@ -29,7 +30,6 @@ export default class Main extends cc.Component {
 
         TipsMgr.inst.setLoadingForm("UIForms/UILoading");
         UILogin.openView(1, 2, 3);
-    
         this.buttonPlus.addClick(() => {
             cc.log("点击事件!");
         }, this);

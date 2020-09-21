@@ -52,7 +52,6 @@ export default class CocosHelper {
                 resolve();
             }).start();
         });
-        
     }
 
     /** 同步的动作 */
@@ -178,4 +177,60 @@ export default class CocosHelper {
         }
         return com.name;
     }
+    public static randomArr(arr: any[]) {
+        let _swap = (a: number, b: number) => {
+            let tmp = arr[a];
+            arr[a] = arr[b];
+            arr[b] = tmp;
+        }
+        let len = arr.length;
+        for(let i=0; i<len; i++) {
+            let idx = Math.floor(Math.random() * (len - i));
+            _swap(idx, len-i-1);
+        }
+        return arr;
+    }
+
+    /** 加载bundle */
+    public static loadBundle(url: string, options: any) {
+        return new Promise((resolve, reject) => {
+            cc.assetManager.loadBundle(url, options, (err: Error, bundle: cc.AssetManager.Bundle) => {
+                if(!err) {
+                    resolve(null);
+                }else {
+                    resolve(bundle);
+                }
+            });
+        });
+    }
+    
+    /** 路径是相对分包文件夹路径的相对路径 */
+    public static loadResByBundle(bundleName: string, url: string | string[]) {
+        let bundle = cc.assetManager.getBundle(bundleName);
+        return new Promise((resolve, reject) => {
+            bundle.load(url, (err, asset: cc.Asset | cc.Asset[]) => {
+                if(err) {
+                    resolve(null);
+                }else {
+                    resolve(asset);
+                }
+            });
+        });
+    }
+
+    /** 通过路径加载资源, 如果这个资源在bundle内, 会先加载bundle, 在解开bundle获得对应的资源 */
+    public static loadAsset(url: string | string[]) {
+        return new Promise((resolve, reject) => {
+            cc.resources.load(url, (err, assets: cc.Asset | cc.Asset[]) => {
+                if(!err) {
+                    resolve(null);
+                }else {
+                    resolve(assets);
+                }
+            });
+        });
+    }
+
+
 }
+
