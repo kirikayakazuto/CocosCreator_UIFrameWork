@@ -52,5 +52,6 @@ export default class Main extends cc.Component {
      */
     onDestroy() {
         cc.log('destory');
-    }
+    } 
+    
 }
