@@ -6,7 +6,7 @@ export class MaskType {
     public isEasing = true;             // 缓动实现
     public easingTime = 0.2;            // 缓动时间
 
-    constructor(opacity = ModalOpacity.OpacityHalf, ClickMaskClose=false, IsEasing = true, EasingTime=0.2) {
+    constructor(opacity = ModalOpacity.OpacityHalf, ClickMaskClose=false, IsEasing=true, EasingTime=0.2) {
         this.opacity = opacity;
         this.clickMaskClose = ClickMaskClose;
         this.isEasing = IsEasing;

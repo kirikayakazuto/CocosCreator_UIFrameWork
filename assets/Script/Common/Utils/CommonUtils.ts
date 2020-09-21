@@ -27,7 +27,6 @@ export class CommonUtils {
         }
     }
 
-
     public static foramtDate(dateObj:Date, format:string) {
         var date : any = {
             "M+": dateObj.getMonth() + 1,
@@ -172,10 +171,10 @@ export class CommonUtils {
         }
     }
 
-    public static setItemSpriteFrame(sprite:cc.Sprite, name:string, successCB:(sprite:cc.Sprite)=>void = null) {
-        sprite["spriteFrameName"] = name;
-        CocosHelper.loadRes('name', cc.SpriteFrame).then((spriteFrame:cc.SpriteFrame)=>{
-            if(sprite.isValid && sprite["spriteFrameName"] == name) {
+    public static setItemSpriteFrame(sprite:cc.Sprite, url:string, successCB:(sprite:cc.Sprite)=>void = null) {
+        sprite["spriteFrameName"] = url;
+        CocosHelper.loadRes(url, cc.SpriteFrame).then((spriteFrame:cc.SpriteFrame)=>{
+            if(sprite.isValid && sprite["spriteFrameName"] == url) {
                 sprite.spriteFrame = spriteFrame;
                 if(successCB) {
                     successCB(sprite);
@@ -211,7 +210,7 @@ export class CommonUtils {
         return visibleRect;
     }
 
-    public static async httpGet(url:string, cb) {
+    public static httpGet(url:string, cb: Function) {
         let xhr = cc.loader.getXMLHttpRequest();
         xhr.onreadystatechange = function () {
             // cc.log("Get: readyState:" + xhr.readyState + " status:" + xhr.status);
@@ -426,5 +425,20 @@ export class CommonUtils {
           }
         }
         return len;
+    }
+
+    /** 打乱数组 */
+    public static shuffleArr(arr: any[]) {
+        let _swap = (a: number, b: number) => {
+            let tmp = arr[a];
+            arr[a] = arr[b];
+            arr[b] = tmp;
+        }
+        let len = arr.length;
+        for(let i=0; i<len; i++) {
+            let idx = Math.floor(Math.random() * (len - i));
+            _swap(idx, len-i-1);
+        }
+        return arr;
     }
 }

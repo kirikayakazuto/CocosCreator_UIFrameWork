@@ -59,7 +59,7 @@ export default class Scene extends cc.Component {
     private _block = 0;
     public setInputBlock(bool: boolean) {
         if(!this.ndBlock) {
-            cc.log("未启用 block input");
+            cc.warn("未启用 block input");
             return ;
         }
         bool ? ++ this._block : -- this._block;

@@ -97,7 +97,7 @@ export default class CocosHelper {
     /** 加载资源 */
     public static loadRes<T>(url: string, type: typeof cc.Asset, progressCallback?: (completedCount: number, totalCount: number, item: any) => void): Promise<T>{
         if (!url || !type) {
-            cc.log("参数错误", url, type);
+            cc.error("参数错误", url, type);
             return;
         }
         CocosHelper.loadProgress.url = url;
@@ -107,7 +107,7 @@ export default class CocosHelper {
         return new Promise((resolve, reject) => {
             cc.loader.loadRes(url, type, this._progressCallback, (err, asset) => {
                 if (err) {
-                    cc.log(`${url} [资源加载] 错误 ${err}`);
+                    cc.error(`${url} [资源加载] 错误 ${err}`);
                     resolve(null);
                 }else {
                     resolve(asset);
@@ -138,7 +138,6 @@ export default class CocosHelper {
         if(rootNode.name == nodeName) {
             return rootNode;
         }
-
         for(let i=0; i<rootNode.childrenCount; i++) {
             let node = this.findChildInNode(nodeName, rootNode.children[i]);
             if(node) {
@@ -177,25 +176,12 @@ export default class CocosHelper {
         }
         return com.name;
     }
-    public static randomArr(arr: any[]) {
-        let _swap = (a: number, b: number) => {
-            let tmp = arr[a];
-            arr[a] = arr[b];
-            arr[b] = tmp;
-        }
-        let len = arr.length;
-        for(let i=0; i<len; i++) {
-            let idx = Math.floor(Math.random() * (len - i));
-            _swap(idx, len-i-1);
-        }
-        return arr;
-    }
-
     /** 加载bundle */
-    public static loadBundle(url: string, options: any) {
+    public static loadBundle(url: string, options: any): Promise<cc.AssetManager.Bundle> {
         return new Promise((resolve, reject) => {
             cc.assetManager.loadBundle(url, options, (err: Error, bundle: cc.AssetManager.Bundle) => {
                 if(!err) {
+                    cc.error(`加载bundle失败, url: ${url}, err:${err}`);
                     resolve(null);
                 }else {
                     resolve(bundle);
@@ -205,11 +191,16 @@ export default class CocosHelper {
     }
     
     /** 路径是相对分包文件夹路径的相对路径 */
-    public static loadResByBundle(bundleName: string, url: string | string[]) {
+    public static loadAssetFromBundle(bundleName: string, url: string | string[]) {
         let bundle = cc.assetManager.getBundle(bundleName);
+        if(!bundle) {
+            cc.error(`加载bundle中的资源失败, 未找到bundle, bundleUrl:${bundleName}`);
+            return null;
+        }
         return new Promise((resolve, reject) => {
             bundle.load(url, (err, asset: cc.Asset | cc.Asset[]) => {
                 if(err) {
+                    cc.error(`加载bundle中的资源失败, 未找到asset, url:${url}, err:${err}`);
                     resolve(null);
                 }else {
                     resolve(asset);
@@ -223,6 +214,7 @@ export default class CocosHelper {
         return new Promise((resolve, reject) => {
             cc.resources.load(url, (err, assets: cc.Asset | cc.Asset[]) => {
                 if(!err) {
+                    cc.error(`加载asset失败, url:${url}, err: ${err}`);
                     resolve(null);
                 }else {
                     resolve(assets);
