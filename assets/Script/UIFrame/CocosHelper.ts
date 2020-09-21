@@ -1,3 +1,4 @@
+import { CommonUtils } from "../Common/Utils/CommonUtils";
 import { SysDefine } from "./config/SysDefine";
 export class LoadProgress {
     public url: string;
@@ -217,10 +218,34 @@ export default class CocosHelper {
                     cc.error(`加载asset失败, url:${url}, err: ${err}`);
                     resolve(null);
                 }else {
+                    this.addRefToAssets(assets);
                     resolve(assets);
                 }
             });
         });
+    }
+
+    public static releaseAsset(assets: cc.Asset | cc.Asset[]) {
+        this.decResToAssets(assets);
+    }
+
+    private static addRefToAssets(assets: cc.Asset | cc.Asset[]) {
+        if(assets instanceof Array) {
+            for(const a of assets) {
+                a.addRef();
+            }
+        }else {
+            assets.addRef();
+        }
+    }
+    private static decResToAssets(assets: cc.Asset | cc.Asset[]) {
+        if(assets instanceof Array) {
+            for(const a of assets) {
+                a.decRef();
+            }
+        }else {
+            assets.decRef();
+        }
     }
 
 
