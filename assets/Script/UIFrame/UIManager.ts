@@ -2,6 +2,7 @@ import UIBase from "./UIBase";
 import { SysDefine, FormType } from "./config/SysDefine";
 import ResMgr from "./ResMgr";
 import UIModalMgr from "./UIModalMgr";
+import AdapterMgr, { AdaptaterType } from "./AdapterMgr";
 
 const {ccclass, property} = cc._decorator;
 
@@ -271,6 +272,8 @@ export default class UIManager extends cc.Component {
         let UIBaseFromAll = this._MapAllUIForms[prefabPath];
         
         if(UIBaseFromAll == null) return ;
+        
+        AdapterMgr.inst.adapatByType(AdaptaterType.FullScreen, UIBaseFromAll.node);
         await UIBaseFromAll._preInit();
 
         this._MapCurrentShowUIForms[prefabPath] = UIBaseFromAll;

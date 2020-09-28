@@ -5,6 +5,8 @@ import UILogin from "./test/UILogin";
 import { EventCenter } from "./UIFrame/EventCenter";
 import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
 import CocosHelper from "./UIFrame/CocosHelper";
+import { EventType } from "./UIFrame/EventType";
+import UIEcharts from "./test/UIEcharts";
 
 const {ccclass, property} = cc._decorator;
 
@@ -29,7 +31,8 @@ export default class Main extends cc.Component {
         }
 
         TipsMgr.inst.setLoadingForm("UIForms/UILoading");
-        UILogin.openView(1, 2, 3);
+        // UILogin.openView(1, 2, 3);
+        UIEcharts.openView();
         this.buttonPlus.addClick(() => {
             cc.log("点击事件!");
         }, this);
@@ -44,7 +47,11 @@ export default class Main extends cc.Component {
             console.log('触发点击事件');
         }, (e) => {
             console.log('触发滑动事件', e.getDelta());
-        })
+        });
+
+        cc.view.setResizeCallback(() => {
+            EventCenter.emit(EventType.WindowResize);
+        });
     }
 
     /**
