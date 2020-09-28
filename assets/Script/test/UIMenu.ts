@@ -11,7 +11,7 @@ const {ccclass, property} = cc._decorator;
 export default class UIMenu extends UIBase {
 
     @property(cc.Node)
-    ndMenu: cc.Node = null;
+ndMenu: cc.Node = null;
 
     formType = FormType.FixedUI;
     
