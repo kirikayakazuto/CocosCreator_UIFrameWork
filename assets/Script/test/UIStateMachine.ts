@@ -1,4 +1,4 @@
-import StateMachine from "../Common/StateMachine/state-machine";
+import { StateMachine, StateMachineConfig } from "../Common/StateMachine/state-machine";
 import { FormType } from "../UIFrame/config/SysDefine";
 import UIBase from "../UIFrame/UIBase";
 
@@ -11,9 +11,12 @@ export default class UIStateMachine extends UIBase {
     // onLoad () {}
 
     start () {
-        StateMachine.create({
-            
-        })   
+        
+        let config: StateMachineConfig = {
+            initial: "green",
+            events: []
+        }
+        let s = StateMachine.create({});
     }
 
 

@@ -1,644 +1,230 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define("StateMachine", [], factory);
-	else if(typeof exports === 'object')
-		exports["StateMachine"] = factory();
-	else
-		root["StateMachine"] = factory();
-})(this, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
+/*
 
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
+  Javascript State Machine Library - https://github.com/jakesgordon/javascript-state-machine
 
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
-/******/ 			return installedModules[moduleId].exports;
+  Copyright (c) 2012, 2013, 2014, 2015, Jake Gordon and contributors
+  Released under the MIT license - https://github.com/jakesgordon/javascript-state-machine/blob/master/LICENSE
 
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
+*/
 
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+(function () {
 
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
+  var StateMachine = {
 
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
+    //---------------------------------------------------------------------------
 
+    VERSION: "2.4.0",
 
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
+    //---------------------------------------------------------------------------
 
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
-/******/ 	};
-
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function(target, sources) {
-  var n, source, key;
-  for(n = 1 ; n < arguments.length ; n++) {
-    source = arguments[n];
-    for(key in source) {
-      if (source.hasOwnProperty(key))
-        target[key] = source[key];
-    }
-  }
-  return target;
-}
-
-
-/***/ },
-/* 1 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-//-------------------------------------------------------------------------------------------------
-
-var mixin = __webpack_require__(0);
-
-//-------------------------------------------------------------------------------------------------
-
-module.exports = {
-
-  build: function(target, config) {
-    var n, max, plugin, plugins = config.plugins;
-    for(n = 0, max = plugins.length ; n < max ; n++) {
-      plugin = plugins[n];
-      if (plugin.methods)
-        mixin(target, plugin.methods);
-      if (plugin.properties)
-        Object.defineProperties(target, plugin.properties);
-    }
-  },
-
-  hook: function(fsm, name, additional) {
-    var n, max, method, plugin,
-        plugins = fsm.config.plugins,
-        args    = [fsm.context];
-
-    if (additional)
-      args = args.concat(additional)
-
-    for(n = 0, max = plugins.length ; n < max ; n++) {
-      plugin = plugins[n]
-      method = plugins[n][name]
-      if (method)
-        method.apply(plugin, args);
-    }
-  }
-
-}
-
-//-------------------------------------------------------------------------------------------------
-
-
-/***/ },
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function(label) {
-  var n, word, words = label.split(/[_-]/), result = words[0];
-  for(n = 1 ; n < words.length ; n++) {
-    result = result + words[n].charAt(0).toUpperCase() + words[n].substring(1);
-  }
-  return result;
-}
-
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-//-------------------------------------------------------------------------------------------------
-
-var mixin    = __webpack_require__(0),
-    camelize = __webpack_require__(2);
-
-//-------------------------------------------------------------------------------------------------
-
-function Config(options, StateMachine) {
-
-  options = options || {};
-
-  this.options     = options; // preserving original options can be useful (e.g visualize plugin)
-  this.defaults    = StateMachine.defaults;
-  this.states      = [];
-  this.transitions = [];
-  this.map         = {};
-  this.lifecycle   = this.configureLifecycle();
-  this.init        = this.configureInitTransition(options.init);
-  this.data        = this.configureData(options.data);
-  this.methods     = this.configureMethods(options.methods);
-
-  this.map[this.defaults.wildcard] = {};
-
-  this.configureTransitions(options.transitions || []);
-
-  this.plugins = this.configurePlugins(options.plugins, StateMachine.plugin);
-
-}
-
-//-------------------------------------------------------------------------------------------------
-
-mixin(Config.prototype, {
-
-  addState: function(name) {
-    if (!this.map[name]) {
-      this.states.push(name);
-      this.addStateLifecycleNames(name);
-      this.map[name] = {};
-    }
-  },
-
-  addStateLifecycleNames: function(name) {
-    this.lifecycle.onEnter[name] = camelize('on-enter-' + name);
-    this.lifecycle.onLeave[name] = camelize('on-leave-' + name);
-    this.lifecycle.on[name]      = camelize('on-' + name);
-  },
-
-  addTransition: function(name) {
-    if (this.transitions.indexOf(name) < 0) {
-      this.transitions.push(name);
-      this.addTransitionLifecycleNames(name);
-    }
-  },
-
-  addTransitionLifecycleNames: function(name) {
-    this.lifecycle.onBefore[name] = camelize('on-before-' + name);
-    this.lifecycle.onAfter[name]  = camelize('on-after-' + name);
-    this.lifecycle.on[name]       = camelize('on-' + name);
-  },
-
-  mapTransition: function(transition) {
-    var name = transition.name,
-        from = transition.from,
-        to   = transition.to;
-    this.addState(from);
-    if (typeof to !== 'function')
-      this.addState(to);
-    this.addTransition(name);
-    this.map[from][name] = transition;
-    return transition;
-  },
-
-  configureLifecycle: function() {
-    return {
-      onBefore: { transition: camelize('on-before-transition') },
-      onAfter:  { transition: camelize('on-after-transition')  },
-      onEnter:  { state:      camelize('on-enter-state')       },
-      onLeave:  { state:      camelize('on-leave-state')       },
-      on:       { transition: camelize('on-transition')        }
-    };
-  },
-
-  configureInitTransition: function(init) {
-    if (typeof init === 'string') {
-      return this.mapTransition(mixin({}, this.defaults.init, { to: init, active: true }));
-    }
-    else if (typeof init === 'object') {
-      return this.mapTransition(mixin({}, this.defaults.init, init, { active: true }));
-    }
-    else {
-      this.addState(this.defaults.init.from);
-      return this.defaults.init;
-    }
-  },
-
-  configureData: function(data) {
-    if (typeof data === 'function')
-      return data;
-    else if (typeof data === 'object')
-      return function() { return data; }
-    else
-      return function() { return {};  }
-  },
-
-  configureMethods: function(methods) {
-    return methods || {};
-  },
-
-  configurePlugins: function(plugins, builtin) {
-    plugins = plugins || [];
-    var n, max, plugin;
-    for(n = 0, max = plugins.length ; n < max ; n++) {
-      plugin = plugins[n];
-      if (typeof plugin === 'function')
-        plugins[n] = plugin = plugin()
-      if (plugin.configure)
-        plugin.configure(this);
-    }
-    return plugins
-  },
-
-  configureTransitions: function(transitions) {
-    var i, n, transition, from, to, wildcard = this.defaults.wildcard;
-    for(n = 0 ; n < transitions.length ; n++) {
-      transition = transitions[n];
-      from  = Array.isArray(transition.from) ? transition.from : [transition.from || wildcard]
-      to    = transition.to || wildcard;
-      for(i = 0 ; i < from.length ; i++) {
-        this.mapTransition({ name: transition.name, from: from[i], to: to });
-      }
-    }
-  },
-
-  transitionFor: function(state, transition) {
-    var wildcard = this.defaults.wildcard;
-    return this.map[state][transition] ||
-           this.map[wildcard][transition];
-  },
-
-  transitionsFor: function(state) {
-    var wildcard = this.defaults.wildcard;
-    return Object.keys(this.map[state]).concat(Object.keys(this.map[wildcard]));
-  },
-
-  allStates: function() {
-    return this.states;
-  },
-
-  allTransitions: function() {
-    return this.transitions;
-  }
-
-});
-
-//-------------------------------------------------------------------------------------------------
-
-module.exports = Config;
-
-//-------------------------------------------------------------------------------------------------
-
-
-/***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-
-var mixin      = __webpack_require__(0),
-    Exception  = __webpack_require__(5),
-    plugin     = __webpack_require__(1),
-    UNOBSERVED = [ null, [] ];
-
-//-------------------------------------------------------------------------------------------------
-
-function JSM(context, config) {
-  this.context   = context;
-  this.config    = config;
-  this.state     = config.init.from;
-  this.observers = [context];
-}
-
-//-------------------------------------------------------------------------------------------------
-
-mixin(JSM.prototype, {
-
-  init: function(args) {
-    mixin(this.context, this.config.data.apply(this.context, args));
-    plugin.hook(this, 'init');
-    if (this.config.init.active)
-      return this.fire(this.config.init.name, []);
-  },
-
-  is: function(state) {
-    return Array.isArray(state) ? (state.indexOf(this.state) >= 0) : (this.state === state);
-  },
-
-  isPending: function() {
-    return this.pending;
-  },
-
-  can: function(transition) {
-    return !this.isPending() && !!this.seek(transition);
-  },
-
-  cannot: function(transition) {
-    return !this.can(transition);
-  },
-
-  allStates: function() {
-    return this.config.allStates();
-  },
-
-  allTransitions: function() {
-    return this.config.allTransitions();
-  },
-
-  transitions: function() {
-    return this.config.transitionsFor(this.state);
-  },
-
-  seek: function(transition, args) {
-    var wildcard = this.config.defaults.wildcard,
-        entry    = this.config.transitionFor(this.state, transition),
-        to       = entry && entry.to;
-    if (typeof to === 'function')
-      return to.apply(this.context, args);
-    else if (to === wildcard)
-      return this.state
-    else
-      return to
-  },
-
-  fire: function(transition, args) {
-    return this.transit(transition, this.state, this.seek(transition, args), args);
-  },
-
-  transit: function(transition, from, to, args) {
-
-    var lifecycle = this.config.lifecycle,
-        changed   = this.config.options.observeUnchangedState || (from !== to);
-
-    if (!to)
-      return this.context.onInvalidTransition(transition, from, to);
-
-    if (this.isPending())
-      return this.context.onPendingTransition(transition, from, to);
-
-    this.config.addState(to);  // might need to add this state if it's unknown (e.g. conditional transition or goto)
-
-    this.beginTransit();
-
-    args.unshift({             // this context will be passed to each lifecycle event observer
-      transition: transition,
-      from:       from,
-      to:         to,
-      fsm:        this.context
-    });
-
-    return this.observeEvents([
-                this.observersForEvent(lifecycle.onBefore.transition),
-                this.observersForEvent(lifecycle.onBefore[transition]),
-      changed ? this.observersForEvent(lifecycle.onLeave.state) : UNOBSERVED,
-      changed ? this.observersForEvent(lifecycle.onLeave[from]) : UNOBSERVED,
-                this.observersForEvent(lifecycle.on.transition),
-      changed ? [ 'doTransit', [ this ] ]                       : UNOBSERVED,
-      changed ? this.observersForEvent(lifecycle.onEnter.state) : UNOBSERVED,
-      changed ? this.observersForEvent(lifecycle.onEnter[to])   : UNOBSERVED,
-      changed ? this.observersForEvent(lifecycle.on[to])        : UNOBSERVED,
-                this.observersForEvent(lifecycle.onAfter.transition),
-                this.observersForEvent(lifecycle.onAfter[transition]),
-                this.observersForEvent(lifecycle.on[transition])
-    ], args);
-  },
-
-  beginTransit: function()          { this.pending = true;                 },
-  endTransit:   function(result)    { this.pending = false; return result; },
-  doTransit:    function(lifecycle) { this.state = lifecycle.to;           },
-
-  observe: function(args) {
-    if (args.length === 2) {
-      var observer = {};
-      observer[args[0]] = args[1];
-      this.observers.push(observer);
-    }
-    else {
-      this.observers.push(args[0]);
-    }
-  },
-
-  observersForEvent: function(event) { // TODO: this could be cached
-    var n = 0, max = this.observers.length, observer, result = [];
-    for( ; n < max ; n++) {
-      observer = this.observers[n];
-      if (observer[event])
-        result.push(observer);
-    }
-    return [ event, result, true ]
-  },
-
-  observeEvents: function(events, args, previousEvent) {
-    if (events.length === 0) {
-      return this.endTransit(true);
-    }
-
-    var event     = events[0][0],
-        observers = events[0][1],
-        pluggable = events[0][2];
-
-    args[0].event = event;
-    if (event && pluggable && event !== previousEvent)
-      plugin.hook(this, 'lifecycle', args);
-
-    if (observers.length === 0) {
-      events.shift();
-      return this.observeEvents(events, args, event);
-    }
-    else {
-      var observer = observers.shift(),
-          result = observer[event].apply(observer, args);
-      if (result && typeof result.then === 'function') {
-        return result.then(this.observeEvents.bind(this, events, args, event))
-                     .catch(this.endTransit.bind(this))
-      }
-      else if (result === false) {
-        return this.endTransit(false);
-      }
-      else {
-        return this.observeEvents(events, args, event);
-      }
-    }
-  },
-
-  onInvalidTransition: function(transition, from, to) {
-    throw new Exception("transition is invalid in current state", transition, from, to, this.state);
-  },
-
-  onPendingTransition: function(transition, from, to) {
-    throw new Exception("transition is invalid while previous transition is still in progress", transition, from, to, this.state);
-  }
-
-});
-
-//-------------------------------------------------------------------------------------------------
-
-module.exports = JSM;
-
-//-------------------------------------------------------------------------------------------------
-
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function(message, transition, from, to, current) {
-  this.message    = message;
-  this.transition = transition;
-  this.from       = from;
-  this.to         = to;
-  this.current    = current;
-}
-
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-//-----------------------------------------------------------------------------------------------
-
-var mixin    = __webpack_require__(0),
-    camelize = __webpack_require__(2),
-    plugin   = __webpack_require__(1),
-    Config   = __webpack_require__(3),
-    JSM      = __webpack_require__(4);
-
-//-----------------------------------------------------------------------------------------------
-
-var PublicMethods = {
-  is:                  function(state)       { return this._fsm.is(state)                                     },
-  can:                 function(transition)  { return this._fsm.can(transition)                               },
-  cannot:              function(transition)  { return this._fsm.cannot(transition)                            },
-  observe:             function()            { return this._fsm.observe(arguments)                            },
-  transitions:         function()            { return this._fsm.transitions()                                 },
-  allTransitions:      function()            { return this._fsm.allTransitions()                              },
-  allStates:           function()            { return this._fsm.allStates()                                   },
-  onInvalidTransition: function(t, from, to) { return this._fsm.onInvalidTransition(t, from, to)              },
-  onPendingTransition: function(t, from, to) { return this._fsm.onPendingTransition(t, from, to)              },
-}
-
-var PublicProperties = {
-  state: {
-    configurable: false,
-    enumerable:   true,
-    get: function() {
-      return this._fsm.state;
+    Result: {
+      SUCCEEDED:    1, // the event transitioned successfully from one state to another
+      NOTRANSITION: 2, // the event was successfull but no state transition was necessary
+      CANCELLED:    3, // the event was cancelled by the caller in a beforeEvent callback
+      PENDING:      4  // the event is asynchronous and the caller is in control of when the transition occurs
     },
-    set: function(state) {
-      throw Error('use transitions to change state')
+
+    Error: {
+      INVALID_TRANSITION: 100, // caller tried to fire an event that was innapropriate in the current state
+      PENDING_TRANSITION: 200, // caller tried to fire an event while an async transition was still pending
+      INVALID_CALLBACK:   300 // caller provided callback function threw an exception
+    },
+
+    WILDCARD: '*',
+    ASYNC: 'async',
+
+    //---------------------------------------------------------------------------
+
+    create: function(cfg, target) {
+
+      var initial      = (typeof cfg.initial == 'string') ? { state: cfg.initial } : cfg.initial; // allow for a simple string, or an object with { state: 'foo', event: 'setup', defer: true|false }
+      var terminal     = cfg.terminal || cfg['final'];
+      var fsm          = target || cfg.target  || {};
+      var events       = cfg.events || [];
+      var callbacks    = cfg.callbacks || {};
+      var map          = {}; // track state transitions allowed for an event { event: { from: [ to ] } }
+      var transitions  = {}; // track events allowed from a state            { state: [ event ] }
+
+      var add = function(e) {
+        var from = Array.isArray(e.from) ? e.from : (e.from ? [e.from] : [StateMachine.WILDCARD]); // allow 'wildcard' transition if 'from' is not specified
+        map[e.name] = map[e.name] || {};
+        for (var n = 0 ; n < from.length ; n++) {
+          transitions[from[n]] = transitions[from[n]] || [];
+          transitions[from[n]].push(e.name);
+
+          map[e.name][from[n]] = e.to || from[n]; // allow no-op transition if 'to' is not specified
+        }
+        if (e.to)
+          transitions[e.to] = transitions[e.to] || [];
+      };
+
+      if (initial) {
+        initial.event = initial.event || 'startup';
+        add({ name: initial.event, from: 'none', to: initial.state });
+      }
+
+      for(var n = 0 ; n < events.length ; n++)
+        add(events[n]);
+
+      for(var name in map) {
+        if (map.hasOwnProperty(name))
+          fsm[name] = StateMachine.buildEvent(name, map[name]);
+      }
+
+      for(var name in callbacks) {
+        if (callbacks.hasOwnProperty(name))
+          fsm[name] = callbacks[name]
+      }
+
+      fsm.current     = 'none';
+      fsm.is          = function(state) { return Array.isArray(state) ? (state.indexOf(this.current) >= 0) : (this.current === state); };
+      fsm.can         = function(event) { return !this.transition && (map[event] !== undefined) && (map[event].hasOwnProperty(this.current) || map[event].hasOwnProperty(StateMachine.WILDCARD)); }
+      fsm.cannot      = function(event) { return !this.can(event); };
+      fsm.transitions = function()      { return (transitions[this.current] || []).concat(transitions[StateMachine.WILDCARD] || []); };
+      fsm.isFinished  = function()      { return this.is(terminal); };
+      fsm.error       = cfg.error || function(name, from, to, args, error, msg, e) { throw e || msg; }; // default behavior when something unexpected happens is to throw an exception, but caller can override this behavior if desired (see github issue #3 and #17)
+      fsm.states      = function() { return Object.keys(transitions).sort() };
+
+      if (initial && !initial.defer)
+        fsm[initial.event]();
+
+      return fsm;
+
+    },
+
+    //===========================================================================
+
+    doCallback: function(fsm, func, name, from, to, args) {
+      if (func) {
+        try {
+          return func.apply(fsm, [name, from, to].concat(args));
+        }
+        catch(e) {
+          return fsm.error(name, from, to, args, StateMachine.Error.INVALID_CALLBACK, "an exception occurred in a caller-provided callback function", e);
+        }
+      }
+    },
+
+    beforeAnyEvent:  function(fsm, name, from, to, args) { return StateMachine.doCallback(fsm, fsm['onbeforeevent'],                       name, from, to, args); },
+    afterAnyEvent:   function(fsm, name, from, to, args) { return StateMachine.doCallback(fsm, fsm['onafterevent'] || fsm['onevent'],      name, from, to, args); },
+    leaveAnyState:   function(fsm, name, from, to, args) { return StateMachine.doCallback(fsm, fsm['onleavestate'],                        name, from, to, args); },
+    enterAnyState:   function(fsm, name, from, to, args) { return StateMachine.doCallback(fsm, fsm['onenterstate'] || fsm['onstate'],      name, from, to, args); },
+    changeState:     function(fsm, name, from, to, args) { return StateMachine.doCallback(fsm, fsm['onchangestate'],                       name, from, to, args); },
+
+    beforeThisEvent: function(fsm, name, from, to, args) { return StateMachine.doCallback(fsm, fsm['onbefore' + name],                     name, from, to, args); },
+    afterThisEvent:  function(fsm, name, from, to, args) { return StateMachine.doCallback(fsm, fsm['onafter'  + name] || fsm['on' + name], name, from, to, args); },
+    leaveThisState:  function(fsm, name, from, to, args) { return StateMachine.doCallback(fsm, fsm['onleave'  + from],                     name, from, to, args); },
+    enterThisState:  function(fsm, name, from, to, args) { return StateMachine.doCallback(fsm, fsm['onenter'  + to]   || fsm['on' + to],   name, from, to, args); },
+
+    beforeEvent: function(fsm, name, from, to, args) {
+      if ((false === StateMachine.beforeThisEvent(fsm, name, from, to, args)) ||
+          (false === StateMachine.beforeAnyEvent( fsm, name, from, to, args)))
+        return false;
+    },
+
+    afterEvent: function(fsm, name, from, to, args) {
+      StateMachine.afterThisEvent(fsm, name, from, to, args);
+      StateMachine.afterAnyEvent( fsm, name, from, to, args);
+    },
+
+    leaveState: function(fsm, name, from, to, args) {
+      var specific = StateMachine.leaveThisState(fsm, name, from, to, args),
+          general  = StateMachine.leaveAnyState( fsm, name, from, to, args);
+      if ((false === specific) || (false === general))
+        return false;
+      else if ((StateMachine.ASYNC === specific) || (StateMachine.ASYNC === general))
+        return StateMachine.ASYNC;
+    },
+
+    enterState: function(fsm, name, from, to, args) {
+      StateMachine.enterThisState(fsm, name, from, to, args);
+      StateMachine.enterAnyState( fsm, name, from, to, args);
+    },
+
+    //===========================================================================
+
+    buildEvent: function(name, map) {
+      return function() {
+
+        var from  = this.current;
+        var to    = map[from] || (map[StateMachine.WILDCARD] != StateMachine.WILDCARD ? map[StateMachine.WILDCARD] : from) || from;
+        var args  = Array.prototype.slice.call(arguments); // turn arguments into pure array
+
+        if (this.transition)
+          return this.error(name, from, to, args, StateMachine.Error.PENDING_TRANSITION, "event " + name + " inappropriate because previous transition did not complete");
+
+        if (this.cannot(name))
+          return this.error(name, from, to, args, StateMachine.Error.INVALID_TRANSITION, "event " + name + " inappropriate in current state " + this.current);
+
+        if (false === StateMachine.beforeEvent(this, name, from, to, args))
+          return StateMachine.Result.CANCELLED;
+
+        if (from === to) {
+          StateMachine.afterEvent(this, name, from, to, args);
+          return StateMachine.Result.NOTRANSITION;
+        }
+
+        // prepare a transition method for use EITHER lower down, or by caller if they want an async transition (indicated by an ASYNC return value from leaveState)
+        var fsm = this;
+        this.transition = function() {
+          fsm.transition = null; // this method should only ever be called once
+          fsm.current = to;
+          StateMachine.enterState( fsm, name, from, to, args);
+          StateMachine.changeState(fsm, name, from, to, args);
+          StateMachine.afterEvent( fsm, name, from, to, args);
+          return StateMachine.Result.SUCCEEDED;
+        };
+        this.transition.cancel = function() { // provide a way for caller to cancel async transition if desired (issue #22)
+          fsm.transition = null;
+          StateMachine.afterEvent(fsm, name, from, to, args);
+        }
+
+        var leave = StateMachine.leaveState(this, name, from, to, args);
+        if (false === leave) {
+          this.transition = null;
+          return StateMachine.Result.CANCELLED;
+        }
+        else if (StateMachine.ASYNC === leave) {
+          return StateMachine.Result.PENDING;
+        }
+        else {
+          if (this.transition) // need to check in case user manually called transition() but forgot to return StateMachine.ASYNC
+            return this.transition();
+        }
+
+      };
     }
-  }
-}
 
-//-----------------------------------------------------------------------------------------------
+  }; // StateMachine
 
-function StateMachine(options) {
-  return apply(this || {}, options);
-}
+  //===========================================================================
 
-function factory() {
-  var cstor, options;
-  if (typeof arguments[0] === 'function') {
-    cstor   = arguments[0];
-    options = arguments[1] || {};
-  }
-  else {
-    cstor   = function() { this._fsm.apply(this, arguments) };
-    options = arguments[0] || {};
-  }
-  var config = new Config(options, StateMachine);
-  build(cstor.prototype, config);
-  cstor.prototype._fsm.config = config; // convenience access to shared config without needing an instance
-  return cstor;
-}
-
-//-------------------------------------------------------------------------------------------------
-
-function apply(instance, options) {
-  var config = new Config(options, StateMachine);
-  build(instance, config);
-  instance._fsm();
-  return instance;
-}
-
-function build(target, config) {
-  if ((typeof target !== 'object') || Array.isArray(target))
-    throw Error('StateMachine can only be applied to objects');
-  plugin.build(target, config);
-  Object.defineProperties(target, PublicProperties);
-  mixin(target, PublicMethods);
-  mixin(target, config.methods);
-  config.allTransitions().forEach(function(transition) {
-    target[camelize(transition)] = function() {
-      return this._fsm.fire(transition, [].slice.call(arguments))
+  //======
+  // NODE
+  //======
+  if (typeof exports !== 'undefined') {
+    if (typeof module !== 'undefined' && module.exports) {
+      exports = module.exports = StateMachine;
     }
-  });
-  target._fsm = function() {
-    this._fsm = new JSM(this, config);
-    this._fsm.init(arguments);
+    exports.StateMachine = StateMachine;
   }
-}
-
-//-----------------------------------------------------------------------------------------------
-
-StateMachine.version  = '3.0.0-rc.1';
-StateMachine.factory  = factory;
-StateMachine.apply    = apply;
-StateMachine.defaults = {
-  wildcard: '*',
-  init: {
-    name: 'init',
-    from: 'none'
+  //============
+  // AMD/REQUIRE
+  //============
+  else if (typeof define === 'function' && define.amd) {
+    define(function(require) { return StateMachine; });
   }
-}
+  //========
+  // BROWSER
+  //========
+  else if (typeof window !== 'undefined') {
+    window.StateMachine = StateMachine;
+  }
+  //===========
+  // WEB WORKER
+  //===========
+  else if (typeof self !== 'undefined') {
+    self.StateMachine = StateMachine;
+  }
 
-//===============================================================================================
-
-module.exports = StateMachine;
-
-
-/***/ }
-/******/ ]);
-});
+}());
