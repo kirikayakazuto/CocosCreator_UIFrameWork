@@ -23,3 +23,4 @@ export default class UICreateRoom extends UIBase {
 
     // update (dt) {}
 }
+  
