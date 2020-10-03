@@ -4,7 +4,6 @@ import TouchPlus from "./Common/Components/TouchPlus";
 import UILogin from "./test/UILogin";
 import { EventCenter } from "./UIFrame/EventCenter";
 import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
-import CocosHelper from "./UIFrame/CocosHelper";
 
 const {ccclass, property} = cc._decorator;
 
