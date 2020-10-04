@@ -222,9 +222,9 @@ export default class CocosHelper {
     }
 
     /** 通过路径加载资源, 如果这个资源在bundle内, 会先加载bundle, 在解开bundle获得对应的资源 */
-    public static loadAssetSync(url: string | string[]) {
+    public static loadAssetSync<T>(url: string | string[]): Promise<T | T[]> {
         return new Promise((resolve, reject) => {
-            cc.resources.load(url, (err, assets: cc.Asset | cc.Asset[]) => {
+            cc.resources.load(url, (err, assets: any) => {
                 if(!err) {
                     cc.error(`加载asset失败, url:${url}, err: ${err}`);
                     resolve(null);

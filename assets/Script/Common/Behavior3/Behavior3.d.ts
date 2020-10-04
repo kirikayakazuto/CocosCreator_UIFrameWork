@@ -85,6 +85,10 @@
  *
  */
 declare namespace b3 {
+
+    /**  */
+    function Class(baseClass: Function, properties?: any): Function;
+
     /**
      * This function is used to create unique IDs for trees and nodes.
      *
@@ -333,6 +337,17 @@ declare namespace b3 {
          *
          */
         tick(target: any, blackboard: Blackboard): string;
+
+        /** 唯一标识 */
+        id: string;
+        /** 标题 */
+        title: string;
+        /** 描述文件 */
+        description: string;
+        /** 属性 */
+        properties: any;
+        /** 根节点 */
+        root: BaseNode;
     }
 
     /**

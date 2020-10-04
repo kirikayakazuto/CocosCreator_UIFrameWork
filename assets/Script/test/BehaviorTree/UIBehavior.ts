@@ -1,5 +1,5 @@
-import { FormType } from "../UIFrame/config/SysDefine";
-import UIBase from "../UIFrame/UIBase";
+import { FormType } from "../../UIFrame/config/SysDefine";
+import UIBase from "../../UIFrame/UIBase";
 
 const {ccclass, property} = cc._decorator;
 
@@ -9,12 +9,16 @@ export default class UIBehavior extends UIBase {
     formType = FormType.Screen;
     static prefabPath = "UIForms/UIBehavior";
 
+    async load() {
+        
+    }
+
     onShow() {
 
     }
 
     start () {
-        let tree = new b3.BehaviorTree();
+        
     }
 
     // update (dt) {}

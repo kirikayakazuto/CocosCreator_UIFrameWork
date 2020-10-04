@@ -1,3 +1,4 @@
+import BTreeMgr from "./Manager/BTreeMgr";
 import ConfigMgr from "./Manager/ConfigMgr";
 import PlayerMgr from "./Manager/PlayerMgr";
 
@@ -9,10 +10,12 @@ class Game {
     public inited = false;
     public configMgr: ConfigMgr = null;
     public playerMgr: PlayerMgr = null;
+    public bTreeMgr: BTreeMgr = null;
     public async init(uiRoot: cc.Node) {
         // 初始化Manager, 例如new ConfigMgr();
         this.configMgr = new ConfigMgr();
         this.playerMgr = new PlayerMgr();
+        this.bTreeMgr = new BTreeMgr();
         // 初始化平台sdk
         // todo...
         // 加载配置
@@ -36,6 +39,8 @@ class Game {
     public update(dt: number) {
         if(!this.inited) return ;
         // 例如Task.update(dt);,更新任务进度
+
+        this.bTreeMgr.tick(dt);
     }
 }
 

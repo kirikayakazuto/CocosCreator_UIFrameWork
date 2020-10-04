@@ -1,38 +1,47 @@
+import e = require("express");
+import BTreeBase from "../../Common/Behavior3/BTreeBase";
+import CocosHelper from "../../UIFrame/CocosHelper";
 export default class BTreeMgr {
-    private configs: any = {};
-    // private trees: {[name: string]: b3.BehaviorTree} = cc.js.createMap();
-    private trees: Array<b3.BehaviorTree> = [];     // 行为树
 
-    private blackboard: b3.Blackboard = null;
+    private configs: {[name: string]: cc.JsonAsset} = cc.js.createMap();
+    private trees: {[name: string]: BTreeBase} = cc.js.createMap();
 
-    public init() {
-        this.blackboard = new b3.Blackboard();
-    }
-    public addTree(name: string) {
-        let tree = new b3.BehaviorTree();
-        let config = this.getTreeConfig(name);
-        if(!config) {
-            console.error('没有找到对应的配置文件', name)
-            return ;
+    /** 注册行为树 */
+    public regiestTree(name: string, tree: BTreeBase) {
+        if(this.trees[name]) {
+            console.warn(`${name} : 已经被注册了`)
         }
-        tree.load(config, name);
-    }
-
-    private getTreeConfig(name: string) {
-        return this.configs[name];
-    }
-
-    public onConfigChange() {
+        this.trees[name] = tree;
         
     }
+    
+    public unRegiestTree(name: string) {
+        this.trees[name] = null;
+        delete this.trees[name];
+    }
 
-    public update(dt: number) {        
-        for(const tree of this.trees) {
-            tree.tick(this, this.blackboard);
+    /** 加载配置文件 */
+    public async loadConfigSync(path: string | string[]) {
+        let assets = await CocosHelper.loadAssetSync<cc.JsonAsset>(path);
+        if(assets instanceof Array) { 
+            for(const e of assets) {
+                this.configs[e.name] = e;
+            }
+        }else {
+            this.configs[assets.name] = assets;
+        }
+        
+    }
+    /** 获得配置文件 */
+    public getConfig(path: string) {
+        return this.configs[path];
+    }
+
+    /** 外部调用, 驱动行为树 */
+    public tick(dt: number) {        
+        for(const key in this.trees) {
+            this.trees[key].tick();
         }
     }
 
-    public test() {
-        
-    }
 }
