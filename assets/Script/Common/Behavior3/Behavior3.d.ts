@@ -130,32 +130,32 @@ declare namespace b3 {
          * different of `RUNNING`.
          *
          */
-        _execute(tick: Tick): number;
+        // _execute(tick: Tick): number;
 
         /**
          * Wrapper for enter method.
          */
-        _enter(tick: Tick): void;
+        // _enter(tick: Tick): void;
 
         /**
          * Wrapper for open method.
          */
-        _open(tick: Tick): void;
+        // _open(tick: Tick): void;
 
         /**
          * Wrapper for tick method.
          */
-        _tick(tick: Tick): number;
+        // _tick(tick: Tick): number;
 
         /**
          * Wrapper for close method.
          */
-        _close(tick: Tick): void;
+        // _close(tick: Tick): void;
 
         /**
          * Wrapper for exit method.
          */
-        _exit(tick: Tick): void;
+        // _exit(tick: Tick): void;
 
         /**
          * Enter method, override this to use. It is called every time a node is

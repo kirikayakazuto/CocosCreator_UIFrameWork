@@ -189,7 +189,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "soldier",
+    "_name": "BlackBlock",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -275,9 +275,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 0,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_contentSize": {
@@ -294,7 +294,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
+        -294.579,
         0,
         0,
         0,
@@ -363,7 +363,7 @@
     "sync": false
   },
   {
-    "__type__": "1eff2XNArNKbJT9nSKff5m0",
+    "__type__": "ae54c9xFRBMEIbM9638Fy1L",
     "_name": "",
     "_objFlags": 0,
     "node": {

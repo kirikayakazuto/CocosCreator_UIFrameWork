@@ -16,10 +16,10 @@ export default class BTreeBase extends cc.Component {
     
     public bTree: b3.BehaviorTree = new b3.BehaviorTree();
     /** 共享消息的对象 */
-    private blackboard: b3.Blackboard = new b3.Blackboard();;
+    public blackboard: b3.Blackboard = new b3.Blackboard();;
 
 
-    tick() {
+    public tick() {
         this.bTree.tick(this, this.blackboard);
     }
 }
