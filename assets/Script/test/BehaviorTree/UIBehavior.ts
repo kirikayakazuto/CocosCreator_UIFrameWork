@@ -1,3 +1,4 @@
+import Game from "../../Logic/Game";
 import { FormType } from "../../UIFrame/config/SysDefine";
 import UIBase from "../../UIFrame/UIBase";
 
@@ -10,7 +11,7 @@ export default class UIBehavior extends UIBase {
     static prefabPath = "UIForms/UIBehavior";
 
     async load() {
-        
+        await Game.bTreeMgr.genTree("BlackBlock", "JsonConfigs/BlockConfig", "Block")
     }
 
     onShow() {

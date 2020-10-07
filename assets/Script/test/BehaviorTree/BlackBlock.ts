@@ -1,19 +1,36 @@
 import { EventCenter } from "../../UIFrame/EventCenter";
 import { EventType } from "../../UIFrame/EventType";
+import BlockModel from "./BlockModel";
+import { BlockState } from "./BlockType";
+import ModelBase from "./ModelBase";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class 
- extends cc.Component {
-    
+export default class BlackBlock extends cc.Component {
+
+    @property(cc.Label)
+    lbState: cc.Label = null;
 
     start() {
-        EventCenter.on(EventType.BlockAttack, this.onAttack, this);
-        EventCenter.on(EventType.BlockStand, this.onStand, this);
-        EventCenter.on(EventType.BlockPatrol, this.onPatrol, this);
-        EventCenter.on(EventType.BlockDodge, this.onDodge, this);
+        let model = new ModelBase();
+        model.node = this.node;
+        model.name = "BlackBlock";
+        BlockModel.regiestModel("BlackBlock", model)
 
+        EventCenter.on(EventType.BlackBlockState, this.onStateChange, this);
+
+    }
+
+    onStateChange(state: BlockState) {
+        switch(state) {
+            case BlockState.Attack:
+                this.lbState.string = "攻击";
+            break;
+            case BlockState.Stand:
+                this.lbState.string = "发呆"
+                break;
+        }
     }
 
     onAttack() {

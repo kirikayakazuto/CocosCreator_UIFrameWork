@@ -1,0 +1,104 @@
+{
+  "version": "0.3.0",
+  "scope": "tree",
+  "id": "2ecada75-96ae-463d-8c44-085dfdbf650d",
+  "title": "A behavior tree",
+  "description": "",
+  "root": "12b019b0-20f8-4ff0-b8df-d75a62661107",
+  "properties": {},
+  "nodes": {
+    "12b019b0-20f8-4ff0-b8df-d75a62661107": {
+      "id": "12b019b0-20f8-4ff0-b8df-d75a62661107",
+      "name": "Sequence",
+      "title": "Sequence",
+      "description": "",
+      "properties": {},
+      "display": {
+        "x": -168,
+        "y": -108
+      },
+      "children": [
+        "395e6f27-d1d2-4768-8728-76a6388028fc",
+        "4c05605f-8e93-414a-b55a-75873358533c"
+      ]
+    },
+    "395e6f27-d1d2-4768-8728-76a6388028fc": {
+      "id": "395e6f27-d1d2-4768-8728-76a6388028fc",
+      "name": "Look",
+      "title": "Look",
+      "description": "观察范围",
+      "properties": {
+        "size": 300
+      },
+      "display": {
+        "x": 12,
+        "y": -168
+      }
+    },
+    "4c05605f-8e93-414a-b55a-75873358533c": {
+      "id": "4c05605f-8e93-414a-b55a-75873358533c",
+      "name": "Attack",
+      "title": "Attack",
+      "description": "",
+      "properties": {},
+      "display": {
+        "x": 12,
+        "y": -60
+      }
+    }
+  },
+  "display": {
+    "camera_x": 639.5,
+    "camera_y": 660,
+    "camera_z": 1,
+    "x": -312,
+    "y": -108
+  },
+  "custom_nodes": [
+    {
+      "version": "0.3.0",
+      "scope": "node",
+      "name": "Attack",
+      "category": "action",
+      "title": "Attack",
+      "description": null,
+      "properties": {}
+    },
+    {
+      "version": "0.3.0",
+      "scope": "node",
+      "name": "Stand",
+      "category": "action",
+      "title": "Stand",
+      "description": null,
+      "properties": {}
+    },
+    {
+      "version": "0.3.0",
+      "scope": "node",
+      "name": "Patrol",
+      "category": "action",
+      "title": "Patrol",
+      "description": null,
+      "properties": {}
+    },
+    {
+      "version": "0.3.0",
+      "scope": "node",
+      "name": "Dodge",
+      "category": "action",
+      "title": "Dodge",
+      "description": "闪避",
+      "properties": {}
+    },
+    {
+      "version": "0.3.0",
+      "scope": "node",
+      "name": "Look",
+      "category": "action",
+      "title": "Look",
+      "description": "观察范围",
+      "properties": {}
+    }
+  ]
+}

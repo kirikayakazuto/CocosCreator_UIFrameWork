@@ -7,13 +7,11 @@ export default class BTreeMgr {
 
 
     /** 生成行为树 */
-    public async genTree(configPath: string, nameSpace: string, name?: string) {
-        let config = await CocosHelper.loadAssetSync<cc.JsonAsset>(configPath);
+    public async genTree(name: string, configPath: string, nameSpace: string) {
+        let config = await CocosHelper.loadResSync<cc.JsonAsset>(configPath, cc.JsonAsset);
         let tree = new b3.BehaviorTree();
-        tree.load(config, window[nameSpace]);
-
-        nameSpace = name ? name : nameSpace;
-        this.trees[nameSpace] = tree;
+        tree.load(config.json, window[nameSpace]);
+        this.trees[name] = tree;
 
         return tree;
     }
@@ -36,7 +34,14 @@ export default class BTreeMgr {
     }
 
     /** 外部调用, 驱动行为树 */
-    public tick(dt: number) {        
+    private _interval = 60 / 1;
+    private _passTime = 0;
+    public tick(dt: number) {
+        // if(this._passTime < this._interval) {
+        //     this._passTime += dt;
+        //     return ;
+        // }
+        // this._passTime = 0;
         for(const key in this.trees) {
             this.trees[key].tick(this, this.blackboard);
         }

@@ -122,6 +122,8 @@ declare namespace b3 {
          */
         constructor({category, name, title, description, properties}?: {category?: string, name?: string, title?: string, description?: string, properties?: any});
 
+        properties: any;
+
         /**
          * This is the main method to propagate the tick signal to this node. This
          * method calls all callbacks: `enter`, `open`, `tick`, `close`, and

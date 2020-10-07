@@ -6,8 +6,5 @@ export enum EventType {
 
 
     // block tree
-    BlockAttack = "BlockAttack",        // 攻击
-    BlockStand = "BlockStand",          // 站立
-    BlockPatrol = "BlockPatrol",        // 巡逻
-    BlockDodge = "BlockDodge",          // 闪避
+    BlackBlockState = "BlackBlockState",
 }
