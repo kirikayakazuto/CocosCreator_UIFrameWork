@@ -1,21 +1,35 @@
-import BTreeBase from "../../Common/Behavior3/BTreeBase";
-import Game from "../../Logic/Game";
+import { EventCenter } from "../../UIFrame/EventCenter";
+import { EventType } from "../../UIFrame/EventType";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class BlackBlockTree extends BTreeBase {
-    bTreeName = "SoldierTree";
-    bTreeUrl = "BTreeConfigs/SoldierTree";
-
-    onLoad() {
-        let config = Game.bTreeMgr.getConfig(this.bTreeUrl);
-        this.bTree.load(config, window[this.bTreeName]);
-        Game.bTreeMgr.regiestTree(this.bTreeName, this);
-    }
+export default class 
+ extends cc.Component {
+    
 
     start() {
-        
+        EventCenter.on(EventType.BlockAttack, this.onAttack, this);
+        EventCenter.on(EventType.BlockStand, this.onStand, this);
+        EventCenter.on(EventType.BlockPatrol, this.onPatrol, this);
+        EventCenter.on(EventType.BlockDodge, this.onDodge, this);
+
+    }
+
+    onAttack() {
+
+    }
+
+    onStand() {
+
+    }
+
+    onPatrol() {
+
+    }
+
+    onDodge() {
+
     }
 
 
