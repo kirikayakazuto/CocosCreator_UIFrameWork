@@ -45,7 +45,7 @@ export default class Main extends cc.Component {
             console.log('触发滑动事件', e.getDelta());
         })
 
-        console.log(b3)
+        console.log(b3);
     }
 
     /**
