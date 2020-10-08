@@ -1,4 +1,3 @@
-import { threadId } from "worker_threads";
 import BlockModel from "./BlockModel";
 import { BlockState } from "./BlockType";
 
@@ -6,8 +5,12 @@ namespace Block {
     export class Look extends b3.Action {
 
         tick(tick: b3.Tick) {
+
             let whiteBlock = BlockModel.getModel("WhiteBlock");
             let blackBlock = BlockModel.getModel("BlackBlock");
+
+
+
 
             let len = whiteBlock.node.position.sub(blackBlock.node.position).len();
             if(len <= this.properties.size) return b3.SUCCESS;

@@ -48,9 +48,6 @@ export default class CocosHelper {
     public static async runTweenSync(target: any, ...tweens: cc.Tween[]): Promise<void> {
         return new Promise((resolve, reject) => {
             let selfTween = cc.tween(target);
-            if(target.tag) {
-                selfTween.tag(target.tag);
-            }
             for(const tmpTween of tweens) {
                 selfTween = selfTween.then(tmpTween);
             }

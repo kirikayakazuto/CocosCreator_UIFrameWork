@@ -1,3 +1,4 @@
+import CocosHelper from "../../UIFrame/CocosHelper";
 import { EventCenter } from "../../UIFrame/EventCenter";
 import { EventType } from "../../UIFrame/EventType";
 import BlockModel from "./BlockModel";
@@ -9,8 +10,12 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class BlackBlock extends cc.Component {
 
+    @property(cc.Node)
+    ndBody: cc.Node = null;
     @property(cc.Label)
     lbState: cc.Label = null;
+    @property(cc.Graphics)
+    graphics: cc.Graphics = null;
 
     start() {
         let model = new ModelBase();
@@ -20,16 +25,20 @@ export default class BlackBlock extends cc.Component {
 
         EventCenter.on(EventType.BlackBlockState, this.onStateChange, this);
 
+        this.lookAround();
+        this.range();
+
     }
 
     onStateChange(state: BlockState) {
         switch(state) {
-            case BlockState.Attack:
-                this.lbState.string = "攻击";
-            break;
             case BlockState.Stand:
                 this.lbState.string = "发呆"
                 break;
+            case BlockState.Attack:
+                this.lbState.string = "攻击";
+                break;
+            break;
         }
     }
 
@@ -48,6 +57,32 @@ export default class BlackBlock extends cc.Component {
     onDodge() {
 
     }
+
+    private async lookAround() {
+        cc.Tween.stopAllByTarget(this.ndBody);
+        await CocosHelper.runTweenSync(this.ndBody, cc.tween().by(3, {angle: 90}));
+    }
+
+    public range() {
+        let len = 300;
+        let range = Math.PI * 1/3;
+        let x = Math.cos(range/2) * len;
+        let y = Math.sin(range/2) * len;
+
+    
+        this.graphics.moveTo(0, 0);    
+        this.graphics.lineTo(x, -y);
+
+        this.graphics.arc(0, 0, len, range/2, -range/2, false);
+
+        this.graphics.lineTo(0, 0);
+
+        
+        this.graphics.fill();
+    
+    }
+
+
 
 
 }
