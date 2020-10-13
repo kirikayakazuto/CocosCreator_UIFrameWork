@@ -2,8 +2,8 @@ export default class ConfigMgr {
     private _gameConfig: any = null;
     /** 加载配置文件 */
     async loadConfigs() {
-        await this._coLoadGameConfig();
-        this.onConfigChange();
+        // await this._coLoadGameConfig();
+        // this.onConfigChange();
     }
 
     /** 加载配置文件 */

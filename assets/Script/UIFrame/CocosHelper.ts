@@ -269,6 +269,5 @@ export default class CocosHelper {
         return a;
     }
 
-
 }
 
