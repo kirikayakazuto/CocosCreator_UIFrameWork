@@ -55,6 +55,7 @@ CCProgram fs %{
   #include <alpha-test>
 
   uniform Props {
+    vec2 screen;
     vec2 center;
     float edge;
   };
@@ -65,8 +66,8 @@ CCProgram fs %{
   void main () {
     vec4 o = v_color;
 
-    vec2 st = gl_FragCoord.xy/vec2(1334.0, 750.0); 
-    float wh = 1334.0/750.0;
+    vec2 st = gl_FragCoord.xy/screen; 
+    float ratio = screen.x/screen.y;;
 
     ALPHA_TEST(o);
 
@@ -74,10 +75,9 @@ CCProgram fs %{
     float rx = abs(uv.x);
     float ry = abs(uv.y);
 
-    float radius = length(vec2(rx * wh, ry));
+    float radius = length(vec2(rx * ratio, ry));
     o.a = 1.0 - smoothstep(0.0, edge, radius);
     
-
     #if CC_SUPPORT_standard_derivatives
       float aa = fwidth(v_dist);
     #else

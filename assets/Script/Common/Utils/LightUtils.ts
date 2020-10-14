@@ -1,6 +1,9 @@
 type Intersect = {x: number, y: number, param: number, angle?: number} 
 export default class LightUtils {
 
+    public static init() {
+        
+    }
     /** 获得结点多边形s */
     public static getItemPolygons(nodes: cc.Node[], worldCenterPos: cc.Vec2 = cc.v2(0, 0)) {
         let polygons: cc.Vec2[][] = [];
@@ -38,7 +41,7 @@ export default class LightUtils {
             }
         }
         intersects = intersects.sort(function(a,b){
-            return a.angle-b.angle;
+            return a.angle-b.angle; // 升序
         });
 
         return intersects;
@@ -60,7 +63,7 @@ export default class LightUtils {
         return rayEnds;
     }
 
-    /** 获得射线和多边形们的最近交点 */
+    /** 获得射线和多边形们最近交点 */
     private static getIntersectByPolygons(polygons: cc.Vec2[][], rayStart: cc.Vec2, rayEnd: cc.Vec2) {
         let closestIntersect: Intersect = null;
         for(let i=0; i<polygons.length; i++) {
@@ -108,6 +111,75 @@ export default class LightUtils {
             y: r_py+r_dy*T1,
             param: T1
         };
+    }
+
+    /** 通过角度剔除交点, 角度是逆时针方向 */
+    public static getIntersectByAngle(startAngle: number, angleRange: number, light: cc.Vec2, polygons: cc.Vec2[][]) {
+        let endAngle = startAngle + angleRange;
+        startAngle *= 0.017453;
+        endAngle *= 0.017453;
+        // 本质就是以light为原点搭建坐标系
+        let rayEnd1 = cc.v2(Math.cos(startAngle), Math.sin(startAngle)).add(light);
+        let rayEnd2 = cc.v2(Math.cos(endAngle), Math.sin(endAngle)).add(light);
+
+        // 算交点
+        let intersect1 = this.getIntersectByPolygons(polygons, light, rayEnd1);
+        intersect1.angle = startAngle;
+        let intersect2 = this.getIntersectByPolygons(polygons, light, rayEnd2);
+        intersect2.angle = endAngle;
+
+        // 获得所有交点
+        let intersects = this.getIntersect(light, polygons);
+        // 剔除角度外的交点, 这里可以优化, 因为intersects是有序的, 可以使用二分法查找
+        // 二分法, 已优化
+        let start = this.binarySearchIntersects(intersects, startAngle, true);
+        let end = this.binarySearchIntersects(intersects, endAngle, false);
+        intersects = intersects.slice(start, end+1);
+
+        intersects.unshift({x:light.x, y: light.y, param: 0}, intersect1)
+        intersects.push(intersect2);
+
+        return intersects;
+    }
+
+    /** 绘制light */
+    public static drawLight(graphics: cc.Graphics, light: cc.Vec2, polygons: cc.Vec2[][]) {
+        graphics.clear();
+        // 圆形
+        // let intersects = LightUtils.getIntersect(light, polygons);
+        // 扇形
+        let intersects = LightUtils.getIntersectByAngle(60, 60, light, polygons);
+        graphics.moveTo(intersects[0].x, intersects[0].y);
+        for(let i=1; i<intersects.length; i++) {
+            let intersect = intersects[i];
+            graphics.lineTo(intersect.x, intersect.y);
+        }
+        graphics.moveTo(intersects[0].x, intersects[0].y);
+        
+        graphics.fill();
+
+        for(let i=0; i<intersects.length; i++) {
+            let intersect = intersects[i];
+            graphics.moveTo(light.x, light.y);
+            graphics.lineTo(intersect.x, intersect.y);
+            graphics.stroke();
+        }
+    }
+
+    public static binarySearchIntersects(arr: Intersect[], angle: number, findFlag = false) {
+        let start = 0, end = arr.length-1;
+        while(end-start > 1){
+            var idx = Math.floor((start + end) / 2);
+            if (angle < arr[idx].angle) {
+                end = idx;
+            } else if (angle > arr[idx].angle) {
+                   start = idx
+            } else {
+                return idx;
+            }
+        }
+        // 没有找到对应的值
+        return findFlag ? end : start;
     }
 
 

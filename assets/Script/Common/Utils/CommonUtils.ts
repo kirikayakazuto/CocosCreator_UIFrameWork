@@ -441,4 +441,28 @@ export class CommonUtils {
         }
         return arr;
     }
+    /** 二分查找, findFlag 为false表示没找到的时候返回一个较小的, 为true返回一个较大的 */
+    public static binarySearch(arr: number[], target: number, findFlag = false) {
+        let start = 0, end = arr.length-1;
+        while(end-start > 1){
+            var idx = Math.floor((start + end) / 2);
+            if (target < arr[idx]) {
+                end = idx;
+            } else if (target > arr[idx]) {
+                   start = idx
+            } else {
+                return idx;
+            }
+        }
+        // 没有找到对应的值
+        if(!findFlag) {
+            if(end == 0) return -1;
+            return start;
+        }else {
+            if(start == arr.length-1) return arr.length;
+            return end;
+        }
+
+    }
+    
 }
