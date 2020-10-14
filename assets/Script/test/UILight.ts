@@ -1,4 +1,3 @@
-import e = require("express");
 import LightUtils from "../Common/Utils/LightUtils";
 import { FormType } from "../UIFrame/config/SysDefine";
 import UIBase from "../UIFrame/UIBase";
@@ -25,6 +24,8 @@ export default class UILight extends UIBase {
     onLoad () {
         this.itemPolygons = LightUtils.getItemPolygons(this.ndItemRoot.children, this.graphics.node.getPosition());
         this.mtl = this.graphics.getMaterial(0);
+        let size = cc.view.getCanvasSize()
+        this.mtl.setProperty("screen", cc.v2(size.width, size.height));
         this.mtl.setProperty("edge", 0.4);
     }
 
