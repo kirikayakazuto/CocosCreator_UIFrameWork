@@ -1,4 +1,4 @@
-type Bound = {x: number, y: number, width: number, height: number};
+type Bound = {id?: number, x: number, y: number, width: number, height: number};
 export default class Quadtree {
     private max_objects = 10;
     private max_levels = 4;
@@ -127,7 +127,7 @@ export default class Quadtree {
         }
     }
 
-    public retrieve(pRect: Bound) {
+    public retrieve(pRect: Bound): Bound[] {
          
         var indexes = this.getIndex(pRect),
             returnObjects = this.objects;

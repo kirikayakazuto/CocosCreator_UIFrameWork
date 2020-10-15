@@ -1,10 +1,10 @@
 type Intersect = {x: number, y: number, param: number, angle?: number} 
+
+
 export default class LightUtils {
 
-    public static init() {
-        
-    }
-    /** 获得结点多边形s */
+
+    /** 获得结点多边形s 这个应该放到lightutils之外 */
     public static getItemPolygons(nodes: cc.Node[], worldCenterPos: cc.Vec2 = cc.v2(0, 0)) {
         let polygons: cc.Vec2[][] = [];
         for(let i=0; i<nodes.length; i++) {
@@ -21,6 +21,7 @@ export default class LightUtils {
         }
         return polygons;
     }
+
 
     /** 获得所有射线与多边形的交点 */
     public static getIntersect(light: cc.Vec2, polygons: cc.Vec2[][]) {
@@ -46,7 +47,7 @@ export default class LightUtils {
 
         return intersects;
     }
-    /** 获得射线 */
+    /** 获得射线, 做了一次去除 */
     private static getRayEnds(polygons: cc.Vec2[][]) {
         let rayEnds: cc.Vec2[] = [];
         let set = {};
@@ -143,12 +144,8 @@ export default class LightUtils {
     }
 
     /** 绘制light */
-    public static drawLight(graphics: cc.Graphics, light: cc.Vec2, polygons: cc.Vec2[][]) {
+    public static drawLight(graphics: cc.Graphics, light: cc.Vec2, intersects: Intersect[]) {
         graphics.clear();
-        // 圆形
-        // let intersects = LightUtils.getIntersect(light, polygons);
-        // 扇形
-        let intersects = LightUtils.getIntersectByAngle(60, 60, light, polygons);
         graphics.moveTo(intersects[0].x, intersects[0].y);
         for(let i=1; i<intersects.length; i++) {
             let intersect = intersects[i];
@@ -158,12 +155,12 @@ export default class LightUtils {
         
         graphics.fill();
 
-        for(let i=0; i<intersects.length; i++) {
-            let intersect = intersects[i];
-            graphics.moveTo(light.x, light.y);
-            graphics.lineTo(intersect.x, intersect.y);
-            graphics.stroke();
-        }
+        // for(let i=0; i<intersects.length; i++) {
+        //     let intersect = intersects[i];
+        //     graphics.moveTo(light.x, light.y);
+        //     graphics.lineTo(intersect.x, intersect.y);
+        //     graphics.stroke();
+        // }
     }
 
     public static binarySearchIntersects(arr: Intersect[], angle: number, findFlag = false) {

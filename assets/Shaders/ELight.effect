@@ -53,11 +53,12 @@ CCProgram fs %{
   precision highp float;
   
   #include <alpha-test>
-
+  #include <cc-global>
+ 
   uniform Props {
     vec2 screen;
-    vec2 center;
-    float edge;
+    vec2 lightPos;
+    float maxRadius;
   };
 
   in vec4 v_color;
@@ -66,17 +67,17 @@ CCProgram fs %{
   void main () {
     vec4 o = v_color;
 
-    vec2 st = gl_FragCoord.xy/screen; 
-    float ratio = screen.x/screen.y;;
+    vec2 st = gl_FragCoord.xy / screen.xy; 
+    float scaleWH = screen.x / screen.y;
 
     ALPHA_TEST(o);
 
-    vec2 uv = st - center;
+    vec2 uv = st - lightPos;
     float rx = abs(uv.x);
     float ry = abs(uv.y);
 
-    float radius = length(vec2(rx * ratio, ry));
-    o.a = 1.0 - smoothstep(0.0, edge, radius);
+    float radius = length(vec2(rx * scaleWH, ry));      // 算半径
+    o.a = 1.0 - smoothstep(0.0, maxRadius, radius);      // 渐变
     
     #if CC_SUPPORT_standard_derivatives
       float aa = fwidth(v_dist);
