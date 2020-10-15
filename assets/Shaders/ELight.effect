@@ -67,8 +67,8 @@ CCProgram fs %{
   void main () {
     vec4 o = v_color;
 
-    vec2 st = gl_FragCoord.xy / screen.xy; 
-    float scaleWH = screen.x / screen.y;
+    vec2 st = gl_FragCoord.xy / screen.xy;
+    float scaleWH = screen.x/screen.y;
 
     ALPHA_TEST(o);
 

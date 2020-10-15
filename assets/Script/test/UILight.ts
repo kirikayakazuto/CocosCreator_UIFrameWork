@@ -1,5 +1,4 @@
 import LightHelper from "../Common/light/LightHelper";
-import LightUtils from "../Common/Utils/LightUtils";
 import { FormType } from "../UIFrame/config/SysDefine";
 import UIBase from "../UIFrame/UIBase";
 
@@ -13,6 +12,9 @@ export default class UILight extends UIBase {
 
     @property(LightHelper)
     lightHelper: LightHelper = null;
+
+    @property(cc.Node)
+    ndItem: cc.Node = null;
 
     onClickUseRound() {
 
@@ -32,7 +34,7 @@ export default class UILight extends UIBase {
 
 
     onLoad () {
-
+    
     }
 
 

@@ -29,15 +29,15 @@ export default class LightHelper extends cc.Component {
 
 
     canvasSize: cc.Size = null;
+    visiableSize: cc.Size = null;
 
 
     onLoad () {
         
         this.canvasSize = cc.view.getCanvasSize();
+        this.visiableSize = cc.view.getVisibleSize();
+        console.log(this.canvasSize)
         this.node.setContentSize(this.canvasSize);
-
-        this.node.x = -this.canvasSize.width/2;
-        this.node.y = -this.canvasSize.height/2;        // 放在屏幕左下角, 坐标系和shader对应
 
         this.mtl = this.graphics.setMaterial(0, this.mtl);
 
@@ -74,10 +74,9 @@ export default class LightHelper extends cc.Component {
     }
 
     update (dt) {
-        let intersects = this.light.getIntersect(this.ndLight.getPosition());
-        LightUtils.drawLight(this.graphics, this.ndLight.getPosition(), intersects);
-        let p = this.ndLight.getPosition()
-        this.mtl.setProperty("lightPos", cc.v2(p.x/this.canvasSize.width, p.y/this.canvasSize.height));
+        LightUtils.drawLight(this.graphics, this.ndLight.getPosition(), this.light.getIntersect(this.ndLight.getPosition()));
+        let p = this.ndLight.getPosition();
+        this.mtl.setProperty("lightPos", cc.v2(p.x/this.visiableSize.width, p.y/this.visiableSize.height));
     }
 
 

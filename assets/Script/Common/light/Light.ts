@@ -47,6 +47,7 @@ export class Light {
         for(const e of eles) {
             polygon.push(this.polygons[e.id].points);
         }
+        console.log(eles.length)
         return polygon;
     }
 
