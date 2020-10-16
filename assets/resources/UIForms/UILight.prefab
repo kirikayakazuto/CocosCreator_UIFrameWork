@@ -5974,6 +5974,7 @@
     "ndItemRoot": {
       "__id__": 5
     },
+    "lightType": 0,
     "_id": ""
   },
   {
@@ -6250,6 +6251,7 @@
     "ndItemRoot": {
       "__id__": 5
     },
+    "lightType": 1,
     "_id": ""
   },
   {

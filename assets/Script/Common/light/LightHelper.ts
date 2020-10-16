@@ -21,6 +21,7 @@ export default class LightHelper extends cc.Component {
     @property(cc.Node)
     ndItemRoot: cc.Node = null;
 
+    @property(cc.Integer)
     lightType: LightType = 0;
     lightRadius: number = 300;       // 光线半径
     lightFade: number = 1;           // 光线渐变程度,    1表示光线到半径长度, 透明度到0
@@ -42,8 +43,6 @@ export default class LightHelper extends cc.Component {
         this.mtl = this.graphics.setMaterial(0, this.mtl);
 
         this.mtl.setProperty("screen", cc.v2(this.canvasSize.width, this.canvasSize.height));
-
-        
 
         this.light = new Light(this.canvasSize, {
             radius: this.lightRadius,
@@ -74,9 +73,9 @@ export default class LightHelper extends cc.Component {
     }
 
     update (dt) {
-        LightUtils.drawLight(this.graphics, this.ndLight.getPosition(), this.light.getIntersect(this.ndLight.getPosition()));
-        let p = this.ndLight.getPosition();
-        this.mtl.setProperty("lightPos", cc.v2(p.x/this.visiableSize.width, p.y/this.visiableSize.height));
+        let lightPos = this.ndLight.getPosition();
+        LightUtils.drawLight(this.graphics, lightPos, this.light.getIntersect(lightPos));
+        this.mtl.setProperty("lightPos", cc.v2(lightPos.x/this.visiableSize.width, lightPos.y/this.visiableSize.height));
     }
 
 
