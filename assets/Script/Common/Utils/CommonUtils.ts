@@ -441,6 +441,7 @@ export class CommonUtils {
         }
         return arr;
     }
+
     /** 二分查找, findFlag 为false表示没找到的时候返回一个较小的, 为true返回一个较大的 */
     public static binarySearch(arr: number[], target: number, findFlag = false) {
         let start = 0, end = arr.length-1;
@@ -463,6 +464,38 @@ export class CommonUtils {
             return end;
         }
 
+    }
+
+    public static isInPolygon(checkPoint: cc.Vec2, polygonPoints: cc.Vec2[]) {
+        var counter = 0;
+        var i: number;
+        var xinters;
+        var p1: cc.Vec2, p2: cc.Vec2;
+        var pointCount = polygonPoints.length;
+        p1 = polygonPoints[0];
+     
+        for (i = 1; i <= pointCount; i++) {
+            p2 = polygonPoints[i % pointCount];
+            if (
+                checkPoint.x > Math.min(p1.x, p2.x) &&
+                checkPoint.x <= Math.max(p1.x, p2.x)
+            ) {
+                if (checkPoint.y <= Math.max(p1.y, p2.y)) {
+                    if (p1.x != p2.x) {
+                        xinters = (checkPoint.x - p1.x) * (p2.y - p1.y) / (p2.x - p1.x) + p1.y;
+                        if (p1.y == p2.y || checkPoint.y <= xinters) {
+                            counter++;
+                        }
+                    }
+                }
+            }
+            p1 = p2;
+        }
+        if (counter % 2 == 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
     
 }
