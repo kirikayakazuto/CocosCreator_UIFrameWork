@@ -1,3 +1,5 @@
+import { CommonUtils } from "../Utils/CommonUtils";
+
 enum MaskPlusType {
     /**
      * !#en Rect mask.
@@ -20,6 +22,10 @@ enum MaskPlusType {
 
     Polygon = 3,
 }
+
+let _vec2_temp = new cc.Vec2();
+let _mat4_temp = new cc.Mat4();
+
 /**
  * 遮罩扩展
  * 自定义多边形遮罩
@@ -111,5 +117,40 @@ export default class MaskPlus extends cc.Mask {
             graphics.fill();
         }
     }
+
+    _hitTest (cameraPt: cc.Vec2) {
+        let node = this.node;
+        let size = node.getContentSize(),
+            w = size.width,
+            h = size.height,
+            testPt = _vec2_temp;
+        
+        node['_updateWorldMatrix']();
+        // If scale is 0, it can't be hit.
+        if (!cc.Mat4.invert(_mat4_temp, node['_worldMatrix'])) {
+            return false;
+        }
+        cc.Vec2.transformMat4(testPt, cameraPt, _mat4_temp);
+        testPt.x += node['_anchorPoint'].x * w;
+        testPt.y += node['_anchorPoint'].y * h;
+
+        let result = false;
+        if (this.type === MaskPlusType.RECT || this.type === MaskPlusType.IMAGE_STENCIL) {
+            result = testPt.x >= 0 && testPt.y >= 0 && testPt.x <= w && testPt.y <= h;
+        }
+        else if (this.type === MaskPlusType.ELLIPSE) {
+            let rx = w / 2, ry = h / 2;
+            let px = testPt.x - 0.5 * w, py = testPt.y - 0.5 * h;
+            result = px * px / (rx * rx) + py * py / (ry * ry) < 1;
+        }else if(this.type === MaskPlusType.Polygon) {
+            result = CommonUtils.isInPolygon(testPt, this.polygon);
+        }
+        if (this.inverted) {
+            result = !result;
+        }
+        return result;
+    }
+
+    
 
 }
