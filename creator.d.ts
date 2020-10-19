@@ -8605,7 +8605,7 @@ declare namespace cc {
 	export class Mask extends RenderComponent {		
 		/** !#en The mask type.
 		!#zh 遮罩类型 */
-		type: Mask.Type;		
+		// type: Mask.Type;		
 		/** !#en The mask image
 		!#zh 遮罩所需要的贴图 */
 		spriteFrame: SpriteFrame;		
@@ -18915,6 +18915,7 @@ declare namespace cc {
 			RECT = 0,
 			ELLIPSE = 0,
 			IMAGE_STENCIL = 0,		
+			Polygon = 0,
 		}	
 	}
 		

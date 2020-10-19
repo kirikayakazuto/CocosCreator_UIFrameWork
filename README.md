@@ -71,6 +71,14 @@
 
 ![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/UIROOT_dist.png)
 
+## 2020/10/19 Mask Plus, 支持自定义遮罩
+扩展了cc.Mask, 添加了一种枚举类型Polygon
+
+## 2020/10/15 添加2d光线功能
+2d光影效果, 项目在2dlight分支, 目前还在优化中 关键代码在Script/Common/light下, 有兴趣的可以看看,
+![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/doc/2dlight.png)
+
+
 ## 2020/7/28 集成ECharts
 集成了ECharts, 在ECharts-Support分支, 有需要的可以看看
 
