@@ -71,6 +71,14 @@
 
 ![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/UIROOT_dist.png)
 
+## 2020/10/15 添加2d光线功能
+2d光影效果, 项目在2dlight分支, 目前还在优化中 关键代码在Script/Common/light下, 有兴趣的可以看看,
+![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/doc/2dlight.png)
+
+
+## 2020/7/28 集成ECharts
+集成了ECharts, 在ECharts-Support分支, 有需要的可以看看
+
 ## 2020/7/10 新增功能
 集成Mobx，对于Mobx的使用详情可以前往Mobx的官网了解，github地址 https://github.com/mobxjs/mobx
 对于cocos使用例子可以看项目中UIHall的实现
