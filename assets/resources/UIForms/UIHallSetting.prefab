@@ -382,7 +382,6 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_useOriginalSize": false,
     "_string": "这里是设置页面",
     "_N$string": "这里是设置页面",
     "_fontSize": 40,
@@ -808,7 +807,6 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_useOriginalSize": false,
     "_string": "open2ui",
     "_N$string": "open2ui",
     "_fontSize": 30,
@@ -1036,7 +1034,7 @@
     "asset": {
       "__uuid__": "cf71c00f-2c68-4c27-a423-0bb972c2b5f3"
     },
-    "fileId": "ecN+K56fRJMLa8V3XO9aJ/",
+    "fileId": "",
     "sync": false
   }
 ]
