@@ -18,18 +18,20 @@ let vfmtPosUvColor = new gfx.VertexFormat([
  */
 export default class CustomAssembler extends cc.Assembler {
 
+    // 顶点个数，矩形所以是四个
     verticesCount = 4;
+    // 顶点索引， 就是三角形的顶点， 编号按照逆时针方向
     indicesCount = 6;
+    // 顶点属性 x|y|u|v|color, 5个 但是目前color是null， 没有写入到vdata中, 目测是shader的问题， 交给shader处理了
     floatsPerVert = 5;
-
-
-    uvOffset = 2;
-    colorOffset = 4;
+    uvOffset = 2;       // uv偏移是2
+    colorOffset = 4;    // color偏移是4
 
     _renderData: cc.RenderData = null;
-    _local: any = null;
+    _local: number[] = null;
 
     get verticesFloats() {
+        // 顶点所占大小， 就是顶点个数 * 顶点大小
         return this.verticesCount * this.floatsPerVert;
     }
 
@@ -63,9 +65,36 @@ export default class CustomAssembler extends cc.Assembler {
         color = color != null ? color : comp.node.color._val;
         let floatsPerVert = this.floatsPerVert;
         let colorOffset = this.colorOffset;
-        for(let i=colorOffset, l=uintVerts.length; i<l; i+= floatsPerVert) {
-            uintVerts[i] = color;
+        for(let i=0; i<4; i++) {
+            uintVerts[colorOffset + i * floatsPerVert] = color;
         }
+    }
+
+    protected updateUVs(comp: cc.RenderComponent) {
+        // 4个顶点的uv坐标，对应左下、右下、左上、右上
+        // 如果是cc.Sprite组件，这里取sprite._spriteFrame.uv;
+        // 对应的是 l, b, r, b, l, t, r, t 既左下， 右下， 左上， 右上
+        // b = 1 是因为cocos原点是左下角， 但是canvas是左上角
+        let uv = [0, 1, 1, 1, 0, 0, 1, 0];
+        let uvOffset = this.uvOffset;
+        let floatsPerVert = this.floatsPerVert;
+        let verts = this._renderData.vDatas[0];
+
+        // // render data = verts = x|y|u|v|color|x|y|u|v|color|...
+        // // 填充render data中4个顶点的uv部分
+        for (let i = 0; i < 4; i++) {
+            let srcOffset = i * 2;
+            let dstOffset = floatsPerVert * i + uvOffset;
+            verts[dstOffset] = uv[srcOffset];           // 设置 u
+            verts[dstOffset + 1] = uv[srcOffset + 1];   // 设置 v
+        }
+        // 顶点是逆时针编号
+        //{"vDatas":[{"0":569.5,"1":240,"2":0,"3":1,"4":null,
+        // "5":764.5,"6":240,"7":1,"8":1,"9":null,
+        // "10":569.5,"11":510,"12":0,"13":0,"14":null,
+        // "15":764.5,"16":510,"17":1,"18":0,"19":null}],
+        // "uintVDatas":[{"0":1141792768,"1":1131413504,"2":0,"3":1065353216,"4":4294967295,"5":1144987648,"6":1131413504,"7":1065353216,"8":1065353216,"9":4294967295,"10":1141792768,"11":1140785152,"12":0,"13":0,"14":4294967295,"15":1144987648,"16":1140785152,"17":1065353216,"18":0,"19":4294967295}],
+        // "iDatas":[{"0":0,"1":1,"2":2,"3":1,"4":3,"5":2}],"meshCount":1,"_infos":null,"_flexBuffer":null}
     }
 
     updateWorldVertsWebGL(comp: cc.RenderComponent) {
@@ -73,14 +102,9 @@ export default class CustomAssembler extends cc.Assembler {
         let verts = this._renderData.vDatas[0];
 
         let matrix: cc.Mat4 = comp.node['_worldMatrix'];
-        // comp.node.getWorldMatrix();
         let matrixm = matrix.m,
         a = matrixm[0], b = matrixm[1], c = matrixm[4], d = matrixm[5], 
         tx = matrixm[12], ty = matrixm[13];
-
-        // 还得乘以父节点
-
-
 
         let vl = local[0], vr = local[2],
         vb = local[1], vt = local[3];
@@ -90,8 +114,8 @@ export default class CustomAssembler extends cc.Assembler {
         let floatsPerVert = this.floatsPerVert;
         if (justTranslate) {
             // left bottom
-            verts[index] = vl + tx;
-            verts[index+1] = vb + ty;
+            verts[index] = vl + tx;     // 顶点位置 x = 世界坐标left + x的偏移量
+            verts[index+1] = vb + ty;   // 顶点位置 y
             index += floatsPerVert;
             // right bottom
             verts[index] = vr + tx;
@@ -173,6 +197,8 @@ export default class CustomAssembler extends cc.Assembler {
         }
 
         let renderData = this._renderData;
+
+        // vData里包含 pos， uv， color数据， iData中包含顶点索引
         let vData = renderData.vDatas[0];
         let iData = renderData.iDatas[0];
 
@@ -220,38 +246,6 @@ export default class CustomAssembler extends cc.Assembler {
         }
     }
 
-    protected updateUVs(comp: cc.RenderComponent) {
-        // 4个顶点的uv坐标，对应左下、右下、左上、右上
-        // 如果是cc.Sprite组件，这里取sprite._spriteFrame.uv;
-        let uv = [0, 1, 1, 1, 0, 0, 1, 0];
-        let uvOffset = this.uvOffset;
-        let floatsPerVert = this.floatsPerVert;
-        let verts = this._renderData.vDatas[0];
-
-        // // render data = verts = x|y|u|v|color|x|y|u|v|color|...
-        // // 填充render data中4个顶点的uv部分
-        for (let i = 0; i < 4; i++) {
-            let srcOffset = i * 2;
-            let dstOffset = floatsPerVert * i + uvOffset;
-            verts[dstOffset] = uv[srcOffset];
-            verts[dstOffset + 1] = uv[srcOffset + 1];
-        }
-
-        // let renderData = this._renderData;
-        // let verts = renderData.vertices;
-        // let rect = comp.node.getBoundingBoxToWorld();
-        // let l = rect.x;
-        // let r = rect.width;
-        // let b = rect.y;
-        // let t = rect.height;
-
-        // verts[0].u = l;
-        // verts[0].v = b;
-        // verts[1].u = r;
-        // verts[1].v = t;
-
-    }
-
     protected updateVerts(comp: cc.RenderComponent) {
         let node: cc.Node = comp.node,
             cw: number = node.width,
@@ -282,6 +276,6 @@ export default class CustomAssembler extends cc.Assembler {
             this.updateVerts(comp);
             comp._vertsDirty = false;
         }
-    }
+    } 
     
 }

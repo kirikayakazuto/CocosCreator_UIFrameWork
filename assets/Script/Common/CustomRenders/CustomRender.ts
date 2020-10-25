@@ -22,26 +22,10 @@ export default class CustomRender extends cc.RenderComponent {
     _material = null;     // 材质
 
 
-
-    onEnable() {
-        super.onEnable();
-        this.node.on(cc.Node.EventType.SIZE_CHANGED, this._onNodeSizeChange, this);
-        this.node.on(cc.Node.EventType.ANCHOR_CHANGED, this._onNodeSizeChange, this);
-    }
-
-    onDisable() {
-        super.onDisable();
-        this.node.off(cc.Node.EventType.SIZE_CHANGED, this._onNodeSizeChange, this);
-        this.node.off(cc.Node.EventType.ANCHOR_CHANGED, this._onNodeSizeChange, this);
-    }
-
-
     _updateMaterial() {
         let texture = this._texture;
         let material = this.getMaterial(0);
-        cc.log('call update material')
         if(material) {
-            cc.log('call update material')
             if(material.getDefine("USE_TEXTURE") !== undefined) {
                 material.define("USE_TEXTURE", true);
             }
@@ -51,8 +35,6 @@ export default class CustomRender extends cc.RenderComponent {
         // 暂时不处理
         // BlendFunc.prototype._updateMaterial.call(this);
     }
-
-
 
     _validateRender() {
         
@@ -65,10 +47,6 @@ export default class CustomRender extends cc.RenderComponent {
         this.setVertsDirty();
     }
 
-
-    _onNodeSizeChange() {
-        
-    }
 
     
 
