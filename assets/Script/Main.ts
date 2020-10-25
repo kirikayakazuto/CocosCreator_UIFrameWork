@@ -2,6 +2,7 @@ import ButtonPlus from "./Common/Components/ButtonPlus";
 import TipsMgr from "./UIFrame/TipsMgr";
 import TouchPlus from "./Common/Components/TouchPlus";
 import UILogin from "./test/UILogin";
+
 import { EventCenter } from "./UIFrame/EventCenter";
 import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
 import UILight from "./test/UILight";
@@ -16,11 +17,15 @@ export default class Main extends cc.Component {
 
     @property(TouchPlus)
     touchPlus: TouchPlus = null;
+
+    @property(cc.Node)
+    ndMatrix: cc.Node = null;
     
     onLoad() {
         EventCenter.on("Event_Login", (a: number, b: number, c: number) => {
             console.log("Event ", a, b, c);
         }, this);
+        console.log(this.ndMatrix['_matrix'])
     }
 
     start () {
@@ -30,7 +35,7 @@ export default class Main extends cc.Component {
 
         TipsMgr.inst.setLoadingForm("UIForms/UILoading");
         // UILogin.openView(1, 2, 3);
-        UILight.openView();
+        // UILight.openView();
         this.buttonPlus.addClick(() => {
             cc.log("点击事件!");
         }, this);
