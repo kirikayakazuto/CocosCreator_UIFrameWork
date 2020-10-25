@@ -50,7 +50,7 @@ export default class CocosHelper {
             }
             selfTween.call(() => {
                 resolve();
-            }).start();
+            }).start(); 
         });
     }
     /** 停止tween */
