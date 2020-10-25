@@ -16,6 +16,10 @@ declare namespace cc {
 
 	export class RenderData {
 		createFlexData(index, verticesFloats, indicesCount, vfmt);
+
+		vertices: any[];
+
+		dataLength: number;
 	}
 
 	declare interface Game {
@@ -51,6 +55,8 @@ declare namespace cc {
 		setVertsDirty(): void;
 
 		disableRender(): void;
+
+		_getDefaultMaterial(): cc.Material;
 
 		markForRender(shouldRender: boolean): void;
 

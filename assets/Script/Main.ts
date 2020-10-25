@@ -20,12 +20,12 @@ export default class Main extends cc.Component {
 
     @property(cc.Node)
     ndMatrix: cc.Node = null;
+
     
     onLoad() {
         EventCenter.on("Event_Login", (a: number, b: number, c: number) => {
             console.log("Event ", a, b, c);
         }, this);
-        console.log(this.ndMatrix['_matrix'])
     }
 
     start () {
@@ -51,6 +51,8 @@ export default class Main extends cc.Component {
         }, (e) => {
             console.log('触发滑动事件', e.getDelta());
         })
+
+        console.log(this.ndMatrix)
     }
 
     /**
