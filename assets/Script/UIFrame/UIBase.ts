@@ -35,6 +35,7 @@ export default class UIBase extends UIBinder {
     public static get prefabPath() {
         if(!this._prefabPath || this._prefabPath.length <= 0) {
             this._prefabPath = SysDefine.UI_PATH_ROOT + CocosHelper.getComponentName(this);
+            console.log("component name:", CocosHelper.getComponentName(this))
         }
         return this._prefabPath;
     }
