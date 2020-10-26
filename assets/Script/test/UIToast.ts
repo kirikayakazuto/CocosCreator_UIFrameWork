@@ -1,4 +1,3 @@
-import UIBase from "../UIFrame/UIBase";
 import CocosHelper from "../UIFrame/CocosHelper";
 import { SysDefine } from "../UIFrame/config/SysDefine";
 import Scene from "../Scene/Scene";
@@ -6,7 +5,7 @@ import Scene from "../Scene/Scene";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class UIToast extends UIBase {
+export default class UIToast extends cc.Component {
     static async popUp() {
         Scene.inst.setInputBlock(true);
         try {

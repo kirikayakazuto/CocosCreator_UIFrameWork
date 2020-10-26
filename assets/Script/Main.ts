@@ -1,10 +1,8 @@
 import ButtonPlus from "./Common/Components/ButtonPlus";
-import TipsMgr from "./UIFrame/TipsMgr";
 import TouchPlus from "./Common/Components/TouchPlus";
 import UILogin from "./test/UILogin";
 import { EventCenter } from "./UIFrame/EventCenter";
 import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
-import CocosHelper from "./UIFrame/CocosHelper";
 
 const {ccclass, property} = cc._decorator;
 
@@ -28,7 +26,7 @@ export default class Main extends cc.Component {
             DebugWindowUtil.init();
         }
 
-        TipsMgr.inst.setLoadingForm("UIForms/UILoading");
+        // TipsMgr.inst.setLoadingForm("UIForms/UILoading");
         UILogin.openView(1, 2, 3);
         this.buttonPlus.addClick(() => {
             cc.log("点击事件!");
@@ -36,7 +34,7 @@ export default class Main extends cc.Component {
 
         this.buttonPlus.addLongClick(() => {
             cc.log("触发长按事件 开始");
-        }, () => {
+        }, () => { 
             cc.log("触发长按事件 结束");
         }, this);
 
