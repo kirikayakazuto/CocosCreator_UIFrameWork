@@ -1,10 +1,5 @@
 const gfx = cc['gfx'];
 
-// 传递位置 以及 UV
-let vfmtPosUv = new gfx.VertexFormat([
-    {name: gfx.ATTR_POSITION, type: gfx.ATTR_TYPE_FLOAT32, num: 2},
-    {name: gfx.ATTR_UV0, type: gfx.ATTR_TYPE_FLOAT32, num: 2}
-]);
 
 // 传递位置 UV, 颜色
 let vfmtPosUvColor = new gfx.VertexFormat([
@@ -16,12 +11,11 @@ let vfmtPosUvColor = new gfx.VertexFormat([
 /**
  * Assembler其实就是一个顶点数据处理类
  */
-export default class CustomAssembler extends cc.Assembler {
+export default class PolygonAssembler extends cc.Assembler {
 
-    // 顶点个数，矩形所以是四个
-    verticesCount = 4;
-    // 顶点索引， 就是三角形的顶点，一个矩形可以划分成两个三角形, 编号按照逆时针方向
-    indicesCount = 6;
+    verticesCount = 3;
+    indicesCount = 3;
+
     // 顶点属性 x|y|u|v|color, 5个 但是目前color是null， 没有写入到vdata中, 目测是shader的问题， 交给shader处理了
     floatsPerVert = 5;
     uvOffset = 2;       // uv偏移是2
@@ -71,36 +65,23 @@ export default class CustomAssembler extends cc.Assembler {
         color = color != null ? color : comp.node.color._val;
         let floatsPerVert = this.floatsPerVert;
         let colorOffset = this.colorOffset;
-        for(let i=0; i<4; i++) {
+        for(let i=0; i<this.verticesCount; i++) {
             uintVerts[colorOffset + i * floatsPerVert] = color;
         }
     }
 
     protected updateUVs(comp: cc.RenderComponent) {
-        // 4个顶点的uv坐标，对应左下、右下、左上、右上
-        // 如果是cc.Sprite组件，这里取sprite._spriteFrame.uv;
-        // 对应的是 l, b, r, b, l, t, r, t 既左下， 右下， 左上， 右上
-        // b = 1 是因为cocos原点是左下角， 但是canvas是左上角
         let uv = [0, 1, 1, 1, 0, 0, 1, 0];
         let uvOffset = this.uvOffset;
         let floatsPerVert = this.floatsPerVert;
         let verts = this._renderData.vDatas[0];
 
-        // // render data = verts = x|y|u|v|color|x|y|u|v|color|...
-        // // 填充render data中4个顶点的uv部分
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < this.verticesCount; i++) {
             let srcOffset = i * 2;
             let dstOffset = floatsPerVert * i + uvOffset;
             verts[dstOffset] = uv[srcOffset];           // 设置 u
             verts[dstOffset + 1] = uv[srcOffset + 1];   // 设置 v
         }
-        // 顶点是逆时针编号
-        //{"vDatas":[{"0":569.5,"1":240,"2":0,"3":1,"4":null,
-        // "5":764.5,"6":240,"7":1,"8":1,"9":null,
-        // "10":569.5,"11":510,"12":0,"13":0,"14":null,
-        // "15":764.5,"16":510,"17":1,"18":0,"19":null}],
-        // "uintVDatas":[{"0":1141792768,"1":1131413504,"2":0,"3":1065353216,"4":4294967295,"5":1144987648,"6":1131413504,"7":1065353216,"8":1065353216,"9":4294967295,"10":1141792768,"11":1140785152,"12":0,"13":0,"14":4294967295,"15":1144987648,"16":1140785152,"17":1065353216,"18":0,"19":4294967295}],
-        // "iDatas":[{"0":0,"1":1,"2":2,"3":1,"4":3,"5":2}],"meshCount":1,"_infos":null,"_flexBuffer":null}
     }
 
     updateWorldVertsWebGL(comp: cc.RenderComponent) {
@@ -132,8 +113,8 @@ export default class CustomAssembler extends cc.Assembler {
             verts[index+1] = vt + ty;
             index += floatsPerVert;
             // right top
-            verts[index] = vr + tx;
-            verts[index+1] = vt + ty;
+            // verts[index] = vr + tx;
+            // verts[index+1] = vt + ty;
         } else {
             // 4对xy分别乘以 [2,2]仿射矩阵，然后+平移量
             let al = a * vl, ar = a * vr,
@@ -156,8 +137,8 @@ export default class CustomAssembler extends cc.Assembler {
             verts[index+1] = bl + dt + ty;
             index += floatsPerVert;
             // right top
-            verts[index] = ar + ct + tx;
-            verts[index+1] = br + dt + ty;
+            // verts[index] = ar + ct + tx;
+            // verts[index+1] = br + dt + ty;
         }
     }
 

@@ -1,4 +1,4 @@
-import CustomAssembler from "./CustomAssembler";
+import PolygonAssembler from "./PolygonAssembler";
 const renderEngine = cc.renderer.renderEngine;
 
 const {ccclass, property} = cc._decorator;
@@ -18,7 +18,7 @@ export default class CustomRender extends cc.RenderComponent {
         this._updateMaterial()
     }
 
-    _assembler: CustomAssembler = null;          // 顶点数据装配器
+    _assembler: cc.Assembler = null;          // 顶点数据装配器
     _material = null;     // 材质
 
 
@@ -41,7 +41,7 @@ export default class CustomRender extends cc.RenderComponent {
     }
 
     _resetAssembler() {
-        let assembler = this._assembler = new CustomAssembler();
+        let assembler = this._assembler = new PolygonAssembler();
         assembler.init(this);
         this["_updateColor"]();
         this.setVertsDirty();
