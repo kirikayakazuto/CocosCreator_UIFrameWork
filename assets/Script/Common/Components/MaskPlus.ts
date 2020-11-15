@@ -1,6 +1,6 @@
 import { CommonUtils } from "../Utils/CommonUtils";
 
-enum MaskPlusType {
+export enum MaskPlusType {
     /**
      * !#en Rect mask.
      * !#zh 使用矩形作为遮罩
@@ -21,6 +21,11 @@ enum MaskPlusType {
     IMAGE_STENCIL = 2,
 
     Polygon = 3,
+}
+
+class EllipseConfig {
+    center: cc.Vec2;
+    radius: cc.Vec2;
 }
 
 let _vec2_temp = new cc.Vec2();
@@ -44,7 +49,7 @@ function _calculateCircle (center, radius, segements) {
  */
 const {ccclass, property, executeInEditMode, menu, help, inspector} = cc._decorator;
 @ccclass
-@menu('i18n:MAIN_MENU.component.renderers/Mask') 
+@menu('i18n:MAIN_MENU.component.renderers/MaskPlus') 
 @executeInEditMode
 @help('i18n:COMPONENT.help_url.mask')
 @inspector('packages://maskplus/inspector.js')
@@ -84,6 +89,14 @@ export default class MaskPlus extends cc.Mask {
     }
 
 
+    private ellipseConfig: EllipseConfig = new EllipseConfig();
+    public setEllipseConfig(p: cc.Vec2, radius: cc.Vec2) {
+        this.ellipseConfig.center = p;
+        this.ellipseConfig.radius = radius;
+        // this._updateGraphics();
+    }
+
+
     _updateGraphics () {
         let node = this.node;
         let graphics = this['_graphics'];
@@ -97,8 +110,8 @@ export default class MaskPlus extends cc.Mask {
             graphics.rect(x, y, width, height);
         }
         else if (this['_type'] === MaskPlusType.ELLIPSE) {
-            let center = cc.v2(x + width / 2, y + height / 2);
-            let radius = {
+            let center = this.ellipseConfig.center || cc.v2(x + width / 2, y + height / 2);
+            let radius = this.ellipseConfig.radius || { 
                 x: width / 2,
                 y: height / 2
             };
