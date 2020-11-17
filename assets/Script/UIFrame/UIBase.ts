@@ -64,6 +64,8 @@ export default class UIBase extends UIBinder {
         autorun(this.refreshView.bind(this));
         // 加载这个UI依赖的其他资源，其他资源可以也是UI
         await this.load();
+
+        this.onInit();
     }
 
     @observable
@@ -75,9 +77,11 @@ export default class UIBase extends UIBinder {
     public refreshView(r: IReactionPublic) {
         
     }
-    
+
     /** 可以在这里进行一些资源的加载, 具体实现可以看test下的代码 */
     public async load() {}
+
+    public onInit() {}
 
     public onShow(...obj: any) {}
 
