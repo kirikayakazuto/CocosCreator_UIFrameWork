@@ -26,6 +26,18 @@ enum MaskPlusType {
 let _vec2_temp = new cc.Vec2();
 let _mat4_temp = new cc.Mat4();
 
+let _circlepoints =[];
+function _calculateCircle (center, radius, segements) {
+    _circlepoints.length = 0;
+    let anglePerStep = Math.PI * 2 / segements;
+    for (let step = 0; step < segements; ++step) {
+        _circlepoints.push(cc.v2(radius.x * Math.cos(anglePerStep * step) + center.x,
+            radius.y * Math.sin(anglePerStep * step) + center.y));
+    }
+
+    return _circlepoints;
+}
+
 /**
  * 遮罩扩展
  * 自定义多边形遮罩
@@ -90,7 +102,7 @@ export default class MaskPlus extends cc.Mask {
                 x: width / 2,
                 y: height / 2
             };
-            let points = super['_calculateCircle'](center, radius, this['_segments']);
+            let points = _calculateCircle(center, radius, this['_segments']);
             for (let i = 0; i < points.length; ++i) {
                 let point = points[i];
                 if (i === 0) {

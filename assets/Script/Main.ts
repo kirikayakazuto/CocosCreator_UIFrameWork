@@ -1,5 +1,4 @@
 import ButtonPlus from "./Common/Components/ButtonPlus";
-import TipsMgr from "./UIFrame/TipsMgr";
 import TouchPlus from "./Common/Components/TouchPlus";
 import UILogin from "./test/UILogin";
 
@@ -33,16 +32,17 @@ export default class Main extends cc.Component {
             DebugWindowUtil.init();
         }
 
-        TipsMgr.inst.setLoadingForm("UIForms/UILoading");
         // UILogin.openView(1, 2, 3);
-        // UILight.openView();
+        UILight.openView();
+        // TipsMgr.inst.setLoadingForm("UIForms/UILoading");
+        UILogin.openView(1, 2, 3);
         this.buttonPlus.addClick(() => {
             cc.log("点击事件!");
         }, this);
 
         this.buttonPlus.addLongClick(() => {
             cc.log("触发长按事件 开始");
-        }, () => {
+        }, () => { 
             cc.log("触发长按事件 结束");
         }, this);
 
