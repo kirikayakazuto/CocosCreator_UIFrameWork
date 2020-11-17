@@ -38,6 +38,12 @@ function _calculateCircle (center, radius, segements) {
     return _circlepoints;
 }
 
+class EllipseConfig {
+    center: cc.Vec2;
+    r: cc.Vec2;
+    segments: number;
+}
+
 /**
  * 遮罩扩展
  * 自定义多边形遮罩
@@ -83,6 +89,12 @@ export default class MaskPlus extends cc.Mask {
         this._updateGraphics();
     }
 
+    private ellipse: EllipseConfig = new EllipseConfig();
+    public setEllipse(center?: cc.Vec2, r?: cc.Vec2, segments?: number) {
+        this.ellipse.center = center;
+        this.ellipse.r = r;
+        this.ellipse.segments = segments || this.segements;
+    }
 
     _updateGraphics () {
         let node = this.node;
@@ -97,12 +109,10 @@ export default class MaskPlus extends cc.Mask {
             graphics.rect(x, y, width, height);
         }
         else if (this['_type'] === MaskPlusType.ELLIPSE) {
-            let center = cc.v2(x + width / 2, y + height / 2);
-            let radius = {
-                x: width / 2,
-                y: height / 2
-            };
-            let points = _calculateCircle(center, radius, this['_segments']);
+            let center = this.ellipse.center || cc.v2(x + width / 2, y + height / 2);
+            let radius = this.ellipse.r || {x: width / 2,y: height / 2};
+            let segments = this.ellipse.segments || this['_segments'];
+            let points = _calculateCircle(center, radius, segments);
             for (let i = 0; i < points.length; ++i) {
                 let point = points[i];
                 if (i === 0) {
