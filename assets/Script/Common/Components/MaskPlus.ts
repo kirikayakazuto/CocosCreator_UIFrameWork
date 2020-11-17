@@ -50,7 +50,7 @@ class EllipseConfig {
  */
 const {ccclass, property, executeInEditMode, menu, help, inspector} = cc._decorator;
 @ccclass
-@menu('i18n:MAIN_MENU.component.renderers/Mask') 
+@menu('i18n:MAIN_MENU.component.renderers/MaskPlus') 
 @executeInEditMode
 @help('i18n:COMPONENT.help_url.mask')
 @inspector('packages://maskplus/inspector.js')
