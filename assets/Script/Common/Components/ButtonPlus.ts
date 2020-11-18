@@ -2,7 +2,7 @@ import SoundMgr from "../../UIFrame/SoundMgr";
 
 const {ccclass, property, executeInEditMode, menu, help, inspector} = cc._decorator;
 @ccclass
-@menu('i18n:MAIN_MENU.component.ui/Button')
+@menu('i18n:MAIN_MENU.component.ui/ButtonPlus')
 @executeInEditMode
 @help('i18n:COMPONENT.help_url.button')
 @inspector('packages://buttonplus/inspector.js')
