@@ -1,6 +1,8 @@
 import UIManager from "./UIManager";
 import { ModalOpacity } from "./config/SysDefine";
 import CocosHelper from "./CocosHelper";
+import { EventCenter } from "./EventCenter";
+import { EventType } from "./EventType";
 
 /**
  * @Author: 邓朗 
@@ -51,6 +53,23 @@ export default class UIModalScript extends cc.Component {
         this.node.color = new cc.Color(0, 0, 0);
         this.node.opacity = 0;
         this.node.active = true;
+
+        this.node.on(cc.Node.EventType.SIZE_CHANGED, this.onWindonwResize, this);
+        EventCenter.on(EventType.WindowResize, this.onWindonwResize, this);
+    }
+
+    onDestroy() {
+        this.node.off(cc.Node.EventType.SIZE_CHANGED, this.onWindonwResize, this);
+        EventCenter.off(EventType.WindowResize, this.onWindonwResize, this);
+    }
+
+    onWindonwResize() {
+        setTimeout(() => {
+            if(!this || !this.node.active || !this.enabled) return ;
+            let size = cc.view.getVisibleSize();
+            this.node.height = size.height;
+            this.node.width = size.width;
+        }, 0);   
     }
 
     // 
