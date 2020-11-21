@@ -1,0 +1,9 @@
+{
+    "name": "polygonpoints",
+    "version": "0.0.1",
+    "description": "",
+    "author": "denglang",
+    "gizmos": {
+      "MaskPlus": "packages://polygonpoints/main.js"
+    }
+  }
