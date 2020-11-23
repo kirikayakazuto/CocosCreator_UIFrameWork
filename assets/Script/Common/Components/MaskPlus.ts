@@ -1,6 +1,6 @@
 import { CommonUtils } from "../Utils/CommonUtils";
 
-enum MaskPlusType {
+export enum MaskPlusType {
     /**
      * !#en Rect mask.
      * !#zh 使用矩形作为遮罩

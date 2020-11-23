@@ -147,7 +147,7 @@ class PointsPolygonGizmo extends Editor.Gizmo {
     }
 
     visible () {
-      return this.target._type === MaskPlus.Type.Polygon;
+      return this.target._type === 3;
     }
   }
   
