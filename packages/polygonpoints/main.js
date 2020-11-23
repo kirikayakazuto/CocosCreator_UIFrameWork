@@ -1,8 +1,5 @@
 
 // api: https://docs.cocos.com/creator/manual/zh/extension/api/editor-framework/renderer/gizmo.html
-
-const { default: MaskPlus } = require("../../assets/Script/Common/Components/MaskPlus");
-
 class PointsPolygonGizmo extends Editor.Gizmo {
     init() {
       // 初始化一些参数
