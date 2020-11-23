@@ -20,6 +20,9 @@ enum MaskPlusType {
      */
     IMAGE_STENCIL = 2,
 
+    /**
+     * 多边形遮罩
+     */
     Polygon = 3,
 }
 

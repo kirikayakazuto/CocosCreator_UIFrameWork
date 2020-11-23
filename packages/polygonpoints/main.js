@@ -1,6 +1,8 @@
 
 // api: https://docs.cocos.com/creator/manual/zh/extension/api/editor-framework/renderer/gizmo.html
 
+const { default: MaskPlus } = require("../../assets/Script/Common/Components/MaskPlus");
+
 class PointsPolygonGizmo extends Editor.Gizmo {
     init() {
       // 初始化一些参数
@@ -142,6 +144,10 @@ class PointsPolygonGizmo extends Editor.Gizmo {
   
       // 移动 svg 工具到坐标
       this._tool.plot(target.polygon, position);
+    }
+
+    visible () {
+      return this.target._type === MaskPlus.Type.Polygon;
     }
   }
   
