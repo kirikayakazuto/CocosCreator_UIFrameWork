@@ -1,4 +1,3 @@
-
 // api: https://docs.cocos.com/creator/manual/zh/extension/api/editor-framework/renderer/gizmo.html
 class PointsPolygonGizmo extends Editor.Gizmo {
     init() {
@@ -113,8 +112,8 @@ class PointsPolygonGizmo extends Editor.Gizmo {
             }
             let nextPoint = i== points.length-1 ? points[0] : points[i+1];
             nextPoint = Editor.GizmosUtils.snapPixelWihVec2(nextPoint.mul(this._view.scale))
-            line.plot(v.x, -v.y, nextPoint.x, -nextPoint.y).stroke({ width: 2 * this._view.scale });
-            circle.center(v.x, -v.y).radius(4 * this._view.scale);
+            line.plot(v.x, -v.y, nextPoint.x, -nextPoint.y).stroke({ width: 4 * this._view.scale });
+            circle.center(v.x, -v.y).radius(6 * this._view.scale);
         }
 
       };
@@ -144,7 +143,7 @@ class PointsPolygonGizmo extends Editor.Gizmo {
     }
 
     visible () {
-      return this.target._type === 3;
+      return this.target._type === cc.MaskPlus.Type.Polygon;
     }
   }
   

@@ -3,6 +3,7 @@ import TouchPlus from "./Common/Components/TouchPlus";
 import UILogin from "./test/UILogin";
 import { EventCenter } from "./UIFrame/EventCenter";
 import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
+import MaskPlus, { MaskPlusType } from "./Common/Components/MaskPlus";
 
 const {ccclass, property} = cc._decorator;
 
@@ -11,9 +12,11 @@ export default class Main extends cc.Component {
 
     @property(ButtonPlus)
     buttonPlus: ButtonPlus = null;
-
     @property(TouchPlus)
     touchPlus: TouchPlus = null;
+
+    @property(cc.Sprite)
+    sprite: cc.Sprite = null;
     
     onLoad() {
         EventCenter.on("Event_Login", (a: number, b: number, c: number) => {
@@ -43,6 +46,11 @@ export default class Main extends cc.Component {
         }, (e) => {
             console.log('触发滑动事件', e.getDelta());
         })
+        this.test();
+    }
+
+    test() {
+
     }
 
     /**
