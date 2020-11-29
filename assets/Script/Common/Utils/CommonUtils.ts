@@ -465,6 +465,13 @@ export class CommonUtils {
         }
     }
 
+    // 判断一个点是否在三角形内
+    public static isInTriangle(point: cc.Vec2, triA: cc.Vec2, triB: cc.Vec2, triC: cc.Vec2) {
+        let AB = triB.sub(triA), AC = triC.sub(triA), BC = triC.sub(triB), AD = point.sub(triA), BD = point.sub(triB);
+        //@ts-ignore
+        return (AB.cross(AC) >= 0 ^ AB.cross(AD) < 0)  && (AB.cross(AC) >= 0 ^ AC.cross(AD) >= 0) && (BC.cross(AB) > 0 ^ BC.cross(BD) >= 0); 
+    }
+
     public static isInPolygon(checkPoint: cc.Vec2, polygonPoints: cc.Vec2[]) {
         var counter = 0;
         var i: number;
@@ -496,5 +503,59 @@ export class CommonUtils {
             return true;
         }
     }
+    // from 白玉无冰
+    public static splitPolygon(points: cc.Vec2[]) {
+        if (points.length >= 3) {
+            // 计算顶点索引 
+            let ids = [];
+            const vertexes: cc.Vec2[] = [].concat(points);
+
+            // 多边形切割，未实现相交的复杂多边形，确保顶点按顺序且围成的线不相交
+            let index = 0, rootIndex = -1;
+            while (vertexes.length > 3) {
+                const p1 = vertexes[index];
+                const p2 = vertexes[(index + 1) % vertexes.length];
+                const p3 = vertexes[(index + 2) % vertexes.length];
+
+                const v1 = p2.sub(p1);
+                const v2 = p3.sub(p2);
+                if (v1.cross(v2) >= 0) {
+                    // 是凸点
+                    let isIn = false;
+                    for (const p_t of vertexes) {
+                        if (p_t !== p1 && p_t !== p2 && p_t !== p3 && this.isInTriangle(p_t, p1, p2, p3)) {
+                            // 其他点在三角形内
+                            isIn = true;
+                            break;
+                        }
+                    }
+                    if (!isIn) {
+                        // 切耳朵，是凸点，且没有其他点在三角形内
+                        ids = ids.concat([points.indexOf(p1), points.indexOf(p2), points.indexOf(p3)]);
+                        vertexes.splice(vertexes.indexOf(p2), 1);
+                        rootIndex = index;
+                    } else {
+                        index = (index + 1) % vertexes.length;
+                        if (index === rootIndex) {
+                            cc.log('循环一圈未发现');
+                            break;
+                        }
+                    }
+                } else {
+                    index = (index + 1) % vertexes.length;
+                    if (index === rootIndex) {
+                        cc.log('循环一圈未发现');
+                        break;
+                    }
+                }
+                // 感谢 @可有 修复
+                if (index > (vertexes.length - 1)) index = (vertexes.length - 1);
+            }
+            ids = ids.concat(vertexes.map(v => { return points.indexOf(v) }));
+            
+        }
+    }
+
+    
     
 }
