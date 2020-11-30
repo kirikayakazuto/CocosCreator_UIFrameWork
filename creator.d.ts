@@ -16621,7 +16621,7 @@ declare namespace cc {
 		!#zh 添加碎图进入动态图集。
 		@param spriteFrame spriteFrame 
 		*/
-		insertSpriteFrame(spriteFrame: SpriteFrame): void;		
+		insertSpriteFrame(spriteFrame: SpriteFrame): any;		
 		/**
 		!#en Resets all dynamic atlas, and the existing ones will be destroyed.
 		!#zh 重置所有动态图集，已有的动态图集会被销毁。 
