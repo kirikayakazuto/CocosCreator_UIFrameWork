@@ -2,12 +2,14 @@ import BaseAssembler from "../../Common/Components/BaseAssembler";
 
 const renderEngine = cc.renderer.renderEngine;
 
-const {ccclass, property} = cc._decorator;
-
+const {ccclass, inspector, executeInEditMode, mixins, property} = cc._decorator;
 
 @ccclass
+@executeInEditMode
+// @inspector('packages://inspector/share/blend.js')
+@mixins(cc.BlendFunc)
 export default class CustomRender extends cc.RenderComponent {
-
+    
     @property(cc.Texture2D)
     _texture: cc.Texture2D = null;
     @property(cc.Texture2D)
@@ -22,7 +24,7 @@ export default class CustomRender extends cc.RenderComponent {
     _assembler: cc.Assembler = null;          // 顶点数据装配器
     _material = null;     // 材质
 
-
+ 
     _updateMaterial() {
         let texture = this._texture;
         let material = this.getMaterial(0);
@@ -34,7 +36,7 @@ export default class CustomRender extends cc.RenderComponent {
         }
         this.setVertsDirty();
         // 暂时不处理
-        // BlendFunc.prototype._updateMaterial.call(this);
+        cc.BlendFunc.prototype['_updateMaterial'].call(this);
     }
 
     _validateRender() {
@@ -44,7 +46,7 @@ export default class CustomRender extends cc.RenderComponent {
     _resetAssembler() {
         let assembler = this._assembler = new BaseAssembler();
         assembler.init(this);
-        this["_updateColor"]();
+        this._updateColor();
         this.setVertsDirty();
     }
 }

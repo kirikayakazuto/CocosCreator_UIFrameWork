@@ -49,9 +49,7 @@ declare namespace cc {
 	engine\cocos2d\core\components\CCRenderComponent.js
 	*/
 	declare interface RenderComponent {
-		/**
-		@param dirty dirty
-		*/
+
 		setVertsDirty(): void;
 
 		disableRender(): void;
@@ -61,6 +59,8 @@ declare namespace cc {
 		markForRender(shouldRender: boolean): void;
 
 		_activateMaterial(force: boolean = true): void;
+
+		_updateColor(): void;
 
 		_vertsDirty: boolean;
 

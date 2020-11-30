@@ -10,6 +10,14 @@ let vfmtPosUvColor = new gfx.VertexFormat([
  * assembler for texture
  */
 export default class BaseAssembler extends cc.Assembler {
+    constructor() {
+        super();
+        this._renderData = new cc.RenderData();
+        this._renderData.init(this);
+
+        this.initData();
+        this.initLocal();
+    }
     verticesCount = 4;
     indicesCount = 6;
     floatsPerVert = 5;
