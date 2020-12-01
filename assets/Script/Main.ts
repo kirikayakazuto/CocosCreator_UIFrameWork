@@ -4,6 +4,7 @@ import UILogin from "./test/UILogin";
 import { EventCenter } from "./UIFrame/EventCenter";
 import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
 import UITest from "./test/UITest";
+import { TestBroadcast } from "./test/TestBroadcast";
 
 const {ccclass, property} = cc._decorator;
 
@@ -48,10 +49,11 @@ export default class Main extends cc.Component {
             console.log('触发滑动事件', e.getDelta());
         })
         this.test();
+
     }
 
     test() {
-
+        
     }
 
     /**
