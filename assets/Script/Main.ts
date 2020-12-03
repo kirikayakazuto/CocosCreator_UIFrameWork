@@ -31,8 +31,8 @@ export default class Main extends cc.Component {
         }
 
         // TipsMgr.inst.setLoadingForm("UIForms/UILoading");
-        // UILogin.openView(1, 2, 3);
-        UITest.openView();
+        UILogin.openView(1, 2, 3);
+        // UITest.openView();
         this.buttonPlus.addClick(() => {
             cc.log("点击事件!");
         }, this);
