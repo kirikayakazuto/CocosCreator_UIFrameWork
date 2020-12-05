@@ -22,9 +22,18 @@ export default class TextureAssembler extends cc.Assembler {
     }
     verticesCount = 4;
     indicesCount = 6;
+
     floatsPerVert = 5;
     uvOffset = 2;       
     colorOffset = 4;
+
+
+    public allocRenderData(points: cc.Vec2[]) {
+        if(!points || points.length < 3) return ;
+        this.verticesCount = points.length;
+        this.indicesCount = this.verticesCount + (this.verticesCount - 3) * 2;
+        this.initData();
+    }
 
     private _renderData: cc.RenderData = null;
     private _local: number[] = null;
@@ -91,21 +100,11 @@ export default class TextureAssembler extends cc.Assembler {
         let index = 0;
         let floatsPerVert = this.floatsPerVert;
         if (justTranslate) {
-            // left bottom
-            verts[index] = vl + tx;     // 顶点位置 x = 世界坐标left + x的偏移量
-            verts[index+1] = vb + ty;   // 顶点位置 y
-            index += floatsPerVert;
-            // right bottom
-            verts[index] = vr + tx;
-            verts[index+1] = vb + ty;
-            index += floatsPerVert;
-            // left top
-            verts[index] = vl + tx;
-            verts[index+1] = vt + ty;
-            index += floatsPerVert;
-            // right top
-            verts[index] = vr + tx;
-            verts[index+1] = vt + ty;
+            let polygon = comp.polygon;
+            for(let i=0; i<polygon.length; i++) {
+                verts[i * floatsPerVert] = polygon[i].x + tx;
+                verts[i * floatsPerVert+1] = polygon[i].y + ty;
+            }
         } else {
             // 4对xy分别乘以 [2,2]仿射矩阵，然后+平移量
             let al = a * vl, ar = a * vr,
@@ -169,26 +168,6 @@ export default class TextureAssembler extends cc.Assembler {
 
     /** 更新顶点数据 */
     protected updateVerts(comp: TexturePlus) {
-        let node: cc.Node = comp.node,
-            cw: number = node.width,
-            ch: number = node.height,
-            appx: number = node.anchorX * cw,
-            appy: number = node.anchorY * ch,
-            l: number,
-            b: number, 
-            r: number,
-            t: number;
-
-        l = - appx;
-        b = - appy;
-        r = cw - appx;
-        t = ch - appy;
-
-        let local = this._local;
-        local[0] = l;
-        local[1] = b;
-        local[2] = r;
-        local[3] = t;
         this.updateWorldVerts(comp);
     }
 
@@ -201,6 +180,7 @@ export default class TextureAssembler extends cc.Assembler {
         }
     } 
 
+    //每帧都会被调用
     fillBuffers(comp: TexturePlus, renderer) {
         if (renderer.worldMatDirty) {
             this.updateWorldVerts(comp);

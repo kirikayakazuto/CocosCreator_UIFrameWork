@@ -44,17 +44,12 @@ export default class TexturePlus extends cc.RenderComponent {
     }
     public set polygon(points: cc.Vec2[]) {
         this._polygon = points;
+        this._vertsDirty = true;
     }
 
     @property(cc.Boolean)
     editing: boolean = false;
-
-    /** 更新顶点信息 */
-    private _updatreVerts() {
-
-    }
     
-
     _assembler: cc.Assembler = null;
 
     _updateMaterial() {

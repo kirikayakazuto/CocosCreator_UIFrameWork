@@ -562,27 +562,26 @@ export class CommonUtils {
         return uvs;
     }
 
-    public static captureScreenToTexture(camera: cc.Camera, prop?: cc.Node | cc.Rect) {
+    public static captureScreen(camera: cc.Camera, prop?: cc.Node | cc.Rect) {
         let newTexture = new cc.RenderTexture();
         let oldTexture = camera.targetTexture;
-        let rect: cc.Rect;
+        let rect: cc.Rect = cc.rect(0, 0, cc.visibleRect.width, cc.visibleRect.height);
         if(prop) {
             if(prop instanceof cc.Node) {
                 rect = prop.getBoundingBoxToWorld();
             }else {
                 rect = prop;
             }
-            // rect.x -= cc.visibleRect.width;
-            // rect.y -= cc.visibleRect.height;   
         }
-        newTexture.initWithSize(rect.width, rect.height, cc.RenderTexture.DepthStencilFormat.RB_FMT_S8);
+        newTexture.initWithSize(cc.visibleRect.width, cc.visibleRect.height, cc.game._renderContext.STENCIL_INDEX8);
         camera.targetTexture = newTexture;
         camera.render();
         camera.targetTexture = oldTexture;
-        let spriteFrame = new cc.SpriteFrame(newTexture);
-        spriteFrame.setRect(rect)
         
-        return spriteFrame.getTexture();
+        let buffer = new ArrayBuffer(rect.width * rect.height * 4);
+        let data = new Uint8Array(buffer);
+        newTexture.readPixels(data, rect.x, rect.y, rect.width, rect.height);
+        return data;
     }
 
     

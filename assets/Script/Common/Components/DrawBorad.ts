@@ -24,6 +24,9 @@ export default class DrawBorad extends cc.Component {
         }
         this._drawingBroad = new DrawingBoard(this.ndBroad.width, this.ndBroad.height);
         this._drawingBroad.setColor(0, 0, 0, 255);
+        this._drawingBroad.setLineWidth(5);
+
+    
         this._touching = false;
 
         let worldPos = this.ndBroad.convertToWorldSpaceAR(cc.v2(0, 0))
@@ -37,20 +40,27 @@ export default class DrawBorad extends cc.Component {
 
     }
 
+    start() {
+        
+    }
+
+    setData(data: any) {
+        this._drawingBroad.setData(data);
+        this.updateSpriteFrame();
+    }
+
     private touchStart(e: cc.Event.EventTouch) {
         if(this._touching) return ;
         this._touching = true;
         let worldPos = e.getLocation();
-
-        this._drawingBroad.moveTo(worldPos.x-this.broadXMin, this.broadYMax - worldPos.y);
+        this._drawingBroad.moveTo(worldPos.x-this.broadXMin, this.broadYMax - (cc.visibleRect.height-worldPos.y));
     }
     private touchMove(e: cc.Event.EventTouch) {
         if(!this._touching) return ;
         let worldPos = e.getLocation();
 
-        this._drawingBroad.lineTo(worldPos.x-this.broadXMin, this.broadYMax - worldPos.y);
-        this._texture.initWithData(this._drawingBroad.getData(), cc.Texture2D.PixelFormat.RGBA8888, this.ndBroad.width, this.ndBroad.height);
-        this._sprite.spriteFrame.setTexture(this._texture);
+        this._drawingBroad.lineTo(worldPos.x-this.broadXMin, this.broadYMax - (cc.visibleRect.height-worldPos.y));
+        this.updateSpriteFrame();
     }
     private touchCancel(e: cc.Event.EventTouch) {
         this._touching = false;
@@ -73,14 +83,22 @@ export default class DrawBorad extends cc.Component {
         this._drawingBroad.setLineWidth(width);
     }
     setPen() {
-        
+        this.setColor(0, 0, 0, 255);
+        this.setLineWidth(5);
     }
     setReaser() {
-        
+        this.setColor(0, 0, 0, 0);
+        this.setLineWidth(20);
     }
 
     getTexture() {
         return this._texture;
+    }
+
+    private updateSpriteFrame() {
+        this._texture.initWithData(this._drawingBroad.getData(), cc.Texture2D.PixelFormat.RGBA8888, this.ndBroad.width, this.ndBroad.height);
+        this._sprite.spriteFrame.setTexture(this._texture)
+        this._sprite.markForRender(true)
     }
 
 

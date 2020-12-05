@@ -5,6 +5,7 @@ import { EventCenter } from "./UIFrame/EventCenter";
 import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
 import UITest from "./test/UITest";
 import { TestBroadcast } from "./test/TestBroadcast";
+import UICapture from "./test/UICapture";
 
 const {ccclass, property} = cc._decorator;
 
@@ -23,6 +24,7 @@ export default class Main extends cc.Component {
         EventCenter.on("Event_Login", (a: number, b: number, c: number) => {
             console.log("Event ", a, b, c);
         }, this);
+        cc.dynamicAtlasManager.enabled = false;
     }
 
     start () {
@@ -33,6 +35,7 @@ export default class Main extends cc.Component {
         // TipsMgr.inst.setLoadingForm("UIForms/UILoading");
         UILogin.openView(1, 2, 3);
         // UITest.openView();
+        // UICapture.openView();
         this.buttonPlus.addClick(() => {
             cc.log("点击事件!");
         }, this);

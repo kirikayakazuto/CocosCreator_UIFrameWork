@@ -111,7 +111,8 @@ export default class DrawingBoard {
         let pixelData = new Uint8Array(data);
         if (pixelData.length != this.width * this.height * 4) {
             console.warn("画板设置数据失败，数据长度与画板大小不一致。");
-            return;
+            // return;
+            pixelData = pixelData.subarray(0, this.width * this.height * 4);
         }
         this.setPixelColorByRGBA(pixelData);
         this.setPointColorByRGBA(pixelData);
