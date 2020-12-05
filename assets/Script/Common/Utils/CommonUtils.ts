@@ -503,59 +503,87 @@ export class CommonUtils {
             return true;
         }
     }
-    // from 白玉无冰
-    public static splitPolygon(points: cc.Vec2[]) {
-        if (points.length >= 3) {
-            // 计算顶点索引 
-            let ids = [];
-            const vertexes: cc.Vec2[] = [].concat(points);
 
-            // 多边形切割，未实现相交的复杂多边形，确保顶点按顺序且围成的线不相交
-            let index = 0, rootIndex = -1;
-            while (vertexes.length > 3) {
-                const p1 = vertexes[index];
-                const p2 = vertexes[(index + 1) % vertexes.length];
-                const p3 = vertexes[(index + 2) % vertexes.length];
-
-                const v1 = p2.sub(p1);
-                const v2 = p3.sub(p2);
-                if (v1.cross(v2) >= 0) {
-                    // 是凸点
-                    let isIn = false;
-                    for (const p_t of vertexes) {
-                        if (p_t !== p1 && p_t !== p2 && p_t !== p3 && this.isInTriangle(p_t, p1, p2, p3)) {
-                            // 其他点在三角形内
-                            isIn = true;
-                            break;
-                        }
-                    }
-                    if (!isIn) {
-                        // 切耳朵，是凸点，且没有其他点在三角形内
-                        ids = ids.concat([points.indexOf(p1), points.indexOf(p2), points.indexOf(p3)]);
-                        vertexes.splice(vertexes.indexOf(p2), 1);
-                        rootIndex = index;
-                    } else {
-                        index = (index + 1) % vertexes.length;
-                        if (index === rootIndex) {
-                            cc.log('循环一圈未发现');
-                            break;
-                        }
-                    }
-                } else {
-                    index = (index + 1) % vertexes.length;
-                    if (index === rootIndex) {
-                        cc.log('循环一圈未发现');
-                        break;
-                    }
-                }
-                // 感谢 @可有 修复
-                if (index > (vertexes.length - 1)) index = (vertexes.length - 1);
-            }
-            ids = ids.concat(vertexes.map(v => { return points.indexOf(v) }));
-            
+    // 多边形 三角切割
+    public static splitePolygon(points: cc.Vec2[]): number[] {
+        if(points.length <= 3) return [0, 1, 2];
+        let pointMap: {[key: string]: number} = {};     // point与idx的映射
+        for(let i=0; i<points.length; i++) {
+            let p = points[i];
+            pointMap[`${p.x}-${p.y}`] = i;
         }
+        const getIdx = (p: cc.Vec2) => {
+            return pointMap[`${p.x-p.y}`]
+        }
+        points = points.concat([]);
+        let idxs: number[] = [];
+
+        let index = 0;
+        while(points.length > 3) {
+            let p1 = points[(index) % points.length]
+            , p2 = points[(index+1) % points.length]
+            , p3 = points[(index+2) % points.length];
+            let splitPoint = (index+1) % points.length;
+
+            let v1 = p2.sub(p1);
+            let v2 = p3.sub(p2);
+            if(v1.cross(v2) < 0) {      // 是一个凹角, 寻找下一个
+                index = (index + 1) % points.length;
+                continue;
+            }
+            let hasPoint = false;       
+            for(const p of points) {
+                if(p != p1 && p != p2 && p != p3 && this.isInTriangle(p, p1, p2 ,p3)) {
+                    hasPoint = true;
+                    break;
+                }
+            }
+            if(hasPoint) {      // 当前三角形包含其他点, 寻找下一个
+                index = (index + 1) % points.length;
+                continue;
+            }
+            // 找到了耳朵, 切掉
+            idxs.push(getIdx(p1), getIdx(p2), getIdx(p3));
+            points.splice(splitPoint, 1);
+        }
+        for(const p of points) {
+            idxs.push(getIdx(p));
+        }
+        return idxs;
     }
 
-    
+    /** 计算uv, 锚点都是中心 */
+    public static computeUv(points: cc.Vec2[], width: number, height: number) {
+        let uvs: cc.Vec2[] = [];
+        for(const p of points) {
+            // uv原点是左上角
+            uvs.push(cc.v2((p.x + width/2) / width, 1. - (p.y + height/2) / height))
+        }
+        return uvs;
+    }
+
+    public static captureScreenToTexture(camera: cc.Camera, prop?: cc.Node | cc.Rect) {
+        let newTexture = new cc.RenderTexture();
+        let oldTexture = camera.targetTexture;
+        let rect: cc.Rect;
+        if(prop) {
+            if(prop instanceof cc.Node) {
+                rect = prop.getBoundingBoxToWorld();
+            }else {
+                rect = prop;
+            }
+            // rect.x -= cc.visibleRect.width;
+            // rect.y -= cc.visibleRect.height;   
+        }
+        newTexture.initWithSize(rect.width, rect.height, cc.RenderTexture.DepthStencilFormat.RB_FMT_S8);
+        camera.targetTexture = newTexture;
+        camera.render();
+        camera.targetTexture = oldTexture;
+        let spriteFrame = new cc.SpriteFrame(newTexture);
+        spriteFrame.setRect(rect)
+        
+        return spriteFrame.getTexture();
+    }
+
     
 }
