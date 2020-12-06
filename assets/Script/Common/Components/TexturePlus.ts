@@ -1,4 +1,5 @@
 import TextureAssembler from "../Assemblers/TextureAssembler";
+import { CommonUtils } from "../Utils/CommonUtils";
 
 const renderEngine = cc.renderer.renderEngine;
 
@@ -12,7 +13,7 @@ const {ccclass, inspector, executeInEditMode, mixins, property} = cc._decorator;
 @ccclass
 @executeInEditMode
 // @inspector('packages://inspector/share/blend.js')
-@mixins(cc.BlendFunc)
+// @mixins(cc.BlendFunc)
 export default class TexturePlus extends cc.RenderComponent {
     static Type = TextureType;
 
@@ -34,6 +35,7 @@ export default class TexturePlus extends cc.RenderComponent {
     }
     set type(val: TextureType) {
         this._type = val;
+        this.setVertsDirty();
     }
 
     @property({type: [cc.Vec2], serializable: true})
@@ -44,7 +46,7 @@ export default class TexturePlus extends cc.RenderComponent {
     }
     public set polygon(points: cc.Vec2[]) {
         this._polygon = points;
-        this._vertsDirty = true;
+        this._updateVerts();
     }
 
     @property(cc.Boolean)
@@ -52,7 +54,16 @@ export default class TexturePlus extends cc.RenderComponent {
     
     _assembler: cc.Assembler = null;
 
-    _updateMaterial() {
+    start() {
+        
+    }
+
+    private _updateVerts() {
+        this.setVertsDirty();
+
+    }
+
+    public _updateMaterial() {
         let texture = this._texture;
         let material = this.getMaterial(0);
         if(material) {
@@ -63,7 +74,7 @@ export default class TexturePlus extends cc.RenderComponent {
         }
         this.setVertsDirty();
         
-        cc.BlendFunc.prototype['_updateMaterial'].call(this);
+        // cc.BlendFunc.prototype['_updateMaterial'].call(this);
     }
 
     _validateRender() {

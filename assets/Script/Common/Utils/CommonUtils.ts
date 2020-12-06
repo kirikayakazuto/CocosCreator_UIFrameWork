@@ -513,7 +513,7 @@ export class CommonUtils {
             pointMap[`${p.x}-${p.y}`] = i;
         }
         const getIdx = (p: cc.Vec2) => {
-            return pointMap[`${p.x-p.y}`]
+            return pointMap[`${p.x}-${p.y}`]
         }
         points = points.concat([]);
         let idxs: number[] = [];
@@ -557,7 +557,7 @@ export class CommonUtils {
         let uvs: cc.Vec2[] = [];
         for(const p of points) {
             // uv原点是左上角
-            uvs.push(cc.v2((p.x + width/2) / width, 1. - (p.y + height/2) / height))
+            uvs.push(cc.v2((p.x + width/2) / width, 1. - (p.y + height/2) / height));
         }
         return uvs;
     }

@@ -1,4 +1,5 @@
 import TexturePlus from "../Components/TexturePlus";
+import { CommonUtils } from "../Utils/CommonUtils";
 
 const gfx = cc['gfx'];
 
@@ -18,7 +19,6 @@ export default class TextureAssembler extends cc.Assembler {
         this._renderData.init(this);
 
         this.initData();
-        this.initLocal();
     }
     verticesCount = 4;
     indicesCount = 6;
@@ -27,16 +27,10 @@ export default class TextureAssembler extends cc.Assembler {
     uvOffset = 2;       
     colorOffset = 4;
 
+    indicesArr: number[] = [];
 
-    public allocRenderData(points: cc.Vec2[]) {
-        if(!points || points.length < 3) return ;
-        this.verticesCount = points.length;
-        this.indicesCount = this.verticesCount + (this.verticesCount - 3) * 2;
-        this.initData();
-    }
 
     private _renderData: cc.RenderData = null;
-    private _local: number[] = null;
 
     get verticesFloats() {
         return this.verticesCount * this.floatsPerVert;
@@ -53,9 +47,14 @@ export default class TextureAssembler extends cc.Assembler {
         let data = this._renderData;
         data.createQuadData(0, this.verticesFloats, this.indicesCount);
     }
-    public initLocal() {
-        this._local = [];
-        this._local.length = 4;
+
+    public resetData(comp: TexturePlus) {
+        let points = comp.polygon;
+        if(!points || points.length < 3) return ;
+        this.verticesCount = points.length;
+        this.indicesCount = this.verticesCount + (this.verticesCount - 3) * 2;
+        this._renderData.clear();
+        this.initData();
     }
 
     /** 填充顶点的color */
@@ -65,27 +64,28 @@ export default class TextureAssembler extends cc.Assembler {
         color = color != null ? color : comp.node.color['_val'];
         let floatsPerVert = this.floatsPerVert;
         let colorOffset = this.colorOffset;
-        for(let i=0; i<4; i++) {
+
+        let polygon = comp.polygon;
+        for(let i=0; i<polygon.length; i++) {
             uintVerts[colorOffset + i * floatsPerVert] = color;
-        }
+        }        
     }
     /** 更新uv */
     protected updateUVs(comp: TexturePlus) {
-        let uv = [0, 1, 1, 1, 0, 0, 1, 0];
         let uvOffset = this.uvOffset;
         let floatsPerVert = this.floatsPerVert;
         let verts = this._renderData.vDatas[0];
-        // 填充render data中4个顶点的uv部分
-        for (let i = 0; i < 4; i++) {
-            let srcOffset = i * 2;
+
+        let uvs = CommonUtils.computeUv(comp.polygon, comp.node.width, comp.node.height)        
+        let polygon = comp.polygon;
+        for(let i=0; i<polygon.length; i++) {
             let dstOffset = floatsPerVert * i + uvOffset;
-            verts[dstOffset] = uv[srcOffset];           // 设置 u
-            verts[dstOffset + 1] = uv[srcOffset + 1];   // 设置 v
+            verts[dstOffset] = uvs[i].x;
+            verts[dstOffset + 1] = uvs[i].y;
         }
     }
 
     protected updateWorldVertsWebGL(comp: TexturePlus) {
-        let local = this._local;
         let verts = this._renderData.vDatas[0];
 
         let matrix: cc.Mat4 = comp.node['_worldMatrix'];
@@ -93,11 +93,7 @@ export default class TextureAssembler extends cc.Assembler {
         a = matrixm[0], b = matrixm[1], c = matrixm[4], d = matrixm[5], 
         tx = matrixm[12], ty = matrixm[13];
 
-        let vl = local[0], vr = local[2],
-        vb = local[1], vt = local[3];
-
         let justTranslate = a === 1 && b === 0 && c === 0 && d === 1;
-        let index = 0;
         let floatsPerVert = this.floatsPerVert;
         if (justTranslate) {
             let polygon = comp.polygon;
@@ -106,56 +102,23 @@ export default class TextureAssembler extends cc.Assembler {
                 verts[i * floatsPerVert+1] = polygon[i].y + ty;
             }
         } else {
-            // 4对xy分别乘以 [2,2]仿射矩阵，然后+平移量
-            let al = a * vl, ar = a * vr,
-            bl = b * vl, br = b * vr,
-            cb = c * vb, ct = c * vt,
-            db = d * vb, dt = d * vt;
-
-            // left bottom
-            verts[index] = al + cb + tx;
-            verts[index+1] = bl + db + ty;
-            index += floatsPerVert;
-            // right bottom
-            verts[index] = ar + cb + tx;
-            verts[index+1] = br + db + ty;
-            index += floatsPerVert;
-            // left top
-            verts[index] = al + ct + tx;
-            verts[index+1] = bl + dt + ty;
-            index += floatsPerVert;
-            // right top
-            verts[index] = ar + ct + tx;
-            verts[index+1] = br + dt + ty;
+            let polygon  = comp.polygon;
+            for(let i=0; i<polygon.length; i++) {
+                verts[i * floatsPerVert] = a * polygon[i].x + c * polygon[i].y + tx;
+                verts[i * floatsPerVert+1] = b * polygon[i].x + d * polygon[i].y + ty;
+            }
         }
     }
 
     protected updateWorldVertsNative(comp: TexturePlus) {
-        let local = this._local;
         let verts = this._renderData.vDatas[0];
         let floatsPerVert = this.floatsPerVert;
       
-        let vl = local[0],
-            vr = local[2],
-            vb = local[1],
-            vt = local[3];
-      
-        let index: number = 0;
-        // left bottom
-        verts[index] = vl;
-        verts[index+1] = vb;
-        index += floatsPerVert;
-        // right bottom
-        verts[index] = vr;
-        verts[index+1] = vb;
-        index += floatsPerVert;
-        // left top
-        verts[index] = vl;
-        verts[index+1] = vt;
-        index += floatsPerVert;
-        // right top
-        verts[index] = vr;
-        verts[index+1] = vt;
+        let polygon = comp.polygon;
+        for(let i=0; i<polygon.length; i++) {
+            verts[i * floatsPerVert] = polygon[i].x;
+            verts[i * floatsPerVert+1] = polygon[i].y;
+        }
     }
 
     protected updateWorldVerts(comp: TexturePlus) {
@@ -168,14 +131,17 @@ export default class TextureAssembler extends cc.Assembler {
 
     /** 更新顶点数据 */
     protected updateVerts(comp: TexturePlus) {
+        this.indicesArr = CommonUtils.splitePolygon(comp.polygon); 
         this.updateWorldVerts(comp);
     }
 
     /** 更新renderdata */
     protected updateRenderData(comp: TexturePlus) {
         if (comp._vertsDirty) {
+            this.resetData(comp);
             this.updateUVs(comp);
             this.updateVerts(comp);
+            this.updateColor(comp, null);
             comp._vertsDirty = false;
         }
     } 
@@ -200,7 +166,6 @@ export default class TextureAssembler extends cc.Assembler {
         // fill vertices
         let vertexOffset = offsetInfo.byteOffset >> 2,
             vbuf = buffer._vData;
-
         if (vData.length + vertexOffset > vbuf.length) {
             vbuf.set(vData.subarray(0, vbuf.length - vertexOffset), vertexOffset);
         } else {
@@ -211,11 +176,13 @@ export default class TextureAssembler extends cc.Assembler {
         let ibuf = buffer._iData,
             indiceOffset = offsetInfo.indiceOffset,
             vertexId = offsetInfo.vertexOffset;             // vertexId是已经在buffer里的顶点数，也是当前顶点序号的基数
-        for (let i = 0, l = iData.length; i < l; i++) {
-            ibuf[indiceOffset++] = vertexId + iData[i];
+
+        let ins = this.indicesArr;
+        for(let i=0; i<iData.length; i++) {
+            ibuf[indiceOffset++] = vertexId + ins[i]; 
         }
     }
-
+  
     packToDynamicAtlas(comp: TexturePlus, frame: any) {
         if (CC_TEST) return;
         
@@ -234,5 +201,4 @@ export default class TextureAssembler extends cc.Assembler {
             comp._updateMaterial();
         }
     }
-
 }

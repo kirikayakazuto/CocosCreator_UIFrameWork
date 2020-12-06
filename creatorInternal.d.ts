@@ -82,6 +82,7 @@ declare namespace cc {
 		meshCount: number;
 		_infos;
 		_flexBuffer;
+		clear(): void;
 	}
 
 	declare interface PhysicsManager {
