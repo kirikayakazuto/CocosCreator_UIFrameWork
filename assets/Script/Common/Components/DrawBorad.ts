@@ -18,6 +18,9 @@ export default class DrawBorad extends cc.Component {
 
 
     onLoad() {
+        if(!this.ndBroad) {
+            this.ndBroad = this.node;
+        }
         this._sprite = this.ndBroad.getComponent(cc.Sprite);
         if(!this._sprite) {
             this.ndBroad.addComponent(cc.Sprite);
@@ -26,7 +29,6 @@ export default class DrawBorad extends cc.Component {
         this._drawingBroad.setColor(0, 0, 0, 255);
         this._drawingBroad.setLineWidth(5);
 
-    
         this._touching = false;
 
         let worldPos = this.ndBroad.convertToWorldSpaceAR(cc.v2(0, 0))
@@ -37,17 +39,15 @@ export default class DrawBorad extends cc.Component {
         this.ndBroad.on(cc.Node.EventType.TOUCH_MOVE, this.touchMove, this);
         this.ndBroad.on(cc.Node.EventType.TOUCH_CANCEL, this.touchCancel, this);
         this.ndBroad.on(cc.Node.EventType.TOUCH_END, this.touchEnd, this);
-
     }
 
     start() {
         
     }
 
-
-    setData(data: any) {
+    public setData(data: any) {
         this._drawingBroad.setData(data);
-        this.updateSpriteFrame();
+        this.updateTexture(this._drawingBroad.getData(), this.ndBroad.width, this.ndBroad.height);
     }
 
     private touchStart(e: cc.Event.EventTouch) {
@@ -59,9 +59,8 @@ export default class DrawBorad extends cc.Component {
     private touchMove(e: cc.Event.EventTouch) {
         if(!this._touching) return ;
         let worldPos = e.getLocation();
-
         this._drawingBroad.lineTo(worldPos.x-this.broadXMin, this.getRealY(worldPos.y));
-        this.updateSpriteFrame();
+        this.updateTexture(this._drawingBroad.getData(), this.ndBroad.width, this.ndBroad.height);
     }
     private touchCancel(e: cc.Event.EventTouch) {
         this._touching = false;
@@ -96,8 +95,8 @@ export default class DrawBorad extends cc.Component {
         return this._texture;
     }
 
-    private updateSpriteFrame() {
-        this._texture.initWithData(this._drawingBroad.getData(), cc.Texture2D.PixelFormat.RGBA8888, this.ndBroad.width, this.ndBroad.height);
+    private updateTexture(data: any, width: number, height: number) {
+        this._texture.initWithData(data, cc.Texture2D.PixelFormat.RGBA8888, width, height);
         this._sprite.spriteFrame.setTexture(this._texture)
         this._sprite.markForRender(true)
     }
