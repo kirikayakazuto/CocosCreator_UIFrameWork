@@ -37,8 +37,7 @@ export default class UICapture extends UIBase {
     onClickCapture() {
         let data = this.camereCapture.captureTexture();
         let texture = new cc.Texture2D()
-        texture.initWithData(data, cc.Texture2D.PixelFormat.RGBA8888, this.drawBorad.node.width, this.drawBorad.node.height);
-        texture.setFlipY(true)
+        texture.initWithData(data, cc.Texture2D.PixelFormat.RGBA8888, this.drawBorad.node.width, this.drawBorad.node.height);        
         this.sprite.spriteFrame = new cc.SpriteFrame(texture);        
         this.sprite.spriteFrame.setFlipY(true);
         this.drawBorad.setData(data);

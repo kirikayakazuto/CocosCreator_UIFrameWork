@@ -44,6 +44,7 @@ export default class DrawBorad extends cc.Component {
         
     }
 
+
     setData(data: any) {
         this._drawingBroad.setData(data);
         this.updateSpriteFrame();
@@ -53,13 +54,13 @@ export default class DrawBorad extends cc.Component {
         if(this._touching) return ;
         this._touching = true;
         let worldPos = e.getLocation();
-        this._drawingBroad.moveTo(worldPos.x-this.broadXMin, this.broadYMax - (cc.visibleRect.height-worldPos.y));
+        this._drawingBroad.moveTo(worldPos.x-this.broadXMin, this.getRealY(worldPos.y));
     }
     private touchMove(e: cc.Event.EventTouch) {
         if(!this._touching) return ;
         let worldPos = e.getLocation();
 
-        this._drawingBroad.lineTo(worldPos.x-this.broadXMin, this.broadYMax - (cc.visibleRect.height-worldPos.y));
+        this._drawingBroad.lineTo(worldPos.x-this.broadXMin, this.getRealY(worldPos.y));
         this.updateSpriteFrame();
     }
     private touchCancel(e: cc.Event.EventTouch) {
@@ -99,6 +100,13 @@ export default class DrawBorad extends cc.Component {
         this._texture.initWithData(this._drawingBroad.getData(), cc.Texture2D.PixelFormat.RGBA8888, this.ndBroad.width, this.ndBroad.height);
         this._sprite.spriteFrame.setTexture(this._texture)
         this._sprite.markForRender(true)
+    }
+
+    private getRealY(y: number) {
+        if(this._sprite.spriteFrame['_flipY']) {
+            return this.broadYMax - (cc.visibleRect.height-y);
+        }
+        return this.broadYMax - y;
     }
 
 
