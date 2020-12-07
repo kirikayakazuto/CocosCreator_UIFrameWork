@@ -1,3 +1,4 @@
+
 // api: https://docs.cocos.com/creator/manual/zh/extension/api/editor-framework/renderer/gizmo.html
 class PointsPolygonGizmo extends Editor.Gizmo {
     init() {
@@ -93,26 +94,34 @@ class PointsPolygonGizmo extends Editor.Gizmo {
         lines.forEach(v => v.plot(0, 0, 0, 0));
         
         for(let i=0; i<points.length; i++) {
+          let v = points[i];
+          v = Editor.GizmosUtils.snapPixelWihVec2(v.mul(this._view.scale));
+          let line = lines[i]
+          if(!line) {
+            line = lines[i] = this._tool.line()
+            .stroke({ color: 'rgba(0,80,255,0.8)' });
+
+            this.registerMoveSvg(line, [i, "line"]);
+          }
+          let nextPoint = i== points.length-1 ? points[0] : points[i+1];
+          nextPoint = Editor.GizmosUtils.snapPixelWihVec2(nextPoint.mul(this._view.scale))
+          line.plot(v.x, -v.y, nextPoint.x, -nextPoint.y).stroke({ width: 4 * this._view.scale });
+        }
+
+        for(let i=0; i<points.length; i++) {
             let v = points[i];
             v = Editor.GizmosUtils.snapPixelWihVec2(v.mul(this._view.scale));
 
-            let circle = circles[i], line = lines[i];
+            let circle = circles[i];
             // 初始化
-            if(!circle || !line) {
+            if(!circle) {
                 circle = circles[i] = this._tool.circle()
                 .fill({ color: 'rgba(0,128,255,0.9)' })
                 .style('pointer-events', 'fill')
                 .style('cursor', 'move');
-                line = lines[i] = this._tool.line()
-                .stroke({ color: 'rgba(0,80,255,0.8)' });
-
                 // 注册点击事件
                 this.registerMoveSvg(circle, [i, "circle"], { cursor: 'pointer' });
-                this.registerMoveSvg(line, [i, "line"]);
             }
-            let nextPoint = i== points.length-1 ? points[0] : points[i+1];
-            nextPoint = Editor.GizmosUtils.snapPixelWihVec2(nextPoint.mul(this._view.scale))
-            line.plot(v.x, -v.y, nextPoint.x, -nextPoint.y).stroke({ width: 4 * this._view.scale });
             circle.center(v.x, -v.y).radius(6 * this._view.scale);
         }
 
@@ -143,6 +152,7 @@ class PointsPolygonGizmo extends Editor.Gizmo {
     }
 
     visible () {
+      if(this.target.editing !== undefined) return this.target.editing;
       return this.target._type === cc.MaskPlus.Type.Polygon;
     }
   }

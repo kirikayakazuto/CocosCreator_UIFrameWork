@@ -4,6 +4,7 @@
     "description": "",
     "author": "denglang",
     "gizmos": {
-      "MaskPlus": "packages://polygonpoints/main.js"
+      "MaskPlus": "packages://polygonpoints/main.js",
+      "TexturePlus": "packages://polygonpoints/main.js"
     }
   }

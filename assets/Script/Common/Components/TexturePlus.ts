@@ -77,11 +77,11 @@ export default class TexturePlus extends cc.RenderComponent {
         // cc.BlendFunc.prototype['_updateMaterial'].call(this);
     }
 
-    _validateRender() {
+    public _validateRender() {
         
     }
 
-    _resetAssembler() {
+    public _resetAssembler() {
         let assembler = this._assembler = new TextureAssembler();
         assembler.init(this);
         this._updateColor();
