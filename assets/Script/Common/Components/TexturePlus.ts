@@ -28,10 +28,8 @@ export default class TexturePlus extends cc.RenderComponent {
     }
     set texture(val: cc.Texture2D) {
         this._texture = val;
-        if(this.polygon.length <= 3) {
-            let l = -val.width/2, b = -val.height/2, t = val.height/2, r = val.width/2;
-            this.polygon = [cc.v2(l, b), cc.v2(r, b), cc.v2(r, t), cc.v2(l, t)];
-        }
+        let l = -val.width/2, b = -val.height/2, t = val.height/2, r = val.width/2;
+        this.polygon = [cc.v2(l, b), cc.v2(r, b), cc.v2(r, t), cc.v2(l, t)];
         this._updateMaterial();
     }
 
@@ -61,8 +59,14 @@ export default class TexturePlus extends cc.RenderComponent {
     
     _assembler: cc.Assembler = null;
 
+    onLoad() {
+        this.node['_hitTest'] = this._hitTest.bind(this);
+    }
+
     start() {
-        
+        this.node.on(cc.Node.EventType.TOUCH_START, () => {
+            console.log("click texture plus");
+        }, this);
     }
 
     private _updateVerts() {
@@ -94,7 +98,7 @@ export default class TexturePlus extends cc.RenderComponent {
         this.setVertsDirty();
     }
 
-    private _hitTest (cameraPt: cc.Vec2) {
+    _hitTest (cameraPt: cc.Vec2) {
         let node = this.node;
         let size = node.getContentSize(),
             w = size.width,
@@ -107,9 +111,6 @@ export default class TexturePlus extends cc.RenderComponent {
             return false;
         }
         cc.Vec2.transformMat4(testPt, cameraPt, _mat4_temp);
-        testPt.x += node['_anchorPoint'].x * w;
-        testPt.y += node['_anchorPoint'].y * h;
-
         return CommonUtils.isInPolygon(testPt, this.polygon);
     }
 }
