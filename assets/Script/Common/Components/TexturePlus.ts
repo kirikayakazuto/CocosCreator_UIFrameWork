@@ -5,8 +5,11 @@ const renderEngine = cc.renderer.renderEngine;
 
 enum TextureType {
     Cut,            // 裁剪
-    Stretch         // 拉伸
+    Stretch         // 拉伸, 暂未实现
 }
+
+let _vec2_temp = new cc.Vec2();
+let _mat4_temp = new cc.Mat4();
 
 const {ccclass, inspector, executeInEditMode, mixins, property} = cc._decorator;
 
@@ -60,7 +63,6 @@ export default class TexturePlus extends cc.RenderComponent {
 
     private _updateVerts() {
         this.setVertsDirty();
-
     }
 
     public _updateMaterial() {
@@ -86,5 +88,24 @@ export default class TexturePlus extends cc.RenderComponent {
         assembler.init(this);
         this._updateColor();
         this.setVertsDirty();
+    }
+
+    private _hitTest (cameraPt: cc.Vec2) {
+        let node = this.node;
+        let size = node.getContentSize(),
+            w = size.width,
+            h = size.height,
+            testPt = _vec2_temp;
+        
+        node['_updateWorldMatrix']();
+        // If scale is 0, it can't be hit.
+        if (!cc.Mat4.invert(_mat4_temp, node['_worldMatrix'])) {
+            return false;
+        }
+        cc.Vec2.transformMat4(testPt, cameraPt, _mat4_temp);
+        testPt.x += node['_anchorPoint'].x * w;
+        testPt.y += node['_anchorPoint'].y * h;
+
+        return CommonUtils.isInPolygon(testPt, this.polygon);
     }
 }

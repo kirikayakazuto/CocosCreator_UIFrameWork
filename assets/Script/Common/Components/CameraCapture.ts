@@ -1,3 +1,4 @@
+import CocosHelper from "../../UIFrame/CocosHelper";
 import { CommonUtils } from "../Utils/CommonUtils";
 
 const {ccclass, property} = cc._decorator;
@@ -26,7 +27,7 @@ export default class CameraCapture extends cc.Component {
     captureTexture() {
         this.node.active = true;
         this.captureNode.active = false;
-        let data = CommonUtils.captureScreen(this.camera, this.captureNode);
+        let data = CocosHelper.captureScreen(this.camera, this.captureNode);
         this.captureNode.active = true;
         this.node.active = false;
         

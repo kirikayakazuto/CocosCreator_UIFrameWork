@@ -1,4 +1,5 @@
 import CocosHelper from "../../UIFrame/CocosHelper";
+import { MathUtils } from "./MatchUtils";
 
 export interface TypeConstructor<T> {
     new():T;
@@ -557,32 +558,13 @@ export class CommonUtils {
         let uvs: cc.Vec2[] = [];
         for(const p of points) {
             // uv原点是左上角
-            uvs.push(cc.v2((p.x + width/2) / width, 1. - (p.y + height/2) / height));
+            let x = MathUtils.clamp(0, 1, (p.x + width/2) / width);
+            let y = MathUtils.clamp(0, 1, 1. - (p.y + height/2) / height);
+            uvs.push(cc.v2(x, y));
         }
         return uvs;
     }
 
-    public static captureScreen(camera: cc.Camera, prop?: cc.Node | cc.Rect) {
-        let newTexture = new cc.RenderTexture();
-        let oldTexture = camera.targetTexture;
-        let rect: cc.Rect = cc.rect(0, 0, cc.visibleRect.width, cc.visibleRect.height);
-        if(prop) {
-            if(prop instanceof cc.Node) {
-                rect = prop.getBoundingBoxToWorld();
-            }else {
-                rect = prop;
-            }
-        }
-        newTexture.initWithSize(cc.visibleRect.width, cc.visibleRect.height, cc.game._renderContext.STENCIL_INDEX8);
-        camera.targetTexture = newTexture;
-        camera.render();
-        camera.targetTexture = oldTexture;
-        
-        let buffer = new ArrayBuffer(rect.width * rect.height * 4);
-        let data = new Uint8Array(buffer);
-        newTexture.readPixels(data, rect.x, rect.y, rect.width, rect.height);
-        return data;
-    }
-
+    
     
 }
