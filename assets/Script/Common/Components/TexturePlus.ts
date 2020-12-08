@@ -67,6 +67,10 @@ export default class TexturePlus extends cc.RenderComponent {
         this.node.on(cc.Node.EventType.TOUCH_START, () => {
             console.log("click texture plus");
         }, this);
+        this.node.on(cc.Node.EventType.TOUCH_MOVE, (e: cc.Event.EventTouch) => {
+            this.node.x += e.getDeltaX();
+            this.node.y += e.getDeltaY();
+        }, this);
     }
 
     private _updateVerts() {
