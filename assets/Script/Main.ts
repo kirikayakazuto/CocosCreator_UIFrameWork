@@ -33,7 +33,7 @@ export default class Main extends cc.Component {
         }
 
         // TipsMgr.inst.setLoadingForm("UIForms/UILoading");
-        // UILogin.openView(1, 2, 3);
+        UILogin.openView(1, 2, 3);
         // UITest.openView();
         // UICapture.openView();
         this.buttonPlus.addClick(() => {
