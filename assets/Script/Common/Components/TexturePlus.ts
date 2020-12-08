@@ -28,7 +28,11 @@ export default class TexturePlus extends cc.RenderComponent {
     }
     set texture(val: cc.Texture2D) {
         this._texture = val;
-        this._updateMaterial()
+        if(this.polygon.length <= 3) {
+            let l = -val.width/2, b = -val.height/2, t = val.height/2, r = val.width/2;
+            this.polygon = [cc.v2(l, b), cc.v2(r, b), cc.v2(r, t), cc.v2(l, t)];
+        }
+        this._updateMaterial();
     }
 
     _type: TextureType = 0;
