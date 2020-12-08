@@ -1,5 +1,5 @@
 import CocosHelper from "../../UIFrame/CocosHelper";
-import { MathUtils } from "./MatchUtils";
+import { MathUtils } from "./MathUtils";
 
 export interface TypeConstructor<T> {
     new():T;
@@ -505,8 +505,8 @@ export class CommonUtils {
         }
     }
 
-    // 多边形 三角切割
-    public static splitePolygon(points: cc.Vec2[]): number[] {
+    // 将多边形分解为多个三角形
+    public static splitPolygonByTriangle(points: cc.Vec2[]): number[] {
         if(points.length <= 3) return [0, 1, 2];
         let pointMap: {[key: string]: number} = {};     // point与idx的映射
         for(let i=0; i<points.length; i++) {
@@ -564,7 +564,13 @@ export class CommonUtils {
         }
         return uvs;
     }
-
+    /** 使用线段切割多边形 */
+    public static splitPolygonByLine(a: cc.Vec2, b: cc.Vec2, polygon: cc.Vec2[]) {
+        let lint = {
+            type: "LineString",
+            coordinates: [[a.x, a.y], [b.x, b.y]]
+        }
+    }
     
     
 }

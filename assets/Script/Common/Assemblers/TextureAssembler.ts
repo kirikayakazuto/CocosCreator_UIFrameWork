@@ -131,7 +131,7 @@ export default class TextureAssembler extends cc.Assembler {
 
     /** 更新顶点数据 */
     protected updateVerts(comp: TexturePlus) {
-        this.indicesArr = CommonUtils.splitePolygon(comp.polygon); 
+        this.indicesArr = CommonUtils.splitPolygonByTriangle(comp.polygon); 
         this.updateWorldVerts(comp);
     }
 
