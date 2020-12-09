@@ -5,7 +5,22 @@
  */
 const turf = window['turf'];
 export class GeoUtil {
-/**
+
+    static createPoint(p: cc.Vec2) {
+        
+    }
+
+    static cteateLine(p1: cc.Vec2, p2: cc.Vec2) {
+        
+    }
+
+    static createPolygon(points: cc.Vec2[]) {
+
+    }
+
+    
+
+    /**
      * 合并多边形
      */
     static unionPolygon(polygons) {

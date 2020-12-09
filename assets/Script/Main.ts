@@ -4,7 +4,6 @@ import UILogin from "./test/UILogin";
 import { EventCenter } from "./UIFrame/EventCenter";
 import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
 import UITest from "./test/UITest";
-import { TestBroadcast } from "./test/TestBroadcast";
 import UICapture from "./test/UICapture";
 
 const {ccclass, property} = cc._decorator;
@@ -33,7 +32,7 @@ export default class Main extends cc.Component {
         }
 
         // TipsMgr.inst.setLoadingForm("UIForms/UILoading");
-        UILogin.openView(1, 2, 3);
+        // UILogin.openView(1, 2, 3);
         // UITest.openView();
         // UICapture.openView();
         this.buttonPlus.addClick(() => {
