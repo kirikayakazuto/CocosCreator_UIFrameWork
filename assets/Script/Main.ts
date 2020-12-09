@@ -5,6 +5,8 @@ import { EventCenter } from "./UIFrame/EventCenter";
 import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
 import UITest from "./test/UITest";
 import UICapture from "./test/UICapture";
+import UISplitTexture from "./test/UISplitTexture";
+import { PolygonHelper } from "./Common/Utils/PolygonHelper";
 
 const {ccclass, property} = cc._decorator;
 
@@ -35,6 +37,7 @@ export default class Main extends cc.Component {
         // UILogin.openView(1, 2, 3);
         // UITest.openView();
         // UICapture.openView();
+        UISplitTexture.openView();
         this.buttonPlus.addClick(() => {
             cc.log("点击事件!");
         }, this);
@@ -55,7 +58,11 @@ export default class Main extends cc.Component {
     }
 
     test() {
-        
+        let result = PolygonHelper.lineCutPolygon(cc.v2(0, -200), cc.v2(0, 200), [
+            cc.v2(-100, -100), cc.v2(100, -100),
+            cc.v2(100, 100), cc.v2(-100, 100)
+        ]);
+        console.log(result);
     }
 
     /**

@@ -76,7 +76,7 @@ export default class TextureAssembler extends cc.Assembler {
         let floatsPerVert = this.floatsPerVert;
         let verts = this._renderData.vDatas[0];
 
-        let uvs = CommonUtils.computeUv(comp.polygon, comp.node.width, comp.node.height)        
+        let uvs = CommonUtils.computeUv(comp.polygon, comp.texture.width, comp.texture.height)        
         let polygon = comp.polygon;
         for(let i=0; i<polygon.length; i++) {
             let dstOffset = floatsPerVert * i + uvOffset;
