@@ -76,4 +76,23 @@ export default class UISplitTexture extends UIBase {
             this.textures.push(t);
         }
     }
+
+    onClickFly() {
+        for(let i=0; i<this.textures.length; i++) {
+            let center = this.getPolygonCenter(this.textures[i].polygon);
+            let dir = center.normalize();
+            cc.tween(this.textures[i].node).by(5, {x: dir.x * 500, y: dir.y * 500}).start();
+        }
+    }
+
+    private getPolygonCenter(polygon: cc.Vec2[]) {
+        let x = 0, y = 0;
+        for(let i=0; i<polygon.length; i++) {
+            x += polygon[i].x;
+            y += polygon[i].y;
+        }
+        x = x/polygon.length;
+        y = y/polygon.length;
+        return cc.v2(x, y)
+    }
 }
