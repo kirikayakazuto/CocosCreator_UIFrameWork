@@ -474,11 +474,9 @@ export class CommonUtils {
     }
 
     public static isInPolygon(checkPoint: cc.Vec2, polygonPoints: cc.Vec2[]) {
-        var counter = 0;
-        var i: number;
-        var xinters;
-        var p1: cc.Vec2, p2: cc.Vec2;
-        var pointCount = polygonPoints.length;
+        let counter = 0, i: number, xinters: number;
+        let p1: cc.Vec2, p2: cc.Vec2;
+        let pointCount = polygonPoints.length;
         p1 = polygonPoints[0];
      
         for (i = 1; i <= pointCount; i++) {
@@ -498,11 +496,7 @@ export class CommonUtils {
             }
             p1 = p2;
         }
-        if (counter % 2 == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return counter % 2 != 0
     }
 
     // 多边形 三角切割
