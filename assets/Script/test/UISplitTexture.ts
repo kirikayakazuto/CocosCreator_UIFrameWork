@@ -1,5 +1,5 @@
 import TexturePlus from "../Common/Components/TexturePlus";
-import { PolygonHelper } from "../Common/Utils/PolygonHelper";
+import { PolygonUtil } from "../Common/Utils/PolygonUtil";
 import { FormType } from "../UIFrame/config/SysDefine";
 import UIBase from "../UIFrame/UIBase";
 const {ccclass, property} = cc._decorator;
@@ -56,9 +56,7 @@ export default class UISplitTexture extends UIBase {
             let texture = this.textures[i];
             let pa = texture.node.convertToNodeSpaceAR(p0);
             let pb = texture.node.convertToNodeSpaceAR(p1);
-            console.log(pa, pb)
-            let polygons = PolygonHelper.lineCutPolygon(pa, pb, texture.polygon);
-            // console.log(polygons);
+            let polygons = PolygonUtil.lineCutPolygon(pa, pb, texture.polygon);
             if(polygons.length <= 0) continue;
             this.splitTexture(texture, polygons);
         }

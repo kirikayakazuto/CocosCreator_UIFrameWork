@@ -1,7 +1,26 @@
-export class PolygonHelper {
+export class PolygonUtil {
+    /**
+     * 
+     * @param l0 
+     * @param l1 
+     * @param polygon 逆时针
+     * @param useDichotomy 
+     */
+    public static splitPolygonByLine(l0: cc.Vec2, l1: cc.Vec2, polygon: cc.Vec2[], useDichotomy = false) {
+        let result: number[] = [];
+        for(let i=polygon.length-1; i>=0; i--) {
+            let p0 = polygon[i], 
+            p1 = i==0 ? polygon[polygon.length-1] : polygon[i-1];
+            let [n, p] = this.lineCrossPoint(p0, p1, l0, l1);
+            if(n == -1) continue;
+            polygon.splice(i, -1, p);
+            result.push(i+1);
+        }
+        return result;
+    }
     //求两条线段的交点
     //返回值：[n,p] n:0相交，1在共有点，-1不相交  p:交点
-    public static lineCrossPoint(p1:cc.Vec2,p2:cc.Vec2,q1:cc.Vec2,q2:cc.Vec2){
+    public static lineCrossPoint(p1:cc.Vec2,p2:cc.Vec2,q1:cc.Vec2,q2:cc.Vec2): [number, cc.Vec2]{
         let a = p1,b = p2,c = q1,d = q2;
         let s1,s2,s3,s4;
         let d1,d2,d3,d4;
@@ -43,7 +62,6 @@ export class PolygonHelper {
     //如果不相交
         return [-1,null];
     }
- 
     //两条线段是否跨立
     //即非平行
     public static isLineSegmentCross(P1:cc.Vec2,P2:cc.Vec2,Q1:cc.Vec2,Q2:cc.Vec2)

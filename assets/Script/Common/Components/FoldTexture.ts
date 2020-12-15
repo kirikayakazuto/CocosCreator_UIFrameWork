@@ -1,12 +1,6 @@
 import TextureAssembler from "../Assemblers/TextureAssembler";
 import { CommonUtils } from "../Utils/CommonUtils";
-
-const renderEngine = cc.renderer.renderEngine;
-
-enum TextureType {
-    Cut,            // 裁剪
-    Stretch         // 拉伸, 暂未实现
-}
+import { PolygonUtil } from "../Utils/PolygonUtil";
 
 let _vec2_temp = new cc.Vec2();
 let _mat4_temp = new cc.Mat4();
@@ -15,10 +9,9 @@ const {ccclass, inspector, executeInEditMode, mixins, property} = cc._decorator;
 
 @ccclass
 @executeInEditMode
-// @inspector('packages://inspector/share/blend.js')
-// @mixins(cc.BlendFunc)
-export default class TexturePlus extends cc.RenderComponent {
-    static Type = TextureType;
+export default class FoldTexture extends cc.RenderComponent {
+    @property(cc.Boolean)
+    editing: boolean = false;
 
     @property(cc.Texture2D)
     _texture: cc.Texture2D = null;
@@ -33,22 +26,7 @@ export default class TexturePlus extends cc.RenderComponent {
         this._updateMaterial();
     }
 
-    _type: TextureType = 0;
-    @property({type: cc.Enum(TextureType), serializable: true})
-    get type() {
-        return this._type;
-    }
-    set type(val: TextureType) {
-        this._type = val;
-        this.setVertsDirty();
-    }
-    
-    @property(cc.Boolean)
-    editing: boolean = false;
-
-    @property({type: [cc.Vec2], serializable: true})
     _polygon: cc.Vec2[] = [];
-    @property({type: [cc.Vec2], serializable: true})
     public get polygon() {
         return this._polygon;
     }
@@ -57,22 +35,32 @@ export default class TexturePlus extends cc.RenderComponent {
         this._updateVerts();
     }
 
-    
-    
-    _assembler: cc.Assembler = null;
-
-    onLoad() {
-        this.node['_hitTest'] = this._hitTest.bind(this);
+    @property([cc.Vec2])
+    _line: cc.Vec2[] = [];
+    @property({type: [cc.Vec2], serializable: true})
+    public get line() {
+        return this._line;
+    }
+    public set line(points: cc.Vec2[]) {
+        this._line = points;
+        this.computePolygonByLine();
     }
 
+    onLoad() {
+
+    }
     start() {
-        this.node.on(cc.Node.EventType.TOUCH_START, () => {
-            console.log("click texture plus");
-        }, this);
-        this.node.on(cc.Node.EventType.TOUCH_MOVE, (e: cc.Event.EventTouch) => {
-            this.node.x += e.getDeltaX();
-            this.node.y += e.getDeltaY();
-        }, this);
+
+    }
+
+    private computePolygonByLine() {
+        let l = -this.texture.width/2, b = -this.texture.height/2, t = this.texture.height/2, r = this.texture.width/2;
+        let polygon = [cc.v2(l, b), cc.v2(r, b), cc.v2(r, t), cc.v2(l, t)];
+        let result = PolygonUtil.splitPolygonByLine(this.line[0], this.line[1], polygon);
+        if(result.length >= 2) {
+            
+        }
+
     }
 
     private _updateVerts() {

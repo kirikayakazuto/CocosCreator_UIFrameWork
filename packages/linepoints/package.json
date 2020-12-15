@@ -1,0 +1,9 @@
+{
+    "name": "linepoints",
+    "version": "0.0.1",
+    "description": "",
+    "author": "denglang",
+    "gizmos": {
+        "FoldTexture": "packages://linepoints/main.js"
+    }
+  }
