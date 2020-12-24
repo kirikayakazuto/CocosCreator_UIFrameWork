@@ -18,8 +18,8 @@ export default class BaseAssembler extends cc.Assembler {
         this.initData();
         this.initLocal();
     }
-    verticesCount = 4;
-    indicesCount = 6;
+    verticesCount = 8;
+    indicesCount = 12;
     floatsPerVert = 5;
     uvOffset = 2;       
     colorOffset = 4;
@@ -54,18 +54,19 @@ export default class BaseAssembler extends cc.Assembler {
         color = color != null ? color : comp.node.color['_val'];
         let floatsPerVert = this.floatsPerVert;
         let colorOffset = this.colorOffset;
-        for(let i=0; i<4; i++) {
+        for(let i=0; i<this.verticesCount; i++) {
             uintVerts[colorOffset + i * floatsPerVert] = color;
         }
     }
     /** 更新uv */
     protected updateUVs(comp: cc.RenderComponent) {
-        let uv = [0, 1, 1, 1, 0, 0, 1, 0];
+        // 对应的是 l, b, r, b, l, t, r, t 既左下， 右下， 左上， 右上
+        let uv = [0, 1, 1, 1, 1, 0.5, 0, 0.5,  /** */ 0, 0.5, 1, 0.5, 1, 0, 0, 0];
         let uvOffset = this.uvOffset;
         let floatsPerVert = this.floatsPerVert;
         let verts = this._renderData.vDatas[0];
         // 填充render data中4个顶点的uv部分
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < this.verticesCount; i++) {
             let srcOffset = i * 2;
             let dstOffset = floatsPerVert * i + uvOffset;
             verts[dstOffset] = uv[srcOffset];           // 设置 u
@@ -89,6 +90,8 @@ export default class BaseAssembler extends cc.Assembler {
         let index = 0;
         let floatsPerVert = this.floatsPerVert;
         if (justTranslate) {
+            let vt1 = -10;
+            vb -=10;
             // left bottom
             verts[index] = vl + tx;     // 顶点位置 x = 世界坐标left + x的偏移量
             verts[index+1] = vb + ty;   // 顶点位置 y
@@ -97,13 +100,33 @@ export default class BaseAssembler extends cc.Assembler {
             verts[index] = vr + tx;
             verts[index+1] = vb + ty;
             index += floatsPerVert;
+            // right top
+            verts[index] = vr + tx;
+            verts[index+1] = vt1 + ty;
+            index += floatsPerVert;
             // left top
             verts[index] = vl + tx;
-            verts[index+1] = vt + ty;
+            verts[index+1] = vt1 + ty;
+            index += floatsPerVert;
+
+            vb = 10;
+            vt += 10;
+            // left bottom
+            verts[index] = vl + tx;     // 顶点位置 x = 世界坐标left + x的偏移量
+            verts[index+1] = vb + ty;   // 顶点位置 y
+            index += floatsPerVert;
+            // right bottom
+            verts[index] = vr + tx;
+            verts[index+1] = vb + ty;
             index += floatsPerVert;
             // right top
             verts[index] = vr + tx;
             verts[index+1] = vt + ty;
+            index += floatsPerVert;
+            // left top
+            verts[index] = vl + tx;
+            verts[index+1] = vt + ty;
+            
         } else {
             // 4对xy分别乘以 [2,2]仿射矩阵，然后+平移量
             let al = a * vl, ar = a * vr,
@@ -229,9 +252,12 @@ export default class BaseAssembler extends cc.Assembler {
         let ibuf = buffer._iData,
             indiceOffset = offsetInfo.indiceOffset,
             vertexId = offsetInfo.vertexOffset;             // vertexId是已经在buffer里的顶点数，也是当前顶点序号的基数
+            let textData = [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6 ,7];
         for (let i = 0, l = iData.length; i < l; i++) {
-            ibuf[indiceOffset++] = vertexId + iData[i];
+            ibuf[indiceOffset++] = vertexId + textData[i];
         }
+
+
     }
 
     packToDynamicAtlas(comp, frame) {

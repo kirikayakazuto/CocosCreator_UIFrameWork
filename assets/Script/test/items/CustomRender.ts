@@ -7,7 +7,7 @@ const {ccclass, inspector, executeInEditMode, mixins, property} = cc._decorator;
 @ccclass
 @executeInEditMode
 // @inspector('packages://inspector/share/blend.js')
-@mixins(cc.BlendFunc)
+// @mixins(cc.BlendFunc)
 export default class CustomRender extends cc.RenderComponent {
     
     @property(cc.Texture2D)
@@ -36,7 +36,7 @@ export default class CustomRender extends cc.RenderComponent {
         }
         this.setVertsDirty();
         // 暂时不处理
-        cc.BlendFunc.prototype['_updateMaterial'].call(this);
+        // cc.BlendFunc.prototype['_updateMaterial'].call(this);
     }
 
     _validateRender() {
