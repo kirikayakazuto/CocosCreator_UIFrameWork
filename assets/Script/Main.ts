@@ -37,7 +37,7 @@ export default class Main extends cc.Component {
         // UILogin.openView(1, 2, 3);
         // UITest.openView();
         // UICapture.openView();
-        // UISplitTexture.openView();
+        UISplitTexture.openView();
         this.buttonPlus.addClick(() => {
             cc.log("点击事件!");
         }, this);

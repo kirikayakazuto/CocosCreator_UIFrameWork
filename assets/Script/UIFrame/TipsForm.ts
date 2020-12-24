@@ -31,6 +31,7 @@ export default class TipsForm extends UIBase {
         await CocosHelper.runActionSync(this.node, cc.moveBy(1.2, 0, 30));
         this.node.removeFromParent();
         this.node.destroy();
+
     }
 
     // update (dt) {}
