@@ -100,7 +100,7 @@ export class MathUtils {
     }
 
     /**
-     * 获取一个区间的随机数(帧数)
+     * 获取一个区间的随机数(整数)
      * @param $from 最小值
      * @param $end 最大值
      * @returns {number}
@@ -114,7 +114,7 @@ export class MathUtils {
      * @param arr 数组
      * @returns {any} 随机出来的结果
      */
-    public static randomArray(arr: Array<any>): any {
+    public static randomArray<T>(arr: Array<T>): T {
         var index: number = Math.floor(Math.random() * arr.length);
         return arr[index];
     }
