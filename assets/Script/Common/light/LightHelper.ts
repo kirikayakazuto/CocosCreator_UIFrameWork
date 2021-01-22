@@ -54,6 +54,7 @@ export default class LightHelper extends cc.Component {
         this.mtl.setProperty("maxRadius", r);
 
         let polygons = LightUtils.getItemPolygons(this.ndItemRoot.children);
+        this.light.clearPolygon();
         for(const p of polygons) {
             this.light.addPolygon(p);
         }

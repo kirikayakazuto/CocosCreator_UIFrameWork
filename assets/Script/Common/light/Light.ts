@@ -40,6 +40,10 @@ export class Light {
         });
     }
 
+    public clearPolygon() {
+        this.quadTree.clear();
+    }
+
     public getPolygonsByLight(light: cc.Vec2) {
         let r = cc.rect(light.x - this.radius/2, light.y - this.radius/2, this.radius, this.radius);
         let eles = this.quadTree.retrieve(r);
