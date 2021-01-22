@@ -53,12 +53,10 @@ export default class LightHelper extends cc.Component {
         let r = this.lightRadius / this.canvasSize.width;
         this.mtl.setProperty("maxRadius", r);
 
-        let polygons = LightUtils.getItemPolygons(this.ndItemRoot.children);
-        this.light.clearPolygon();
-        for(const p of polygons) {
-            this.light.addPolygon(p);
-        }
+        this.updatePolygons();
     }
+
+    
 
     start () {
         this.ndLight.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
@@ -72,8 +70,18 @@ export default class LightHelper extends cc.Component {
     onDestroy() {
         this.ndLight.off(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
     }
+    
 
+    updatePolygons() {
+        let polygons = LightUtils.getItemPolygons(this.ndItemRoot.children);
+        this.light.clearPolygon();
+        for(const p of polygons) {
+            this.light.addPolygon(p);
+        }
+    }
+    
     update (dt) {
+        this.updatePolygons();
         let lightPos = this.ndLight.getPosition();
         LightUtils.drawLight(this.graphics, lightPos, this.light.getIntersect(lightPos));
         this.mtl.setProperty("lightPos", cc.v2(lightPos.x/this.visiableSize.width, lightPos.y/this.visiableSize.height));

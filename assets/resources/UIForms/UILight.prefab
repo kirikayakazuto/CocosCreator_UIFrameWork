@@ -6512,7 +6512,6 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_useOriginalSize": false,
     "_string": "转动",
     "_N$string": "转动",
     "_fontSize": 20,
@@ -6937,7 +6936,6 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_useOriginalSize": false,
     "_string": "缩松",
     "_N$string": "缩松",
     "_fontSize": 20,
@@ -7168,7 +7166,7 @@
     "asset": {
       "__uuid__": "a7b58b33-24ba-4aae-b2f6-1c56508cff25"
     },
-    "fileId": "a2mF/dMotPvL3DtOJWF+RM",
+    "fileId": "",
     "sync": false
   }
 ]

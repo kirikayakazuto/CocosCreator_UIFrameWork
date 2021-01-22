@@ -16,19 +16,9 @@ export default class UILight extends UIBase {
     @property(cc.Node)
     ndItem: cc.Node = null;
 
-    onClickUseRound() {
-
-    }
-    onCLickUseSector() {
-
-    }
-
-    onClickMoveSector() {
-        // cc.tween(this.lightHelper.sectirAngle).by(3, {x: 60}).by(3, {x: -120}).by(3, {x: 60}).start();
-    }
-
-    onClickChangeLightR() {
-        // this.lightHelper.changeLightRadius(this.lightHelper.lightRadius == 600 ? 300 : 600);
+    start() {
+        let node = this.ndItem.children[1];
+        cc.tween(node).by(50, {x: 1000, y: -1000}).start();
     }
 
 
