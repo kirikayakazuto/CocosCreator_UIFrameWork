@@ -4,7 +4,6 @@ import UILogin from "./test/UILogin";
 import { EventCenter } from "./UIFrame/EventCenter";
 import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
 import UITest from "./test/UITest";
-import { TestBroadcast } from "./test/TestBroadcast";
 import UICapture from "./test/UICapture";
 import UIDungeon from "./test/UIDungeon";
 

@@ -559,6 +559,11 @@ export class CommonUtils {
         return uvs;
     }
 
-    
+    public static contains(arr: cc.Vec2[], val: cc.Vec2) {
+        for(let a of arr) {
+            if(a.x == val.x && a.y == val.y) return true;
+        }
+        return false;
+    }
     
 }

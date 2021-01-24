@@ -1,10 +1,12 @@
+import { CommonUtils } from "./CommonUtils";
 import { MathUtils } from "./MatchUtils";
 
 export enum GridType {
     None,       // 未初始化
     Floor,      // 地板
     Wall,       // 墙
-    Door,       // 门
+    OpenDoor,       // 门
+    CloseDoor,  //
 }
 
 enum DirType {
@@ -44,7 +46,7 @@ export class Dungeon {
         this.initMap();
         this.addRooms();
         this.fillMaze();
-        this.connectRegions();
+        // this.connectRegions();
         // this.removeDeadEnds();
         return this.map;
     }
@@ -52,6 +54,7 @@ export class Dungeon {
     public initMap() {
         for(let i=0; i<this.width * this.height; i++) {
             this.map[i] = GridType.Wall;
+            this.regions[i] = 0;
         }
     }
     public addRooms() {
@@ -62,8 +65,8 @@ export class Dungeon {
             if(0 === MathUtils.limitInteger(0, 1)) w += rectangularity;
             else h += rectangularity;
 
-            let x = MathUtils.limitInteger(0, (this.width-w)/2) * 2 + 1;
-            let y = MathUtils.limitInteger(0, (this.height-h)/2) * 2 + 1;
+            let x = MathUtils.limitInteger(0, Math.floor((this.width-w)/2)) * 2 + 1;
+            let y = MathUtils.limitInteger(0, Math.floor((this.height-h)/2)) * 2 + 1;
 
             let room = new cc.Rect(x, y, w, h);                                         // 生成一个房间矩形
             // 检查矩形是否符合规则 -> 即是否有重叠
@@ -94,15 +97,15 @@ export class Dungeon {
     }
     /** 填充迷宫 */
     public fillMaze() {
-        for(let x=1; x<this.width; x+=2) {
-            for(let y=1; y<this.height; y+=2) {
+        for(let y=1; y<this.height; y+=2) {
+            for(let x=1; x<this.width; x+=2) {
                 let grid = cc.v2(x, y);
-                if(this.getGridType(grid) === GridType.Wall) {
-                    this._growMaze(grid);
-                }
+                if(this.getGridType(grid) !== GridType.Wall) continue;
+                this._growMaze(grid);
             }
         }
     }
+    
     private _growMaze(start: cc.Vec2) {
         let cells: cc.Vec2[] = [];
         let lastDir = DirType.None;
@@ -113,9 +116,7 @@ export class Dungeon {
             let cell = cells[cells.length-1];
             let unmadeCells: DirType[] = [];
             for(let dir of ALL_DIR_TYPES) {
-                if(this.canCarve(cell, dir)) {
-                    unmadeCells.push(dir);
-                }
+                if(this.canCarve(cell, dir)) unmadeCells.push(dir);
             }
             if(unmadeCells.length <= 0) {
                 cells.pop();
@@ -123,7 +124,7 @@ export class Dungeon {
                 continue;
             }
             // 当前grid有可以扩展的方向
-            let dir = DirType.None;
+            let dir = DirType.None;             
             if(unmadeCells.indexOf(lastDir) !== -1 && MathUtils.limitInteger(0, 100) > this.windingPercent) {
                 dir = lastDir;
             }else {
@@ -149,7 +150,7 @@ export class Dungeon {
                 for(let dir of ALL_DIR_TYPES) {
                     let grid = tmpVec2.add(this.getDirGridOffset(dir));
                     let region = this.regions[grid.y * this.width + grid.x];
-                    if(region !== 0) regions.push(region);
+                    if(region !== 0 && regions.indexOf(region) == -1) regions.push(region);
                 }
                 if(regions.length < 2) continue;
                 connectorRegions[j*this.width + i] = regions;
@@ -162,15 +163,14 @@ export class Dungeon {
             connectors.push(this.getGridByIdx(parseInt(key)));
         }
 
-        let merged = {};
+        let merged: {[key: number]: number} = {};
         let openRegions: Set<number> = new Set<number>();
         for(let i=0; i<=this.currentRegion; i++) {
             merged[i] = i;
             openRegions.add(i);
         }
         let count = 0;
-        while(openRegions.size > 1 && count < 5000) {
-            console.log(openRegions)
+        while(openRegions.size > 1 && count < 50) {
             count ++;
             let connector = MathUtils.randomArray<cc.Vec2>(connectors);
             this.addJunction(connector);
@@ -180,7 +180,7 @@ export class Dungeon {
             let dest = regions[0];
             regions.shift();
             let sources = regions;
-            for(let i=0; i<this.currentRegion; i++) {
+            for(let i=0; i<=this.currentRegion; i++) {
                 if(sources.indexOf(merged[i]) !== -1) {
                     merged[i] = dest;
                 }
@@ -191,27 +191,31 @@ export class Dungeon {
             }
             connectors.filter((v) => {return !this.isRemove(merged, connectorRegions, connector, v)});
         }
-        // console.log(openRegions)
 
     }
     private addJunction(grid: cc.Vec2) {
-        this.setGridType(grid, GridType.Floor);
-    }
-    private isRemove(merged: {}, connectRegions: {[key: number]: number[]}, connector: cc.Vec2, grid: cc.Vec2) {
-        if(connector.sub(grid).len() < 2) {
-            return true;
+        if(MathUtils.limitInteger(0, 4)) {
+            this.setGridType(grid, MathUtils.limitInteger(0, 3) ? GridType.OpenDoor : GridType.Floor);
+        }else {
+            this.setGridType(grid, GridType.CloseDoor);
         }
+        
+    }
+    private isRemove(merged: {[key: number]: number}, connectRegions: {[key: number]: number[]}, connector: cc.Vec2, grid: cc.Vec2) {
+        if(connector.sub(grid).len() < 2) return true;
         let regions = connectRegions[grid.y * this.width + grid.x].map((v) => merged[v]);
         let set = new Set<number>(regions);
         if(set.size > 1) return false;
 
-        if(Math.random() * 100 < this.extraConnectorChance) this.addJunction(grid);
+        // if(MathUtils.limitInteger(0, this.extraConnectorChance)) this.addJunction(grid);
         return true;
     }
     public removeDeadEnds() {
         let done = false;
         let tmpVec2 = cc.v2(0, 0);
-        while(!done) {
+        let count = 0;
+        while(!done && count < 500) {
+            count ++;
             done = true;
             for(let i=1; i<this.width-1; i++) {
                 for(let j=1; j<this.height-1; j++) {
@@ -221,12 +225,11 @@ export class Dungeon {
                     for(let dir of ALL_DIR_TYPES) {
                         let grid = tmpVec2.add(this.getDirGridOffset(dir));
                         if(this.map[grid.y * this.width + grid.x] !== GridType.Wall) exists ++;
-                    }
-                    console.log(exists);
+                    }                    
                     if(exists !== 1) continue;
                     done = false;
                     this.regions[j * this.height + i] = 0;
-                    this.map[j + this.height + i] = GridType.Wall;
+                    this.map[j * this.height + i] = GridType.Wall;
                 }
             }
         }
@@ -243,11 +246,19 @@ export class Dungeon {
 
     /** 雕刻一个格子 */
     private carveGrid(grid: cc.Vec2, type: GridType) {
+        if(!this.checkGrid(grid)) return ;
         this.setGridType(grid, type);
         this.regions[grid.y * this.width + grid.x] = this.currentRegion;
     }
     private setGridType(grid: cc.Vec2, type: GridType) {
         this.map[grid.y * this.width + grid.x] = type;
+    }
+    private checkGrid(grid: cc.Vec2) {
+        if(grid.x <= 0 || grid.x >= this.width-1 || grid.y <= 0 || grid.y >= this.height-1) {
+            console.log(" set grid type error: ", grid);
+            return false;
+        }
+        return true;
     }
     private getGridType(grid: cc.Vec2) {
         return this.map[grid.y * this.width + grid.x];

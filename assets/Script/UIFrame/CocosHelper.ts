@@ -283,6 +283,7 @@ export default class CocosHelper {
         let data = new Uint8Array(buffer);
         newTexture.readPixels(data, rect.x, rect.y, rect.width, rect.height);
         return data;
+        
     }
 
 
