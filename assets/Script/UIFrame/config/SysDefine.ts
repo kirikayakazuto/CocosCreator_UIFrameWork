@@ -42,6 +42,8 @@ export class SysDefine {
     public static SYS_UIMODAL_NAME = "Canvas/Scene/UIROOT/UIModalManager";
     public static SYS_UIAdapter_NAME = "Canvas/Scene/UIROOT/UIAdapterManager";
     /* 节点常量 */
+    public static SYS_SCENE_NODE = "Scene"
+    public static SYS_UIROOT_NODE = "UIROOT";
     public static SYS_SCREEN_NODE = "Screen";
     public static SYS_FIXEDUI_NODE = "FixedUI";
     public static SYS_POPUP_NODE = "PopUp";  

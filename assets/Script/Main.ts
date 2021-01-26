@@ -16,9 +16,6 @@ export default class Main extends cc.Component {
     buttonPlus: ButtonPlus = null;
     @property(TouchPlus)
     touchPlus: TouchPlus = null;
-
-    @property(cc.Sprite)
-    sprite: cc.Sprite = null;
     
     onLoad() {
         EventCenter.on("Event_Login", (a: number, b: number, c: number) => {
@@ -36,8 +33,7 @@ export default class Main extends cc.Component {
         UILogin.openView(1, 2, 3);
         // UITest.openView();
         // UICapture.openView();
-
-        
+        // UIDungeon.openView();
         this.buttonPlus.addClick(() => {
             cc.log("点击事件!");
         }, this);
@@ -54,7 +50,6 @@ export default class Main extends cc.Component {
             console.log('触发滑动事件', e.getDelta());
         })
         this.test();
-
     }
 
     test() {
