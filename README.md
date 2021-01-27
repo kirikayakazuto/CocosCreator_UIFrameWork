@@ -42,6 +42,28 @@
         自动绑定结点, 通过特殊的结点命名方式
 
 
+## 使用方法
+
+下载本项目后, 将assets\Script下的UIFrame文件夹拷贝到自己的项目, 如果你希望使用ButtonPlus和MaskPlus等扩展组件, 那么还需将packages下的文件夹拷贝到你的项目packages下
+
+新建一个预制体,并将其放在resources目录下. 在新建一个脚本继承于UIBase, 重写prefabPath指定预制体路径(注意: prefabPath需要使用static声明)和窗体类型formType, 将脚本挂载在预制体根节点上.
+```
+这是项目中的例子, 继承UIBase,重写prefabPath和formType.
+const {ccclass, property} = cc._decorator;
+
+@ccclass
+export default class UIHall extends UIBase {
+    static prefabPath = "UIForms/UIHall";               // resources下的路径
+    public formType = FormType.Screen;                  // 窗体类型
+    ...
+}
+```
+
+最后使用UIHall.openView(); 既可.
+
+
+项目结点都是动态生成的, 使用UIManger.getInstance()时就会动态创建Scene结点和UIROOT等结点.
+
 
 # 基本功能
 
@@ -58,15 +80,6 @@
 
 演示视屏: 暂无
 
-## 使用方法
-
-下载项目, 将其中的assets\Script下的UIFrame文件夹拷贝到自己的项目, 如果你希望使用ButtonPlus和MaskPlus等扩展组件, 那么还需将packages下的文件夹拷贝到你的项目packages下
-
-项目结点树都是可以动态生成的, 使用UIManger.getInstance()就会动态生成.
-具体使用可以直接启动本项目
-
-
-![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/UIROOT_dist.png)
 
 ## 2020/10/19 Mask Plus, 支持自定义遮罩
 扩展了cc.Mask, 添加了一种枚举类型Polygon
