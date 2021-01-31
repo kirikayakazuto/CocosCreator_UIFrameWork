@@ -43,22 +43,21 @@ ${_str_content}
         checkScriptDir();
         
         fs.writeFileSync(ScriptPath, strScript);
-        // Editor.log(require(ScriptPath.replace(".ts", ".js")));
-        // cc.js.setClassName(ScriptName, require(ScriptPath));
 
-        ScriptPath = ScriptPath.replace(Editor.Project.path.replace(/\\/g, "/"), "db:/");
-        Editor.assetdb.refresh(ScriptPath, (err: any, data: any) => {
+        let dbScriptPath = ScriptPath.replace(Editor.Project.path.replace(/\\/g, "/"), "db:/");
+        Editor.assetdb.refresh(dbScriptPath, (err: any, data: any) => {
             if(err) {
-                Editor.warn(`刷新脚本失败：${ScriptPath}`);
+                Editor.warn(`刷新脚本失败：${dbScriptPath}`);
                 return ;
             }
-            // axios.get("http://localhost:7456/update-db").then(function (res: any) {
-                
-                
-            // })
-            // 触发creator编译
+            // let s = ScriptPath.replace(`${ProjectDir}`, `${ProjectDir}/temp/quick-scripts/dst`).replace(".ts", ".js");            
+
             let comp = NodeRoot.getComponent(ScriptName);
             if(!comp) {
+                if(!cc.js.getClassByName(ScriptName)) {
+                    Editor.warn("请在执行一次run");
+                    return ;
+                } ;
                 comp = NodeRoot.addComponent(ScriptName);
             }
             for(let key in nodeMaps) {
@@ -68,10 +67,11 @@ ${_str_content}
                 }else {
                     comp[key] = node.getComponent(nodeMaps[key][0]);
                 }
-            }
-
-            Editor.log(ScriptName + '生成成功');
-          
+            }  
+            Editor.log(ScriptName + '生成成功'); 
+            // axios.get("http://localhost:7456/update-db").then(function (res: any) {
+                
+            // });
         
         });
 

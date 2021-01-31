@@ -20,6 +20,6 @@ export default class UILoading extends UIBase {
 
     update(dt: number) {
         if(this._url !== CocosHelper.loadProgress.url) return ;
-        this._Labels.Progress.string = `${(CocosHelper.loadProgress.completedCount/CocosHelper.loadProgress.totalCount).toFixed(2)}`;
+        // this._Labels.Progress.string = `${(CocosHelper.loadProgress.completedCount/CocosHelper.loadProgress.totalCount).toFixed(2)}`;
     }
 }

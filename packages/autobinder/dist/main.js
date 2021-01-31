@@ -20,14 +20,8 @@ var main;
     ;
     // register your ipc messages here
     main.messages = {
-        "GenScript:test": function () {
-        },
         /**打开面板 */
         run: function () {
-            // Editor.log(cc.find("Canvas"))
-            // let uuid_ss = Editor.Selection.curSelection('node');
-            // Editor.log(uuid_ss);
-            // Editor.Panel.open('ui-node');
             Editor.Scene.callSceneScript("autobinder", "start");
         },
     };
