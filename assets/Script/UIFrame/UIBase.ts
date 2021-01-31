@@ -10,7 +10,7 @@ import TipsMgr from "./TipsMgr";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class UIBase extends UIBinder {
+export default class UIBase extends cc.Component {
 
     /** 窗体id,该窗体的唯一标示(请不要对这个值进行赋值操作, 内部已经实现了对应的赋值) */
     public uid: string;
@@ -20,8 +20,6 @@ export default class UIBase extends UIBinder {
     public maskType = new MaskType();
     /** 关闭窗口后销毁, 会将其依赖的资源一并销毁, 采用了引用计数的管理, 不用担心会影响其他窗体 */
     public canDestory = false;
-    /** 自动绑定结点 */
-    public autoBind = true;
     /** 回调 */
     protected _cb: (confirm: any) => void;
     /** 是否已经调用过preinit方法 */
@@ -53,14 +51,13 @@ export default class UIBase extends UIBinder {
     public static async closeView(): Promise<boolean> {
         return await UIManager.getInstance().closeUIForm(this.prefabPath);
     }
-    
+    public view: cc.Component;
+
     /** 预先初始化 */
     public async _preInit() {
         if(this._inited) return ;
         this._inited = true;
-        if(this.autoBind) {
-            Binder.bindComponent(this);
-        }
+        this.view = this.getComponent(`${this.node.name}_Auto`);
         autorun(this.refreshView.bind(this));
         // 加载这个UI依赖的其他资源，其他资源可以也是UI
         await this.load();

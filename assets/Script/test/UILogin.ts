@@ -4,6 +4,7 @@ import UIHall from './UIHall';
 import { EventCenter } from '../UIFrame/EventCenter';
 import UIToast from './UIToast';
 import CocosHelper from '../UIFrame/CocosHelper';
+import UILogin_Auto from '../AutoScripts/UILogin_Auto';
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -26,10 +27,13 @@ export default class UILogin extends UIBase {
         console.log(a, b, c);
         EventCenter.emit("Event_Login", 1, 2, 3);
 
-        for(let i=0; i<10; i++) {
-            await CocosHelper.sleepSync(1);
-            UIToast.popUp("======: " + i);
-        }
+        // for(let i=0; i<10; i++) {
+        //     await CocosHelper.sleepSync(1);
+        //     UIToast.popUp("======: " + i);
+        // }
+
+        let view = this.view as UILogin_Auto;
+        console.log(view)
     }
 
     onLoad() {
