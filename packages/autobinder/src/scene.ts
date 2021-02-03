@@ -17,7 +17,8 @@ module scene {
 
         let ProjectDir = Editor.Project.path;
         let ScriptName = `${NodeRoot.name}_Auto`;
-        let ScriptPath = `${ProjectDir}/${Const.ScriptsDir}/${ScriptName}.ts`;
+        let ScriptPath = `${ProjectDir}/${Const.ScriptsDir}/${ScriptName}.ts`.replace(/\\/g, "/");
+        
 
         let nodeMaps: {[key: string]: string[]} = {}, importMaps: {[key: string]: string} = {};
         findNodes(NodeRoot, nodeMaps,  importMaps);
@@ -68,18 +69,12 @@ ${_str_content}
                     comp[key] = node.getComponent(nodeMaps[key][0]);
                 }
             }  
-            Editor.log(ScriptName + '生成成功'); 
+            Editor.log(ScriptName + '.ts 生成成功'); 
             // axios.get("http://localhost:7456/update-db").then(function (res: any) {
                 
             // });
         
         });
-
-
-
-
-        
-        
     }
 
     /** 计算相对路径 */

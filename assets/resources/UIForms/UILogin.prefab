@@ -37,13 +37,10 @@
     "_components": [
       {
         "__id__": 22
-      },
-      {
-        "__id__": 23
       }
     ],
     "_prefab": {
-      "__id__": 24
+      "__id__": 23
     },
     "_opacity": 255,
     "_color": {
@@ -874,22 +871,6 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_id": ""
-  },
-  {
-    "__type__": "86995pigiFBuZIaLGEz0MvQ",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "Login": {
-      "__id__": 5
-    },
-    "btn": {
-      "__id__": 18
-    },
     "_id": ""
   },
   {
