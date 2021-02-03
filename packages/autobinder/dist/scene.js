@@ -19,7 +19,7 @@ var scene;
         }
         var ProjectDir = Editor.Project.path;
         var ScriptName = NodeRoot.name + "_Auto";
-        var ScriptPath = ProjectDir + "/" + Const_1.default.ScriptsDir + "/" + ScriptName + ".ts";
+        var ScriptPath = (ProjectDir + "/" + Const_1.default.ScriptsDir + "/" + ScriptName + ".ts").replace(/\\/g, "/");
         var nodeMaps = {}, importMaps = {};
         findNodes(NodeRoot, nodeMaps, importMaps);
         var _str_import = "";
@@ -59,7 +59,7 @@ var scene;
                     comp[key] = node.getComponent(nodeMaps[key][0]);
                 }
             }
-            Editor.log(ScriptName + '生成成功');
+            Editor.log(ScriptName + '.ts 生成成功');
             // axios.get("http://localhost:7456/update-db").then(function (res: any) {
             // });
         });
