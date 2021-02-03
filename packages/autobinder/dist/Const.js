@@ -4,10 +4,10 @@ var Const = /** @class */ (function () {
     function Const() {
     }
     /** 规范符号 */
-    Const.ScriptsDir = "assets/Script/AutoScripts"; // 路径
-    Const.STANDARD_Prefix = '_';
-    Const.STANDARD_Separator = '$';
-    Const.STANDARD_End = '#';
+    Const.ScriptsDir = "assets/Script/AutoScripts"; // 代码生成路径
+    Const.STANDARD_Prefix = '_'; // 绑定前缀
+    Const.STANDARD_Separator = '$'; // 分隔符
+    Const.STANDARD_End = '#'; // 绑定后缀, 结点添加此后缀后, 不会查询其子节点
     Const.SeparatorMap = {
         "Node": "cc.Node",
         "Label": "cc.Label",
