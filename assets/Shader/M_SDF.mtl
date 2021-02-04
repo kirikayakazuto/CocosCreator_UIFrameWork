@@ -1,0 +1,18 @@
+{
+  "__type__": "cc.Material",
+  "_name": "M_SDF",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "2b2b6cb8-41f0-4b80-8cf2-6680e74a14e3"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "defines": {
+        "USE_TEXTURE": true
+      },
+      "props": {}
+    }
+  }
+}
