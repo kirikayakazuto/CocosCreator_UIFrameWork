@@ -1,48 +1,71 @@
 
 ## 使用过程中有任何问题 可以添加我的QQ 1099263878
+### Cocos Creator交流群: 521643513
+
+
 
 # 基于cocos creator的UI框架, 当前使用的cocos creator版本2.4.3版本
-        中心思想, 将所有的UI窗体分为4类管理(普通窗体, 固定窗体, 弹出窗体, 独立窗体), 再将窗体制作成预制体, 动态加载与释放;
-        使用UIManager.getInstance().showForms("窗体名字");
+        中心思想, 将所有的UI窗体分为4类管理(screen窗体, 固定窗体, 弹出窗体, 独立窗体), 再将窗体制作成预制体, 动态加载与释放;
+        使用UIManager.getInstance().openUIForm("窗体名字"); 显示窗体
+        -Scene(管理UIManager)
         -- UIROOT(UIManager脚本挂载结点)
-        ---- normal(普通窗体)
+        ---- screen(普通窗体)
         ---- fixed(固定窗体)
         ---- popup(弹出窗体)
-        ---- Independent(独立窗体)
-        ---- UIMaskScript(UIMaskManager挂载结点, 为窗体添加阴影)
-        ---- UIAdaptationScript(AdaptationManager挂载结点, 用于窗体适配)
+        ---- TopTips(独立窗体)
         不同类型的窗体放置在不同的节点上, 统一管理
 
-## 项目介绍(主要脚本功能)
-        -- UIManager ***
-                UI窗体管理类, 控制的所有窗体的加载, 显示,隐藏和销毁等功能
-        -- BaseUIForm **
-                UI窗体的基类, 你的自定义窗体脚本应当继承它, 设置脚本的UIType, MaskType属性, 并重写init方法
-        -- UIMaskManager **
-                UI窗体的遮罩管理类, 为UI窗体添加一个背景阴影
-        -- UIMaskScript *
-                设置遮罩样式和取消遮罩
-        -- AdaptationManager **
-                适配管理, 用于适配固定窗体(Fixed)的贴边处理,上下左右贴边,并且可以适配刘海屏
-        -- BaseUIBinder **
-                自动绑定编辑器上的结点, 自定义脚本继承BaseUIView脚本即可使用, 你也可以手动继承BaseUIBinder脚本, 并且调用_preInit方法即可
-        -- ButtonPlus **
-                button组件扩展, 添加了统一的音效播放, 长按检查和屏蔽连续点击
-        -- CocosHelper **
-                封装了一些cocos的api, 方便使用
-        -- GEventManager **
-                订阅发布模式工具, 处理全局事件GEventManager.on("事件名称", 回调方法, target); target表示处理对象
-        -- ResLoader **
-                处理窗体的加载, 会对加载的窗体检查其引用的资源
-        
+- UIManager.ts
 
-        -- ConfigUIFrame *
-                配置UI窗体 名称与路径的对应关系
-        -- SysDefine *
-                设置一些定义的路径和对应结点名称
-        
+        核心脚本,包括了加载,显示,隐藏窗体等功能. 
+- UIBase.ts
 
-# 基本作用
+        包好了生命周期函数,如load,init,onShow,onHide等
+- AdapterMgr.ts 
+
+        适配管理
+- ModalMgr.ts
+- UIModalScript.ts
+
+        弹窗模态层管理
+- EventCenter.ts
+
+        事件管理
+- ResMgr.ts
+
+        资源管理,包括加载释放等
+- SoundMgr.ts
+
+        音频管理,包括播放,暂停,声音大小,本地保存等
+- Binder.ts
+
+        自动绑定结点, 通过特殊的结点命名方式
+
+
+## 使用方法
+
+下载本项目后, 将assets\Script下的UIFrame文件夹拷贝到自己的项目, 如果你希望使用ButtonPlus和MaskPlus等扩展组件, 那么还需将packages下的文件夹拷贝到你的项目packages下
+
+新建一个预制体,并将其放在resources目录下. 在新建一个脚本继承于UIBase, 重写prefabPath指定预制体路径(注意: prefabPath需要使用static声明)和窗体类型formType, 将脚本挂载在预制体根节点上.
+```
+这是项目中的例子, 继承UIBase,重写prefabPath和formType.
+const {ccclass, property} = cc._decorator;
+
+@ccclass
+export default class UIHall extends UIBase {
+    static prefabPath = "UIForms/UIHall";               // resources下的路径
+    public formType = FormType.Screen;                  // 窗体类型
+    ...
+}
+```
+
+最后使用UIHall.openView(); 既可.
+
+
+项目结点都是动态生成的, 使用UIManger.getInstance()时就会动态创建Scene结点和UIROOT等结点.
+
+
+# 基本功能
 
 ![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/yanshi.png)
 
@@ -53,26 +76,21 @@
         4, 表示底部的功能列表
         5, 表示背景
 
-前4个我们将其挂载在Fixed结点上, 5号挂载在Normal结点上并设置HideOther属性然后使用AdaptationManager组件使结点在个个位置适配
+前4个我们将其挂载在Fixed结点上, 5号挂载在Normal结点上并设置HideOther属性然后使用AdapterMgr组件使结点在个个位置适配
 
 演示视屏: 暂无
 
-## 使用方法
+## 2021/01/31 Binder plus, 升级了项目中的自动结点绑定
+注意: 目前第一次生成脚本时无法立即绑定到对应结点上, 需要再次执行一次run 即可.
 
- 1, 下载项目, 将其中的assets\Script下的UIFrame文件夹拷贝到自己的项目, 如果你希望使用ButtonPlus脚本, 那么还需将packages下的文件夹拷贝到你的项目packages下
+支持代码生成和结点绑定
 
- 2, 将assets\resources下的UIROOT预制体复制到自己的项目, 然后挂载到场景上
+![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/doc/autobinder.gif)
 
- 3, 制作自己的窗体Prefab, 在结点上挂载自定义的脚本, 并且这个脚本继承BaseUIForm
-
- 4, 在脚本中定义好UIType, MaskType等属性
-
- 5, 使用UIManager.GetInstance().ShowUIForms("你的prefab路径");即可
-
-![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/UIROOT_dist.png)
 
 ## 2020/10/19 Mask Plus, 支持自定义遮罩
 扩展了cc.Mask, 添加了一种枚举类型Polygon
+![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/doc/addMaskPlus.gif)
 
 ## 2020/10/15 添加2d光线功能
 2d光影效果, 项目在2dlight分支, 目前还在优化中 关键代码在Script/Common/light下, 有兴趣的可以看看,

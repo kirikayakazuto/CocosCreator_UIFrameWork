@@ -2,6 +2,17 @@
  * 数学计算工具类
  */
 export class MathUtils {
+
+    public static clamp(a: number, b: number, x: number) {        
+        if(a > b) {
+            let t = a;
+            a = b;
+            b = t;
+        }
+        if(x < a) return a;
+        if(x > b) return b;
+        return x;
+    }
     /**
      * 弧度制转换为角度值
      * @param radian 弧度制

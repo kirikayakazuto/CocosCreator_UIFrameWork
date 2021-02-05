@@ -1,4 +1,5 @@
 import CocosHelper from "../../UIFrame/CocosHelper";
+import { MathUtils } from "./MatchUtils";
 
 export interface TypeConstructor<T> {
     new():T;
@@ -465,12 +466,17 @@ export class CommonUtils {
         }
     }
 
+    // 判断一个点是否在三角形内
+    public static isInTriangle(point: cc.Vec2, triA: cc.Vec2, triB: cc.Vec2, triC: cc.Vec2) {
+        let AB = triB.sub(triA), AC = triC.sub(triA), BC = triC.sub(triB), AD = point.sub(triA), BD = point.sub(triB);
+        //@ts-ignore
+        return (AB.cross(AC) >= 0 ^ AB.cross(AD) < 0)  && (AB.cross(AC) >= 0 ^ AC.cross(AD) >= 0) && (BC.cross(AB) > 0 ^ BC.cross(BD) >= 0); 
+    }
+
     public static isInPolygon(checkPoint: cc.Vec2, polygonPoints: cc.Vec2[]) {
-        var counter = 0;
-        var i: number;
-        var xinters;
-        var p1: cc.Vec2, p2: cc.Vec2;
-        var pointCount = polygonPoints.length;
+        let counter = 0, i: number, xinters: number;
+        let p1: cc.Vec2, p2: cc.Vec2;
+        let pointCount = polygonPoints.length;
         p1 = polygonPoints[0];
      
         for (i = 1; i <= pointCount; i++) {
@@ -490,11 +496,69 @@ export class CommonUtils {
             }
             p1 = p2;
         }
-        if (counter % 2 == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return counter % 2 != 0
     }
+
+    // 多边形 三角切割
+    public static splitePolygon(points: cc.Vec2[]): number[] {
+        if(points.length <= 3) return [0, 1, 2];
+        let pointMap: {[key: string]: number} = {};     // point与idx的映射
+        for(let i=0; i<points.length; i++) {
+            let p = points[i];
+            pointMap[`${p.x}-${p.y}`] = i;
+        }
+        const getIdx = (p: cc.Vec2) => {
+            return pointMap[`${p.x}-${p.y}`]
+        }
+        points = points.concat([]);
+        let idxs: number[] = [];
+
+        let index = 0;
+        while(points.length > 3) {
+            let p1 = points[(index) % points.length]
+            , p2 = points[(index+1) % points.length]
+            , p3 = points[(index+2) % points.length];
+            let splitPoint = (index+1) % points.length;
+
+            let v1 = p2.sub(p1);
+            let v2 = p3.sub(p2);
+            if(v1.cross(v2) < 0) {      // 是一个凹角, 寻找下一个
+                index = (index + 1) % points.length;
+                continue;
+            }
+            let hasPoint = false;       
+            for(const p of points) {
+                if(p != p1 && p != p2 && p != p3 && this.isInTriangle(p, p1, p2 ,p3)) {
+                    hasPoint = true;
+                    break;
+                }
+            }
+            if(hasPoint) {      // 当前三角形包含其他点, 寻找下一个
+                index = (index + 1) % points.length;
+                continue;
+            }
+            // 找到了耳朵, 切掉
+            idxs.push(getIdx(p1), getIdx(p2), getIdx(p3));
+            points.splice(splitPoint, 1);
+        }
+        for(const p of points) {
+            idxs.push(getIdx(p));
+        }
+        return idxs;
+    }
+
+    /** 计算uv, 锚点都是中心 */
+    public static computeUv(points: cc.Vec2[], width: number, height: number) {
+        let uvs: cc.Vec2[] = [];
+        for(const p of points) {
+            // uv原点是左上角
+            let x = MathUtils.clamp(0, 1, (p.x + width/2) / width);
+            let y = MathUtils.clamp(0, 1, 1. - (p.y + height/2) / height);
+            uvs.push(cc.v2(x, y));
+        }
+        return uvs;
+    }
+
+    
     
 }

@@ -10,8 +10,9 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class UIHall extends UIBase {
-
+    static prefabPath = "UIForms/UIHall";
     public formType = FormType.Screen;
+
     public canDestory = true;
 
     @property(cc.Label)
@@ -19,17 +20,13 @@ export default class UIHall extends UIBase {
 
     model: number = 1;
 
-    static prefabPath = "UIForms/UIHall";
+    
 
     async load() {
         await UIManager.getInstance().loadUIForms(UIUserInfo, UIFriendRank, UIMenu, UIRoom);
     }
 
     async onShow() {
-        // await UIUserInfo.openView()
-        // await UIFriendRank.openView();
-        // await UIMenu.openView(); 
-        // await UIRoom.openView()
         await Promise.all([UIUserInfo.openView(), UIFriendRank.openView(), UIMenu.openView(), UIRoom.openView()]);
     }
 

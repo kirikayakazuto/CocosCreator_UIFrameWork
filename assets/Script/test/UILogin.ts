@@ -2,6 +2,9 @@ import { FormType, ModalOpacity } from '../UIFrame/config/SysDefine';
 import UIBase from "../UIFrame/UIBase";
 import UIHall from './UIHall';
 import { EventCenter } from '../UIFrame/EventCenter';
+import UIToast from './UIToast';
+import CocosHelper from '../UIFrame/CocosHelper';
+import UILogin_Auto from '../AutoScripts/UILogin_Auto';
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -18,11 +21,19 @@ export default class UILogin extends UIBase {
         // 在这里执行你的加载操作
     }
 
-    onShow(a: number, b: number, c: number) {
+    async onShow(a: number, b: number, c: number) {
         // 初始化操作
         cc.log('onShow');
         console.log(a, b, c);
         EventCenter.emit("Event_Login", 1, 2, 3);
+
+        // for(let i=0; i<10; i++) {
+        //     await CocosHelper.sleepSync(1);
+        //     UIToast.popUp("======: " + i);
+        // }
+
+        let view = this.view as UILogin_Auto;
+        console.log(view)
     }
 
     onLoad() {

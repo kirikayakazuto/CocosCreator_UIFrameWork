@@ -8,15 +8,14 @@ import { SysDefine } from './config/SysDefine';
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class AdapterMgr extends cc.Component {
+export default class AdapterMgr {
 
     private static _instance: AdapterMgr = null;                     // 单例
     public static get inst() {
         if(this._instance == null) {
-            this._instance = cc.find(SysDefine.SYS_UIAdapter_NAME).addComponent<AdapterMgr>(this);
-            cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
-                this._instance = null;
-            });
+            this._instance = new AdapterMgr();       
+            this._instance.visibleSize = cc.view.getVisibleSize();
+            console.log(`visiable size: ${this._instance.visibleSize}`);
         }
         return this._instance;
     }
@@ -24,20 +23,13 @@ export default class AdapterMgr extends cc.Component {
     /** 屏幕尺寸 */
     public visibleSize: cc.Size;
 
-    onLoad () {
-        this.visibleSize = cc.view.getVisibleSize();
-        cc['visibleSize'] = this.visibleSize;
-        cc.log(`当前屏幕尺寸为${this.visibleSize}`);
-    }
-
-    start () {}
     /**
      * 适配靠边的UI
      * @param type 
      * @param node 
      * @param distance 
      */
-    adapatByType(type: AdaptaterType, node: cc.Node, distance?: number) {
+    public adapatByType(type: AdaptaterType, node: cc.Node, distance?: number) {
         let widget = node.getComponent(cc.Widget);
         if(!widget) {
             widget = node.addComponent(cc.Widget);

@@ -1,14 +1,14 @@
 import UIBase from "./UIBase";
 import { SysDefine, FormType } from "./config/SysDefine";
 import ResMgr from "./ResMgr";
-import UIModalMgr from "./UIModalMgr";
+import ModalMgr from "./ModalMgr";
 import AdapterMgr, { AdaptaterType } from "./AdapterMgr";
+import Scene from "../Scene/Scene";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class UIManager extends cc.Component {
-    
+export default class UIManager extends cc.Component {    
     private _NoNormal: cc.Node = null;                              // 全屏显示的UI 挂载结点
     private _NoFixed: cc.Node = null;                               // 固定显示的UI
     private _NoPopUp: cc.Node = null;                               // 弹出窗口
@@ -32,6 +32,20 @@ export default class UIManager extends cc.Component {
     private static instance: UIManager = null;                                          // 单例
     public static getInstance(): UIManager {
         if(this.instance == null) {
+            let canvas = cc.director.getScene().getChildByName("Canvas");
+            let scene = canvas.getChildByName(SysDefine.SYS_SCENE_NODE);
+            if(!scene) {
+                scene = new cc.Node(SysDefine.SYS_SCENE_NODE);
+                scene.addComponent(Scene);
+                scene.parent = canvas;
+            }
+            let UIROOT = new cc.Node(SysDefine.SYS_UIROOT_NODE);
+            scene.addChild(UIROOT);
+            UIROOT.addChild(new cc.Node(SysDefine.SYS_SCREEN_NODE));
+            UIROOT.addChild(new cc.Node(SysDefine.SYS_FIXEDUI_NODE));
+            UIROOT.addChild(new cc.Node(SysDefine.SYS_POPUP_NODE));
+            UIROOT.addChild(new cc.Node(SysDefine.SYS_TOPTIPS_NODE));
+            console.log(cc.director.getScene())
             this.instance = cc.find(SysDefine.SYS_UIROOT_NAME).addComponent<UIManager>(this);
             cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
                 this.instance = null;
@@ -46,6 +60,8 @@ export default class UIManager extends cc.Component {
         this._NoFixed = this.node.getChildByName(SysDefine.SYS_FIXEDUI_NODE);
         this._NoPopUp = this.node.getChildByName(SysDefine.SYS_POPUP_NODE);
         this._NoTips = this.node.getChildByName(SysDefine.SYS_TOPTIPS_NODE);
+
+
     }
     
     start() {        
@@ -251,7 +267,7 @@ export default class UIManager extends cc.Component {
         
         baseUI.onShow(...params);
         this._currWindowId = baseUI.uid;
-        UIModalMgr.inst.checkModalWindow(this._StaCurrentUIForms);
+        ModalMgr.inst.checkModalWindow(this._StaCurrentUIForms);
         await this.showForm(baseUI);
     }
     /**
@@ -313,7 +329,7 @@ export default class UIManager extends cc.Component {
         if(this._StaCurrentUIForms.length >= 1) {
             let topUIForm = this._StaCurrentUIForms.pop();
             topUIForm.onHide();
-            UIModalMgr.inst.checkModalWindow(this._StaCurrentUIForms);
+            ModalMgr.inst.checkModalWindow(this._StaCurrentUIForms);
             await this.hideForm(topUIForm);
             this._currWindowId = this._StaCurrentUIForms.length > 0 ? this._StaCurrentUIForms[this._StaCurrentUIForms.length-1].uid : '';
         }

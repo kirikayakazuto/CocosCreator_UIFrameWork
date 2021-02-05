@@ -3,6 +3,9 @@ import TouchPlus from "./Common/Components/TouchPlus";
 import UILogin from "./test/UILogin";
 import { EventCenter } from "./UIFrame/EventCenter";
 import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
+import UITest from "./test/UITest";
+import { TestBroadcast } from "./test/TestBroadcast";
+import UICapture from "./test/UICapture";
 
 const {ccclass, property} = cc._decorator;
 
@@ -11,7 +14,6 @@ export default class Main extends cc.Component {
 
     @property(ButtonPlus)
     buttonPlus: ButtonPlus = null;
-
     @property(TouchPlus)
     touchPlus: TouchPlus = null;
     
@@ -19,6 +21,7 @@ export default class Main extends cc.Component {
         EventCenter.on("Event_Login", (a: number, b: number, c: number) => {
             console.log("Event ", a, b, c);
         }, this);
+        cc.dynamicAtlasManager.enabled = false;
     }
 
     start () {
@@ -28,6 +31,9 @@ export default class Main extends cc.Component {
 
         // TipsMgr.inst.setLoadingForm("UIForms/UILoading");
         UILogin.openView(1, 2, 3);
+        // UITest.openView();
+        // UICapture.openView();
+        // UIDungeon.openView();
         this.buttonPlus.addClick(() => {
             cc.log("点击事件!");
         }, this);
@@ -43,6 +49,11 @@ export default class Main extends cc.Component {
         }, (e) => {
             console.log('触发滑动事件', e.getDelta());
         })
+        this.test();
+    }
+
+    test() {
+        
     }
 
     /**

@@ -1,4 +1,5 @@
 import Game from "../Logic/Game";
+import AdapterMgr, { AdaptaterType } from "../UIFrame/AdapterMgr";
 import { EventCenter } from "../UIFrame/EventCenter";
 import { EventType } from "../UIFrame/EventType";
 
@@ -6,13 +7,22 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Scene extends cc.Component {
-    @property(cc.Node)
-    ndBlock: cc.Node = null;
 
     public static inst: Scene = null;
+    private ndBlock: cc.Node = null;
+    onLoad() {
+        this.initBlockNode();
+    }
+
+    public initBlockNode() {
+        this.ndBlock = new cc.Node("block");
+        this.ndBlock.addComponent(cc.BlockInputEvents);
+        this.node.addChild(this.ndBlock, cc.macro.MAX_ZINDEX);
+    }
 
     public async start() {
         Scene.inst = this;
+        AdapterMgr.inst.adapatByType(AdaptaterType.FullScreen, this.node);
         await this.onGameInit();
         this.registerEvent();
     }

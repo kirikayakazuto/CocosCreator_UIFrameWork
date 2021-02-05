@@ -17,7 +17,7 @@ Vue.component("cc-mask",{
             isRectType(){return this.target.type.value===cc.Mask.Type.RECT},
             isEllipseType(){return this.target.type.value===cc.Mask.Type.ELLIPSE},
             isImageStencilType(){return this.target.type.value===cc.Mask.Type.IMAGE_STENCIL},
-            isPolygon() {return this.target.type.value===3},
+            isPolygon() {return this.target.type.value===cc.MaskPlus.Type.Polygon},
             onAppImageSizeClick(e){
                 var t={id:this.target.uuid.value,path:"_resizeToTarget",type:"Boolean",isSubProp:!1,value:!0};
                 Editor.Ipc.sendToPanel("scene","scene:set-property",t)

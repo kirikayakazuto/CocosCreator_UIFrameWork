@@ -1,6 +1,6 @@
 import { CommonUtils } from "../Utils/CommonUtils";
 
-enum MaskPlusType {
+export enum MaskPlusType {
     /**
      * !#en Rect mask.
      * !#zh 使用矩形作为遮罩
@@ -20,6 +20,9 @@ enum MaskPlusType {
      */
     IMAGE_STENCIL = 2,
 
+    /**
+     * 多边形遮罩
+     */
     Polygon = 3,
 }
 
@@ -56,6 +59,8 @@ const {ccclass, property, executeInEditMode, menu, help, inspector} = cc._decora
 @inspector('packages://maskplus/inspector.js')
 export default class MaskPlus extends cc.Mask {
 
+    static Type = MaskPlusType;
+
     @property({type: cc.Enum(MaskPlusType), override: true})
     _type: MaskPlusType = 0;
     @property({type: cc.Enum(MaskPlusType), override: true})
@@ -69,12 +74,19 @@ export default class MaskPlus extends cc.Mask {
         }
 
         this._type = value;
+
+        if(this._type === MaskPlusType.Polygon) {
+            if(this._polygon.length === 0) {
+                let [x, y, width, height] = this.getNodeRect();
+                this._polygon.push(cc.v2(x, y), cc.v2(x+width, y), cc.v2(x+width, y+height), cc.v2(x, y+height));
+            }
+        }
+
         if (this._type !== MaskPlusType.IMAGE_STENCIL) {
             this.spriteFrame = null;
             this.alphaThreshold = 0;
             this._updateGraphics();
-        }
-        
+        }        
         this['_activateMaterial']();
     }
 
@@ -101,10 +113,7 @@ export default class MaskPlus extends cc.Mask {
         let graphics = this['_graphics'];
         // Share render data with graphics content
         graphics.clear(false);
-        let width = node['_contentSize'].width;
-        let height = node['_contentSize'].height;
-        let x = -width * node['_anchorPoint'].x;
-        let y = -height * node['_anchorPoint'].y;
+        let [x, y, width, height] = this.getNodeRect();
         if (this['_type'] === MaskPlusType.RECT) {
             graphics.rect(x, y, width, height);
         }
@@ -173,6 +182,15 @@ export default class MaskPlus extends cc.Mask {
         return result;
     }
 
+    private getNodeRect() {
+        let width = this.node['_contentSize'].width;
+        let height = this.node['_contentSize'].height;
+        let x = -width * this.node['_anchorPoint'].x;
+        let y = -height * this.node['_anchorPoint'].y;
+        return [x, y, width, height];
+    }
+
     
 
 }
+cc['MaskPlus'] = MaskPlus;

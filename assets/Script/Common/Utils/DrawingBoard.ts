@@ -31,11 +31,6 @@ export default class DrawingBoard {
     private tempB: number;
     private tempA: number;
 
-    /**  */
-    public set aColor (a: number) {
-        
-    }
-
     /**
      * 可对每个像素点绘制的画板，画板使用的坐标系原点为左下角，X轴向右为正，Y轴向上为正
      * @param width     画板宽度
@@ -111,7 +106,8 @@ export default class DrawingBoard {
         let pixelData = new Uint8Array(data);
         if (pixelData.length != this.width * this.height * 4) {
             console.warn("画板设置数据失败，数据长度与画板大小不一致。");
-            return;
+            // return;
+            pixelData = pixelData.subarray(0, this.width * this.height * 4);
         }
         this.setPixelColorByRGBA(pixelData);
         this.setPointColorByRGBA(pixelData);
