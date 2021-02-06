@@ -100,6 +100,23 @@ export default class CocosHelper {
         return null;
 
     }
+
+    private static _loadingMap: {[key: string]: Function[]} = {};
+    public static async loadRes<T>(url: string, type: typeof cc.Asset, callback: Function ) {
+        if(this._loadingMap[url]) {
+            this._loadingMap[url].push(callback);
+            return ;
+        }
+        this._loadingMap[url] = [callback];
+        this.loadResSync<T>(url, type).then((data: any) => {
+            let arr = this._loadingMap[url];
+            for(const func of arr) {
+                func(data);
+            }
+            this._loadingMap[url] = null;
+            delete this._loadingMap[url];
+        });
+    }
     /** 加载资源 */
     public static loadResSync<T>(url: string, type: typeof cc.Asset, progressCallback?: (completedCount: number, totalCount: number, item: any) => void): Promise<T>{
         if (!url || !type) {
