@@ -61,21 +61,24 @@ CCProgram fs %{
   in vec2 v_uv0;
   uniform sampler2D texture;
 
-  float median(float r, float g, float b) {
-    return max(min(r, g), min(max(r, g), b));
-  }
 
   void main () {
     vec4 o = vec4(1, 1, 1, 1);
 
     CCTexture(texture, v_uv0, o);
 
-    float sigDist = median(o.r, o.g, o.b) - 0.94;
-    // float opacity = clamp(sigDist / fwidth(sigDist) + 0.5, 0.0, 1.0);
-    float opacity = clamp(sigDist, 0.0, 1.0);
+    vec4 c = vec4(1, 1, 1, 1);
+    c.rgb = v_color.rgb;
+    float distance = 0.72;
+    float diff = 1.0 / 64.0;
+    c.a = smoothstep(distance - diff, distance + diff, o.r);
 
-    ALPHA_TEST(o);
 
-    gl_FragColor = vec4(v_color.rgb, opacity);
+
+    
+
+    ALPHA_TEST(c);
+
+    gl_FragColor = c;
   }
 }%
