@@ -80,6 +80,13 @@ export default class UIHall extends UIBase {
 
 演示视屏: 暂无
 
+## 2021/01/31 Binder plus, 升级了项目中的自动结点绑定
+注意: 目前第一次生成脚本时无法立即绑定到对应结点上, 需要再次执行一次run 即可.
+
+支持代码生成和结点绑定
+
+![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/doc/autobinder.gif)
+
 
 ## 2020/10/19 Mask Plus, 支持自定义遮罩
 扩展了cc.Mask, 添加了一种枚举类型Polygon

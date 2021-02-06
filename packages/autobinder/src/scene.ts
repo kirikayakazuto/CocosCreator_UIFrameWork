@@ -17,14 +17,15 @@ module scene {
 
         let ProjectDir = Editor.Project.path;
         let ScriptName = `${NodeRoot.name}_Auto`;
-        let ScriptPath = `${ProjectDir}/${Const.ScriptsDir}/${ScriptName}.ts`;
+        let ScriptPath = `${ProjectDir}/${Const.ScriptsDir}/${ScriptName}.ts`.replace(/\\/g, "/");
+        
 
         let nodeMaps: {[key: string]: string[]} = {}, importMaps: {[key: string]: string} = {};
         findNodes(NodeRoot, nodeMaps,  importMaps);
         
         let _str_import = ``;
         for(let key in importMaps) {
-            _str_import += `import ${key} from "${getExportPath(importMaps[key], ScriptPath)}"\n`;
+            _str_import += `import ${key} from "${getImportPath(importMaps[key], ScriptPath)}"\n`;
         }
         let _str_content = ``;
         for(let key in nodeMaps) {
@@ -68,22 +69,16 @@ ${_str_content}
                     comp[key] = node.getComponent(nodeMaps[key][0]);
                 }
             }  
-            Editor.log(ScriptName + '生成成功'); 
+            Editor.log(ScriptName + '.ts 生成成功'); 
             // axios.get("http://localhost:7456/update-db").then(function (res: any) {
                 
             // });
         
         });
-
-
-
-
-        
-        
     }
 
     /** 计算相对路径 */
-    function getExportPath(export_s_: string, current_s: string): string {
+    function getImportPath(export_s_: string, current_s: string): string {
         // ----------------格式转换
         export_s_ = export_s_.replace(/\\/g, "/").substr(0, export_s_.lastIndexOf("."));
         current_s = current_s.replace(/\\/g, "/");
@@ -122,21 +117,19 @@ ${_str_content}
             if(checkNodePrefix(name)) {
                 // 获得这个组件的类型 和 名称
                 let names = getPrefixNames(name);
-                if(names === null || names.length !== 2 || !Const.SeparatorMap[names[0]]) {
-                    console.log(names);
-                    cc.log(`${name} 命令不规范, 请使用_Label$xxx的格式!, 或者是在SysDefine中没有定义`);
+                if(names === null || names.length !== 2) {
+                    Editor.log(`${name} 命令不规范, 请使用_Label$xxx的格式!, 或者是在SysDefine中没有定义`);
                     return ;
                 }
                 let type = Const.SeparatorMap[names[0]] || names[0];
                 let value = names[1];
                 // 进入到这里， 就表示可以绑定了
                 if(_nodeMaps[value]) {
-                    Editor.log("出现了重名", value);
+                    Editor.log("出现了重名字段:", value);
                 }
-                _nodeMaps[value] = [];
-                _nodeMaps[value][0] = type;
-                _nodeMaps[value][1] = node.uuid;
+                _nodeMaps[value] = [type, node.uuid];
 
+                // 检查是否是自定义组件
                 if(!_importMaps[type] && type.indexOf("cc.") === -1 && node.getComponent(type)) {
                     let componentPath = Editor.remote.assetdb.uuidToFspath(node.getComponent(type).__scriptUuid);
                     componentPath = componentPath.replace(/\s*/g, "").replace(/\\/g, "/");

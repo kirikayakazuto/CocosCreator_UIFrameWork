@@ -19,12 +19,12 @@ var scene;
         }
         var ProjectDir = Editor.Project.path;
         var ScriptName = NodeRoot.name + "_Auto";
-        var ScriptPath = ProjectDir + "/" + Const_1.default.ScriptsDir + "/" + ScriptName + ".ts";
+        var ScriptPath = (ProjectDir + "/" + Const_1.default.ScriptsDir + "/" + ScriptName + ".ts").replace(/\\/g, "/");
         var nodeMaps = {}, importMaps = {};
         findNodes(NodeRoot, nodeMaps, importMaps);
         var _str_import = "";
         for (var key in importMaps) {
-            _str_import += "import " + key + " from \"" + getExportPath(importMaps[key], ScriptPath) + "\"\n";
+            _str_import += "import " + key + " from \"" + getImportPath(importMaps[key], ScriptPath) + "\"\n";
         }
         var _str_content = "";
         for (var key in nodeMaps) {
@@ -59,14 +59,14 @@ var scene;
                     comp[key] = node.getComponent(nodeMaps[key][0]);
                 }
             }
-            Editor.log(ScriptName + '生成成功');
+            Editor.log(ScriptName + '.ts 生成成功');
             // axios.get("http://localhost:7456/update-db").then(function (res: any) {
             // });
         });
     }
     scene.start = start;
     /** 计算相对路径 */
-    function getExportPath(export_s_, current_s) {
+    function getImportPath(export_s_, current_s) {
         // ----------------格式转换
         export_s_ = export_s_.replace(/\\/g, "/").substr(0, export_s_.lastIndexOf("."));
         current_s = current_s.replace(/\\/g, "/");
@@ -103,20 +103,18 @@ var scene;
             if (checkNodePrefix(name)) {
                 // 获得这个组件的类型 和 名称
                 var names = getPrefixNames(name);
-                if (names === null || names.length !== 2 || !Const_1.default.SeparatorMap[names[0]]) {
-                    console.log(names);
-                    cc.log(name + " \u547D\u4EE4\u4E0D\u89C4\u8303, \u8BF7\u4F7F\u7528_Label$xxx\u7684\u683C\u5F0F!, \u6216\u8005\u662F\u5728SysDefine\u4E2D\u6CA1\u6709\u5B9A\u4E49");
+                if (names === null || names.length !== 2) {
+                    Editor.log(name + " \u547D\u4EE4\u4E0D\u89C4\u8303, \u8BF7\u4F7F\u7528_Label$xxx\u7684\u683C\u5F0F!, \u6216\u8005\u662F\u5728SysDefine\u4E2D\u6CA1\u6709\u5B9A\u4E49");
                     return;
                 }
                 var type = Const_1.default.SeparatorMap[names[0]] || names[0];
                 var value = names[1];
                 // 进入到这里， 就表示可以绑定了
                 if (_nodeMaps[value]) {
-                    Editor.log("出现了重名", value);
+                    Editor.log("出现了重名字段:", value);
                 }
-                _nodeMaps[value] = [];
-                _nodeMaps[value][0] = type;
-                _nodeMaps[value][1] = node.uuid;
+                _nodeMaps[value] = [type, node.uuid];
+                // 检查是否是自定义组件
                 if (!_importMaps[type] && type.indexOf("cc.") === -1 && node.getComponent(type)) {
                     var componentPath = Editor.remote.assetdb.uuidToFspath(node.getComponent(type).__scriptUuid);
                     componentPath = componentPath.replace(/\s*/g, "").replace(/\\/g, "/");
