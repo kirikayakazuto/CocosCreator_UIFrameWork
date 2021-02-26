@@ -8,7 +8,7 @@ export default class UILogin_Auto extends cc.Component {
 	Login: cc.Node = null;
 	@property(ButtonPlus)
 	btn: ButtonPlus = null;
-	@property(cc.Node)
-	Test: cc.Node = null;
+	@property(cc.Label)
+	Name: cc.Label = null;
  
 }
