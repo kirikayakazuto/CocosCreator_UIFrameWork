@@ -36,11 +36,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 22
+        "__id__": 23
       }
     ],
     "_prefab": {
-      "__id__": 23
+      "__id__": 24
     },
     "_opacity": 255,
     "_color": {
@@ -794,16 +794,20 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "_Node$Test",
+    "_name": "_Label$Name",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
     },
     "_children": [],
     "_active": true,
-    "_components": [],
+    "_components": [
+      {
+        "__id__": 21
+      }
+    ],
     "_prefab": {
-      "__id__": 21
+      "__id__": 22
     },
     "_opacity": 255,
     "_color": {
@@ -815,8 +819,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
+      "width": 97.87,
+      "height": 50.4
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -853,6 +857,39 @@
     "_id": ""
   },
   {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 20
+    },
+    "_enabled": true,
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_string": "Label",
+    "_N$string": "Label",
+    "_fontSize": 40,
+    "_lineHeight": 40,
+    "_enableWrapText": true,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
+    "_spacingX": 0,
+    "_batchAsBitmap": false,
+    "_styleFlags": 0,
+    "_underlineHeight": 0,
+    "_N$horizontalAlign": 1,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Arial",
+    "_N$overflow": 0,
+    "_N$cacheMode": 0,
+    "_id": ""
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -860,7 +897,7 @@
     "asset": {
       "__uuid__": "a178340e-1f5d-4713-bbf4-0bd021d3429b"
     },
-    "fileId": "bctW4wFCtOZZ/1wHQvsCef",
+    "fileId": "48/NV9OphAIJqXAhwqMskz",
     "sync": false
   },
   {

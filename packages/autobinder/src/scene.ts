@@ -1,7 +1,6 @@
 import Const from "./Const";
 
 const fs = require('fire-fs');
-const axios = require('axios')
 
 module scene {
     export function start() {
@@ -78,29 +77,26 @@ ${_str_content}
     }
 
     /** 计算相对路径 */
-    function getImportPath(export_s_: string, current_s: string): string {
-        // ----------------格式转换
-        export_s_ = export_s_.replace(/\\/g, "/").substr(0, export_s_.lastIndexOf("."));
-        current_s = current_s.replace(/\\/g, "/");
-        // ----------------准备参数
-        let temp1_s = "./";
-        let temp1_n: number, temp2_n: number;
-        let temp1_ss = export_s_.split("/");
-        let temp2_ss = current_s.split("/");
-        // ----------------路径转换
-        for (temp2_n = 0; temp2_n < temp1_ss.length; ++temp2_n) {
-            if (temp1_ss[temp2_n] != temp2_ss[temp2_n]) {
+    function getImportPath(exportPath: string, currPath: string): string {
+        exportPath = exportPath.replace(/\\/g, "/").substr(0, exportPath.lastIndexOf("."));
+        currPath = currPath.replace(/\\/g, "/");
+        let tmp = "./";
+        let start: number, end: number;
+        let exportStr = exportPath.split("/");
+        let currStr = currPath.split("/");
+        for (end = 0; end < exportStr.length; ++end) {
+            if (exportStr[end] != currStr[end]) {
                 break;
             }
         }
-        for (temp1_n = temp2_n + 1; temp1_n < temp2_ss.length; ++temp1_n) {
-            temp1_s += "../";
+        for (start = end + 1; start < currStr.length; ++start) {
+            tmp += "../";
         }
-        for (temp1_n = temp2_n; temp1_n < temp1_ss.length; ++temp1_n) {
-            temp1_s += `${temp1_ss[temp1_n]}/`;
+        for (start = end; start < exportStr.length; ++start) {
+            tmp += `${exportStr[start]}/`;
         }
-        temp1_s = temp1_s.substr(0, temp1_s.length - 1);
-        return temp1_s;
+        tmp = tmp.substr(0, tmp.length - 1);
+        return tmp;
     }
 
     function checkScriptDir() {
