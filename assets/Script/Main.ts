@@ -6,6 +6,9 @@ import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
 import UITest from "./test/UITest";
 import { TestBroadcast } from "./test/TestBroadcast";
 import UICapture from "./test/UICapture";
+import NetManager from "./UIFrame/NetWork/NetManager";
+import HttpUtils from "./UIFrame/NetWork/HttpUtils";
+import UIOffline from "./test/UIOffline";
 
 const {ccclass, property} = cc._decorator;
 
@@ -16,6 +19,9 @@ export default class Main extends cc.Component {
     buttonPlus: ButtonPlus = null;
     @property(TouchPlus)
     touchPlus: TouchPlus = null;
+
+    @property(cc.Label)
+    diffTime: cc.Label = null;
     
     onLoad() {
         EventCenter.on("Event_Login", (a: number, b: number, c: number) => {
@@ -50,11 +56,36 @@ export default class Main extends cc.Component {
             console.log('触发滑动事件', e.getDelta());
         })
         this.test();
+
+        this.requestNetTime();
+    }
+
+    requestNetTime() {
+        let now = Date.now();
+        HttpUtils.get("https://upload.wikimedia.org/wikipedia/commons/5/51/Google.png", `id=${Math.random()}`).then((responst: any) => {
+            if(!responst) {
+                UIOffline.openView();
+                return ;
+            }
+            let diff = Date.now() - now;
+            this.diffTime.string = `当前延迟: ${diff}ms`;
+            if(diff < 3000) {
+                this.scheduleOnce(() => {
+                    this.requestNetTime();
+                }, 3);
+            }else {
+                this.requestNetTime();
+            }
+            
+        });
+        
     }
 
     test() {
         
     }
+
+
 
     /**
      * 

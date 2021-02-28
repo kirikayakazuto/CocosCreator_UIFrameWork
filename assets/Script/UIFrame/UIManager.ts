@@ -45,7 +45,6 @@ export default class UIManager extends cc.Component {
             UIROOT.addChild(new cc.Node(SysDefine.SYS_FIXEDUI_NODE));
             UIROOT.addChild(new cc.Node(SysDefine.SYS_POPUP_NODE));
             UIROOT.addChild(new cc.Node(SysDefine.SYS_TOPTIPS_NODE));
-            console.log(cc.director.getScene())
             this.instance = cc.find(SysDefine.SYS_UIROOT_NAME).addComponent<UIManager>(this);
             cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
                 this.instance = null;
