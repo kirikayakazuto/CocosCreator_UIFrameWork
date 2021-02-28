@@ -9,6 +9,7 @@ import UICapture from "./test/UICapture";
 import NetManager from "./UIFrame/NetWork/NetManager";
 import HttpUtils from "./UIFrame/NetWork/HttpUtils";
 import UIOffline from "./test/UIOffline";
+import { off } from "process";
 
 const {ccclass, property} = cc._decorator;
 
@@ -64,7 +65,11 @@ export default class Main extends cc.Component {
         let now = Date.now();
         HttpUtils.get("https://upload.wikimedia.org/wikipedia/commons/5/51/Google.png", `id=${Math.random()}`).then((responst: any) => {
             if(!responst) {
-                UIOffline.openView();
+                UIOffline.openView().then((offline) => {
+                    offline.waitPromise().then((result) => {
+                        this.requestNetTime();
+                    });
+                });
                 return ;
             }
             let diff = Date.now() - now;

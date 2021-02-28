@@ -18,6 +18,7 @@ export default class UIOffline extends UIBase {
 
     start () {
         this.close.node.on('click', () => {
+            this._cb(true);
             this.closeUIForm();
         }, this);
     }
