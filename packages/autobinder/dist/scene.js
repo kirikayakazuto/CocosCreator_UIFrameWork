@@ -34,7 +34,7 @@ var scene;
         var strScript = "\n" + _str_import + "\nconst {ccclass, property} = cc._decorator;\n@ccclass\nexport default class " + ScriptName + " extends cc.Component {\n" + _str_content + " \n}";
         checkScriptDir();
         fs.writeFileSync(ScriptPath, strScript);
-        var dbScriptPath = ScriptPath.replace(Editor.Project.path.replace(/\\/g, "/"), "db:/");
+        var dbScriptPath = ScriptPath.replace(Editor.Project.path, "db:/");
         Editor.assetdb.refresh(dbScriptPath, function (err, data) {
             if (err) {
                 Editor.warn("\u5237\u65B0\u811A\u672C\u5931\u8D25\uFF1A" + dbScriptPath);
