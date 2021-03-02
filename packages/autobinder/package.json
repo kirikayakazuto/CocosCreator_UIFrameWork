@@ -6,7 +6,8 @@
   "main": "dist/main.js",
   "main-menu": {
     "i18n:MAIN_MENU.package.title/autobinder/run": {
-      "message": "autobinder:run"
+      "message": "autobinder:run",
+      "accelerator": "alt+g"
     }
   },
   "panel": {
