@@ -6,6 +6,7 @@ import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
 import UITest from "./test/UITest";
 import { TestBroadcast } from "./test/TestBroadcast";
 import UICapture from "./test/UICapture";
+import { ECSImpl } from "./ECS/impl/ECSImpl";
 
 const {ccclass, property} = cc._decorator;
 
@@ -16,12 +17,16 @@ export default class Main extends cc.Component {
     buttonPlus: ButtonPlus = null;
     @property(TouchPlus)
     touchPlus: TouchPlus = null;
+
+    private ecs = new ECSImpl();
     
     onLoad() {
         EventCenter.on("Event_Login", (a: number, b: number, c: number) => {
             console.log("Event ", a, b, c);
         }, this);
         cc.dynamicAtlasManager.enabled = false;
+
+        
     }
 
     start () {
