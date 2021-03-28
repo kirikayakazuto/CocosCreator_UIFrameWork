@@ -1,9 +1,7 @@
-import UIBinder from "./UIBinder";
 import CocosHelper from "./CocosHelper";
 import UIManager from "./UIManager";
 import { FormType, SysDefine } from "./config/SysDefine";
 import { MaskType } from "./FrameType";
-import Binder from "./Binder";
 import AdapterMgr from "./AdapterMgr";
 import TipsMgr from "./TipsMgr";
 
