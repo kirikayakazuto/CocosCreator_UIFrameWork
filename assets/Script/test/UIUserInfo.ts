@@ -9,7 +9,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIUserInfo extends UIBase {
 
-    formType = FormType.FixedUI;
+    formType = FormType.Fixed;
     
     @property(cc.Node)
     backNode: cc.Node = null;
@@ -21,7 +21,7 @@ export default class UIUserInfo extends UIBase {
     start () {
         AdapterMgr.inst.adapatByType(AdaptaterType.Top, this.node);
         this.backNode.on('click', () => {
-            UILogin.openView(1, 2, 3);
+            UILogin.openView(1);
         });
 
         /**  */

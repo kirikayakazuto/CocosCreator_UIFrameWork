@@ -13,7 +13,7 @@ export default class UIMenu extends UIBase {
     @property(cc.Node)
     ndMenu: cc.Node = null;
 
-    formType = FormType.FixedUI;
+    formType = FormType.Fixed;
     
     static prefabPath = "UIForms/UIMenu";
 

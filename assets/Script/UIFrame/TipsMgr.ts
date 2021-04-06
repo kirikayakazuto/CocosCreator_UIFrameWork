@@ -1,5 +1,6 @@
 import UIManager from "./UIManager";
 import UIToast from "../test/UIToast";
+import { IParams } from "./Struct";
 
 const {ccclass, property} = cc._decorator;
 /***
@@ -21,12 +22,12 @@ export default class TipsMgr{
     public setLoadingForm(loadingName: string) {
         this.loadingFormName = loadingName;
     }
-    public async showLoadingForm(...params: any[]) {
+    public async showLoadingForm(params: any & IParams) {
         if(!this.loadingFormName || this.loadingFormName.length <= 0) {
             cc.warn('请先设置loading form');
             return ;
         }
-        await UIManager.getInstance().openUIForm(this.loadingFormName, ...params);
+        await UIManager.getInstance().openUIForm(this.loadingFormName, params);
     }
     /** 隐藏加载form */
     public async hideLoadingForm() {
@@ -39,6 +40,6 @@ export default class TipsMgr{
         this.tipsFormName = tipsFormName;
     }
     public async showToast() {
-        await UIToast.popUp();
+        await UIToast.popUp("");
     }
 }

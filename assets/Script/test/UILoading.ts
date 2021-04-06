@@ -7,7 +7,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UILoading extends UIBase {
 
-    formType = FormType.TopTips;
+    formType = FormType.Tips;
     
     start () {
 

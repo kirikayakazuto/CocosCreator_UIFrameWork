@@ -1,6 +1,6 @@
 import { ModalOpacity } from "./config/SysDefine";
 
-export class MaskType {
+export class ModalType {
     public opacity: ModalOpacity = ModalOpacity.OpacityHalf;
     public clickMaskClose = false;      // 点击阴影关闭
     public isEasing = true;             // 缓动实现
@@ -12,4 +12,10 @@ export class MaskType {
         this.isEasing = IsEasing;
         this.easingTime = EasingTime;
     }
+}
+
+export interface IParams {
+    onOpen?: Function;
+    onClose?: Function;
+    priority?: number
 }

@@ -6,7 +6,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UITest extends UIBase {
 
-    formType = FormType.PopUp;
+    formType = FormType.Window;
 
     static prefabPath = "UIForms/UITest";
 

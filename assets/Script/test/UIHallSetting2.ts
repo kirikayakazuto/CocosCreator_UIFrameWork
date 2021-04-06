@@ -1,14 +1,14 @@
 import UIBase from "../UIFrame/UIBase";
 import { FormType, ModalOpacity } from "../UIFrame/config/SysDefine";
-import { MaskType } from "../UIFrame/FrameType";
+import { ModalType } from "../UIFrame/Struct";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class UIHallSetting2 extends UIBase {
 
-    formType = FormType.PopUp;
-    maskType = new MaskType(ModalOpacity.OpacityHalf, false);
+    formType = FormType.Window;
+    modalType = new ModalType(ModalOpacity.OpacityHalf, false);
 
     public start() {
 
