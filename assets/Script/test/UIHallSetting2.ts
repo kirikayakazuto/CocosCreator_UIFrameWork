@@ -16,12 +16,12 @@ export default class UIHallSetting2 extends UIBase {
 
     onClickYes() {
         this._cb(true);
-        this.closeUIForm();
+        this.closeSelf();
     }
 
     onClickNo() {
         this._cb(false);
-        this.closeUIForm();
+        this.closeSelf();
     }
 
 

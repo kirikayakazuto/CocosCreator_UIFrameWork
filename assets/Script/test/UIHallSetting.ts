@@ -25,7 +25,7 @@ export default class UIHallSetting extends UIBase {
 
     start () {
         this.CloseNode.on('click', () => {
-            this.closeUIForm();
+            this.closeSelf();
         }, this)
     } 
 
@@ -44,7 +44,7 @@ export default class UIHallSetting extends UIBase {
         let hallSetting2 = await UIHallSetting2.openView();
         let result = await hallSetting2.waitPromise();
         if(result) {
-            this.closeUIForm();
+            this.closeSelf();
         }
     }
 

@@ -17,7 +17,7 @@ export default class UICreateRoom extends UIBase {
 
     start () {
         this.CloseNode.on('click', () => {
-            this.closeUIForm();
+            this.closeSelf();
         }, this)
     }
 

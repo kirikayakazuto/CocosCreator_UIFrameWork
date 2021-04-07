@@ -21,10 +21,9 @@ export default class UILogin extends UIBase {
         // 在这里执行你的加载操作
     }
 
-    async onShow(a: number, b: number, c: number) {
+    onShow(a: number) {
         // 初始化操作
         cc.log('onShow');
-        console.log(a, b, c);
         EventCenter.emit("Event_Login", 1, 2, 3);
         
         let view = this.view as UILogin_Auto;
@@ -49,7 +48,7 @@ export default class UILogin extends UIBase {
     }
 
     async onClickLogin() {
-        this.closeUIForm();
+        this.closeSelf();
         await UIHall.openViewWithLoading();
     }
 }

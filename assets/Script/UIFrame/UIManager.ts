@@ -120,7 +120,7 @@ export default class UIManager extends cc.Component {
             return ;
         };
         let com = this._allForms[prefabPath];
-        if(!com) return true;
+        if(!com) return false;
         
         switch(com.formType) {
             case FormType.Screen:
@@ -208,7 +208,7 @@ export default class UIManager extends cc.Component {
     private async enterToScreen(prefabPath: string, params: any) {
         // 关闭其他显示的窗口 
         for(let key in this._showingForms) {
-            await this._showingForms[key].closeUIForm();
+            await this._showingForms[key].closeSelf();
         }
         let com = this._allForms[prefabPath];
         if(!com) return ;
@@ -320,9 +320,7 @@ export default class UIManager extends cc.Component {
     /** 窗体是否正在显示 */
     public checkFormShowing(prefabPath: string) {
         let com = this._allForms[prefabPath];
-        if (com == null) {
-            return false;
-        }
+        if (!com) return false;
         return com.node.active;
     }
 
@@ -335,28 +333,17 @@ export default class UIManager extends cc.Component {
     /**
      * 清除栈内所有窗口
      */
-    private async clearStackArray() {
-        if(this._popupForms == null || this._popupForms.length <= 0) {
+    public async clearWindows() {
+        if(!this._popupForms || this._popupForms.length <= 0) {
             return ;
         }
-        for(const baseUI of this._popupForms) {
-            await baseUI.closeUIForm();
+        for(const com of this._popupForms) {
+            await com.closeSelf();
         }
         this._popupForms = [];
         return ;
     }
 
-    /**
-     * 关闭栈顶窗口
-     */
-    private closeTopStackUIForm() {
-        if(this._popupForms != null && this._popupForms.length >= 1) {
-            let uiFrom = this._popupForms[this._popupForms.length-1];
-            if(uiFrom.modalType.clickMaskClose) {
-                uiFrom.closeUIForm();
-            }   
-        }
-    }
 
     /** 获得Component */
     public getComponentByFid(fId: string) {
