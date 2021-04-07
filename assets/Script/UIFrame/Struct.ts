@@ -14,8 +14,6 @@ export class ModalType {
     }
 }
 
-export interface IParams {
-    onOpen?: Function;
+export interface IFormData {
     onClose?: Function;
-    priority?: number
 }

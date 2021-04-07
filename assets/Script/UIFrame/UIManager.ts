@@ -5,6 +5,7 @@ import ModalMgr from "./ModalMgr";
 import AdapterMgr, { AdaptaterType } from "./AdapterMgr";
 import Scene from "../Scene/Scene";
 import { UIWindow } from "./UIForm";
+import { IFormData } from "./Struct";
 
 const {ccclass, property} = cc._decorator;
 
@@ -74,7 +75,7 @@ export default class UIManager extends cc.Component {
      * @param prefabPath 
      * @param obj 初始化信息, 可以不要
      */
-    public async openUIForm(prefabPath: string, params: any) {
+    public async openUIForm(prefabPath: string, params: any, formData?: IFormData) {
         if(!prefabPath || prefabPath.length <= 0) {
             cc.warn(`${prefabPath}, 参数错误`);
             return ;
@@ -90,6 +91,7 @@ export default class UIManager extends cc.Component {
         }
         // 初始化窗体名称
         com.fid = prefabPath;
+        com.formData = formData;
         
         switch(com.formType) {
             case FormType.Screen:
@@ -133,6 +135,9 @@ export default class UIManager extends cc.Component {
             case FormType.Tips:
                 await this.exitToTips(prefabPath);
             break;
+        }
+        if(com.formData) {
+            com.formData.onClose && com.formData.onClose();
         }
         // 判断是否销毁该窗体
         if(com.canDestory) {
@@ -214,7 +219,7 @@ export default class UIManager extends cc.Component {
         await com._preInit();
         com.onShow(params);
         this._currScreenId = com.fid;
-        await this.showForm(com);
+        await this.showEffect(com);
     }
 
     /** 添加到Fixed中 */
@@ -225,7 +230,7 @@ export default class UIManager extends cc.Component {
         
         com.onShow(params);
         this._showingForms[prefabPath] = com;
-        await this.showForm(com);
+        await this.showEffect(com);
     }
 
     /** 添加到popup中 */
@@ -237,12 +242,11 @@ export default class UIManager extends cc.Component {
         this._popupForms.push(com);     
         com.node.zIndex = this._popupForms.length;
 
-        
         com.onShow(params);
         this._showingForms[prefabPath] = com;
         this._currWindowId = com.fid;
         ModalMgr.inst.checkModalWindow(this._popupForms);
-        await this.showForm(com);
+        await this.showEffect(com);
     }
     
     /** 加载到tips中 */
@@ -253,15 +257,15 @@ export default class UIManager extends cc.Component {
         this._tipsForms[prefabPath] = com;
         
         com.onShow(params);
-        await this.showForm(com);
+        await this.showEffect(com);
     }
 
     private async exitToScreen(prefabPath: string) {
         let com = this._showingForms[prefabPath];
         if(!com) return ;
         com.onHide();
-        await this.hideForm(com);
-
+        await this.hideEffect(com);
+        
         this._showingForms[prefabPath] = null;
         delete this._showingForms[prefabPath];
     }
@@ -270,7 +274,7 @@ export default class UIManager extends cc.Component {
         let com = this._allForms[prefabPath];
         if(!com) return ;
         com.onHide();
-        await this.hideForm(com);
+        await this.hideEffect(com);
         this._showingForms[prefabPath] = null;
         delete this._showingForms[prefabPath];
     }
@@ -280,7 +284,7 @@ export default class UIManager extends cc.Component {
         let com = this._popupForms.pop();
         com.onHide();
         ModalMgr.inst.checkModalWindow(this._popupForms);
-        await this.hideForm(com);
+        await this.hideEffect(com);
         this._currWindowId = this._popupForms.length > 0 ? this._popupForms[this._popupForms.length-1].fid : '';
 
         this._showingForms[prefabPath] = null;
@@ -291,17 +295,17 @@ export default class UIManager extends cc.Component {
         let com = this._allForms[prefabPath];
         if(!com) return ;
         com.onHide();
-        await this.hideForm(com);
+        await this.hideEffect(com);
 
         this._tipsForms[prefabPath] = null;
         delete this._tipsForms[prefabPath];
     }
 
-    private async showForm(baseUI: UIBase) {
+    private async showEffect(baseUI: UIBase) {
         baseUI.node.active = true;
         await baseUI.showEffect();
     }
-    private async hideForm(baseUI: UIBase) {
+    private async hideEffect(baseUI: UIBase) {
         await baseUI.hideEffect();
         baseUI.node.active = false;
     }
