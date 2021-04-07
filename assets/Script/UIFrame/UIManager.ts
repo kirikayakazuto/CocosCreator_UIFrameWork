@@ -6,21 +6,22 @@ import AdapterMgr, { AdaptaterType } from "./AdapterMgr";
 import Scene from "../Scene/Scene";
 import { UIWindow } from "./UIForm";
 import { IFormData } from "./Struct";
+import PriorityStake from "../Common/Utils/PriorityStack";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class UIManager extends cc.Component {    
-    private _ndScreen: cc.Node = null;                              // 全屏显示的UI 挂载结点
-    private _ndFixed: cc.Node = null;                               // 固定显示的UI
-    private _ndPopUp: cc.Node = null;                               // 弹出窗口
-    private _ndTips: cc.Node = null;                                // 独立窗体
+    private _ndScreen: cc.Node = null;  // 全屏显示的UI 挂载结点
+    private _ndFixed: cc.Node  = null;  // 固定显示的UI
+    private _ndPopUp: cc.Node  = null;  // 弹出窗口
+    private _ndTips: cc.Node   = null;  // 独立窗体
 
-    private _popupForms:Array<UIWindow> = [];                                       // 存储弹出的窗体
-    private _allForms: {[key: string]: UIBase} = cc.js.createMap();                 // 所有已经挂载的窗体, 可能没有显示
-    private _showingForms: {[key: string]: UIBase} = cc.js.createMap();             // 正在显示的窗体
-    private _tipsForms: {[key: string]: UIBase} = cc.js.createMap();                // 独立窗体 独立于其他窗体, 不受其他窗体的影响
-    private _loadingForm: {[key: string]: ((value: UIBase) => void)[]} = cc.js.createMap();             // 正在加载的form 
+    private _windows: PriorityStake<UIWindow>                          = new PriorityStake();  // 存储弹出的窗体
+    private _allForms: {[key: string]: UIBase}                         = cc.js.createMap();    // 所有已经挂载的窗体, 可能没有显示
+    private _showingForms: {[key: string]: UIBase}                     = cc.js.createMap();    // 正在显示的窗体
+    private _tipsForms: {[key: string]: UIBase}                        = cc.js.createMap();    // 独立窗体 独立于其他窗体, 不受其他窗体的影响
+    private _loadingForm: {[key: string]: ((value: UIBase) => void)[]} = cc.js.createMap();    // 正在加载的form 
 
     private _currWindowId = '';                                     // 当前显示的弹窗
     public get currWindowId() {
@@ -239,13 +240,13 @@ export default class UIManager extends cc.Component {
         if(!com) return ;
         await com._preInit();
 
-        this._popupForms.push(com);     
-        com.node.zIndex = this._popupForms.length;
+        this._windows.push(com, com.priority);     
 
         com.onShow(params);
         this._showingForms[prefabPath] = com;
         this._currWindowId = com.fid;
-        ModalMgr.inst.checkModalWindow(this._popupForms);
+
+        ModalMgr.inst.checkModalWindow(this._windows.getElements());
         await this.showEffect(com);
     }
     
@@ -280,13 +281,14 @@ export default class UIManager extends cc.Component {
     }
 
     private async exitToPopup(prefabPath: string) {
-        if(this._popupForms.length <= 0) return;
-        let com = this._popupForms.pop();
+        if(this._windows.size <= 0) return;
+        let com = this._windows.pop();
         com.onHide();
-        ModalMgr.inst.checkModalWindow(this._popupForms);
+        ModalMgr.inst.checkModalWindow(this._windows.getElements());
         await this.hideEffect(com);
-        this._currWindowId = this._popupForms.length > 0 ? this._popupForms[this._popupForms.length-1].fid : '';
 
+        this._currWindowId = this._windows.size > 0 ? this._windows.getTopElement().fid : '';
+        
         this._showingForms[prefabPath] = null;
         delete this._showingForms[prefabPath];
     }
@@ -311,8 +313,8 @@ export default class UIManager extends cc.Component {
     }
 
     /** 销毁 */
-    private destoryForm(UIBase: UIBase, prefabPath: string) {
-        ResMgr.inst.destoryForm(UIBase);
+    private destoryForm(com: UIBase, prefabPath: string) {
+        ResMgr.inst.destoryForm(com);
         // 从allmap中删除
         this._allForms[prefabPath] = null;
         delete this._allForms[prefabPath];
@@ -334,14 +336,13 @@ export default class UIManager extends cc.Component {
      * 清除栈内所有窗口
      */
     public async clearWindows() {
-        if(!this._popupForms || this._popupForms.length <= 0) {
-            return ;
+        if(!this._windows || this._windows.size <= 0) {
+            return true;
         }
-        for(const com of this._popupForms) {
+        for(const com of this._windows.getElements()) {
             await com.closeSelf();
         }
-        this._popupForms = [];
-        return ;
+        return this._windows.clear();
     }
 
 
