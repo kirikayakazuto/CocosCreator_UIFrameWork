@@ -1,6 +1,5 @@
 import UIManager from "./UIManager";
 import UIToast from "../test/UIToast";
-import { IParams } from "./Struct";
 
 const {ccclass, property} = cc._decorator;
 /***
@@ -22,7 +21,7 @@ export default class TipsMgr{
     public setLoadingForm(loadingName: string) {
         this.loadingFormName = loadingName;
     }
-    public async showLoadingForm(params: any & IParams) {
+    public async showLoadingForm(params: any) {
         if(!this.loadingFormName || this.loadingFormName.length <= 0) {
             cc.warn('请先设置loading form');
             return ;

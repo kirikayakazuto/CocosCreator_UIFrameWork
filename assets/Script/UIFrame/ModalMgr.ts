@@ -3,6 +3,7 @@ import { SysDefine } from "./config/SysDefine";
 import UIModalScript from "./UIModalScript";
 import UIBase from "./UIBase";
 import { ModalType } from "./Struct";
+import { UIWindow } from "./UIForm";
 
 /**
  * 遮罩管理
@@ -28,15 +29,15 @@ export default class ModalMgr extends cc.Component {
         await this.uiModal.showModal(maskType.opacity, maskType.easingTime, maskType.isEasing);
     }
 
-    public checkModalWindow(uiBases: UIBase[]) {
+    public checkModalWindow(coms: UIWindow[]) {
         if(this.uiModal.node.parent) {
             this.uiModal.node.removeFromParent();
         }
-        for(let i=uiBases.length-1; i>=0; i--) {
-            if(uiBases[i].modalType.opacity > 0) {
-                cc.find(ModalMgr.popUpRoot).addChild(this.uiModal.node, Math.max(uiBases[i].node.zIndex-1, 0));
-                this.uiModal.uid = uiBases[i].fid;
-                this.showModal(uiBases[i].modalType);
+        for(let i=coms.length-1; i>=0; i--) {
+            if(coms[i].modalType.opacity > 0) {
+                cc.find(ModalMgr.popUpRoot).addChild(this.uiModal.node, Math.max(coms[i].node.zIndex-1, 0));
+                this.uiModal.uid = coms[i].fid;
+                this.showModal(coms[i].modalType);
                 break;
             }
         }

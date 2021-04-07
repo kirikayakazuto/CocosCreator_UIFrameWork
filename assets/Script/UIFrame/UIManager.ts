@@ -4,6 +4,7 @@ import ResMgr from "./ResMgr";
 import ModalMgr from "./ModalMgr";
 import AdapterMgr, { AdaptaterType } from "./AdapterMgr";
 import Scene from "../Scene/Scene";
+import { UIWindow } from "./UIForm";
 
 const {ccclass, property} = cc._decorator;
 
@@ -14,7 +15,7 @@ export default class UIManager extends cc.Component {
     private _ndPopUp: cc.Node = null;                               // 弹出窗口
     private _ndTips: cc.Node = null;                                // 独立窗体
 
-    private _popupForms:Array<UIBase> = [];                                         // 存储弹出的窗体
+    private _popupForms:Array<UIWindow> = [];                                         // 存储弹出的窗体
     private _allForms: {[key: string]: UIBase} = cc.js.createMap();                 // 所有已经挂载的窗体, 可能没有显示
     private _showingForms: {[key: string]: UIBase} = cc.js.createMap();             // 正在显示的窗体
     private _tipsForms: {[key: string]: UIBase} = cc.js.createMap();                // 独立窗体 独立于其他窗体, 不受其他窗体的影响
@@ -147,11 +148,11 @@ export default class UIManager extends cc.Component {
         let com = this._allForms[prefabPath];
         if(com) return com;
         return new Promise((resolve, reject) => {
-            // 判断窗体不在mapAllUIForms中, 也不再loadingForms中
-            if(!this._loadingForm[prefabPath]) {
-                this._loadingForm[prefabPath] = [];
+            if(this._loadingForm[prefabPath]) {
+                this._loadingForm[prefabPath].push(resolve);
+                return ;
             }
-            this._loadingForm[prefabPath].push(resolve);
+            this._loadingForm[prefabPath] = [resolve];
             this._doLoadUIForm(prefabPath).then((com: UIBase) => {
                 for(const func of this._loadingForm[prefabPath]) {
                     func(com);
@@ -229,11 +230,11 @@ export default class UIManager extends cc.Component {
 
     /** 添加到popup中 */
     private async enterToPopup(prefabPath: string, params: any) {
-        let com = this._allForms[prefabPath];
+        let com = this._allForms[prefabPath] as UIWindow;
         if(!com) return ;
         await com._preInit();
 
-        this._popupForms.push(com);       
+        this._popupForms.push(com);     
         com.node.zIndex = this._popupForms.length;
 
         

@@ -4,11 +4,11 @@
  */
 export class PriorityElement<T> {
     public data: T;
-    public pIdx: number;
+    public priority: number;
     
-    constructor(data: T, pIdx: number) {
+    constructor(data: T, priority: number) {
         this.data = data;
-        this.pIdx = pIdx;
+        this.priority = priority;
     }
 }
 
@@ -30,11 +30,11 @@ export default class PriorityQueue<T> {
     }
 
     /** 入队 */
-    public enqueue(e: T, pIdx: number = 0) {
+    public enqueue(e: T, priority: number = 0) {
         if(this.size > this.queue.length) {
             this._expand();
         }
-        this.queue[this.size++] = new PriorityElement(e, pIdx);
+        this.queue[this.size++] = new PriorityElement(e, priority);
         this.upAdjust();
     }
 
@@ -52,7 +52,7 @@ export default class PriorityQueue<T> {
         let parentIndex = Math.floor(childIndex/2);
         let tmp = this.queue[childIndex]
 
-        while(childIndex > 0 && tmp.pIdx > this.queue[parentIndex].pIdx) {
+        while(childIndex > 0 && tmp.priority > this.queue[parentIndex].priority) {
             this.queue[childIndex] = this.queue[parentIndex];
             childIndex = parentIndex;
             parentIndex = Math.floor(parentIndex/2);
@@ -66,10 +66,10 @@ export default class PriorityQueue<T> {
         let tmp = this.queue[parentIndex];
         let childIndex = 1;
         while(childIndex < this.size) {
-            if(childIndex + 1 < this.size && this.queue[childIndex+1].pIdx > this.queue[childIndex].pIdx) {
+            if(childIndex + 1 < this.size && this.queue[childIndex+1].priority > this.queue[childIndex].priority) {
                 childIndex ++;
             }
-            if(tmp.pIdx >= this.queue[childIndex].pIdx) {
+            if(tmp.priority >= this.queue[childIndex].priority) {
                 break;
             }
 

@@ -15,8 +15,6 @@ export default class UIBase extends cc.Component {
     public fid: string;
     /** 窗体类型 */
     public formType: FormType = 0;
-    /** 阴影类型, 只对PopUp类型窗体启用 */
-    public modalType = new ModalType();
     /** 关闭窗口后销毁, 会将其依赖的资源一并销毁, 采用了引用计数的管理, 不用担心会影响其他窗体 */
     public canDestory = false;
     /** 回调 */
@@ -32,7 +30,7 @@ export default class UIBase extends cc.Component {
         return await UIManager.getInstance().openUIForm(this.prefabPath, parmas);
     }
     public static async openViewWithLoading(parmas?: any): Promise<UIBase> {
-        await TipsMgr.inst.showLoadingForm(this.prefabPath);
+        await TipsMgr.inst.showLoadingForm(parmas);
         let uiBase = await this.openView(parmas);
         await TipsMgr.inst.hideLoadingForm();
         return uiBase;
