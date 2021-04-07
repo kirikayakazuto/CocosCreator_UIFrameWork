@@ -30,7 +30,7 @@ export default class UIBase extends cc.Component {
 
     /** 打开UIBase */
     public static async openView(parmas?: any, formData?: IFormData): Promise<UIBase> {
-        return await UIManager.getInstance().openUIForm(this.prefabPath, parmas, formData);
+        return await UIManager.getInstance().openForm(this.prefabPath, parmas, formData);
     }
     public static async openViewWithLoading(parmas?: any): Promise<UIBase> {
         await TipsMgr.inst.showLoadingForm(parmas);
@@ -39,7 +39,7 @@ export default class UIBase extends cc.Component {
         return uiBase;
     }
     public static async closeView(): Promise<boolean> {
-        return await UIManager.getInstance().closeUIForm(this.prefabPath);
+        return await UIManager.getInstance().closeForm(this.prefabPath);
     }
     public view: cc.Component;
 
@@ -89,10 +89,10 @@ export default class UIBase extends cc.Component {
      * @param obj 参数
      */
     public async showUIForm(uiFormName: string, obj: any): Promise<UIBase> {
-       return await UIManager.getInstance().openUIForm(uiFormName, obj);
+       return await UIManager.getInstance().openForm(uiFormName, obj);
     }
     public async closeUIForm(): Promise<boolean> {
-       return await UIManager.getInstance().closeUIForm(this.fid);
+       return await UIManager.getInstance().closeForm(this.fid);
     }
 
     /**

@@ -1,6 +1,7 @@
 import UIManager from "./UIManager";
 import { ModalOpacity } from "./config/SysDefine";
 import CocosHelper from "./CocosHelper";
+import { UIWindow } from "./UIForm";
 
 /**
  * @Author: 邓朗 
@@ -13,7 +14,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIModalScript extends cc.Component {
 
-    public uid: string;
+    public fid: string;
     /** 代码创建一个单色texture */
     private _texture: cc.Texture2D = null;
     private getSingleTexture() {
@@ -85,9 +86,9 @@ export default class UIModalScript extends cc.Component {
     }
 
     public async clickMaskWindow() {
-        let com = UIManager.getInstance().getComponentByFid(this.uid);
+        let com = UIManager.getInstance().getComponentByFid(this.fid) as UIWindow;
         if(com && com.modalType.clickMaskClose) {
-           await UIManager.getInstance().closeUIForm(this.uid);
+           await UIManager.getInstance().closeForm(this.fid);
         }
     }
 }

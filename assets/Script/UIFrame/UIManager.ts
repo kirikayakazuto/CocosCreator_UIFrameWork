@@ -16,7 +16,7 @@ export default class UIManager extends cc.Component {
     private _ndPopUp: cc.Node = null;                               // 弹出窗口
     private _ndTips: cc.Node = null;                                // 独立窗体
 
-    private _popupForms:Array<UIWindow> = [];                                         // 存储弹出的窗体
+    private _popupForms:Array<UIWindow> = [];                                       // 存储弹出的窗体
     private _allForms: {[key: string]: UIBase} = cc.js.createMap();                 // 所有已经挂载的窗体, 可能没有显示
     private _showingForms: {[key: string]: UIBase} = cc.js.createMap();             // 正在显示的窗体
     private _tipsForms: {[key: string]: UIBase} = cc.js.createMap();                // 独立窗体 独立于其他窗体, 不受其他窗体的影响
@@ -75,7 +75,7 @@ export default class UIManager extends cc.Component {
      * @param prefabPath 
      * @param obj 初始化信息, 可以不要
      */
-    public async openUIForm(prefabPath: string, params: any, formData?: IFormData) {
+    public async openForm(prefabPath: string, params: any, formData?: IFormData) {
         if(!prefabPath || prefabPath.length <= 0) {
             cc.warn(`${prefabPath}, 参数错误`);
             return ;
@@ -114,7 +114,7 @@ export default class UIManager extends cc.Component {
      * 重要方法 关闭一个UIForm
      * @param prefabPath 
      */
-    public async closeUIForm(prefabPath: string) {
+    public async closeForm(prefabPath: string) {
         if(!prefabPath || prefabPath.length <= 0) {
             cc.warn(`${prefabPath}, 参数错误`);
             return ;
@@ -172,20 +172,20 @@ export default class UIManager extends cc.Component {
      * 从resources中加载
      * @param prefabPath 
      */
-    private async _doLoadUIForm(formPath: string) {
-        let prefab = await ResMgr.inst.loadForm(formPath);
+    private async _doLoadUIForm(prefabPath: string) {
+        let prefab = await ResMgr.inst.loadForm(prefabPath);
         if(!prefab) {
-            cc.warn(`${formPath} 资源加载失败, 请确认路径是否正确`);
+            cc.warn(`${prefabPath} 资源加载失败, 请确认路径是否正确`);
             return null;
         }
         let node = cc.instantiate(prefab);
-        let baseCom = node.getComponent(UIBase);
-        if(baseCom == null) {
-            cc.warn(`${formPath} 结点没有绑定UIBase`);
+        let com = node.getComponent(UIBase);
+        if(!com) {
+            cc.warn(`${prefabPath} 结点没有绑定UIBase`);
             return null;
         }
         node.active = false;                    // 避免baseCom调用了onload方法
-        switch(baseCom.formType) {
+        switch(com.formType) {
             case FormType.Screen:
                 this._ndScreen.addChild(node);
             break;
@@ -199,9 +199,9 @@ export default class UIManager extends cc.Component {
                 this._ndTips.addChild(node);
             break;
         }
-        this._allForms[formPath] = baseCom;
+        this._allForms[prefabPath] = com;
         
-        return baseCom;
+        return com;
     }
 
     /** 添加到screen中 */

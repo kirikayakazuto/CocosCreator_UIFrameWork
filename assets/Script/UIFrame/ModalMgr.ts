@@ -36,7 +36,7 @@ export default class ModalMgr extends cc.Component {
         for(let i=coms.length-1; i>=0; i--) {
             if(coms[i].modalType.opacity > 0) {
                 cc.find(ModalMgr.popUpRoot).addChild(this.uiModal.node, Math.max(coms[i].node.zIndex-1, 0));
-                this.uiModal.uid = coms[i].fid;
+                this.uiModal.fid = coms[i].fid;
                 this.showModal(coms[i].modalType);
                 break;
             }

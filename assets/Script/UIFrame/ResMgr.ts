@@ -69,8 +69,8 @@ export default class ResMgr {
         let deps = cc.loader.getDependsRecursively(formName);
         this.addStaticDepends(deps);
         return form;
-
     }
+    
     /** 销毁窗体 */
     public destoryForm(com: UIBase) {
         if(!com) {
