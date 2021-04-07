@@ -44,7 +44,7 @@ ${_str_content}
         
         fs.writeFileSync(ScriptPath, strScript);
 
-        let dbScriptPath = ScriptPath.replace(Editor.Project.path, "db:/");
+        let dbScriptPath = ScriptPath.replace(Editor.Project.path.replace(/\\/g, "/"), "db:/");
         Editor.assetdb.refresh(dbScriptPath, (err: any, data: any) => {
             if(err) {
                 Editor.warn(`刷新脚本失败：${dbScriptPath}`);

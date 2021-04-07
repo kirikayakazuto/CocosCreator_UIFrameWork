@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Const_1 = __importDefault(require("./Const"));
 var fs = require('fire-fs');
-var axios = require('axios');
 var scene;
 (function (scene) {
     function start() {
@@ -34,7 +33,7 @@ var scene;
         var strScript = "\n" + _str_import + "\nconst {ccclass, property} = cc._decorator;\n@ccclass\nexport default class " + ScriptName + " extends cc.Component {\n" + _str_content + " \n}";
         checkScriptDir();
         fs.writeFileSync(ScriptPath, strScript);
-        var dbScriptPath = ScriptPath.replace(Editor.Project.path, "db:/");
+        var dbScriptPath = ScriptPath.replace(Editor.Project.path.replace(/\\/g, "/"), "db:/");
         Editor.assetdb.refresh(dbScriptPath, function (err, data) {
             if (err) {
                 Editor.warn("\u5237\u65B0\u811A\u672C\u5931\u8D25\uFF1A" + dbScriptPath);
@@ -66,29 +65,26 @@ var scene;
     }
     scene.start = start;
     /** 计算相对路径 */
-    function getImportPath(export_s_, current_s) {
-        // ----------------格式转换
-        export_s_ = export_s_.replace(/\\/g, "/").substr(0, export_s_.lastIndexOf("."));
-        current_s = current_s.replace(/\\/g, "/");
-        // ----------------准备参数
-        var temp1_s = "./";
-        var temp1_n, temp2_n;
-        var temp1_ss = export_s_.split("/");
-        var temp2_ss = current_s.split("/");
-        // ----------------路径转换
-        for (temp2_n = 0; temp2_n < temp1_ss.length; ++temp2_n) {
-            if (temp1_ss[temp2_n] != temp2_ss[temp2_n]) {
+    function getImportPath(exportPath, currPath) {
+        exportPath = exportPath.replace(/\\/g, "/").substr(0, exportPath.lastIndexOf("."));
+        currPath = currPath.replace(/\\/g, "/");
+        var tmp = "./";
+        var start, end;
+        var exportStr = exportPath.split("/");
+        var currStr = currPath.split("/");
+        for (end = 0; end < exportStr.length; ++end) {
+            if (exportStr[end] != currStr[end]) {
                 break;
             }
         }
-        for (temp1_n = temp2_n + 1; temp1_n < temp2_ss.length; ++temp1_n) {
-            temp1_s += "../";
+        for (start = end + 1; start < currStr.length; ++start) {
+            tmp += "../";
         }
-        for (temp1_n = temp2_n; temp1_n < temp1_ss.length; ++temp1_n) {
-            temp1_s += temp1_ss[temp1_n] + "/";
+        for (start = end; start < exportStr.length; ++start) {
+            tmp += exportStr[start] + "/";
         }
-        temp1_s = temp1_s.substr(0, temp1_s.length - 1);
-        return temp1_s;
+        tmp = tmp.substr(0, tmp.length - 1);
+        return tmp;
     }
     function checkScriptDir() {
         var dir = Editor.Project.path + '/' + Const_1.default.ScriptsDir;
