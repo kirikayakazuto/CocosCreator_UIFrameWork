@@ -4,23 +4,22 @@ import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
 
 const {ccclass, property} = cc._decorator;
 
+/** 禁止子节点执行的FLAG */
+const BAN_FALG = cc.RenderFlow.FLAG_RENDER | cc.RenderFlow.FLAG_POST_RENDER;
+
 @ccclass
 export default class Main extends cc.Component {
+
+    @property(cc.Node)
+    ndRoot: cc.Node = null;
     
     onLoad() {
-        EventCenter.on("Event_Login", (a: number, b: number, c: number) => {
-            console.log("Event ", a, b, c);
-        }, this);
-        cc.dynamicAtlasManager.enabled = false;
+        cc.dynamicAtlasManager.enabled = true;
     }
 
     start () {
-        if (CC_DEBUG) {
-            DebugWindowUtil.init();
-        }
-
         // TipsMgr.inst.setLoadingForm("UIForms/UILoading");
-        UILogin.openView(1);
+        // UILogin.openView(1);
         // UITest.openView();
         // UICapture.openView();
         // UIDungeon.openView();
@@ -28,8 +27,8 @@ export default class Main extends cc.Component {
     }
 
     test() {
-        
     }
+
 
     /**
      * 
