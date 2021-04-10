@@ -3,10 +3,10 @@ import BatchAssembler from "../Assemblers/BatchAssembler";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class BantchComponent extends cc.Sprite {
+export default class BantchComponent extends cc.RenderComponent {
     onEnable() {
         super.onEnable();
-        if (!CC_EDITOR && !CC_NATIVERENDERER) this.node._renderFlag |= cc.RenderFlow.FLAG_POST_RENDER;    
+        if (!CC_NATIVERENDERER) this.node._renderFlag |= cc.RenderFlow.FLAG_POST_RENDER;    
     }
 
     _resetAssembler() {

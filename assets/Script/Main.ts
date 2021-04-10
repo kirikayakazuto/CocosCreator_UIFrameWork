@@ -12,6 +12,9 @@ export default class Main extends cc.Component {
 
     @property(cc.Node)
     ndRoot: cc.Node = null;
+
+    @property(cc.Prefab)
+    pfItem: cc.Prefab = null;
     
     onLoad() {
         cc.dynamicAtlasManager.enabled = true;
@@ -27,6 +30,11 @@ export default class Main extends cc.Component {
     }
 
     test() {
+        for(let i=0; i<20; i++) {
+            let node = cc.instantiate(this.pfItem)
+            node.parent = this.ndRoot;
+            node.getChildByName("item").getChildByName('name').getComponent(cc.Label).string = 'name' + i;
+        }
     }
 
 

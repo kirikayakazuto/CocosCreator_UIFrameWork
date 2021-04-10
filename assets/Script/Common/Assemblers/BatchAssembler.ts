@@ -21,7 +21,7 @@ export default class BatchAssembler extends BaseAssembler {
      * 第二步, 按照顺序, 自己调用render方法, 填充数据, 以达到合批的目的
     **/
     public fillBuffers(comp: cc.RenderComponent, renderer: any) {
-        super.fillBuffers(comp, renderer);
+        //super.fillBuffers(comp, renderer);
         if(CC_NATIVERENDERER) {
             return ;
         }
@@ -34,6 +34,8 @@ export default class BatchAssembler extends BaseAssembler {
         comp.node['__DirtyFlag__'] = dirtyFlag;
         this._groups = [];
         this._walkCollect(comp.node.children);
+        //console.log(this._groups)
+        // debugger
     }
 
     public postFillBuffers(comp: cc.RenderComponent, renderer: any) {
@@ -61,13 +63,14 @@ export default class BatchAssembler extends BaseAssembler {
 
     private _walkCollect(nodes: cc.Node[]) {
         if(!nodes || nodes.length <= 0) return ;
-        this._groups.push(nodes);
+        
 
         let count = nodes[0].childrenCount;
         let groups: cc.Node[][] = [];
         for(let i=0; i<count; i++) {
             groups[i] = [];
         }        
+        let group = [];
         for(const node of nodes) {
             if(!node._activeInHierarchy || node.opacity == 0) continue;
 
@@ -76,14 +79,18 @@ export default class BatchAssembler extends BaseAssembler {
             if(flag > 0) {                          // 表示这个node需要渲染
                 node['__RenderFlag__'] = flag;
                 node._renderFlag &= ~flag;          // 去掉对应的flag
+                group.push(node);
             }             
 
             node['__DirtyFlag__'] = node.parent['__DirtyFlag__'] | (node._renderFlag & DIRTY_PROP);
 
-            if(flag == 0 || node.children.length <= 0) continue;
+            if(node.children.length <= 0) continue;
             for(let i=0; i<node.childrenCount; i++) {
                 groups[i].push(node.children[i]);
             }
+        }
+        if(group.length > 0) {
+            this._groups.push(group);
         }
         for(const group of groups) {
             this._walkCollect(group);
