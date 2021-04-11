@@ -39,7 +39,7 @@ export default class Scene extends cc.Component {
     }
     /** 初始化事件 */
     private registerEvent() {
-        if(CC_WECHATGAME) {
+        if(cc.sys.platform === cc.sys.WECHAT_GAME) {
             wx.onShow(this.onGameShow.bind(this));
             wx.onHide(this.onGameHide.bind(this));
         }else {

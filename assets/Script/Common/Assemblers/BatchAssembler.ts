@@ -21,7 +21,6 @@ export default class BatchAssembler extends BaseAssembler {
      * 第二步, 按照顺序, 自己调用render方法, 填充数据, 以达到合批的目的
     **/
     public fillBuffers(comp: cc.RenderComponent, renderer: any) {
-        //super.fillBuffers(comp, renderer);
         if(CC_NATIVERENDERER) {
             return ;
         }
@@ -33,9 +32,7 @@ export default class BatchAssembler extends BaseAssembler {
         let dirtyFlag = worldTransformFlag | worldOpacityFlag;
         comp.node['__DirtyFlag__'] = dirtyFlag;
         this._groups = [];
-        this._walkCollect(comp.node.children);
-        //console.log(this._groups)
-        // debugger
+        this._walkByName(comp.node.children);
     }
 
     public postFillBuffers(comp: cc.RenderComponent, renderer: any) {
@@ -61,10 +58,15 @@ export default class BatchAssembler extends BaseAssembler {
         renderer.worldMatDirty = originWorldMatDirty;
     }
 
-    private _walkCollect(nodes: cc.Node[]) {
+    /**
+     * 方案一
+     * 默认的广度遍历方式
+     * 优点: 速度快
+     * 缺点: 新增或删除节点可能会导致合批失败
+     */
+    private _walkDefault(nodes: cc.Node[]): void {
         if(!nodes || nodes.length <= 0) return ;
         
-
         let count = nodes[0].childrenCount;
         let groups: cc.Node[][] = [];
         for(let i=0; i<count; i++) {
@@ -73,9 +75,41 @@ export default class BatchAssembler extends BaseAssembler {
         let group = [];
         for(const node of nodes) {
             if(!node._activeInHierarchy || node.opacity == 0) continue;
-
             let flag = node._renderFlag & BAN_FALG;
-            // cc.log(parseInt(node._renderFlag).toString(2), parseInt(BAN_FALG).toString(2))
+            if(flag > 0) {                          // 表示这个node需要渲染
+                node['__RenderFlag__'] = flag;
+                node._renderFlag &= ~flag;          // 去掉对应的flag
+                group.push(node);
+            }             
+
+            node['__DirtyFlag__'] = node.parent['__DirtyFlag__'] | (node._renderFlag & DIRTY_PROP);
+            for(let i=0; i<count; i++) {
+                groups[i].push(node.children[i]);                
+            }
+        }
+        if(group.length > 0) {
+            this._groups.push(group);
+        }
+        for(const group of groups) {
+            this._walkDefault(group);
+        }
+    }
+
+    /**
+     * 方案二
+     * 同名结点同批次渲染
+     * 优点: 新增或删除节点不会导致合批失败
+     * 缺点: 兄弟结点不能同名,速度没方案一快,内存消耗也大
+     */
+    private _walkByName(nodes: cc.Node[]) {
+        if(!nodes || nodes.length <= 0) return ;
+        
+        let groups: {[key: string]: cc.Node[]} = {};
+        let group = [];
+        let keys: string[] = [];
+        for(const node of nodes) {
+            if(!node._activeInHierarchy || node.opacity == 0) continue;
+            let flag = node._renderFlag & BAN_FALG;
             if(flag > 0) {                          // 表示这个node需要渲染
                 node['__RenderFlag__'] = flag;
                 node._renderFlag &= ~flag;          // 去掉对应的flag
@@ -84,16 +118,30 @@ export default class BatchAssembler extends BaseAssembler {
 
             node['__DirtyFlag__'] = node.parent['__DirtyFlag__'] | (node._renderFlag & DIRTY_PROP);
 
-            if(node.children.length <= 0) continue;
-            for(let i=0; i<node.childrenCount; i++) {
-                groups[i].push(node.children[i]);
+            let lastKey = "";
+            for(const n of node.children) {                
+                let key = n.name;
+                if(!groups[key]) groups[key] = [];
+                groups[key].push(n);
+
+                if(keys.indexOf(key) == -1) {
+                    if(lastKey.length == 0) {           // 当前key肯定要存0号位
+                        keys.unshift(key);
+                    }else {
+                        let idx = keys.indexOf(lastKey);
+                        keys.splice(idx+1, 0, key);
+                    }
+                }
+                lastKey = key;
             }
         }
         if(group.length > 0) {
             this._groups.push(group);
         }
-        for(const group of groups) {
-            this._walkCollect(group);
+        for(const key of keys) {
+            this._walkByName(groups[key]);
         }
     }
+
+
 }

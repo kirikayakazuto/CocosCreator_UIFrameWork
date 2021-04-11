@@ -76,6 +76,7 @@ declare namespace cc {
 	declare interface Material {
 		setProperty(name: string, value: any);
 		getProperty(name: string): any;
+		getHash(): string;
 		// static getInstantiatedMaterial(material: Material, comp: RenderComponent): Material;	// 无效
 	}
 

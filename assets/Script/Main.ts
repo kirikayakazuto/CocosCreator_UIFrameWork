@@ -1,6 +1,7 @@
 import UILogin from "./test/UILogin";
 import { EventCenter } from "./UIFrame/EventCenter";
 import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
+const DIRTY_PROP = cc.RenderFlow.FLAG_OPACITY | cc.RenderFlow.FLAG_WORLD_TRANSFORM;
 
 const {ccclass, property} = cc._decorator;
 
@@ -30,13 +31,7 @@ export default class Main extends cc.Component {
     }
 
     test() {
-        for(let i=0; i<20; i++) {
-            let node = cc.instantiate(this.pfItem)
-            node.parent = this.ndRoot;
-            node.getChildByName("item").getChildByName('name').getComponent(cc.Label).string = 'name' + i;
-        }
     }
-
 
     /**
      * 
