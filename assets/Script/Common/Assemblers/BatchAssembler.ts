@@ -17,8 +17,8 @@ export default class BatchAssembler extends BaseAssembler {
     private _groups: Array<cc.Node[]> = [];
     /** 
      * 重写 
-     * 第一步, 让item的render方法都不执行, 即执行处理数据的方法 但是不执行fillbuffers方法
-     * 第二步, 按照顺序, 自己调用render方法, 填充数据, 以达到合批的目的
+     * 第一步, 让item的render方法都不执行, 只执行处理数据的方法 但是不执行fillbuffers方法
+     * 第二步, 在postFillBuffers中按照顺序, 自己调用render方法, 填充数据, 以达到合批的目的
     **/
     public fillBuffers(comp: cc.RenderComponent, renderer: any) {
         if(CC_NATIVERENDERER) {
@@ -61,7 +61,7 @@ export default class BatchAssembler extends BaseAssembler {
     /**
      * 方案一
      * 默认的广度遍历方式
-     * 优点: 速度快
+     * 优点: 速度较快
      * 缺点: 新增或删除节点可能会导致合批失败
      */
     private _walkDefault(nodes: cc.Node[]): void {
