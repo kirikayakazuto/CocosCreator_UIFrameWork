@@ -4,13 +4,22 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Main extends cc.Component {
+
+    @property(cc.Node)
+    content: cc.Node = null;
+    @property(cc.Prefab)
+    pfNode: cc.Prefab = null;
     
     onLoad() {
         cc.dynamicAtlasManager.enabled = true;
     }
 
     start () {
-        UILoading.openView();
+        // UILoading.openView();
+        for(let i=0; i<20; i++) {
+            let node = cc.instantiate(this.pfNode);
+            node.parent = this.content;
+        }
     }
 
     onDestroy() {
