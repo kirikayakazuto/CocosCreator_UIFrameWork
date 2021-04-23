@@ -28,6 +28,10 @@ export default class UILogin extends UIBase {
         
         let view = this.view as UILogin_Auto;
         console.log(view)
+
+        view.btn.addClick(() => {
+
+        }, this);
     }
 
     onLoad() {

@@ -1,4 +1,5 @@
 import UILoading from "./test/UILoading";
+import UILogin from "./test/UILogin";
 
 const {ccclass, property} = cc._decorator;
 
@@ -15,11 +16,11 @@ export default class Main extends cc.Component {
     }
 
     start () {
-        // UILoading.openView();
-        for(let i=0; i<20; i++) {
-            let node = cc.instantiate(this.pfNode);
-            node.parent = this.content;
-        }
+        UILogin.openView();
+        // for(let i=0; i<20; i++) {
+        //     let node = cc.instantiate(this.pfNode);
+        //     node.parent = this.content;
+        // }
     }
 
     onDestroy() {

@@ -4,149 +4,92 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Const_1 = __importDefault(require("./Const"));
+// import PropController, {Controller} from "../../../assets/Script/Common/Components/PropController";
+// import PropSelector, {Selector} from "../../../assets/Script/Common/Components/PropSelector";
 var fs = require('fire-fs');
-var axios = require('axios');
+var _localSaveFunc = {};
 var scene;
 (function (scene) {
+    /**
+     * 入口
+     * 1, 查看是否启用了controller, 即检查根结点是否有PropController脚本即可
+     * 2, 查找所有PropSelector, 根据所属控制器和所属type, 生成json文件并保持到本地
+     * 3, 将json文件绑定到对应的controller中
+     *
+     */
     function start() {
         var childs = cc.director.getScene().children;
         if (childs.length < 3)
             return null;
         var NodeRoot = childs[1];
-        if (!NodeRoot.getComponent("UIBase")) {
-            Editor.warn(NodeRoot.name + " \u6CA1\u6709\u6302\u8F7D UIbase \u811A\u672C");
+        var comPropCtrl = NodeRoot.getComponent("PropController");
+        if (!comPropCtrl) {
+            Editor.warn(NodeRoot.name + " \u6CA1\u6709\u6302\u8F7D PropController \u811A\u672C");
             return;
         }
         var ProjectDir = Editor.Project.path;
         var ScriptName = NodeRoot.name + "_Auto";
-        var ScriptPath = (ProjectDir + "/" + Const_1.default.ScriptsDir + "/" + ScriptName + ".ts").replace(/\\/g, "/");
-        var nodeMaps = {}, importMaps = {};
-        findNodes(NodeRoot, nodeMaps, importMaps);
-        var _str_import = "";
-        for (var key in importMaps) {
-            _str_import += "import " + key + " from \"" + getImportPath(importMaps[key], ScriptPath) + "\"\n";
+        var ScriptPath = (ProjectDir + "/" + Const_1.default.JsonsDir + "/" + ScriptName + ".json").replace(/\\/g, "/");
+        var controllers = comPropCtrl.controllers;
+        var coms = NodeRoot.getComponentsInChildren("PropSelector");
+        var saveData = {};
+        for (var _i = 0, coms_1 = coms; _i < coms_1.length; _i++) {
+            var com = coms_1[_i];
+            for (var _a = 0, _b = com.selectors; _a < _b.length; _a++) {
+                var s = _b[_a];
+                var controller = _findController(s.name, controllers);
+                if (!controller) {
+                    cc.warn("PropController, \u6CA1\u627E\u5230 " + com.node.name + " \u7ED3\u70B9\u4E0A\u7684 " + s.name + " \u63A7\u5236\u5668");
+                    continue;
+                }
+                if (controller.type < 0 || controller.type >= controller.types.length) {
+                    cc.warn("PropController, " + controller.name + " \u63A7\u5236\u5668\u7684 type \u8D8A\u754C\u4E86");
+                    continue;
+                }
+                // 保存该selector的属性
+                if (s.position) {
+                    _savePosition(saveData, com, controller);
+                }
+            }
         }
-        var _str_content = "";
-        for (var key in nodeMaps) {
-            var type = nodeMaps[key][0];
-            _str_content += "\t@property(" + type + ")\n\t" + key + ": " + type + " = null;\n";
-        }
-        var strScript = "\n" + _str_import + "\nconst {ccclass, property} = cc._decorator;\n@ccclass\nexport default class " + ScriptName + " extends cc.Component {\n" + _str_content + " \n}";
+        var json = JSON.stringify(saveData);
         checkScriptDir();
-        fs.writeFileSync(ScriptPath, strScript);
-        var dbScriptPath = ScriptPath.replace(Editor.Project.path, "db:/");
-        Editor.assetdb.refresh(dbScriptPath, function (err, data) {
-            if (err) {
-                Editor.warn("\u5237\u65B0\u811A\u672C\u5931\u8D25\uFF1A" + dbScriptPath);
-                return;
-            }
-            // let s = ScriptPath.replace(`${ProjectDir}`, `${ProjectDir}/temp/quick-scripts/dst`).replace(".ts", ".js");            
-            var comp = NodeRoot.getComponent(ScriptName);
-            if (!comp) {
-                if (!cc.js.getClassByName(ScriptName)) {
-                    Editor.warn("请在执行一次run");
-                    return;
-                }
-                ;
-                comp = NodeRoot.addComponent(ScriptName);
-            }
-            for (var key in nodeMaps) {
-                var node = cc.engine.getInstanceById(nodeMaps[key][1]);
-                if (nodeMaps[key][0] == 'cc.Node') {
-                    comp[key] = node;
-                }
-                else {
-                    comp[key] = node.getComponent(nodeMaps[key][0]);
-                }
-            }
-            Editor.log(ScriptName + '.ts 生成成功');
-            // axios.get("http://localhost:7456/update-db").then(function (res: any) {
-            // });
+        fs.writeFileSync(ScriptPath, json);
+        var dbJsonPath = ScriptPath.replace(Editor.Project.path, "db:/");
+        Editor.assetdb.refresh(dbJsonPath, function (err, data) {
+            cc.log(data[0].uuid, cc.engine.getInstanceById(data[0].uuid));
+            cc.assetManager.loadAny({ uuid: data[0].uuid }, function (err, data) {
+                comPropCtrl.propertyJson = data;
+            });
         });
     }
     scene.start = start;
-    /** 计算相对路径 */
-    function getImportPath(export_s_, current_s) {
-        // ----------------格式转换
-        export_s_ = export_s_.replace(/\\/g, "/").substr(0, export_s_.lastIndexOf("."));
-        current_s = current_s.replace(/\\/g, "/");
-        // ----------------准备参数
-        var temp1_s = "./";
-        var temp1_n, temp2_n;
-        var temp1_ss = export_s_.split("/");
-        var temp2_ss = current_s.split("/");
-        // ----------------路径转换
-        for (temp2_n = 0; temp2_n < temp1_ss.length; ++temp2_n) {
-            if (temp1_ss[temp2_n] != temp2_ss[temp2_n]) {
-                break;
-            }
-        }
-        for (temp1_n = temp2_n + 1; temp1_n < temp2_ss.length; ++temp1_n) {
-            temp1_s += "../";
-        }
-        for (temp1_n = temp2_n; temp1_n < temp1_ss.length; ++temp1_n) {
-            temp1_s += temp1_ss[temp1_n] + "/";
-        }
-        temp1_s = temp1_s.substr(0, temp1_s.length - 1);
-        return temp1_s;
-    }
     function checkScriptDir() {
-        var dir = Editor.Project.path + '/' + Const_1.default.ScriptsDir;
+        var dir = Editor.Project.path + '/' + Const_1.default.JsonsDir;
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir);
         }
         return dir;
     }
-    function findNodes(node, _nodeMaps, _importMaps) {
-        var name = node.name;
-        if (checkBindChildren(name)) {
-            if (checkNodePrefix(name)) {
-                // 获得这个组件的类型 和 名称
-                var names = getPrefixNames(name);
-                if (names === null || names.length !== 2) {
-                    Editor.log(name + " \u547D\u4EE4\u4E0D\u89C4\u8303, \u8BF7\u4F7F\u7528_Label$xxx\u7684\u683C\u5F0F!, \u6216\u8005\u662F\u5728SysDefine\u4E2D\u6CA1\u6709\u5B9A\u4E49");
-                    return;
-                }
-                var type = Const_1.default.SeparatorMap[names[0]] || names[0];
-                var value = names[1];
-                // 进入到这里， 就表示可以绑定了
-                if (_nodeMaps[value]) {
-                    Editor.log("出现了重名字段:", value);
-                }
-                _nodeMaps[value] = [type, node.uuid];
-                // 检查是否是自定义组件
-                if (!_importMaps[type] && type.indexOf("cc.") === -1 && node.getComponent(type)) {
-                    var componentPath = Editor.remote.assetdb.uuidToFspath(node.getComponent(type).__scriptUuid);
-                    componentPath = componentPath.replace(/\s*/g, "").replace(/\\/g, "/");
-                    _importMaps[type] = componentPath;
-                }
-            }
-            // 绑定子节点
-            node.children.forEach(function (target) {
-                findNodes(target, _nodeMaps, _importMaps);
-            });
+    function _findController(name, controllers) {
+        for (var _i = 0, controllers_1 = controllers; _i < controllers_1.length; _i++) {
+            var e = controllers_1[_i];
+            if (e.name == name)
+                return e;
         }
+        return null;
     }
-    /** 检测前缀是否符合绑定规范 */
-    function checkNodePrefix(name) {
-        if (name[0] !== Const_1.default.STANDARD_Prefix) {
-            return false;
-        }
-        return true;
+    function _savePosition(saveData, com, controller) {
+        saveData['position'] = com.node.position;
     }
-    /** 检查后缀 */
-    function checkBindChildren(name) {
-        if (name[name.length - 1] !== Const_1.default.STANDARD_End) {
-            return true;
-        }
-        return false;
+    function _saveColor(saveData, com) {
+        saveData['color'] = com.node.color;
     }
-    /** 获得类型和name */
-    function getPrefixNames(name) {
-        if (name === null) {
-            return '';
+    function _regiestSaveFunction(prop, func) {
+        if (_localSaveFunc[prop]) {
+            cc.warn("prop: " + prop + ", \u5DF2\u7ECF\u88AB\u6CE8\u518C\u4E86, \u6B64\u6B21\u6CE8\u518C\u5C06\u4F1A\u8986\u76D6\u4E0A\u6B21\u7684func");
         }
-        return name.substr(1, name.length).split(Const_1.default.STANDARD_Separator);
+        _localSaveFunc[prop] = func;
     }
 })(scene || (scene = {}));
 module.exports = scene;

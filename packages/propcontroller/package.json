@@ -1,12 +1,12 @@
 {
-  "name": "prop_controller",
+  "name": "propcontroller",
   "version": "0.0.1",
   "description": "属性控制器",
   "author": "honmono",
   "main": "dist/main.js",
   "main-menu": {
-    "i18n:MAIN_MENU.package.title/PropController/run": {
-      "message": "PropController:run",
+    "i18n:MAIN_MENU.package.title/propcontroller/run": {
+      "message": "propcontroller:run",
       "accelerator": "alt+G"
     }
   },

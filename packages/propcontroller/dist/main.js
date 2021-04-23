@@ -22,7 +22,7 @@ var main;
     main.messages = {
         /**打开面板 */
         run: function () {
-            Editor.Scene.callSceneScript("autobinder", "start");
+            Editor.Scene.callSceneScript("propcontroller", "start");
         },
     };
 })(main || (main = {}));
