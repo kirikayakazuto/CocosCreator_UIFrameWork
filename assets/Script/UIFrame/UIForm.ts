@@ -18,12 +18,12 @@ export class UIWindow extends UIBase {
         this.node.scale = 0;
         await CocosHelper.runTweenSync(this.node, cc.tween().to(0.3, {scale: 1}, cc.easeBackOut()));
     }
-    
 
 }
 
 export class UIFixed extends UIBase {
     formType = FormType.Fixed;
+    
 }
 
 export class UITips extends UIBase {

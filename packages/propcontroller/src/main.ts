@@ -9,6 +9,9 @@
 module main {
 	export function load() {
 		// execute when package loaded
+		require("electron").ipcMain.on("scene:apply-prefab", () => {
+			Editor.Scene.callSceneScript("propcontroller", "start");
+		});
 	};
 
 	export function unload() {
@@ -23,5 +26,8 @@ module main {
 		},
 	};
 }
+
+
+
 
 module.exports = main;

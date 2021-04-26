@@ -141,7 +141,7 @@ export default class UIManager extends cc.Component {
             com.formData.onClose && com.formData.onClose();
         }
         // 判断是否销毁该窗体
-        if(com.canDestory) {
+        if(com.willDestory) {
             this.destoryForm(com, prefabPath);
         }
         return true;
@@ -240,13 +240,17 @@ export default class UIManager extends cc.Component {
         if(!com) return ;
         await com._preInit();
 
-        this._windows.push(com, com.priority);     
+        this._windows.push(com, com.priority);
+        let elements = this._windows.getElements();
+        for(let i=0; i<elements.length; i++) {
+            elements[i].node.zIndex = i+1;
+        }
 
         com.onShow(params);
         this._showingForms[prefabPath] = com;
         this._currWindowId = com.fid;
 
-        ModalMgr.inst.checkModalWindow(this._windows.getElements());
+        ModalMgr.inst.checkModalWindow(elements);
         await this.showEffect(com);
     }
     

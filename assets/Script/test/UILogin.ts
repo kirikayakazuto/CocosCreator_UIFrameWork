@@ -11,13 +11,14 @@ const {ccclass, property} = cc._decorator;
 export default class UILogin extends UIBase {
     
     formType = FormType.Screen;
-    canDestory = true;
+    willDestory = true;
 
     static prefabPath = "UIForms/UILogin";
 
     /** 下面表示 生命周期顺序 */
     async load() {
         cc.log('load');
+        return null;
         // 在这里执行你的加载操作
     }
 
@@ -53,6 +54,6 @@ export default class UILogin extends UIBase {
 
     async onClickLogin() {
         this.closeSelf();
-        await UIHall.openViewWithLoading();
+        await UIHall.openView();
     }
 }

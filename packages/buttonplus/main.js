@@ -16,12 +16,12 @@ module.exports = {
       Editor.Panel.open('buttonplus');
     },
     'say-hello' () {
-      Editor.log('Hello World!');
-      // send ipc message to panel
-      Editor.Ipc.sendToPanel('buttonplus', 'buttonplus:hello');
+      Editor.Panel.open('buttonplus');
+
+      // Editor.Ipc.sendToPanel('buttonplus', 'buttonplus:hello');
     },
     'clicked' () {
-      Editor.log('Button clicked!');
+      
     }
   },
 };

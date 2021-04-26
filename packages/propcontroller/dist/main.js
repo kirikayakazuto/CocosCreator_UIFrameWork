@@ -10,6 +10,9 @@ var main;
 (function (main) {
     function load() {
         // execute when package loaded
+        require("electron").ipcMain.on("scene:apply-prefab", function () {
+            Editor.Scene.callSceneScript("propcontroller", "start");
+        });
     }
     main.load = load;
     ;

@@ -13,7 +13,7 @@ export default class UIHall extends UIBase {
     static prefabPath = "UIForms/UIHall";
     public formType = FormType.Screen;
 
-    public canDestory = true;
+    public willDestory = true;
 
     @property(cc.Label)
     lbClick: cc.Label = null;

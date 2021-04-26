@@ -24,11 +24,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 7
+        "__id__": 6
       }
     ],
     "_prefab": {
-      "__id__": 9
+      "__id__": 7
     },
     "_opacity": 255,
     "_color": {
@@ -95,7 +95,7 @@
       }
     ],
     "_prefab": {
-      "__id__": 6
+      "__id__": 5
     },
     "_opacity": 255,
     "_color": {
@@ -119,7 +119,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
+        -184.234,
         0,
         0,
         0,
@@ -184,17 +184,11 @@
       "__id__": 2
     },
     "_enabled": true,
-    "selectors": [
-      {
-        "__id__": 5
-      }
+    "ctrlId": "position",
+    "props": [
+      0
     ],
     "_id": ""
-  },
-  {
-    "__type__": "Selector",
-    "name": "position",
-    "position": true
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -215,24 +209,15 @@
       "__id__": 1
     },
     "_enabled": true,
-    "controllers": [
-      {
-        "__id__": 8
-      }
-    ],
-    "propertyJson": {
-      "__uuid__": "9c163581-886b-45dd-a472-33e0cb179535"
-    },
-    "_id": ""
-  },
-  {
-    "__type__": "Controller",
-    "name": "position",
-    "type": 0,
+    "id": "position",
     "types": [
       "left",
       "right"
-    ]
+    ],
+    "propertyJson": {
+      "__uuid__": "158c8b65-834b-49a1-9217-08e55158ce21"
+    },
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",

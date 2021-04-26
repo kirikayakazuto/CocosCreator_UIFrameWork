@@ -7,7 +7,7 @@
   "main-menu": {
     "i18n:MAIN_MENU.package.title/propcontroller/run": {
       "message": "propcontroller:run",
-      "accelerator": "alt+G"
+      "accelerator": "alt+h"
     }
   },
   "scene-script": "dist/scene.js",

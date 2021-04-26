@@ -1,7 +1,6 @@
-import CocosHelper from "./CocosHelper";
 import UIManager from "./UIManager";
-import { FormType, SysDefine } from "./config/SysDefine";
-import { IFormData, ModalType } from "./Struct";
+import { FormType } from "./config/SysDefine";
+import { IFormData } from "./Struct";
 import AdapterMgr from "./AdapterMgr";
 import TipsMgr from "./TipsMgr";
 
@@ -18,12 +17,12 @@ export default class UIBase extends cc.Component {
     /** 窗体类型 */
     public formType: FormType = 0;
     /** 关闭窗口后销毁, 会将其依赖的资源一并销毁, 采用了引用计数的管理, 不用担心会影响其他窗体 */
-    public canDestory = false;
+    public willDestory = false;
     /** 回调 */
     protected _cb: (confirm: any) => void;
     /** 是否已经调用过preinit方法 */
     private _inited = false;
-    /** 资源路径，如果没写的话就是类名 */
+    /** 资源路径 */
     public static prefabPath = "";
 
     
@@ -49,7 +48,10 @@ export default class UIBase extends cc.Component {
         this.view = this.getComponent(`${this.node.name}_Auto`);
         autorun(this.refreshView.bind(this));
         // 加载这个UI依赖的其他资源
-        await this.load();
+        let errorMsg = await this.load();
+        if(errorMsg) {
+            return ;
+        }
 
         this.onInit();
     }
@@ -65,7 +67,9 @@ export default class UIBase extends cc.Component {
     }
 
     /** 可以在这里进行一些资源的加载, 具体实现可以看test下的代码 */
-    public async load() {}
+    public async load(): Promise<string> {
+        return null;
+    }
 
     public onInit() {}
 
