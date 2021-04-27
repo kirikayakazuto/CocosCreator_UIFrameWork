@@ -1,9 +1,8 @@
-import { PropEmum } from "./PropSelector";
+import PropSelector, { PropEmum } from "./PropSelector";
 
 const {ccclass, executeInEditMode, property} = cc._decorator;
 
 const ControllerType = cc.Enum({});
-
 @ccclass
 @executeInEditMode
 export default class PropController extends cc.Component {
@@ -11,8 +10,24 @@ export default class PropController extends cc.Component {
     @property({tooltip: "是否启用控制器"})
     open = true;
     
-    @property(cc.String)
-    id: string = "";
+
+    _uid = "";
+    @property
+    get uid() {
+        return this._uid;
+    }
+    set uid(val: string) {
+        this._uid = val;
+
+        if(cc.isValid(this.node)) {
+            let coms = this.node.getComponents(PropController);
+            let array = coms.map((val, i) => { 
+                return {name: val.uid, value: i};
+            });
+            //@ts-ignore
+            cc.Class.Attr.setClassAttr(PropSelector, 'ctrlId', 'enumList', array);
+        }
+    }
     
     _state = 0;
     @property({type: ControllerType})
@@ -85,7 +100,6 @@ function _setPosition(node: cc.Node, prop: any) {
 }
 function _setColor(node: cc.Node, prop: any) {
     node.color = new cc.Color(prop.r, prop.g, prop.b);
-    // node.color = cc.Color.BLACK
 }
 function _setSacle(node: cc.Node, prop: any) {
     node.scaleX = prop.scaleX;

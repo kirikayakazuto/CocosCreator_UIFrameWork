@@ -1,4 +1,4 @@
-const {ccclass, property} = cc._decorator;
+const {ccclass, executeInEditMode, property} = cc._decorator;
 
 export enum PropEmum {
     Active,
@@ -16,14 +16,21 @@ export enum PropEmum {
 
 cc['PropEmum'] = PropEmum;
 
+const ControllerId = cc.Enum({});
+
 @ccclass
+@executeInEditMode
 export default class PropSelector extends cc.Component {
 
-    @property({tooltip: "控制器的名称"})
-    ctrlId: string = "";                // 控制器的名称
+    @property({type: ControllerId, tooltip: "控制器的名称"})
+    ctrlId = 0;
     // 被控制的属性
     @property({type: [cc.Enum(PropEmum)], tooltip: "被控制的属性"})               
     props: PropEmum[] = [];    
+
+    onLoad() {
+        
+    }
 
     start () {
         

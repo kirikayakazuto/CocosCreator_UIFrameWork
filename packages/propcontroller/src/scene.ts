@@ -20,7 +20,8 @@ module scene {
         let coms = NodeRoot.getComponentsInChildren("PropSelector");
         for(const com of coms) {
             // 只处理当前状态的控制器属性
-            if(com.ctrlId !== comPropCtrl.id) {
+            let ctrl = NodeRoot.getComponents("PropController")[com.ctrlId];
+            if(ctrl.uid !== comPropCtrl.uid) {
                 continue;
             }
             
@@ -30,6 +31,7 @@ module scene {
             }
         }
     }
+
     /** 
      * 入口
      * 1, 查看是否启用了controller, 即检查根结点是否有PropController脚本即可
@@ -49,16 +51,16 @@ module scene {
 
         let saveData: {[key: string]: any} = {};
         let ProjectDir = Editor.Project.path;
-        let ScriptName = `${NodeRoot.name}_${comPropCtrl.id}_Auto`;
+        let ScriptName = `${NodeRoot.name}_${comPropCtrl.uid}_Auto`;
         let ScriptPath = `${ProjectDir}/${Const.JsonsDir}/${ScriptName}.json`.replace(/\\/g, "/");
         
-        if(!comPropCtrl.id || comPropCtrl.id.length <= 0) {
-            cc.warn(`PropController, 请设置 PropController 的 id ${comPropCtrl.id} `);
+        if(!comPropCtrl.uid || comPropCtrl.uid.length <= 0) {
+            cc.warn(`PropController, 请设置 PropController 的 uid ${comPropCtrl.uid} `);
             return ;
         }
 
         if(comPropCtrl.state < 0 || comPropCtrl.state >= comPropCtrl.states.length) {
-            cc.warn(`PropController, ${comPropCtrl.id} 控制器越界了`);
+            cc.warn(`PropController, ${comPropCtrl.uid} 控制器越界了`);
             return ;
         }
 

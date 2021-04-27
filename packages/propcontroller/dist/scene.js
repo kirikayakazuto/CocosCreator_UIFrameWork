@@ -24,7 +24,8 @@ var scene;
         for (var _i = 0, coms_1 = coms; _i < coms_1.length; _i++) {
             var com = coms_1[_i];
             // 只处理当前状态的控制器属性
-            if (com.ctrlId !== comPropCtrl.id) {
+            var ctrl = NodeRoot.getComponents("PropController")[com.ctrlId];
+            if (ctrl.uid !== comPropCtrl.uid) {
                 continue;
             }
             for (var _a = 0, _b = com.props; _a < _b.length; _a++) {
@@ -52,14 +53,14 @@ var scene;
         }
         var saveData = {};
         var ProjectDir = Editor.Project.path;
-        var ScriptName = NodeRoot.name + "_" + comPropCtrl.id + "_Auto";
+        var ScriptName = NodeRoot.name + "_" + comPropCtrl.uid + "_Auto";
         var ScriptPath = (ProjectDir + "/" + Const_1.default.JsonsDir + "/" + ScriptName + ".json").replace(/\\/g, "/");
-        if (!comPropCtrl.id || comPropCtrl.id.length <= 0) {
-            cc.warn("PropController, \u8BF7\u8BBE\u7F6E PropController \u7684 id " + comPropCtrl.id + " ");
+        if (!comPropCtrl.uid || comPropCtrl.uid.length <= 0) {
+            cc.warn("PropController, \u8BF7\u8BBE\u7F6E PropController \u7684 uid " + comPropCtrl.uid + " ");
             return;
         }
         if (comPropCtrl.state < 0 || comPropCtrl.state >= comPropCtrl.states.length) {
-            cc.warn("PropController, " + comPropCtrl.id + " \u63A7\u5236\u5668\u8D8A\u754C\u4E86");
+            cc.warn("PropController, " + comPropCtrl.uid + " \u63A7\u5236\u5668\u8D8A\u754C\u4E86");
             return;
         }
         _readFile(ScriptPath, function (data) {
