@@ -124,8 +124,8 @@
         0,
         0,
         0,
-        0,
-        1,
+        null,
+        null,
         1,
         1,
         1
@@ -135,7 +135,10 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 0
+      "z": {
+        "scaleX": 1,
+        "scaleY": 1
+      }
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -210,10 +213,10 @@
       "__id__": 1
     },
     "_enabled": true,
-    "id": "position",
-    "_types": [
-      "left",
-      "right"
+    "id": "",
+    "_states": [
+      "123",
+      "234"
     ],
     "propertyJson": {
       "__uuid__": "158c8b65-834b-49a1-9217-08e55158ce21"

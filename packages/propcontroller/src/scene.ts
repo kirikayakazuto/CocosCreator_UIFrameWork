@@ -53,15 +53,15 @@ module scene {
         let ScriptName = `${NodeRoot.name}_Auto`;
         let ScriptPath = `${ProjectDir}/${Const.JsonsDir}/${ScriptName}.json`.replace(/\\/g, "/");
               
-        if(comPropCtrl.type < 0 || comPropCtrl.type >= comPropCtrl.types.length) {
-            cc.warn(`PropController, ${comPropCtrl.id} 控制器的 type 越界了`);
+        if(comPropCtrl.state < 0 || comPropCtrl.state >= comPropCtrl.states.length) {
+            cc.warn(`PropController, ${comPropCtrl.id} 控制器越界了`);
             return ;
         }
 
         _readFile(ScriptPath, (data: any) => {
             saveData = data;
             // 把当前状态的数据置空
-            saveData[comPropCtrl.types[comPropCtrl.type]] = {};
+            saveData[comPropCtrl.states[comPropCtrl.tystatepe]] = {};
             _doSetProp(comPropCtrl, NodeRoot, saveData);
 
             let json = JSON.stringify(saveData);
@@ -72,8 +72,8 @@ module scene {
             Editor.assetdb.refresh(dbJsonPath, (err: any, data: any) => {
                 cc.assetManager.loadAny({uuid: data[0].uuid}, (err: any, data: any) => {
                     comPropCtrl.propertyJson = data;
+                    Editor.log('控制器数据保存成功-', dbJsonPath);
                 });
-                // Editor.log('控制器数据保存成功-', dbJsonPath);
             });
 
         }); 
@@ -102,14 +102,14 @@ module scene {
 
     function _regiestSaveFunction(propId: number, func: (saveData: any, com: any, comPropCtrl: any) => void) {
         if(_localSaveFunc[propId]) {
-            // cc.warn(`prop: ${propId}, 已经被注册了, 此次注册将会覆盖上次的func`);
+            cc.warn(`prop: ${propId}, 已经被注册了, 此次注册将会覆盖上次的func`);
             return ;
         }
         _localSaveFunc[propId] = func;
     }
 
     function _checkSaveData(saveData: any, com: any, controller: any) {
-        let type = controller.types[controller.type];
+        let type = controller.states[controller.state];
         let map = saveData[type];
         if(!map) map = saveData[type] = {};
         let path = _getNodePath(com.node, ROOT_NODE);
@@ -165,14 +165,20 @@ module scene {
         d[(cc as any).PropEmum.Size] = com.node.getContentSize();
     }
 
-    function saveAnchor(saveData: any, com: any, controller: any) {
+    function _saveAnchor(saveData: any, com: any, controller: any) {
         let d = _checkSaveData(saveData, com, controller);
         d[(cc as any).PropEmum.Anchor] = {
             anchorX: com.node.anchorX,
             anchorY: com.node.anchorY,
         };
     }
+
+    function _saveActive(saveData: any, com: any, controller: any) {
+        let d = _checkSaveData(saveData, com, controller);
+        d[(cc as any).PropEmum.Active] = com.node.active;
+    }
     
+    _regiestSaveFunction((cc as any).PropEmum.Active, _saveActive);
     _regiestSaveFunction((cc as any).PropEmum.Position, _savePosition);
     _regiestSaveFunction((cc as any).PropEmum.Color, _saveColor);
     _regiestSaveFunction((cc as any).PropEmum.Scale, _saveScale);
@@ -180,7 +186,7 @@ module scene {
     _regiestSaveFunction((cc as any).PropEmum.Opacity, _saveOpacity);
     _regiestSaveFunction((cc as any).PropEmum.Slew, _saveSlew);
     _regiestSaveFunction((cc as any).PropEmum.Size, _saveSize);
-    _regiestSaveFunction((cc as any).PropEmum.Anchor, saveAnchor);
+    _regiestSaveFunction((cc as any).PropEmum.Anchor, _saveAnchor);
     
 }
 module.exports = scene;

@@ -55,14 +55,14 @@ var scene;
         var ProjectDir = Editor.Project.path;
         var ScriptName = NodeRoot.name + "_Auto";
         var ScriptPath = (ProjectDir + "/" + Const_1.default.JsonsDir + "/" + ScriptName + ".json").replace(/\\/g, "/");
-        if (comPropCtrl.type < 0 || comPropCtrl.type >= comPropCtrl.types.length) {
-            cc.warn("PropController, " + comPropCtrl.id + " \u63A7\u5236\u5668\u7684 type \u8D8A\u754C\u4E86");
+        if (comPropCtrl.state < 0 || comPropCtrl.state >= comPropCtrl.states.length) {
+            cc.warn("PropController, " + comPropCtrl.id + " \u63A7\u5236\u5668\u8D8A\u754C\u4E86");
             return;
         }
         _readFile(ScriptPath, function (data) {
             saveData = data;
             // 把当前状态的数据置空
-            saveData[comPropCtrl.types[comPropCtrl.type]] = {};
+            saveData[comPropCtrl.states[comPropCtrl.tystatepe]] = {};
             _doSetProp(comPropCtrl, NodeRoot, saveData);
             var json = JSON.stringify(saveData);
             checkScriptDir();
@@ -71,8 +71,8 @@ var scene;
             Editor.assetdb.refresh(dbJsonPath, function (err, data) {
                 cc.assetManager.loadAny({ uuid: data[0].uuid }, function (err, data) {
                     comPropCtrl.propertyJson = data;
+                    Editor.log('控制器数据保存成功-', dbJsonPath);
                 });
-                // Editor.log('控制器数据保存成功-', dbJsonPath);
             });
         });
     }
@@ -98,13 +98,13 @@ var scene;
     }
     function _regiestSaveFunction(propId, func) {
         if (_localSaveFunc[propId]) {
-            // cc.warn(`prop: ${propId}, 已经被注册了, 此次注册将会覆盖上次的func`);
+            cc.warn("prop: " + propId + ", \u5DF2\u7ECF\u88AB\u6CE8\u518C\u4E86, \u6B64\u6B21\u6CE8\u518C\u5C06\u4F1A\u8986\u76D6\u4E0A\u6B21\u7684func");
             return;
         }
         _localSaveFunc[propId] = func;
     }
     function _checkSaveData(saveData, com, controller) {
-        var type = controller.types[controller.type];
+        var type = controller.states[controller.state];
         var map = saveData[type];
         if (!map)
             map = saveData[type] = {};
@@ -153,13 +153,18 @@ var scene;
         var d = _checkSaveData(saveData, com, controller);
         d[cc.PropEmum.Size] = com.node.getContentSize();
     }
-    function saveAnchor(saveData, com, controller) {
+    function _saveAnchor(saveData, com, controller) {
         var d = _checkSaveData(saveData, com, controller);
         d[cc.PropEmum.Anchor] = {
             anchorX: com.node.anchorX,
             anchorY: com.node.anchorY,
         };
     }
+    function _saveActive(saveData, com, controller) {
+        var d = _checkSaveData(saveData, com, controller);
+        d[cc.PropEmum.Active] = com.node.active;
+    }
+    _regiestSaveFunction(cc.PropEmum.Active, _saveActive);
     _regiestSaveFunction(cc.PropEmum.Position, _savePosition);
     _regiestSaveFunction(cc.PropEmum.Color, _saveColor);
     _regiestSaveFunction(cc.PropEmum.Scale, _saveScale);
@@ -167,6 +172,6 @@ var scene;
     _regiestSaveFunction(cc.PropEmum.Opacity, _saveOpacity);
     _regiestSaveFunction(cc.PropEmum.Slew, _saveSlew);
     _regiestSaveFunction(cc.PropEmum.Size, _saveSize);
-    _regiestSaveFunction(cc.PropEmum.Anchor, saveAnchor);
+    _regiestSaveFunction(cc.PropEmum.Anchor, _saveAnchor);
 })(scene || (scene = {}));
 module.exports = scene;

@@ -1,6 +1,7 @@
 const {ccclass, property} = cc._decorator;
 
 export enum PropEmum {
+    Active,
     Position,
     Rotation,
     Scale,

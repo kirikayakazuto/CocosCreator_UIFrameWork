@@ -7,54 +7,55 @@ const ControllerType = cc.Enum({});
 @ccclass
 @executeInEditMode
 export default class PropController extends cc.Component {
+    
     @property(cc.String)
     id: string = "";
 
     
-    _type = 0;
+    _state = 0;
     @property({type: ControllerType})
-    get type() {
-        return this._type;
+    get state() {
+        return this._state;
     }
-    set type(val: number) {
-        this._type = val;
+    set state(val: number) {
+        this._state = val;
         this.doControl(val);
     }
 
     @property
-    _types: string[] = [];
+    _states: string[] = [];
     @property([cc.String])
-    get types() {
-        return this._types;
+    get states() {
+        return this._states;
     }
-    set types(types: string[]) {
-        this._types = types;
-        let array = types.map((val, i) => {
+    set states(states: string[]) {
+        this._states = states;
+        let array = states.map((val, i) => {
             return {name: val, value: i};
         })
         //@ts-ignore
-        cc.Class.Attr.setClassAttr(PropController, 'type', 'enumList', array);
+        cc.Class.Attr.setClassAttr(PropController, 'state', 'enumList', array);
     }
 
     @property(cc.JsonAsset)
     propertyJson: cc.JsonAsset = null;
 
     onLoad () {
-        let array = this.types.map((val, i) => {
+        let array = this._states.map((val, i) => {
             return {name: val, value: i};
-        })
+        });
         //@ts-ignore
-        cc.Class.Attr.setClassAttr(PropController, 'type', 'enumList', array);
+        cc.Class.Attr.setClassAttr(PropController, 'state', 'enumList', array);
     }
 
     start () {
-        this.doControl('left');
+        // this.doControl('left');
     }
 
     public doControl(type: string | number) {
         let t = type;
         if(typeof type == "number") {
-            t = this.types[type];
+            t = this.states[type];
         }
 
         let ctrl = this.propertyJson.json;
@@ -109,6 +110,9 @@ function _setAnchor(node: cc.Node, prop: any) {
     node.anchorX = prop.anchorX;
     node.anchorY = prop.anchorY;
 }
+function _setActive(node: cc.Node, prop: any) {
+    node.active = prop;
+}
 
 const _localSetFunc: {[key: number]: (node: cc.Node, prop: any) => void} = {};
 function _regiestSetFunction(id: number, func: (node: cc.Node, prop: any) => void) {
@@ -118,6 +122,7 @@ function _regiestSetFunction(id: number, func: (node: cc.Node, prop: any) => voi
     _localSetFunc[id] = func;
 }
 
+_regiestSetFunction(PropEmum.Active, _setActive);
 _regiestSetFunction(PropEmum.Position, _setPosition);
 _regiestSetFunction(PropEmum.Color, _setColor);
 _regiestSetFunction(PropEmum.Scale, _setSacle);
@@ -126,11 +131,3 @@ _regiestSetFunction(PropEmum.Opacity, _setOpacity);
 _regiestSetFunction(PropEmum.Slew, _setSlew);
 _regiestSetFunction(PropEmum.Size, _setSize);
 _regiestSetFunction(PropEmum.Anchor, _setAnchor);
-
-
-
-
-// cc.game.on(cc.game.EVENT_ENGINE_INITED, () => {
-//     //@ts-ignore
-//     cc.Class.Attr.setClassAttr(ShaderHelper, 'program', 'enumList', array);
-// });
