@@ -47,11 +47,6 @@ module scene {
             // Editor.warn(`${NodeRoot.name} 没有挂载 PropController 脚本`);
             return;
         }
-        let PropEmum = (cc as any).PropEmum;
-        _regiestSaveFunction(PropEmum.Position, _savePosition);
-        _regiestSaveFunction(PropEmum.Color, _saveColor);
-        _regiestSaveFunction(PropEmum.Scale, _saveScale);
-        
 
         let saveData: {[key: string]: any} = {};
         let ProjectDir = Editor.Project.path;
@@ -147,5 +142,45 @@ module scene {
         };
     }
 
+    function _saveRotation(saveData: any, com: any, controller: any) {
+        let d = _checkSaveData(saveData, com, controller);
+        d[(cc as any).PropEmum.Rotation] = com.node.angle;
+    }
+
+    function _saveOpacity(saveData: any, com: any, controller: any) {
+        let d = _checkSaveData(saveData, com, controller);
+        d[(cc as any).PropEmum.Opacity] = com.node.opacity;
+    }
+
+    function _saveSlew(saveData: any, com: any, controller: any) {
+        let d = _checkSaveData(saveData, com, controller);
+        d[(cc as any).PropEmum.Slew] = {
+            slewX: com.node.slewX,
+            slewY: com.node.slewY,
+        }
+    }
+
+    function _saveSize(saveData: any, com: any, controller: any) {
+        let d = _checkSaveData(saveData, com, controller);
+        d[(cc as any).PropEmum.Size] = com.node.getContentSize();
+    }
+
+    function saveAnchor(saveData: any, com: any, controller: any) {
+        let d = _checkSaveData(saveData, com, controller);
+        d[(cc as any).PropEmum.Anchor] = {
+            anchorX: com.node.anchorX,
+            anchorY: com.node.anchorY,
+        };
+    }
+    
+    _regiestSaveFunction((cc as any).PropEmum.Position, _savePosition);
+    _regiestSaveFunction((cc as any).PropEmum.Color, _saveColor);
+    _regiestSaveFunction((cc as any).PropEmum.Scale, _saveScale);
+    _regiestSaveFunction((cc as any).PropEmum.Rotation, _saveRotation);
+    _regiestSaveFunction((cc as any).PropEmum.Opacity, _saveOpacity);
+    _regiestSaveFunction((cc as any).PropEmum.Slew, _saveSlew);
+    _regiestSaveFunction((cc as any).PropEmum.Size, _saveSize);
+    _regiestSaveFunction((cc as any).PropEmum.Anchor, saveAnchor);
+    
 }
 module.exports = scene;

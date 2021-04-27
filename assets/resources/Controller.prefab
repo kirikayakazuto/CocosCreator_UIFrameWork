@@ -119,7 +119,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -184.234,
+        -161.234,
         0,
         0,
         0,
@@ -186,7 +186,8 @@
     "_enabled": true,
     "ctrlId": "position",
     "props": [
-      0
+      0,
+      2
     ],
     "_id": ""
   },
@@ -210,7 +211,7 @@
     },
     "_enabled": true,
     "id": "position",
-    "types": [
+    "_types": [
       "left",
       "right"
     ],

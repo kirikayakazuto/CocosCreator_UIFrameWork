@@ -51,10 +51,6 @@ var scene;
             // Editor.warn(`${NodeRoot.name} 没有挂载 PropController 脚本`);
             return;
         }
-        var PropEmum = cc.PropEmum;
-        _regiestSaveFunction(PropEmum.Position, _savePosition);
-        _regiestSaveFunction(PropEmum.Color, _saveColor);
-        _regiestSaveFunction(PropEmum.Scale, _saveScale);
         var saveData = {};
         var ProjectDir = Editor.Project.path;
         var ScriptName = NodeRoot.name + "_Auto";
@@ -138,5 +134,39 @@ var scene;
             scaleY: com.node.scaleY
         };
     }
+    function _saveRotation(saveData, com, controller) {
+        var d = _checkSaveData(saveData, com, controller);
+        d[cc.PropEmum.Rotation] = com.node.angle;
+    }
+    function _saveOpacity(saveData, com, controller) {
+        var d = _checkSaveData(saveData, com, controller);
+        d[cc.PropEmum.Opacity] = com.node.opacity;
+    }
+    function _saveSlew(saveData, com, controller) {
+        var d = _checkSaveData(saveData, com, controller);
+        d[cc.PropEmum.Slew] = {
+            slewX: com.node.slewX,
+            slewY: com.node.slewY,
+        };
+    }
+    function _saveSize(saveData, com, controller) {
+        var d = _checkSaveData(saveData, com, controller);
+        d[cc.PropEmum.Size] = com.node.getContentSize();
+    }
+    function saveAnchor(saveData, com, controller) {
+        var d = _checkSaveData(saveData, com, controller);
+        d[cc.PropEmum.Anchor] = {
+            anchorX: com.node.anchorX,
+            anchorY: com.node.anchorY,
+        };
+    }
+    _regiestSaveFunction(cc.PropEmum.Position, _savePosition);
+    _regiestSaveFunction(cc.PropEmum.Color, _saveColor);
+    _regiestSaveFunction(cc.PropEmum.Scale, _saveScale);
+    _regiestSaveFunction(cc.PropEmum.Rotation, _saveRotation);
+    _regiestSaveFunction(cc.PropEmum.Opacity, _saveOpacity);
+    _regiestSaveFunction(cc.PropEmum.Slew, _saveSlew);
+    _regiestSaveFunction(cc.PropEmum.Size, _saveSize);
+    _regiestSaveFunction(cc.PropEmum.Anchor, saveAnchor);
 })(scene || (scene = {}));
 module.exports = scene;
