@@ -7,10 +7,12 @@ const ControllerType = cc.Enum({});
 @ccclass
 @executeInEditMode
 export default class PropController extends cc.Component {
+
+    @property({tooltip: "是否启用控制器"})
+    open = true;
     
     @property(cc.String)
     id: string = "";
-
     
     _state = 0;
     @property({type: ControllerType})
@@ -48,13 +50,11 @@ export default class PropController extends cc.Component {
         cc.Class.Attr.setClassAttr(PropController, 'state', 'enumList', array);
     }
 
-    start () {
-        // this.doControl('left');
-    }
+    start () {}
 
     public doControl(type: string | number) {
         let t = type;
-        if(typeof type == "number") {
+        if(typeof type == "string") {
             t = this.states[type];
         }
 
@@ -63,12 +63,12 @@ export default class PropController extends cc.Component {
         let map = ctrl[t];        
         for(const path in map) {
             let node = cc.find(path, this.node);
+            
             if(!node) continue;
             let nodeProps = map[path];
             for(const key in nodeProps) {  
                 let func = _localSetFunc[key];
                 if(!func) continue;
-
                 func(node, nodeProps[key])
             }
         }
@@ -84,10 +84,8 @@ function _setPosition(node: cc.Node, prop: any) {
     node.setPosition(prop);
 }
 function _setColor(node: cc.Node, prop: any) {
-    node.color.r = prop.r;
-    node.color.g = prop.g;
-    node.color.b = prop.b;
-    node.color.a = prop.a;
+    node.color = new cc.Color(prop.r, prop.g, prop.b);
+    // node.color = cc.Color.BLACK
 }
 function _setSacle(node: cc.Node, prop: any) {
     node.scaleX = prop.scaleX;
@@ -113,6 +111,9 @@ function _setAnchor(node: cc.Node, prop: any) {
 function _setActive(node: cc.Node, prop: any) {
     node.active = prop;
 }
+function _setLabelString(node: cc.Node, prop: any) {
+    node.getComponent(cc.Label).string = prop;
+}
 
 const _localSetFunc: {[key: number]: (node: cc.Node, prop: any) => void} = {};
 function _regiestSetFunction(id: number, func: (node: cc.Node, prop: any) => void) {
@@ -131,3 +132,4 @@ _regiestSetFunction(PropEmum.Opacity, _setOpacity);
 _regiestSetFunction(PropEmum.Slew, _setSlew);
 _regiestSetFunction(PropEmum.Size, _setSize);
 _regiestSetFunction(PropEmum.Anchor, _setAnchor);
+_regiestSetFunction(PropEmum.Label_String, _setLabelString);

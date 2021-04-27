@@ -47,14 +47,17 @@ var scene;
             return null;
         var NodeRoot = ROOT_NODE = childs[1];
         var comPropCtrl = NodeRoot.getComponent("PropController");
-        if (!comPropCtrl) {
-            // Editor.warn(`${NodeRoot.name} 没有挂载 PropController 脚本`);
+        if (!comPropCtrl || !comPropCtrl.open) {
             return;
         }
         var saveData = {};
         var ProjectDir = Editor.Project.path;
-        var ScriptName = NodeRoot.name + "_Auto";
+        var ScriptName = NodeRoot.name + "_" + comPropCtrl.id + "_Auto";
         var ScriptPath = (ProjectDir + "/" + Const_1.default.JsonsDir + "/" + ScriptName + ".json").replace(/\\/g, "/");
+        if (!comPropCtrl.id || comPropCtrl.id.length <= 0) {
+            cc.warn("PropController, \u8BF7\u8BBE\u7F6E PropController \u7684 id " + comPropCtrl.id + " ");
+            return;
+        }
         if (comPropCtrl.state < 0 || comPropCtrl.state >= comPropCtrl.states.length) {
             cc.warn("PropController, " + comPropCtrl.id + " \u63A7\u5236\u5668\u8D8A\u754C\u4E86");
             return;
@@ -62,7 +65,15 @@ var scene;
         _readFile(ScriptPath, function (data) {
             saveData = data;
             // 把当前状态的数据置空
-            saveData[comPropCtrl.states[comPropCtrl.tystatepe]] = {};
+            saveData[comPropCtrl.state] = {};
+            // 删除已经不存在的状态
+            for (var e in saveData) {
+                if (parseInt(e) >= comPropCtrl.states.length) { // 表示这个状态已经废弃了
+                    saveData[e] = null;
+                    delete saveData[e];
+                }
+            }
+            // 把当前控制器下的
             _doSetProp(comPropCtrl, NodeRoot, saveData);
             var json = JSON.stringify(saveData);
             checkScriptDir();
@@ -104,10 +115,10 @@ var scene;
         _localSaveFunc[propId] = func;
     }
     function _checkSaveData(saveData, com, controller) {
-        var type = controller.states[controller.state];
-        var map = saveData[type];
+        var state = controller.state;
+        var map = saveData[state];
         if (!map)
-            map = saveData[type] = {};
+            map = saveData[state] = {};
         var path = _getNodePath(com.node, ROOT_NODE);
         var d = map[path];
         if (!d)
@@ -164,6 +175,12 @@ var scene;
         var d = _checkSaveData(saveData, com, controller);
         d[cc.PropEmum.Active] = com.node.active;
     }
+    function _saveLabelString(saveData, com, controller) {
+        if (!com.getComponent(cc.Label))
+            return;
+        var d = _checkSaveData(saveData, com, controller);
+        d[cc.PropEmum.Label_String] = com.getComponent(cc.Label).string;
+    }
     _regiestSaveFunction(cc.PropEmum.Active, _saveActive);
     _regiestSaveFunction(cc.PropEmum.Position, _savePosition);
     _regiestSaveFunction(cc.PropEmum.Color, _saveColor);
@@ -173,5 +190,6 @@ var scene;
     _regiestSaveFunction(cc.PropEmum.Slew, _saveSlew);
     _regiestSaveFunction(cc.PropEmum.Size, _saveSize);
     _regiestSaveFunction(cc.PropEmum.Anchor, _saveAnchor);
+    _regiestSaveFunction(cc.PropEmum.Label_String, _saveLabelString);
 })(scene || (scene = {}));
 module.exports = scene;

@@ -43,16 +43,20 @@ module scene {
         let NodeRoot = ROOT_NODE = childs[1];
 
         let comPropCtrl = NodeRoot.getComponent("PropController");
-        if(!comPropCtrl) {
-            // Editor.warn(`${NodeRoot.name} 没有挂载 PropController 脚本`);
+        if(!comPropCtrl || !comPropCtrl.open) {            
             return;
         }
 
         let saveData: {[key: string]: any} = {};
         let ProjectDir = Editor.Project.path;
-        let ScriptName = `${NodeRoot.name}_Auto`;
+        let ScriptName = `${NodeRoot.name}_${comPropCtrl.id}_Auto`;
         let ScriptPath = `${ProjectDir}/${Const.JsonsDir}/${ScriptName}.json`.replace(/\\/g, "/");
-              
+        
+        if(!comPropCtrl.id || comPropCtrl.id.length <= 0) {
+            cc.warn(`PropController, 请设置 PropController 的 id ${comPropCtrl.id} `);
+            return ;
+        }
+
         if(comPropCtrl.state < 0 || comPropCtrl.state >= comPropCtrl.states.length) {
             cc.warn(`PropController, ${comPropCtrl.id} 控制器越界了`);
             return ;
@@ -61,7 +65,15 @@ module scene {
         _readFile(ScriptPath, (data: any) => {
             saveData = data;
             // 把当前状态的数据置空
-            saveData[comPropCtrl.states[comPropCtrl.tystatepe]] = {};
+            saveData[comPropCtrl.state] = {};
+            // 删除已经不存在的状态
+            for(const e in saveData) {
+                if(parseInt(e) >= comPropCtrl.states.length) {  // 表示这个状态已经废弃了
+                    saveData[e] = null;
+                    delete saveData[e];
+                }
+            }
+            // 把当前控制器下的
             _doSetProp(comPropCtrl, NodeRoot, saveData);
 
             let json = JSON.stringify(saveData);
@@ -109,9 +121,9 @@ module scene {
     }
 
     function _checkSaveData(saveData: any, com: any, controller: any) {
-        let type = controller.states[controller.state];
-        let map = saveData[type];
-        if(!map) map = saveData[type] = {};
+        let state = controller.state;
+        let map = saveData[state];
+        if(!map) map = saveData[state] = {};
         let path = _getNodePath(com.node, ROOT_NODE);
         let d = map[path];
         if(!d) d = map[path] = {};
@@ -177,6 +189,12 @@ module scene {
         let d = _checkSaveData(saveData, com, controller);
         d[(cc as any).PropEmum.Active] = com.node.active;
     }
+
+    function _saveLabelString(saveData: any, com: any, controller: any) {
+        if(!com.getComponent(cc.Label)) return ;
+        let d = _checkSaveData(saveData, com, controller);
+        d[(cc as any).PropEmum.Label_String] = com.getComponent(cc.Label).string;
+    }
     
     _regiestSaveFunction((cc as any).PropEmum.Active, _saveActive);
     _regiestSaveFunction((cc as any).PropEmum.Position, _savePosition);
@@ -187,6 +205,8 @@ module scene {
     _regiestSaveFunction((cc as any).PropEmum.Slew, _saveSlew);
     _regiestSaveFunction((cc as any).PropEmum.Size, _saveSize);
     _regiestSaveFunction((cc as any).PropEmum.Anchor, _saveAnchor);
+    _regiestSaveFunction((cc as any).PropEmum.Label_String, _saveLabelString);
+    
     
 }
 module.exports = scene;

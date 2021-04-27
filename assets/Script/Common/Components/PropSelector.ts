@@ -9,7 +9,9 @@ export enum PropEmum {
     Size,
     Color,
     Opacity,
-    Slew
+    Slew,
+
+    Label_String,
 }
 
 cc['PropEmum'] = PropEmum;
