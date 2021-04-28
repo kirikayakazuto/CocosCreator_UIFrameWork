@@ -1,51 +1,30 @@
-import ButtonPlus from "./Common/Components/ButtonPlus";
-import TouchPlus from "./Common/Components/TouchPlus";
+import UILoading from "./test/UILoading";
 import UILogin from "./test/UILogin";
-import { EventCenter } from "./UIFrame/EventCenter";
-import DebugWindowUtil from "./Common/Utils/DebugWindowUtils";
-import UITest from "./test/UITest";
-import { TestBroadcast } from "./test/TestBroadcast";
-import UICapture from "./test/UICapture";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Main extends cc.Component {
 
-    @property(ButtonPlus)
-    buttonPlus: ButtonPlus = null;
-    @property(TouchPlus)
-    touchPlus: TouchPlus = null;
+    @property(cc.Node)
+    content: cc.Node = null;
+    @property(cc.Prefab)
+    pfNode: cc.Prefab = null;
     
     onLoad() {
-        EventCenter.on("Event_Login", (a: number, b: number, c: number) => {
-            console.log("Event ", a, b, c);
-        }, this);
-        cc.dynamicAtlasManager.enabled = false;
+        cc.dynamicAtlasManager.enabled = true;
     }
 
     start () {
-        if (CC_DEBUG) {
-            DebugWindowUtil.init();
-        }
-
-        this.touchPlus.addEvent((e) => {
-            console.log('触发点击事件');
-        }, (e) => {
-            console.log('触发滑动事件', e.getDelta());
-        })
-        this.test();
+        UILogin.openView();
+        // for(let i=0; i<20; i++) {
+        //     let node = cc.instantiate(this.pfNode);
+        //     node.parent = this.content;
+        // }
     }
 
-    test() {
-        
-    }
-
-    /**
-     * 
-     */
     onDestroy() {
-        cc.log('destory');
+
     } 
     
 }

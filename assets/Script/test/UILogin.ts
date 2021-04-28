@@ -11,29 +11,28 @@ const {ccclass, property} = cc._decorator;
 export default class UILogin extends UIBase {
     
     formType = FormType.Screen;
-    canDestory = true;
+    willDestory = true;
 
     static prefabPath = "UIForms/UILogin";
 
     /** 下面表示 生命周期顺序 */
     async load() {
         cc.log('load');
+        return null;
         // 在这里执行你的加载操作
     }
 
-    async onShow(a: number, b: number, c: number) {
+    onShow(a: number) {
         // 初始化操作
         cc.log('onShow');
-        console.log(a, b, c);
         EventCenter.emit("Event_Login", 1, 2, 3);
-
-        // for(let i=0; i<10; i++) {
-        //     await CocosHelper.sleepSync(1);
-        //     UIToast.popUp("======: " + i);
-        // }
-
+        
         let view = this.view as UILogin_Auto;
         console.log(view)
+
+        view.btn.addClick(() => {
+
+        }, this);
     }
 
     onLoad() {
@@ -54,7 +53,7 @@ export default class UILogin extends UIBase {
     }
 
     async onClickLogin() {
-        this.closeUIForm();
-        await UIHall.openViewWithLoading();
+        this.closeSelf();
+        await UIHall.openView();
     }
 }

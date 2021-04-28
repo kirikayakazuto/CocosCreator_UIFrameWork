@@ -12,7 +12,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIFriendRank extends UIBase {
 
-    formType = FormType.FixedUI;
+    formType = FormType.Fixed;
 
     @property(cc.Node)
     content: cc.Node = null;

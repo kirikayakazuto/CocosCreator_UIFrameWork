@@ -1,9 +1,9 @@
-import CocosHelper from "./CocosHelper";
 import UIManager from "./UIManager";
-import { FormType, SysDefine } from "./config/SysDefine";
-import { MaskType } from "./FrameType";
+import { FormType } from "./config/SysDefine";
+import { IFormData } from "./Struct";
 import AdapterMgr from "./AdapterMgr";
 import TipsMgr from "./TipsMgr";
+
 
 const {ccclass, property} = cc._decorator;
 
@@ -11,43 +11,33 @@ const {ccclass, property} = cc._decorator;
 export default class UIBase extends cc.Component {
 
     /** 窗体id,该窗体的唯一标示(请不要对这个值进行赋值操作, 内部已经实现了对应的赋值) */
-    public uid: string;
+    public fid: string;
+    /** 窗体数据 */
+    public formData: IFormData = null;
     /** 窗体类型 */
     public formType: FormType = 0;
-    /** 阴影类型, 只对PopUp类型窗体启用 */
-    public maskType = new MaskType();
     /** 关闭窗口后销毁, 会将其依赖的资源一并销毁, 采用了引用计数的管理, 不用担心会影响其他窗体 */
-    public canDestory = false;
+    public willDestory = false;
     /** 回调 */
     protected _cb: (confirm: any) => void;
     /** 是否已经调用过preinit方法 */
     private _inited = false;
+    /** 资源路径 */
+    public static prefabPath = "";
 
-    /** 资源路径，如果没写的话就是类名 */
-    public static _prefabPath = "";
-    public static set prefabPath(path: string) {
-        this._prefabPath = path;
+    
+    /** 打开UIBase */
+    public static async openView(parmas?: any, formData?: IFormData): Promise<UIBase> {
+        return await UIManager.getInstance().openForm(this.prefabPath, parmas, formData);
     }
-    public static get prefabPath() {
-        if(!this._prefabPath || this._prefabPath.length <= 0) {
-            this._prefabPath = SysDefine.UI_PATH_ROOT + CocosHelper.getComponentName(this);
-            console.log("component name:", CocosHelper.getComponentName(this))
-        }
-        return this._prefabPath;
-    }
-
-    /** 打开关闭UIBase */
-    public static async openView(...parmas: any): Promise<UIBase> {
-        return await UIManager.getInstance().openUIForm(this.prefabPath, ...parmas);
-    }
-    public static async openViewWithLoading(...parmas: any): Promise<UIBase> {
-        await TipsMgr.inst.showLoadingForm(this.prefabPath);
-        let uiBase = await this.openView(...parmas);
+    public static async openViewWithLoading(parmas?: any): Promise<UIBase> {
+        await TipsMgr.inst.showLoadingForm(parmas);
+        let uiBase = await this.openView(parmas);
         await TipsMgr.inst.hideLoadingForm();
         return uiBase;
     }
     public static async closeView(): Promise<boolean> {
-        return await UIManager.getInstance().closeUIForm(this.prefabPath);
+        return await UIManager.getInstance().closeForm(this.prefabPath);
     }
     public view: cc.Component;
 
@@ -57,8 +47,11 @@ export default class UIBase extends cc.Component {
         this._inited = true;
         this.view = this.getComponent(`${this.node.name}_Auto`);
         autorun(this.refreshView.bind(this));
-        // 加载这个UI依赖的其他资源，其他资源可以也是UI
-        await this.load();
+        // 加载这个UI依赖的其他资源
+        let errorMsg = await this.load();
+        if(errorMsg) {
+            return ;
+        }
 
         this.onInit();
     }
@@ -74,11 +67,13 @@ export default class UIBase extends cc.Component {
     }
 
     /** 可以在这里进行一些资源的加载, 具体实现可以看test下的代码 */
-    public async load() {}
+    public async load(): Promise<string> {
+        return null;
+    }
 
     public onInit() {}
 
-    public onShow(...obj: any) {}
+    public onShow(params: any) {}
 
     public onHide() {}
     
@@ -91,29 +86,18 @@ export default class UIBase extends cc.Component {
         });
     }
 
-    /**
-     * 
-     * @param uiFormName 窗体名称
-     * @param obj 参数
-     */
-    public async showUIForm(uiFormName: string, ...obj: any): Promise<UIBase> {
-       return await UIManager.getInstance().openUIForm(uiFormName, obj);
+    public async openForm(prefabPath: string, params: any, formData?: IFormData): Promise<UIBase> {
+       return await UIManager.getInstance().openForm(prefabPath, params, formData);
     }
-    public async closeUIForm(): Promise<boolean> {
-       return await UIManager.getInstance().closeUIForm(this.uid);
+    public async closeSelf(): Promise<boolean> {
+       return await UIManager.getInstance().closeForm(this.fid);
     }
 
     /**
      * 弹窗动画
      */
-    public async showAnimation() {
-        if(this.formType === FormType.PopUp) {
-            this.node.scale = 0;
-            await CocosHelper.runTweenSync(this.node, cc.tween().to(0.3, {scale: 1}, cc.easeBackOut()));
-        }
-    }
-    public async hideAnimation() {
-    }
+    public async showEffect() {}
+    public async hideEffect() {}
 
     /** 设置是否挡住触摸事件 */
     private _blocker: cc.BlockInputEvents = null;

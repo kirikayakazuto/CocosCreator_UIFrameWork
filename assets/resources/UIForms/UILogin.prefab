@@ -37,10 +37,13 @@
     "_components": [
       {
         "__id__": 23
+      },
+      {
+        "__id__": 24
       }
     ],
     "_prefab": {
-      "__id__": 24
+      "__id__": 25
     },
     "_opacity": 255,
     "_color": {
@@ -650,8 +653,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
-        0,
+        -558.217,
+        -270.651,
         0,
         0,
         0,
@@ -908,6 +911,25 @@
       "__id__": 1
     },
     "_enabled": true,
+    "_id": ""
+  },
+  {
+    "__type__": "a88begnTmZOIY7ImNZFjPCO",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "Login": {
+      "__id__": 5
+    },
+    "btn": {
+      "__id__": 18
+    },
+    "Name": {
+      "__id__": 21
+    },
     "_id": ""
   },
   {

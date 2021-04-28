@@ -7,8 +7,41 @@ declare function require(name: string): any;
 /** 对creator.d.ts的补充, 后续从2.2.2版本中挖出来
 */
 declare namespace cc {
-	/** 对creator.d.ts的补充
-	追加cc.Assembler方法
+
+	declare class RenderFlow {
+		static FLAG_DONOTHING: number;
+		static FLAG_BREAK_FLOW: number;
+		static FLAG_LOCAL_TRANSFORM: number;
+		static FLAG_WORLD_TRANSFORM: number;
+		static FLAG_TRANSFORM: number;
+		static FLAG_UPDATE_RENDER_DATA: number;
+		static FLAG_OPACITY: number;
+		static FLAG_COLOR: number;
+		static FLAG_OPACITY_COLOR: number;
+		static FLAG_RENDER: number;
+		static FLAG_CHILDREN: number;
+		static FLAG_POST_RENDER: number;
+		static FLAG_FINAL: number;
+
+		static flows: any;
+
+		_doNothing(): void;
+		_localTransform(): void;
+		_worldTransform(): void;
+		_opacity(): void;
+		_color(): void;
+		_updateRenderData(): void;
+		_render(): void;
+		_children(): void;
+		_postRender(): void;
+	}
+
+	declare interface renderer {
+		// _handle: any;		// 无效
+	}
+
+	/** 
+	 * 对creator.d.ts的补充
 	*/
 	export class Assembler {
 		public init(comp: cc.RenderComponent);
@@ -31,17 +64,19 @@ declare namespace cc {
 		render(): void;
 	}
 
-	declare interface Sprite {
-		_spriteFrame: cc.SpriteFrame;
+	declare interface Node {
+		_renderFlag: number;
+		_activeInHierarchy: boolean;
 	}
 
-	declare interface renderer {
-		// _handle: any;		// 无效
+	declare interface Sprite {
+		_spriteFrame: cc.SpriteFrame;
 	}
 
 	declare interface Material {
 		setProperty(name: string, value: any);
 		getProperty(name: string): any;
+		getHash(): string;
 		// static getInstantiatedMaterial(material: Material, comp: RenderComponent): Material;	// 无效
 	}
 

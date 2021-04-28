@@ -1,0 +1,31 @@
+{
+  "__type__": "cc.Material",
+  "_name": "MGlow",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "20ad2528-98ca-4c5b-83cb-00e001dc936c"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "props": {
+        "glowColor": {
+          "__type__": "cc.Color",
+          "r": 255,
+          "g": 230,
+          "b": 0,
+          "a": 255
+        },
+        "glowType": 0.5,
+        "glowRange": 0.03,
+        "glowThreshold": 0.2
+      },
+      "defines": {
+        "USE_TEXTURE": true,
+        "INPUT_IS_GAMMA": false,
+        "USE_ALPHA_TEST": false
+      }
+    }
+  }
+}

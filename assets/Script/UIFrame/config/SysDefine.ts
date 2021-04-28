@@ -3,11 +3,11 @@ export enum FormType {
     /** 屏幕 */
     Screen,
     /** 固定窗口 */
-    FixedUI,
+    Fixed,
     /** 弹出窗口 */
-    PopUp,
+    Window,
     /** 独立窗口 */
-    TopTips,
+    Tips,
 }
 /**透明度类型 */
 export enum ModalOpacity {
@@ -45,7 +45,7 @@ export class SysDefine {
     public static SYS_SCENE_NODE = "Scene"
     public static SYS_UIROOT_NODE = "UIROOT";
     public static SYS_SCREEN_NODE = "Screen";
-    public static SYS_FIXEDUI_NODE = "FixedUI";
+    public static SYS_FIXED_NODE = "FixedUI";
     public static SYS_POPUP_NODE = "PopUp";  
     public static SYS_TOPTIPS_NODE = "TopTips";
     /** 规范符号 */

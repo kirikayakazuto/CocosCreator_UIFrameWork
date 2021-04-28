@@ -24,7 +24,7 @@ Editor.Panel.extend({
   // method executed when template and styles are successfully loaded and initialized
   ready () {
     this.$btn.addEventListener('confirm', () => {
-      Editor.Ipc.sendToMain('buttonplus:clicked');
+      this.$label.innerText = '123';
     });
   },
 

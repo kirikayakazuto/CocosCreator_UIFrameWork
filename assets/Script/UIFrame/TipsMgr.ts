@@ -21,16 +21,16 @@ export default class TipsMgr{
     public setLoadingForm(loadingName: string) {
         this.loadingFormName = loadingName;
     }
-    public async showLoadingForm(...params: any[]) {
+    public async showLoadingForm(params: any) {
         if(!this.loadingFormName || this.loadingFormName.length <= 0) {
             cc.warn('请先设置loading form');
             return ;
         }
-        await UIManager.getInstance().openUIForm(this.loadingFormName, ...params);
+        await UIManager.getInstance().openForm(this.loadingFormName, params);
     }
     /** 隐藏加载form */
     public async hideLoadingForm() {
-        await UIManager.getInstance().closeUIForm(this.loadingFormName);
+        await UIManager.getInstance().closeForm(this.loadingFormName);
     }
 
     /** 提示窗体 */
@@ -39,6 +39,6 @@ export default class TipsMgr{
         this.tipsFormName = tipsFormName;
     }
     public async showToast() {
-        await UIToast.popUp();
+        await UIToast.popUp("");
     }
 }

@@ -30,6 +30,7 @@ export default class TexturePlus extends cc.RenderComponent {
         this._texture = val;
         let l = -val.width/2, b = -val.height/2, t = val.height/2, r = val.width/2;
         this.polygon = [cc.v2(l, b), cc.v2(r, b), cc.v2(r, t), cc.v2(l, t)];
+        this.node.width = val.width; this.node.height = val.height;
         this._updateMaterial();
     }
 

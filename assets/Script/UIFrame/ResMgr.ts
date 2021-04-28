@@ -65,21 +65,17 @@ export default class ResMgr {
     /** 加载窗体 */
     public async loadForm(formName: string) {
         let form = await CocosHelper.loadResSync<cc.Prefab>(formName, cc.Prefab, this._addTmpStaticDepends.bind(this));
-
         this._clearTmpStaticDepends();
         let deps = cc.loader.getDependsRecursively(formName);
         this.addStaticDepends(deps);
-        
         return form;
     }
+
     /** 销毁窗体 */
     public destoryForm(com: UIBase) {
-        if(!com) {
-            cc.log("只支持销毁继承了UIBase的窗体!");
-            return;
-        }
+        if(!com) return;
         EventCenter.targetOff(com);
-        let deps = cc.loader.getDependsRecursively(com.uid);
+        let deps = cc.loader.getDependsRecursively(com.fid);
         this.removeStaticDepends(deps);
         com.node.destroy();
     }

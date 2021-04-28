@@ -25,10 +25,7 @@ export default class TextureAssembler extends cc.Assembler {
 
     floatsPerVert = 5;
     uvOffset = 2;       
-    colorOffset = 4;
-
-    indicesArr: number[] = [];
-
+    colorOffset = 4;    
 
     private _renderData: cc.RenderData = null;
 
@@ -53,8 +50,14 @@ export default class TextureAssembler extends cc.Assembler {
         if(!points || points.length < 3) return ;
         this.verticesCount = points.length;
         this.indicesCount = this.verticesCount + (this.verticesCount - 3) * 2;
-        this._renderData.clear();
+        this._renderData['clear']();
         this.initData();
+    }
+
+    public initQuadIndices(indices: number[], arr: number[]) {
+        for(let i=0; i<arr.length; i++) {
+            indices[i] = arr[i];
+        }
     }
 
     /** 填充顶点的color */
@@ -131,7 +134,8 @@ export default class TextureAssembler extends cc.Assembler {
 
     /** 更新顶点数据 */
     protected updateVerts(comp: TexturePlus) {
-        this.indicesArr = CommonUtils.splitePolygon(comp.polygon); 
+        let indicesArr = CommonUtils.splitePolygon(comp.polygon); 
+        this.initQuadIndices(this._renderData.iDatas[0], indicesArr);
         this.updateWorldVerts(comp);
     }
 
@@ -175,11 +179,9 @@ export default class TextureAssembler extends cc.Assembler {
         // fill indices
         let ibuf = buffer._iData,
             indiceOffset = offsetInfo.indiceOffset,
-            vertexId = offsetInfo.vertexOffset;             // vertexId是已经在buffer里的顶点数，也是当前顶点序号的基数
-
-        let ins = this.indicesArr;
-        for(let i=0; i<iData.length; i++) {
-            ibuf[indiceOffset++] = vertexId + ins[i]; 
+            vertexId = offsetInfo.vertexOffset;
+        for (let i = 0, l = iData.length; i < l; i++) {
+            ibuf[indiceOffset++] = vertexId + iData[i];
         }
     }
   
@@ -192,7 +194,7 @@ export default class TextureAssembler extends cc.Assembler {
                 frame._setDynamicAtlasFrame(packedFrame);
             }
         }
-        let material = comp._materials[0];
+        let material = comp['_materials'][0];
         if (!material) return;
         
         if (material.getProperty('texture') !== frame._texture) {
