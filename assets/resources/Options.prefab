@@ -97,7 +97,7 @@
       "__id__": 1
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 3
@@ -221,7 +221,7 @@
       "__id__": 1
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 7
@@ -345,7 +345,7 @@
       "__id__": 1
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 11
@@ -469,7 +469,7 @@
       "__id__": 1
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 15
@@ -608,9 +608,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_contentSize": {
@@ -667,8 +667,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "看广告",
-    "_N$string": "看广告",
+    "_string": "使用中",
+    "_N$string": "使用中",
     "_fontSize": 40,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -725,7 +725,7 @@
       "ads"
     ],
     "propertyJson": {
-      "__uuid__": "8ebf092e-df69-422a-9168-fc235a1db763"
+      "__uuid__": "b5231873-af73-4857-9201-d95d20650313"
     },
     "_id": ""
   },
