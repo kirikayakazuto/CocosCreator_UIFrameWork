@@ -44,53 +44,55 @@ module scene {
         if(childs.length < 3) return null;
         let NodeRoot = ROOT_NODE = childs[1];
 
-        let comPropCtrl = NodeRoot.getComponent("PropController");
-        if(!comPropCtrl || !comPropCtrl.open) {            
-            return;
-        }
-
-        let saveData: {[key: string]: any} = {};
-        let ProjectDir = Editor.Project.path;
-        let ScriptName = `${NodeRoot.name}_${comPropCtrl.uid}_Auto`;
-        let ScriptPath = `${ProjectDir}/${Const.JsonsDir}/${ScriptName}.json`.replace(/\\/g, "/");
-        
-        if(!comPropCtrl.uid || comPropCtrl.uid.length <= 0) {
-            cc.warn(`PropController, 请设置 PropController 的 uid ${comPropCtrl.uid} `);
-            return ;
-        }
-
-        if(comPropCtrl.state < 0 || comPropCtrl.state >= comPropCtrl.states.length) {
-            cc.warn(`PropController, ${comPropCtrl.uid} 控制器越界了`);
-            return ;
-        }
-
-        _readFile(ScriptPath, (data: any) => {
-            saveData = data;
-            // 把当前状态的数据置空
-            saveData[comPropCtrl.state] = {};
-            // 删除已经不存在的状态
-            for(const e in saveData) {
-                if(parseInt(e) >= comPropCtrl.states.length) {  // 表示这个状态已经废弃了
-                    saveData[e] = null;
-                    delete saveData[e];
-                }
+        let comPropCtrls = NodeRoot.getComponents("PropController");
+        for(const comPropCtrl of comPropCtrls) {
+            if(!comPropCtrl || !comPropCtrl.open) {            
+                continue;
             }
-            // 把当前控制器下的
-            _doSetProp(comPropCtrl, NodeRoot, saveData);
-
-            let json = JSON.stringify(saveData);
-            checkScriptDir();
+    
+            let saveData: {[key: string]: any} = {};
+            let ProjectDir = Editor.Project.path;
+            let ScriptName = `${NodeRoot.name}_${comPropCtrl.uid}_Auto`;
+            let ScriptPath = `${ProjectDir}/${Const.JsonsDir}/${ScriptName}.json`.replace(/\\/g, "/");
             
-            fs.writeFileSync(ScriptPath, json);
-            let dbJsonPath = ScriptPath.replace(ProjectDir, "db:/");
-            Editor.assetdb.refresh(dbJsonPath, (err: any, data: any) => {
-                cc.assetManager.loadAny({uuid: data[0].uuid}, (err: any, data: any) => {
-                    comPropCtrl.propertyJson = data;
-                    Editor.log('控制器数据保存成功-', dbJsonPath);
+            if(!comPropCtrl.uid || comPropCtrl.uid.length <= 0) {
+                cc.warn(`PropController, 请设置 PropController 的 uid ${comPropCtrl.uid} `);
+                return ;
+            }
+    
+            if(comPropCtrl.state < 0 || comPropCtrl.state >= comPropCtrl.states.length) {
+                cc.warn(`PropController, ${comPropCtrl.uid} 控制器越界了`);
+                return ;
+            }
+    
+            _readFile(ScriptPath, (data: any) => {
+                saveData = data;
+                // 把当前状态的数据置空
+                saveData[comPropCtrl.state] = {};
+                // 删除已经不存在的状态
+                for(const e in saveData) {
+                    if(parseInt(e) >= comPropCtrl.states.length) {  // 表示这个状态已经废弃了
+                        saveData[e] = null;
+                        delete saveData[e];
+                    }
+                }
+                // 把当前控制器下的
+                _doSetProp(comPropCtrl, NodeRoot, saveData);
+    
+                let json = JSON.stringify(saveData);
+                checkScriptDir();
+                
+                fs.writeFileSync(ScriptPath, json);
+                let dbJsonPath = ScriptPath.replace(ProjectDir, "db:/");
+                Editor.assetdb.refresh(dbJsonPath, (err: any, data: any) => {
+                    cc.assetManager.loadAny({uuid: data[0].uuid}, (err: any, data: any) => {
+                        comPropCtrl.propertyJson = data;
+                        Editor.log('控制器数据保存成功-', dbJsonPath);
+                    });
                 });
-            });
-
-        }); 
+    
+            }); 
+        }
     }
 
     function checkScriptDir() {

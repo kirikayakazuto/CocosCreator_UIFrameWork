@@ -1,16 +1,16 @@
 import PropSelector, { PropEmum } from "./PropSelector";
 
-const {ccclass, executeInEditMode, property} = cc._decorator;
+const {ccclass, executeInEditMode, inspector, property} = cc._decorator;
 
-const ControllerType = cc.Enum({});
 @ccclass
 @executeInEditMode
+@inspector('packages://propcontroller/dist/inspector.js')
 export default class PropController extends cc.Component {
 
     @property({tooltip: "是否启用控制器"})
     open = true;
     
-
+    @property({serializable: true})
     _uid = "";
     @property
     get uid() {
@@ -18,23 +18,16 @@ export default class PropController extends cc.Component {
     }
     set uid(val: string) {
         this._uid = val;
-
-        if(cc.isValid(this.node)) {
-            let coms = this.node.getComponents(PropController);
-            let array = coms.map((val, i) => { 
-                return {name: val.uid, value: i};
-            });
-            //@ts-ignore
-            cc.Class.Attr.setClassAttr(PropSelector, 'ctrlId', 'enumList', array);
-        }
+        this._refreshIdEnum();
     }
     
     _state = 0;
-    @property({type: ControllerType})
+    @property({type: cc.Enum({})})
     get state() {
         return this._state;
     }
     set state(val: number) {
+        Editor.log("======", val)
         this._state = val;
         this.doControl(val);
     }
@@ -47,22 +40,15 @@ export default class PropController extends cc.Component {
     }
     set states(states: string[]) {
         this._states = states;
-        let array = states.map((val, i) => {
-            return {name: val, value: i};
-        })
-        //@ts-ignore
-        cc.Class.Attr.setClassAttr(PropController, 'state', 'enumList', array);
+        this._refresh();
     }
 
     @property(cc.JsonAsset)
     propertyJson: cc.JsonAsset = null;
 
     onLoad () {
-        let array = this._states.map((val, i) => {
-            return {name: val, value: i};
-        });
-        //@ts-ignore
-        cc.Class.Attr.setClassAttr(PropController, 'state', 'enumList', array);
+        this._refresh();
+        this._refreshIdEnum();
     }
 
     start () {}
@@ -86,6 +72,29 @@ export default class PropController extends cc.Component {
                 if(!func) continue;
                 func(node, nodeProps[key])
             }
+        }
+    }
+
+    private _refresh() {
+        if(CC_EDITOR) {
+            let array = this._states.map((val, i) => {
+                return {name: val, value: i};
+            });
+            //@ts-ignore
+            cc.Class.Attr.setClassAttr(this, 'state', 'enumList', array);
+            //@ts-ignore
+            // Editor.Utils.refreshSelectedInspector('node', this.node.uuid);
+        }
+    }
+
+    private _refreshIdEnum() {
+        if(CC_EDITOR) {
+            let coms = this.node.getComponents(PropController);
+            let array = coms.map((val, i) => { 
+                return {name: val.uid, value: i};
+            });
+            //@ts-ignore
+            cc.Class.Attr.setClassAttr(PropSelector, 'ctrlId', 'enumList', array);
         }
     }
 

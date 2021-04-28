@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Options",
+    "_name": "Options2",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -208,7 +208,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "6c4f7204-fa9c-4303-a2f5-bf586b3e4870"
+      "__uuid__": "22fad029-010c-43f4-a9a2-e09c415f887e"
     },
     "fileId": "53xLUUsiJPApHGPrOH2KO2",
     "sync": false
@@ -332,7 +332,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "6c4f7204-fa9c-4303-a2f5-bf586b3e4870"
+      "__uuid__": "22fad029-010c-43f4-a9a2-e09c415f887e"
     },
     "fileId": "e529/lk3xDJq1qSSPMLYxP",
     "sync": false
@@ -456,7 +456,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "6c4f7204-fa9c-4303-a2f5-bf586b3e4870"
+      "__uuid__": "22fad029-010c-43f4-a9a2-e09c415f887e"
     },
     "fileId": "0eSP0zW5RPaaep5PaElIrF",
     "sync": false
@@ -580,7 +580,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "6c4f7204-fa9c-4303-a2f5-bf586b3e4870"
+      "__uuid__": "22fad029-010c-43f4-a9a2-e09c415f887e"
     },
     "fileId": "eaC7TYLdpEY5oyaUbw3zql",
     "sync": false
@@ -695,8 +695,7 @@
     "_enabled": true,
     "ctrlId": 0,
     "props": [
-      6,
-      9
+      6
     ],
     "_id": ""
   },
@@ -706,7 +705,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "6c4f7204-fa9c-4303-a2f5-bf586b3e4870"
+      "__uuid__": "22fad029-010c-43f4-a9a2-e09c415f887e"
     },
     "fileId": "76E1F82edIVqmQBFhjn5tM",
     "sync": false
@@ -720,13 +719,13 @@
     },
     "_enabled": true,
     "open": false,
-    "_uid": "option",
+    "_uid": "options",
     "_states": [
       "use",
       "ads"
     ],
     "propertyJson": {
-      "__uuid__": "b5231873-af73-4857-9201-d95d20650313"
+      "__uuid__": "72d74012-ab1e-4829-9c7c-0f9b6374831e"
     },
     "_id": ""
   },
@@ -736,7 +735,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "6c4f7204-fa9c-4303-a2f5-bf586b3e4870"
+      "__uuid__": "22fad029-010c-43f4-a9a2-e09c415f887e"
     },
     "fileId": "",
     "sync": false

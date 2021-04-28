@@ -6,5 +6,5 @@ export class TestData {
 }
 
 export class TestBroadcast {
-    static testData = new Broadcast<TestData>();
+    static testData = new Broadcast<TestData>();    
 }

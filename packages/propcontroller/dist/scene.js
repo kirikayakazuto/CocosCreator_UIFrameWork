@@ -47,46 +47,54 @@ var scene;
         if (childs.length < 3)
             return null;
         var NodeRoot = ROOT_NODE = childs[1];
-        var comPropCtrl = NodeRoot.getComponent("PropController");
-        if (!comPropCtrl || !comPropCtrl.open) {
-            return;
-        }
-        var saveData = {};
-        var ProjectDir = Editor.Project.path;
-        var ScriptName = NodeRoot.name + "_" + comPropCtrl.uid + "_Auto";
-        var ScriptPath = (ProjectDir + "/" + Const_1.default.JsonsDir + "/" + ScriptName + ".json").replace(/\\/g, "/");
-        if (!comPropCtrl.uid || comPropCtrl.uid.length <= 0) {
-            cc.warn("PropController, \u8BF7\u8BBE\u7F6E PropController \u7684 uid " + comPropCtrl.uid + " ");
-            return;
-        }
-        if (comPropCtrl.state < 0 || comPropCtrl.state >= comPropCtrl.states.length) {
-            cc.warn("PropController, " + comPropCtrl.uid + " \u63A7\u5236\u5668\u8D8A\u754C\u4E86");
-            return;
-        }
-        _readFile(ScriptPath, function (data) {
-            saveData = data;
-            // 把当前状态的数据置空
-            saveData[comPropCtrl.state] = {};
-            // 删除已经不存在的状态
-            for (var e in saveData) {
-                if (parseInt(e) >= comPropCtrl.states.length) { // 表示这个状态已经废弃了
-                    saveData[e] = null;
-                    delete saveData[e];
-                }
+        var comPropCtrls = NodeRoot.getComponents("PropController");
+        var _loop_1 = function (comPropCtrl) {
+            if (!comPropCtrl || !comPropCtrl.open) {
+                return "continue";
             }
-            // 把当前控制器下的
-            _doSetProp(comPropCtrl, NodeRoot, saveData);
-            var json = JSON.stringify(saveData);
-            checkScriptDir();
-            fs.writeFileSync(ScriptPath, json);
-            var dbJsonPath = ScriptPath.replace(ProjectDir, "db:/");
-            Editor.assetdb.refresh(dbJsonPath, function (err, data) {
-                cc.assetManager.loadAny({ uuid: data[0].uuid }, function (err, data) {
-                    comPropCtrl.propertyJson = data;
-                    Editor.log('控制器数据保存成功-', dbJsonPath);
+            var saveData = {};
+            var ProjectDir = Editor.Project.path;
+            var ScriptName = NodeRoot.name + "_" + comPropCtrl.uid + "_Auto";
+            var ScriptPath = (ProjectDir + "/" + Const_1.default.JsonsDir + "/" + ScriptName + ".json").replace(/\\/g, "/");
+            if (!comPropCtrl.uid || comPropCtrl.uid.length <= 0) {
+                cc.warn("PropController, \u8BF7\u8BBE\u7F6E PropController \u7684 uid " + comPropCtrl.uid + " ");
+                return { value: void 0 };
+            }
+            if (comPropCtrl.state < 0 || comPropCtrl.state >= comPropCtrl.states.length) {
+                cc.warn("PropController, " + comPropCtrl.uid + " \u63A7\u5236\u5668\u8D8A\u754C\u4E86");
+                return { value: void 0 };
+            }
+            _readFile(ScriptPath, function (data) {
+                saveData = data;
+                // 把当前状态的数据置空
+                saveData[comPropCtrl.state] = {};
+                // 删除已经不存在的状态
+                for (var e in saveData) {
+                    if (parseInt(e) >= comPropCtrl.states.length) { // 表示这个状态已经废弃了
+                        saveData[e] = null;
+                        delete saveData[e];
+                    }
+                }
+                // 把当前控制器下的
+                _doSetProp(comPropCtrl, NodeRoot, saveData);
+                var json = JSON.stringify(saveData);
+                checkScriptDir();
+                fs.writeFileSync(ScriptPath, json);
+                var dbJsonPath = ScriptPath.replace(ProjectDir, "db:/");
+                Editor.assetdb.refresh(dbJsonPath, function (err, data) {
+                    cc.assetManager.loadAny({ uuid: data[0].uuid }, function (err, data) {
+                        comPropCtrl.propertyJson = data;
+                        Editor.log('控制器数据保存成功-', dbJsonPath);
+                    });
                 });
             });
-        });
+        };
+        for (var _i = 0, comPropCtrls_1 = comPropCtrls; _i < comPropCtrls_1.length; _i++) {
+            var comPropCtrl = comPropCtrls_1[_i];
+            var state_1 = _loop_1(comPropCtrl);
+            if (typeof state_1 === "object")
+                return state_1.value;
+        }
     }
     scene.start = start;
     function checkScriptDir() {
