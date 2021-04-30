@@ -27,7 +27,6 @@ export default class PropController extends cc.Component {
         return this._state;
     }
     set state(val: number) {
-        Editor.log("======", val)
         this._state = val;
         this.doControl(val);
     }
@@ -55,16 +54,15 @@ export default class PropController extends cc.Component {
 
     public doControl(type: string | number) {
         let t = type;
-        if(typeof type == "string") {
-            t = this.states[type];
-        }
+        // if(typeof type == "string") {
+        //     t = this.states[type];
+        // }
 
         let ctrl = this.propertyJson.json;
 
-        let map = ctrl[t];        
+        let map = ctrl[t];      
         for(const path in map) {
             let node = cc.find(path, this.node);
-            
             if(!node) continue;
             let nodeProps = map[path];
             for(const key in nodeProps) {  

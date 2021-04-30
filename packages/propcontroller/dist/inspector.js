@@ -5,7 +5,7 @@ Vue.component("propcontroller", {
     '   <ui-prop\n      v-prop="target.open"\n   :multi-values="multi"\n    >\n    </ui-prop>\n  '+
     '   <ui-prop\n      v-prop="target.uid"\n   :multi-values="multi"\n    >\n    </ui-prop>\n  '+
     '   <ui-prop name="State">\n'+
-    '      <ui-select @confirm="selectChange" value="0"  target.sync="target.state">'+
+    '      <ui-select @confirm="selectChange" :value="target.state.value">'+
     '       <option v-for="(i, item) in list" :value="i"> {{item}} </option>' +
     '      </ui-select>\n  '+
     '      <ui-button\n        class="blue tiny"\n        @confirm="refreshState"\n      >\n'+
@@ -17,8 +17,13 @@ Vue.component("propcontroller", {
     '   ',    
 
     data: function () {
+        let arr = [];
+        let value = this.target.states.value;
+        for(const e of value) {
+            arr.push(e.value);
+        }
         return {
-          list: [123, 234, 345]
+          list: arr
         }
     },
 
@@ -31,12 +36,20 @@ Vue.component("propcontroller", {
 
     methods:{
         selectChange(event) {
-            Editor.log(event.detail.value);
+            this.target.state.value = event.detail.value;
+            let t = {
+                nodeUuid: this.target.node.value.uuid,
+                comUuid: this.target.uuid.value,
+                state: event.detail.value
+            }
+            Editor.Scene.callSceneScript("propcontroller","setState",t);
         },
         refreshState(event, d){
-            // Editor.Ipc.sendToPanel("scene","scene:refreshState",this.target.uuid.value)
-            Editor.log(JSON.stringify(this.list));
-            this.list = ['aaa', 'bbb', 'ccc'];
+            this.list = [];
+            let value = this.target.states.value;
+            for(const e of value) {
+                this.list.push(e.value);
+            }
         }
     }
 });

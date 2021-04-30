@@ -5,6 +5,17 @@ const _localSaveFunc: {[key: number]: (saveData: any, com: any, comPropCtrl: any
 let ROOT_NODE: cc.Node = null as any;
 
 module scene {
+
+    export function setState(event: any, t: any) {
+        let node = cc.director.getScene().getChildByUuid(t.nodeUuid);
+        let coms = node.getComponents("PropController");
+        for(const com of coms) {
+            // Editor.log(com.uuid, t.comUuid);
+            if(com.uuid == t.comUuid) {
+                com.state = t.state;
+            }
+        }
+    }
     
     function _readFile(path: string, callback: Function) {
         fs.readFile(path, 'utf8', (err: any, data: string) => {

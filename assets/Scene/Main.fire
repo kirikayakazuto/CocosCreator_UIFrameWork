@@ -539,8 +539,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
+      "width": 195,
+      "height": 270
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -577,42 +577,45 @@
     "_id": "22GxQv6/9K1rRb4j7Z93rk"
   },
   {
-    "__type__": "cc.PolygonCollider",
+    "__type__": "58ad8KR/hRJi7EtoZ+PAyOU",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 12
     },
     "_enabled": true,
-    "tag": 0,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "points": [
+    "_materials": [
       {
-        "__type__": "cc.Vec2",
-        "x": -50,
-        "y": -50
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": 50,
-        "y": -50
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": 50,
-        "y": 50
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": -50,
-        "y": 50
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
-    "_id": "2aSjFFF19PT5WvCLU01orP"
+    "_texture": {
+      "__uuid__": "6aa0aa6a-ebee-4155-a088-a687a6aadec4"
+    },
+    "_polygon": [
+      {
+        "__type__": "cc.Vec2",
+        "x": -97.5,
+        "y": -135
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": 97.5,
+        "y": -135
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": 85.14286266038381,
+        "y": 42.32146995287857
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": -97.5,
+        "y": 135
+      }
+    ],
+    "editing": true,
+    "_id": "5a03pbMhJEyIi5nfEEbMLg"
   },
   {
     "__type__": "cc.Canvas",

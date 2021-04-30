@@ -9,6 +9,18 @@ var _localSaveFunc = {};
 var ROOT_NODE = null;
 var scene;
 (function (scene) {
+    function setState(event, t) {
+        var node = cc.director.getScene().getChildByUuid(t.nodeUuid);
+        var coms = node.getComponents("PropController");
+        for (var _i = 0, coms_1 = coms; _i < coms_1.length; _i++) {
+            var com = coms_1[_i];
+            // Editor.log(com.uuid, t.comUuid);
+            if (com.uuid == t.comUuid) {
+                com.state = t.state;
+            }
+        }
+    }
+    scene.setState = setState;
     function _readFile(path, callback) {
         fs.readFile(path, 'utf8', function (err, data) {
             if (!err) {
@@ -21,8 +33,8 @@ var scene;
     }
     function _doSetProp(comPropCtrl, NodeRoot, saveData) {
         var coms = NodeRoot.getComponentsInChildren("PropSelector");
-        for (var _i = 0, coms_1 = coms; _i < coms_1.length; _i++) {
-            var com = coms_1[_i];
+        for (var _i = 0, coms_2 = coms; _i < coms_2.length; _i++) {
+            var com = coms_2[_i];
             // 只处理当前状态的控制器属性
             var ctrl = NodeRoot.getComponents("PropController")[com.ctrlId];
             if (ctrl.uid !== comPropCtrl.uid) {
