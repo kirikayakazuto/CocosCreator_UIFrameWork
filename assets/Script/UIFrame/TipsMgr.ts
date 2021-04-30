@@ -21,12 +21,12 @@ export default class TipsMgr{
     public setLoadingForm(loadingName: string) {
         this.loadingFormName = loadingName;
     }
-    public async showLoadingForm(params: any) {
+    public async showLoadingForm() {
         if(!this.loadingFormName || this.loadingFormName.length <= 0) {
             cc.warn('请先设置loading form');
             return ;
         }
-        await UIManager.getInstance().openForm(this.loadingFormName, params);
+        await UIManager.getInstance().openForm(this.loadingFormName);
     }
     /** 隐藏加载form */
     public async hideLoadingForm() {

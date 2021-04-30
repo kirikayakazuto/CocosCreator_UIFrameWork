@@ -118,29 +118,42 @@ export default class CocosHelper {
         });
     }
     /** 加载资源 */
+    // public static loadResSync<T>(url: string, type: typeof cc.Asset, progressCallback?: (completedCount: number, totalCount: number, item: any) => void): Promise<T>{
+    //     if (!url || !type) {
+    //         cc.error("参数错误", url, type);
+    //         return;
+    //     }
+    //     CocosHelper.loadProgress.url = url;
+    //     if(progressCallback) {
+    //         this.loadProgress.cb = progressCallback;
+    //     }
+    //     return new Promise((resolve, reject) => {
+    //         cc.loader.loadRes(url, type, this._progressCallback, (err, asset) => {
+    //             if (err) {
+    //                 cc.error(`${url} [资源加载] 错误 ${err}`);
+    //                 resolve(null);
+    //             }else {
+    //                 resolve(asset);
+    //             }
+    //             // 加载完毕了，清理进度数据
+    //             CocosHelper.loadProgress.url = '';
+    //             CocosHelper.loadProgress.completedCount = 0;
+    //             CocosHelper.loadProgress.totalCount = 0;
+    //             CocosHelper.loadProgress.item = null;
+    //             CocosHelper.loadProgress.cb = null;
+    //         });
+    //     });
+    // }
+
     public static loadResSync<T>(url: string, type: typeof cc.Asset, progressCallback?: (completedCount: number, totalCount: number, item: any) => void): Promise<T>{
-        if (!url || !type) {
-            cc.error("参数错误", url, type);
-            return;
-        }
-        CocosHelper.loadProgress.url = url;
-        if(progressCallback) {
-            this.loadProgress.cb = progressCallback;
-        }
         return new Promise((resolve, reject) => {
-            cc.loader.loadRes(url, type, this._progressCallback, (err, asset) => {
+            cc.resources.load(url, type, (err, asset: any) => {
                 if (err) {
                     cc.error(`${url} [资源加载] 错误 ${err}`);
                     resolve(null);
                 }else {
                     resolve(asset);
                 }
-                // 加载完毕了，清理进度数据
-                CocosHelper.loadProgress.url = '';
-                CocosHelper.loadProgress.completedCount = 0;
-                CocosHelper.loadProgress.totalCount = 0;
-                CocosHelper.loadProgress.item = null;
-                CocosHelper.loadProgress.cb = null;
             });
         });
     }

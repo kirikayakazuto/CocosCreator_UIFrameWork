@@ -18,8 +18,6 @@ export default class UIBase extends cc.Component {
     public formType: FormType = 0;
     /** 关闭窗口后销毁, 会将其依赖的资源一并销毁, 采用了引用计数的管理, 不用担心会影响其他窗体 */
     public willDestory = false;
-    /** 回调 */
-    protected _cb: (confirm: any) => void;
     /** 是否已经调用过preinit方法 */
     private _inited = false;
     /** 资源路径 */
@@ -30,9 +28,9 @@ export default class UIBase extends cc.Component {
     public static async openView(parmas?: any, formData?: IFormData): Promise<UIBase> {
         return await UIManager.getInstance().openForm(this.prefabPath, parmas, formData);
     }
-    public static async openViewWithLoading(parmas?: any): Promise<UIBase> {
-        await TipsMgr.inst.showLoadingForm(parmas);
-        let uiBase = await this.openView(parmas);
+    public static async openViewWithLoading(parmas?: any, formData?: IFormData): Promise<UIBase> {
+        await TipsMgr.inst.showLoadingForm();
+        let uiBase = await this.openView(parmas, formData);
         await TipsMgr.inst.hideLoadingForm();
         return uiBase;
     }
@@ -50,9 +48,9 @@ export default class UIBase extends cc.Component {
         // 加载这个UI依赖的其他资源
         let errorMsg = await this.load();
         if(errorMsg) {
+            cc.error(errorMsg);
             return ;
         }
-
         this.onInit();
     }
 
@@ -77,14 +75,6 @@ export default class UIBase extends cc.Component {
 
     public onHide() {}
     
-    /** 通过闭包，保留resolve.在合适的时间调用cb方法 */
-    public waitPromise(): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this._cb = (confirm: any) => {
-                resolve(confirm);
-            }
-        });
-    }
 
     public async openForm(prefabPath: string, params: any, formData?: IFormData): Promise<UIBase> {
        return await UIManager.getInstance().openForm(prefabPath, params, formData);

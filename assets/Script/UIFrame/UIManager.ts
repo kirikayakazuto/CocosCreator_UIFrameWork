@@ -7,6 +7,7 @@ import Scene from "../Scene/Scene";
 import { UIWindow } from "./UIForm";
 import { IFormData } from "./Struct";
 import PriorityStake from "../Common/Utils/PriorityStack";
+import SceneMgr from "./SceneMgr";
 
 const {ccclass, property} = cc._decorator;
 
@@ -26,10 +27,6 @@ export default class UIManager extends cc.Component {
     private _currWindowId = '';                                     // 当前显示的弹窗
     public get currWindowId() {
         return this._currWindowId;
-    }
-    private _currScreenId = '';                                     // 当前显示的screen
-    public get currScreenId() {
-        return this._currScreenId;
     }
     
     private static instance: UIManager = null;                                          // 单例
@@ -76,7 +73,7 @@ export default class UIManager extends cc.Component {
      * @param prefabPath 
      * @param obj 初始化信息, 可以不要
      */
-    public async openForm(prefabPath: string, params: any, formData?: IFormData) {
+    public async openForm(prefabPath: string, params?: any, formData?: IFormData) {
         if(!prefabPath || prefabPath.length <= 0) {
             cc.warn(`${prefabPath}, 参数错误`);
             return ;
@@ -208,9 +205,12 @@ export default class UIManager extends cc.Component {
     /** 添加到screen中 */
     private async enterToScreen(prefabPath: string, params: any) {
         // 关闭其他显示的窗口 
+        let arr: Array<Promise<boolean>> = [];
         for(let key in this._showingForms) {
-            await this._showingForms[key].closeSelf();
+            arr.push(this._showingForms[key].closeSelf());
         }
+        await Promise.all(arr);
+
         let com = this._allForms[prefabPath];
         if(!com) return ;
         this._showingForms[prefabPath] = com;
@@ -219,7 +219,7 @@ export default class UIManager extends cc.Component {
         
         await com._preInit();
         com.onShow(params);
-        this._currScreenId = com.fid;
+
         await this.showEffect(com);
     }
 

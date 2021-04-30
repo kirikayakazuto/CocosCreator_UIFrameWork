@@ -24,6 +24,7 @@ export default class UIHall extends UIBase {
 
     async load() {
         await UIManager.getInstance().loadUIForms(UIUserInfo, UIFriendRank, UIMenu, UIRoom);
+        return null;
     }
 
     async onShow() {

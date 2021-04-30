@@ -66,7 +66,7 @@ export default class ResMgr {
     public async loadForm(formName: string) {
         let form = await CocosHelper.loadResSync<cc.Prefab>(formName, cc.Prefab, this._addTmpStaticDepends.bind(this));
         this._clearTmpStaticDepends();
-        let deps = cc.loader.getDependsRecursively(formName);
+        let deps = cc.assetManager.dependUtil.getDeps(formName);
         this.addStaticDepends(deps);
         return form;
     }
@@ -75,7 +75,9 @@ export default class ResMgr {
     public destoryForm(com: UIBase) {
         if(!com) return;
         EventCenter.targetOff(com);
-        let deps = cc.loader.getDependsRecursively(com.fid);
+        let deps = cc.assetManager.dependUtil.getDeps(com.node.uuid);
+        // let deps = cc.loader.getDependsRecursively(com.fid);
+        console.log(deps)
         this.removeStaticDepends(deps);
         com.node.destroy();
     }
@@ -97,7 +99,7 @@ export default class ResMgr {
             this.staticDepends[s] --;
             if(this.staticDepends[s] === 0) {
                 // 可以销毁
-                cc.loader.release(s);
+                cc.assetManager.resources.release(s)                
                 delete this.staticDepends[s];
             }
         }
@@ -120,9 +122,32 @@ export default class ResMgr {
             return false;
         }
         for(const key in this.dynamicDepends) {
-            cc.loader.release(this.dynamicDepends[key]);
+            for(const e of this.dynamicDepends[key]) {
+                cc.assetManager.resources.release(e);
+            }
         }
         return true;
     }
-    
+
+    public computeTextureCache() {
+        let cache = cc.loader['_cache'];
+        let totalTextureSize = 0;
+        let count = 0;
+        for(const key in cache) {
+            let item = cache[key];
+            if(!item.content) item.content = item;
+            if(item.type == 'js' || item.type == 'json') continue;
+            let content = (item.content && item.content.__classname__) ? item.content.__classname__ : item.type;
+            if (content === 'cc.Texture2D') {
+                let texture = item.content;
+                
+                let textureSize = texture.width * texture.height * ((texture._native === '.jpg' ? 3 : 4) / 1024 / 1024);
+                totalTextureSize += textureSize;
+                // sizeStr = textureSize.toFixed(3) + 'M';
+                // formatSize = Math.round(textureSize * 1000) / 1000;
+                count ++;
+            }
+        }
+        return `缓存 [纹理总数:${count}][纹理缓存:${totalTextureSize.toFixed(2) + 'M'}]`;
+    }
 }

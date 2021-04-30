@@ -5,7 +5,7 @@ import UIBase from "./UIBase";
 
 export class UIScreen extends UIBase {
     formType = FormType.Screen;
-
+    willDestory = true;
 }
 
 export class UIWindow extends UIBase {

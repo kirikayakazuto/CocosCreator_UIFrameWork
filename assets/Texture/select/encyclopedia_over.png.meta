@@ -1,0 +1,36 @@
+{
+  "ver": "2.3.5",
+  "uuid": "7abbc34f-f541-4f60-9a5e-bc4a95185aba",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 126,
+  "height": 90,
+  "platformSettings": {},
+  "subMetas": {
+    "encyclopedia_over": {
+      "ver": "1.0.4",
+      "uuid": "5796f0c4-7e10-4720-ae40-4a52946054a3",
+      "rawTextureUuid": "7abbc34f-f541-4f60-9a5e-bc4a95185aba",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -1,
+      "offsetY": 1.5,
+      "trimX": 10,
+      "trimY": 4,
+      "width": 104,
+      "height": 79,
+      "rawWidth": 126,
+      "rawHeight": 90,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
