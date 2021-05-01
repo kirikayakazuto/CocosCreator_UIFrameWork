@@ -29,9 +29,13 @@ export default class UIModalScript extends cc.Component {
             }
         }
         let texture = new cc.Texture2D();
+        texture.name = 'single color'
         texture.initWithData(data, cc.Texture2D.PixelFormat.RGBA8888, 2, 2);
-        texture.handleLoadedTexture();
         this._texture = texture;
+        // texture.packable = true;
+        texture.addRef();
+        cc.log("======", texture)
+
         return this._texture;
     }
 
@@ -40,6 +44,7 @@ export default class UIModalScript extends cc.Component {
      */
     public init() {
         let maskTexture = this.getSingleTexture();
+        
         let size = cc.view.getVisibleSize();
         this.node.height = size.height;
         this.node.width = size.width;

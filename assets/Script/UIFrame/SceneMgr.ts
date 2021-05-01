@@ -1,4 +1,5 @@
 import { IFormData } from "./Struct";
+import TipsMgr from "./TipsMgr";
 import UIManager from "./UIManager";
 
 const TAG = "SceneMgr";
@@ -17,6 +18,8 @@ class SceneMgr {
             cc.warn(TAG, "当前场景和需要open的场景是同一个");
             return ;
         }
+        await TipsMgr.inst.showLoadingForm();
+
         if(this._scenes.length > 0) {
             let currScene = this._scenes[this._scenes.length-1];
             await UIManager.getInstance().closeForm(currScene);
@@ -30,7 +33,9 @@ class SceneMgr {
         }
 
         this._currScene = scenePath;
-        await this._doOpenScene(this._currScene, params, formData);
+
+        await UIManager.getInstance().openForm(scenePath, params, formData);
+        await TipsMgr.inst.hideLoadingForm();
     }
 
     /** 回退一个场景 */
@@ -39,11 +44,13 @@ class SceneMgr {
             cc.warn(TAG, "已经是最后一个场景了, 无处可退");
             return ;
         }
+        await TipsMgr.inst.showLoadingForm();
         let currScene = this._scenes.pop();
         await UIManager.getInstance().closeForm(currScene);
 
         this._currScene = this._scenes[this._scenes.length-1];
-        await this._doOpenScene(this._currScene, params, formData);
+        await UIManager.getInstance().openForm(this._currScene, params, formData);
+        await TipsMgr.inst.hideLoadingForm();
     }
     
     /** 如果没有通过SceneMgr打开场景, 那么会在UIManager中调用check方法检查一下 */
@@ -59,9 +66,9 @@ class SceneMgr {
 
     /** 打开场景 */
     private async _doOpenScene(scenePath: string, params?: any, formData?: IFormData) {
-        // await TipsMgr.inst.showLoadingForm();
+        await TipsMgr.inst.showLoadingForm();
         await UIManager.getInstance().openForm(scenePath, params, formData);
-        // await TipsMgr.inst.hideLoadingForm();
+        await TipsMgr.inst.hideLoadingForm();
     }
 
 }

@@ -47,7 +47,7 @@ export default class UIManager extends cc.Component {
             UIROOT.addChild(this.instance._ndFixed = new cc.Node(SysDefine.SYS_FIXED_NODE));
             UIROOT.addChild(this.instance._ndPopUp = new cc.Node(SysDefine.SYS_POPUP_NODE));
             UIROOT.addChild(this.instance._ndTips = new cc.Node(SysDefine.SYS_TOPTIPS_NODE));
-            
+            ModalMgr.inst;
             cc.director.once(cc.Director.EVENT_AFTER_SCENE_LAUNCH, () => {
                 this.instance = null;
             });

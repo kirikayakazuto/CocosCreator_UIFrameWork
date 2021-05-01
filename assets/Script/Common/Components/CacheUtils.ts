@@ -25,7 +25,13 @@ export default class CacheUtils extends cc.Component {
 
     }
 
+    private passTime = 0;
     update (dt) {
-        this.com.string = ResMgr.inst.computeTextureCache();
+        this.passTime += dt;
+        if(this.passTime > 1) {
+            this.passTime = 0;
+            this.com.string = ResMgr.inst.computeTextureCache();
+        }
+        
     }
 }

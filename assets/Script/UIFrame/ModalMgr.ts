@@ -1,7 +1,6 @@
 
 import { SysDefine } from "./config/SysDefine";
 import UIModalScript from "./UIModalScript";
-import UIBase from "./UIBase";
 import { ModalType } from "./Struct";
 import { UIWindow } from "./UIForm";
 
@@ -41,8 +40,8 @@ export default class ModalMgr extends cc.Component {
                 break;
             }
         }
-        if(!this.uiModal.node.parent) {
-            this.uiModal.node.opacity = 0;
-        }
+        // if(!this.uiModal.node.parent) {
+        //     this.uiModal.node.opacity = 0;
+        // }
     }
 }

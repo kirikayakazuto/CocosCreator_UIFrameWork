@@ -1,6 +1,7 @@
 import CocosHelper from "./CocosHelper";
 import UIBase from "./UIBase";
 import { EventCenter } from "./EventCenter";
+import { timeStamp } from "console";
 
 /**
  * 资源加载, 针对的是Form
@@ -23,9 +24,10 @@ export default class ResMgr {
     /** 
      * 采用计数管理的办法, 管理form所依赖的资源
      */
-    private staticDepends:{[key: string]: number} = cc.js.createMap();
-    private dynamicDepends: {[key: string]: Array<string>} = cc.js.createMap();
-    private tmpStaticDepends: Array<string> = [];
+    private _prefabs: {[key: string]: cc.Prefab} = cc.js.createMap();
+    private _staticDepends:{[key: string]: number} = cc.js.createMap();
+    private _dynamicDepends: {[key: string]: Array<string>} = cc.js.createMap();
+    private _tmpStaticDepends: Array<string> = [];
 
     private _stubRes: {[type: string]: {[name: string]: cc.Asset}} = {};
     public addStub(res: cc.Asset, type: typeof cc.Asset) {
@@ -44,29 +46,31 @@ export default class ResMgr {
     }
 
     private _addTmpStaticDepends(completedCount: number, totalCount: number, item: any) {
-        this.tmpStaticDepends[this.tmpStaticDepends.length] = item.url;
-        if(this.staticDepends[item.url]) {
-            this.staticDepends[item.url] ++;
+        this._tmpStaticDepends[this._tmpStaticDepends.length] = item.url;
+        if(this._staticDepends[item.url]) {
+            this._staticDepends[item.url] ++;
         }else {
-            this.staticDepends[item.url] = 1;
+            this._staticDepends[item.url] = 1;
         }
     }
     private _clearTmpStaticDepends() {
-        for(let s of this.tmpStaticDepends) {
-            if(!this.staticDepends[s] || this.staticDepends[s] === 0) continue;
-            this.staticDepends[s] --;
-            if(this.staticDepends[s] === 0) {
-                delete this.staticDepends[s];           // 这里不清理缓存
+        for(let s of this._tmpStaticDepends) {
+            if(!this._staticDepends[s] || this._staticDepends[s] === 0) continue;
+            this._staticDepends[s] --;
+            if(this._staticDepends[s] === 0) {
+                delete this._staticDepends[s];           // 这里不清理缓存
             }
         }
-        this.tmpStaticDepends = [];
+        this._tmpStaticDepends = [];
     }
 
     /** 加载窗体 */
     public async loadForm(formName: string) {
         let form = await CocosHelper.loadResSync<cc.Prefab>(formName, cc.Prefab, this._addTmpStaticDepends.bind(this));
+        this._prefabs[formName] = form;
+
         this._clearTmpStaticDepends();
-        let deps = cc.assetManager.dependUtil.getDeps(formName);
+        let deps = cc.assetManager.dependUtil.getDepsRecursively(form['_uuid']);
         this.addStaticDepends(deps);
         return form;
     }
@@ -75,32 +79,40 @@ export default class ResMgr {
     public destoryForm(com: UIBase) {
         if(!com) return;
         EventCenter.targetOff(com);
-        let deps = cc.assetManager.dependUtil.getDeps(com.node.uuid);
-        // let deps = cc.loader.getDependsRecursively(com.fid);
-        console.log(deps)
+        let prefab = this._prefabs[com.fid];
+        let uuid = prefab['_uuid'];
+        let deps = cc.assetManager.dependUtil.getDepsRecursively(uuid);
+        
         this.removeStaticDepends(deps);
         com.node.destroy();
+        prefab.destroy();
+        cc.assetManager.assets.remove(uuid);
+        cc.assetManager.dependUtil['remove'](uuid);
+
+        this._prefabs[com.fid] = null;
+        delete this._prefabs[com.fid];
     }
 
 
     /** 静态资源的计数管理 */
     private addStaticDepends(deps: Array<string>) {
         for(let s of deps) {
-            if(this.staticDepends[s]) {
-                this.staticDepends[s] += 1;
+            if(this._staticDepends[s]) {
+                this._staticDepends[s] += 1;
             }else {
-                this.staticDepends[s] = 1;
+                this._staticDepends[s] = 1;
             }
         }
     }
     private removeStaticDepends(deps: Array<string>) {
         for(let s of deps) {
-            if(!this.staticDepends[s] || this.staticDepends[s] === 0) continue;
-            this.staticDepends[s] --;
-            if(this.staticDepends[s] === 0) {
+            if(!this._staticDepends[s] || this._staticDepends[s] === 0) continue;
+            this._staticDepends[s] --;
+            if(this._staticDepends[s] === 0) {
                 // 可以销毁
-                cc.assetManager.resources.release(s)                
-                delete this.staticDepends[s];
+                cc.assetManager.releaseAsset(cc.assetManager.assets.get(s));
+                cc.assetManager.assets.remove(s);
+                delete this._staticDepends[s];
             }
         }
     }
@@ -108,21 +120,21 @@ export default class ResMgr {
     public async loadDynamicRes(url: string, type: typeof cc.Asset, tag?: string) {
         let sources = await CocosHelper.loadResSync<cc.Asset>(url, type);
         if(!tag) tag = url;
-        if(!this.dynamicDepends[tag]) {
-            this.dynamicDepends[tag] = [];
+        if(!this._dynamicDepends[tag]) {
+            this._dynamicDepends[tag] = [];
         }
-        this.dynamicDepends[tag].push(url);
+        this._dynamicDepends[tag].push(url);
 
         return sources;
     }
 
     /** 销毁动态资源  没有做引用计数的处理 */
     public destoryDynamicRes(tag: string) {
-        if(!this.dynamicDepends[tag]) {       // 销毁
+        if(!this._dynamicDepends[tag]) {       // 销毁
             return false;
         }
-        for(const key in this.dynamicDepends) {
-            for(const e of this.dynamicDepends[key]) {
+        for(const key in this._dynamicDepends) {
+            for(const e of this._dynamicDepends[key]) {
                 cc.assetManager.resources.release(e);
             }
         }
@@ -130,24 +142,19 @@ export default class ResMgr {
     }
 
     public computeTextureCache() {
-        let cache = cc.loader['_cache'];
+        let cache = cc.assetManager.assets;
         let totalTextureSize = 0;
         let count = 0;
-        for(const key in cache) {
-            let item = cache[key];
-            if(!item.content) item.content = item;
-            if(item.type == 'js' || item.type == 'json') continue;
-            let content = (item.content && item.content.__classname__) ? item.content.__classname__ : item.type;
-            if (content === 'cc.Texture2D') {
-                let texture = item.content;
-                
-                let textureSize = texture.width * texture.height * ((texture._native === '.jpg' ? 3 : 4) / 1024 / 1024);
+        cache.forEach((item: cc.Asset, key: string) => {            
+            let type = (item && item['__classname__']) ? item['__classname__'] : '';
+            if(type == 'cc.Texture2D') {
+                let texture = item as cc.Texture2D;
+                let textureSize = texture.width * texture.height * ((texture['_native'] === '.jpg' ? 3 : 4) / 1024 / 1024);
+                // debugger
                 totalTextureSize += textureSize;
-                // sizeStr = textureSize.toFixed(3) + 'M';
-                // formatSize = Math.round(textureSize * 1000) / 1000;
                 count ++;
             }
-        }
+        });
         return `缓存 [纹理总数:${count}][纹理缓存:${totalTextureSize.toFixed(2) + 'M'}]`;
     }
 }
