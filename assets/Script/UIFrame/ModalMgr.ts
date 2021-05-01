@@ -16,7 +16,10 @@ export default class ModalMgr extends cc.Component {
     public static get inst() {
         if(this._inst == null) {
             this._inst = new ModalMgr();
-            ModalMgr.inst.uiModal = new cc.Node("UIModalNode").addComponent(UIModalScript);
+
+            let node = new cc.Node("UIModalNode");
+            cc.find(ModalMgr.popUpRoot).addChild(node);
+            ModalMgr.inst.uiModal = node.addComponent(UIModalScript);
             ModalMgr.inst.uiModal.init();
         }
         return this._inst;
@@ -29,6 +32,11 @@ export default class ModalMgr extends cc.Component {
     }
 
     public checkModalWindow(coms: UIWindow[]) {
+        if(coms.length <= 0) {
+            this.uiModal.node.active = false;
+            return ;
+        }
+        this.uiModal.node.active = true;
         if(this.uiModal.node.parent) {
             this.uiModal.node.removeFromParent();
         }
@@ -40,8 +48,5 @@ export default class ModalMgr extends cc.Component {
                 break;
             }
         }
-        // if(!this.uiModal.node.parent) {
-        //     this.uiModal.node.opacity = 0;
-        // }
     }
 }

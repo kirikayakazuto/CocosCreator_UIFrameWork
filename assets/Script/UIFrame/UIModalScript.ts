@@ -31,10 +31,10 @@ export default class UIModalScript extends cc.Component {
         let texture = new cc.Texture2D();
         texture.name = 'single color'
         texture.initWithData(data, cc.Texture2D.PixelFormat.RGBA8888, 2, 2);
+        texture.handleLoadedTexture();
         this._texture = texture;
         // texture.packable = true;
         texture.addRef();
-        cc.log("======", texture)
 
         return this._texture;
     }
@@ -48,15 +48,18 @@ export default class UIModalScript extends cc.Component {
         let size = cc.view.getVisibleSize();
         this.node.height = size.height;
         this.node.width = size.width;
+
         this.node.addComponent(cc.Button);
         this.node.on('click', this.clickMaskWindow, this);
         
         let sprite = this.node.addComponent(cc.Sprite)
         sprite.sizeMode = cc.Sprite.SizeMode.CUSTOM;
+        sprite.type = cc.Sprite.Type.SIMPLE;
         sprite.spriteFrame = new cc.SpriteFrame(maskTexture);
+
         this.node.color = new cc.Color(0, 0, 0);
         this.node.opacity = 0;
-        this.node.active = true;
+        this.node.active = false;
     }
 
     // 

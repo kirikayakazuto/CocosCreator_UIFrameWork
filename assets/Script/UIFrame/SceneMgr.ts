@@ -60,17 +60,6 @@ class SceneMgr {
     //     this.stack.push(this._currScene);
     // }
 
-    public checkClose() {
-
-    }
-
-    /** 打开场景 */
-    private async _doOpenScene(scenePath: string, params?: any, formData?: IFormData) {
-        await TipsMgr.inst.showLoadingForm();
-        await UIManager.getInstance().openForm(scenePath, params, formData);
-        await TipsMgr.inst.hideLoadingForm();
-    }
-
 }
 
 export default new SceneMgr();

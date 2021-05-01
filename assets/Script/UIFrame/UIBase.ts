@@ -2,7 +2,6 @@ import UIManager from "./UIManager";
 import { FormType } from "./config/SysDefine";
 import { IFormData } from "./Struct";
 import AdapterMgr from "./AdapterMgr";
-import TipsMgr from "./TipsMgr";
 
 
 const {ccclass, property} = cc._decorator;
@@ -28,12 +27,6 @@ export default class UIBase extends cc.Component {
     public static async openView(parmas?: any, formData?: IFormData): Promise<UIBase> {
         return await UIManager.getInstance().openForm(this.prefabPath, parmas, formData);
     }
-    public static async openViewWithLoading(parmas?: any, formData?: IFormData): Promise<UIBase> {
-        await TipsMgr.inst.showLoadingForm();
-        let uiBase = await this.openView(parmas, formData);
-        await TipsMgr.inst.hideLoadingForm();
-        return uiBase;
-    }
     public static async closeView(): Promise<boolean> {
         return await UIManager.getInstance().closeForm(this.prefabPath);
     }
@@ -49,6 +42,7 @@ export default class UIBase extends cc.Component {
         let errorMsg = await this.load();
         if(errorMsg) {
             cc.error(errorMsg);
+            this.closeSelf();
             return ;
         }
         this.onInit();
@@ -60,9 +54,7 @@ export default class UIBase extends cc.Component {
      * 这个函数在model的数值发生变化时（前提条件是在这个函数中用到了model），会自动执行，无需手动调用
      * @param r 
      */
-    public refreshView(r: IReactionPublic) {
-        
-    }
+    public refreshView(r: IReactionPublic) {}
 
     /** 可以在这里进行一些资源的加载, 具体实现可以看test下的代码 */
     public async load(): Promise<string> {
