@@ -14,11 +14,11 @@ export default class CocosHelper {
     public static loadProgress = new LoadProgress();
 
     /** 等待时间, 秒为单位 */
-    public static sleepSync = function(time: number): Promise<boolean> {
+    public static sleepSync = function(dur: number): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
+            cc.Canvas.instance.scheduleOnce(() => {
                 resolve(true);
-            }, time * 1000);
+            }, dur);
         });
     }
 
@@ -37,7 +37,9 @@ export default class CocosHelper {
             if(repeat < 0) {
                 cc.tween(target).repeatForever(selfTween).start();
             }else {
-                cc.tween(target).repeat(repeat, selfTween).start();
+                cc.tween(target).repeat(repeat, selfTween).call(() => {
+                    resolve(true);
+                }).start();
             }
         });   
     }
@@ -95,10 +97,8 @@ export default class CocosHelper {
     }
 
     /** 加载资源异常时抛出错误 */
-    public static loadResThrowErrorSync<T>(url: string, type: typeof cc.Asset, progressCallback?: (completedCount: number, totalCount: number, item: any) => void): Promise<T> {
-        
+    public static loadResThrowErrorSync<T>(url: string, type: typeof cc.Asset, onProgress?: (completedCount: number, totalCount: number, item: any) => void): Promise<T> {    
         return null;
-
     }
 
     private static _loadingMap: {[key: string]: Function[]} = {};
@@ -118,9 +118,10 @@ export default class CocosHelper {
         });
     }
     /** 加载资源 */
-    public static loadResSync<T>(url: string, type: typeof cc.Asset, progressCallback?: (completedCount: number, totalCount: number, item: any) => void): Promise<T>{
+    public static loadResSync<T>(url: string, type: typeof cc.Asset, onProgress?: (completedCount: number, totalCount: number, item: any) => void): Promise<T>{
         return new Promise((resolve, reject) => {
-            cc.resources.load(url, type, (err, asset: any) => {
+            if(!onProgress) onProgress = this._onProgress;
+            cc.resources.load(url, type, onProgress, (err, asset: any) => {
                 if (err) {
                     cc.error(`${url} [资源加载] 错误 ${err}`);
                     resolve(null);
@@ -134,7 +135,7 @@ export default class CocosHelper {
      * 加载进度
      * cb方法 其实目的是可以将loader方法的progress
      */
-    private static _progressCallback(completedCount: number, totalCount: number, item: any) {
+    private static _onProgress(completedCount: number, totalCount: number, item: any) {
         CocosHelper.loadProgress.completedCount = completedCount;
         CocosHelper.loadProgress.totalCount = totalCount;
         CocosHelper.loadProgress.item = item;
@@ -156,27 +157,6 @@ export default class CocosHelper {
         return null;
     }
 
-    /** 检测前缀是否符合绑定规范 */
-    public static checkNodePrefix(name: string) {
-        if(name[0] !== SysDefine.SYS_STANDARD_Prefix) {
-            return false;
-        }
-        return true;
-    }
-    /** 检查后缀 */
-    public static checkBindChildren(name: string) {
-        if(name[name.length-1] !== SysDefine.SYS_STANDARD_End) {
-            return true;
-        }
-        return false;
-    }
-    /** 获得类型和name */
-    public static getPrefixNames(name: string) {
-        if(name === null) {
-            return ;
-        }
-        return name.split(SysDefine.SYS_STANDARD_Separator);
-    }
     /** 获得Component的类名 */
     public static getComponentName(com: Function) {
         let arr = com.name.match(/<.*>$/);
@@ -257,15 +237,7 @@ export default class CocosHelper {
         }
     }
 
-    /** 怎么用promise实现以下方法, 可以在同一帧内返回一个a, 并且还能异步执行callback方法 */
-    private static testForCallback(callback: Function) {
-        let a = 1;
-        setTimeout(() => {
-            callback(a);
-        }, 1000);
-        return a;
-    }
-
+    /** 截图 */
     public static captureScreen(camera: cc.Camera, prop?: cc.Node | cc.Rect) {
         let newTexture = new cc.RenderTexture();
         let oldTexture = camera.targetTexture;

@@ -47,13 +47,13 @@ export default class ResMgr {
     }
 
     private _addTmpStaticDepends(completedCount: number, totalCount: number, item: any) {
-        this._tmpStaticDepends[this._tmpStaticDepends.length] = item.url;
-        if(this._staticDepends[item.url]) {
-            this._staticDepends[item.url] ++;
+        this._tmpStaticDepends[this._tmpStaticDepends.length] = item.uuid;
+        if(this._staticDepends[item.uuid]) {
+            this._staticDepends[item.uuid] ++;
         }else {
-            this._staticDepends[item.url] = 1;
+            this._staticDepends[item.uuid] = 1;
         }
-    }
+}
     private _clearTmpStaticDepends() {
         for(let s of this._tmpStaticDepends) {
             if(!this._staticDepends[s] || this._staticDepends[s] === 0) continue;
