@@ -31,6 +31,10 @@ export default class UIHome extends UIScreen {
         this.view.Tips.addClick(() => {
             UIPop.openView();
         }, this);
+
+        this.loadRes("imgs/button2", cc.Texture2D).then((res: cc.Texture2D) => {
+            console.log("==========: ", res)
+        });
     }
 
     // update (dt) {}

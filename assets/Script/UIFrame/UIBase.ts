@@ -2,6 +2,7 @@ import UIManager from "./UIManager";
 import { FormType } from "./config/SysDefine";
 import { IFormData } from "./Struct";
 import AdapterMgr from "./AdapterMgr";
+import ResMgr from "./ResMgr";
 
 
 const {ccclass, property} = cc._decorator;
@@ -91,5 +92,9 @@ export default class UIBase extends cc.Component {
             this.node.addChild(this._blocker.node, cc.macro.MAX_ZINDEX);
         }
         this._blocker.node.active = block;
+    }
+
+    public async loadRes(url: string, type?: typeof cc.Asset) {
+        return await ResMgr.inst.loadDynamicRes(url, type, this.fid);
     }
 }

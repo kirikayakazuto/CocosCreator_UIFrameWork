@@ -8,4 +8,7 @@ export default class WindowMgr {
      * 可以做
      * 关闭上一个window时 打开下一个window
      */
+    public openWindow() {
+        
+    }
 }

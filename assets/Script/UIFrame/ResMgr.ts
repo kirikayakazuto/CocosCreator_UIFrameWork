@@ -26,7 +26,8 @@ export default class ResMgr {
      */
     private _prefabs: {[key: string]: cc.Prefab} = cc.js.createMap();
     private _staticDepends:{[key: string]: number} = cc.js.createMap();
-    private _dynamicDepends: {[key: string]: Array<string>} = cc.js.createMap();
+    private _dynamicDepends: {[key: string]: number} = cc.js.createMap();
+    private _dynamicTags: {[key: string]: Array<string>} = cc.js.createMap();
     private _tmpStaticDepends: Array<string> = [];
 
     private _stubRes: {[type: string]: {[name: string]: cc.Asset}} = {};
@@ -117,30 +118,45 @@ export default class ResMgr {
         }
     }
     /** 动态资源管理, 通过tag标记当前资源, 统一释放 */
-    public async loadDynamicRes(url: string, type: typeof cc.Asset, tag?: string) {
-        let sources = await CocosHelper.loadResSync<cc.Asset>(url, type);
-        if(!tag) tag = url;
-        if(!this._dynamicDepends[tag]) {
-            this._dynamicDepends[tag] = [];
+    public async loadDynamicRes<T>(url: string, type: typeof cc.Asset, tag: string) {
+        let sources = await CocosHelper.loadResSync<T>(url, type);
+        
+        let uuid = sources['_uuid'];
+        if(this._dynamicDepends[uuid]) {
+            this._dynamicDepends[uuid] += 1;
+        }else {
+            this._dynamicDepends[uuid] = 1;
         }
-        this._dynamicDepends[tag].push(url);
 
+        if(!this._dynamicTags[tag]) {
+            this._dynamicTags[tag] = [];
+        }
+        this._dynamicTags[tag].push(uuid);
+        
         return sources;
     }
 
-    /** 销毁动态资源  没有做引用计数的处理 */
+    /** 销毁动态资源  */
     public destoryDynamicRes(tag: string) {
-        if(!this._dynamicDepends[tag]) {       // 销毁
+        if(!this._dynamicTags[tag]) {       // 销毁
             return false;
         }
-        for(const key in this._dynamicDepends) {
-            for(const e of this._dynamicDepends[key]) {
-                cc.assetManager.resources.release(e);
+        for(const s of this._dynamicTags[tag]) {
+            if(!this._dynamicDepends[s] || this._dynamicDepends[s] == 0) continue;
+            this._dynamicDepends[s] --;
+            if(this._dynamicDepends[s] == 0) {      // 应该被销毁了
+                cc.assetManager.releaseAsset(cc.assetManager.assets.get(s));
+                cc.assetManager.assets.remove(s);
+                delete this._dynamicDepends[s];
             }
         }
+        this._dynamicTags[tag] = null;
+        delete this._dynamicTags[tag];
+
         return true;
     }
 
+    /** 计算当前纹理数量和缓存 */
     public computeTextureCache() {
         let cache = cc.assetManager.assets;
         let totalTextureSize = 0;

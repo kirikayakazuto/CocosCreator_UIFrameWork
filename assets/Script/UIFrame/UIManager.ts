@@ -318,6 +318,7 @@ export default class UIManager extends cc.Component {
 
     /** 销毁 */
     private destoryForm(com: UIBase, prefabPath: string) {
+        ResMgr.inst.destoryDynamicRes(com.fid);
         ResMgr.inst.destoryForm(com);
         // 从allmap中删除
         this._allForms[prefabPath] = null;
