@@ -506,7 +506,7 @@ export class CommonUtils {
     }
 
     // 将多边形分解为多个三角形
-    public static splitPolygonByTriangle(points: cc.Vec2[]): number[] {
+    public static splitPolygon(points: cc.Vec2[]): number[] {
         if(points.length <= 3) return [0, 1, 2];
         let pointMap: {[key: string]: number} = {};     // point与idx的映射
         for(let i=0; i<points.length; i++) {

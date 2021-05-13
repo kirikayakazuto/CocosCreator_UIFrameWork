@@ -58,6 +58,12 @@ export default class TextureAssembler extends cc.Assembler {
         this.initData();
     }
 
+    public initQuadIndices(indices: number[], arr: number[]) {
+        for(let i=0; i<arr.length; i++) {
+            indices[i] = arr[i];
+        }
+    }
+
     /** 填充顶点的color */
     public updateColor(comp: TexturePlus, color: number) {
         let uintVerts = this._renderData.uintVDatas[0];
@@ -134,7 +140,8 @@ export default class TextureAssembler extends cc.Assembler {
 
     /** 更新顶点数据 */
     protected updateVerts(comp: TexturePlus) {
-        this.indicesArr = CommonUtils.splitPolygonByTriangle(comp.polygon); 
+        let indicesArr = CommonUtils.splitPolygon(comp.polygon); 
+        this.initQuadIndices(this._renderData.iDatas[0], indicesArr);
         this.updateWorldVerts(comp);
     }
 
@@ -178,11 +185,9 @@ export default class TextureAssembler extends cc.Assembler {
         // fill indices
         let ibuf = buffer._iData,
             indiceOffset = offsetInfo.indiceOffset,
-            vertexId = offsetInfo.vertexOffset;             // vertexId是已经在buffer里的顶点数，也是当前顶点序号的基数
-
-        let ins = this.indicesArr;
-        for(let i=0; i<iData.length; i++) {
-            ibuf[indiceOffset++] = vertexId + ins[i]; 
+            vertexId = offsetInfo.vertexOffset;
+            for (let i = 0, l = iData.length; i < l; i++) {
+            ibuf[indiceOffset++] = vertexId + iData[i];
         }
     }
   
