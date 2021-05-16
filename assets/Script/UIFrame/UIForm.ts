@@ -11,7 +11,7 @@ export class UIScreen extends UIBase {
 export class UIWindow extends UIBase {
     formType = FormType.Window;    
     modalType = new ModalType();                // 阴影类型
-    priority = 0;                               // 优先级(会影响弹窗的层级, 先判断优先级, 在判断添加顺序)
+    willDestory = true;
 
     /** 显示效果 */
     public async showEffect() {
@@ -23,6 +23,7 @@ export class UIWindow extends UIBase {
 
 export class UIFixed extends UIBase {
     formType = FormType.Fixed;
+    
     
 }
 

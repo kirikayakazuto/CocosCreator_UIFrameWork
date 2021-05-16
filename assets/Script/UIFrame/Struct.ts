@@ -17,3 +17,16 @@ export class ModalType {
 export interface IFormData {
     onClose?: Function;
 }
+
+export enum EPriority {
+    ZERO,
+    ONE,
+    TWO,
+    THREE,
+    FOUR,
+    FIVE,
+    SIX,
+    SEVEN,
+    EIGHT,
+    NINE,
+}

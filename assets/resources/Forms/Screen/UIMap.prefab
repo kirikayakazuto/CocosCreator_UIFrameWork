@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "UILevel",
+    "_name": "UIMap",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -869,7 +869,7 @@
     "_id": ""
   },
   {
-    "__type__": "a077dk8+/xJHLVJDt0+l4cP",
+    "__type__": "adecbZD4u1CU5tY/U48Fb7E",
     "_name": "",
     "_objFlags": 0,
     "node": {

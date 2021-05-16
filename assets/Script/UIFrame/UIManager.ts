@@ -6,8 +6,10 @@ import AdapterMgr, { AdaptaterType } from "./AdapterMgr";
 import Scene from "../Scene/Scene";
 import { UIWindow } from "./UIForm";
 import { IFormData } from "./Struct";
-import PriorityStake from "../Common/Utils/PriorityStack";
+import PriorityStack from "../Common/Utils/PriorityStack";
 import SceneMgr from "./SceneMgr";
+import { EventCenter } from "./EventCenter";
+import { EventType } from "./EventType";
 
 const {ccclass, property} = cc._decorator;
 
@@ -18,16 +20,11 @@ export default class UIManager extends cc.Component {
     private _ndPopUp: cc.Node  = null;  // 弹出窗口
     private _ndTips: cc.Node   = null;  // 独立窗体
 
-    private _windows: PriorityStake<UIWindow>                          = new PriorityStake();  // 存储弹出的窗体
+    private _windows: UIWindow[]                                       = [];                   // 存储弹出的窗体
     private _allForms: {[key: string]: UIBase}                         = cc.js.createMap();    // 所有已经挂载的窗体, 可能没有显示
     private _showingForms: {[key: string]: UIBase}                     = cc.js.createMap();    // 正在显示的窗体
     private _tipsForms: {[key: string]: UIBase}                        = cc.js.createMap();    // 独立窗体 独立于其他窗体, 不受其他窗体的影响
     private _loadingForm: {[key: string]: ((value: UIBase) => void)[]} = cc.js.createMap();    // 正在加载的form 
-
-    private _currWindowId = '';                                     // 当前显示的弹窗
-    public get currWindowId() {
-        return this._currWindowId;
-    }
     
     private static instance: UIManager = null;                                          // 单例
     public static getInstance(): UIManager {
@@ -59,13 +56,13 @@ export default class UIManager extends cc.Component {
     }
 
     /** 预加载UIForm */
-    public async loadUIForms(...uibases: typeof UIBase[]) {
-        for(const uibase of uibases) {
-            let uiBase = await this.loadForm(uibase.prefabPath);
-            if(!uiBase) {
-                console.warn(`${uiBase}没有被成功加载`);
-            }
+    public async loadUIForm(prefabPath: string) {
+        let uiBase = await this.loadForm(prefabPath);
+        if(!uiBase) {
+            console.warn(`${uiBase}没有被成功加载`);
+            return null;
         }
+        return uiBase;
     }
     
     /**
@@ -129,11 +126,15 @@ export default class UIManager extends cc.Component {
             break;
             case FormType.Window:
                 await this.exitToPopup(prefabPath);
+                EventCenter.emit(EventType.WindowClosed, prefabPath);
             break;
             case FormType.Tips:
                 await this.exitToTips(prefabPath);
             break;
         }
+
+        EventCenter.emit(EventType.FormClosed, prefabPath);
+
         if(com.formData) {
             com.formData.onClose && com.formData.onClose();
         }
@@ -240,17 +241,16 @@ export default class UIManager extends cc.Component {
         if(!com) return ;
         await com._preInit();
 
-        this._windows.push(com, com.priority);
-        let elements = this._windows.getElements();
-        for(let i=0; i<elements.length; i++) {
-            elements[i].node.zIndex = i+1;
+        this._windows.push(com);
+        
+        for(let i=0; i<this._windows.length; i++) {
+            this._windows[i].node.zIndex = i+1;
         }
 
         com.onShow(params);
         this._showingForms[prefabPath] = com;
-        this._currWindowId = com.fid;
 
-        ModalMgr.inst.checkModalWindow(elements);
+        ModalMgr.inst.checkModalWindow(this._windows);
         await this.showEffect(com);
     }
     
@@ -283,15 +283,21 @@ export default class UIManager extends cc.Component {
         this._showingForms[prefabPath] = null;
         delete this._showingForms[prefabPath];
     }
-
+    
     private async exitToPopup(prefabPath: string) {
-        if(this._windows.size <= 0) return;
-        let com = this._windows.pop();
+        if(this._windows.length <= 0) return;
+        let com: UIWindow = null;
+        for(let i=this._windows.length-1; i>=0; i--) {
+            if(this._windows[i].constructor['prefabPath'] === prefabPath) {
+                com = this._windows[i];
+                this._windows.splice(i, 1);
+            }
+        }
+        if(!com) return ;
+        
         com.onHide();
-        ModalMgr.inst.checkModalWindow(this._windows.getElements());
+        ModalMgr.inst.checkModalWindow(this._windows);
         await this.hideEffect(com);
-
-        this._currWindowId = this._windows.size > 0 ? this._windows.getTopElement().fid : '';
         
         this._showingForms[prefabPath] = null;
         delete this._showingForms[prefabPath];
@@ -341,13 +347,14 @@ export default class UIManager extends cc.Component {
      * 清除栈内所有窗口
      */
     public async clearWindows() {
-        if(!this._windows || this._windows.size <= 0) {
+        if(!this._windows || this._windows.length <= 0) {
             return true;
         }
-        for(const com of this._windows.getElements()) {
+        for(const com of this._windows) {
             await com.closeSelf();
         }
-        return this._windows.clear();
+        this._windows = [];
+        return true;
     }
 
 

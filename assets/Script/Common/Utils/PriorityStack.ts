@@ -1,7 +1,7 @@
 import { PriorityElement } from "./PriorityQueue";
 
 /** 带优先级的栈 */
-export default class PriorityStake<T> {
+export default class PriorityStack<T> {
     private stack: Array<PriorityElement<T>> = new Array<PriorityElement<T>>();
     private _size = 0;
     public get size() {
@@ -12,6 +12,11 @@ export default class PriorityStake<T> {
         this.stack.length = 0;
         this._size = 0;
         return true;
+    }
+
+    public getTopEPriority() {
+        if(this.stack.length <= 0) return -1;
+        return this.stack[this.stack.length-1].priority;
     }
 
     public getTopElement() {
@@ -58,6 +63,16 @@ export default class PriorityStake<T> {
     public hasElement(t: T) {
         for(const e of this.stack) {
             if(e.data === t) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public remove(t: T) {
+        for(let i=this.stack.length-1; i>=0; i--) {
+            if(this.stack[i].data === t) {
+                this.stack.splice(i, 1);
                 return true;
             }
         }

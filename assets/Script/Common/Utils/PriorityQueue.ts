@@ -14,7 +14,11 @@ export class PriorityElement<T> {
 
 export default class PriorityQueue<T> {
     private queue: Array<PriorityElement<T>> = new Array<PriorityElement<T>>(32);
-    private size: number = 0;
+    private _size: number = 0;
+
+    public get size() {
+        return this._size;
+    }
 
     constructor() {
     }
@@ -31,24 +35,24 @@ export default class PriorityQueue<T> {
 
     /** 入队 */
     public enqueue(e: T, priority: number = 0) {
-        if(this.size > this.queue.length) {
+        if(this._size > this.queue.length) {
             this._expand();
         }
-        this.queue[this.size++] = new PriorityElement(e, priority);
+        this.queue[this._size++] = new PriorityElement(e, priority);
         this.upAdjust();
     }
 
     /** 出队 */
     public dequeue() {
-        if(this.size <= 0) return null;
+        if(this._size <= 0) return null;
         const head = this.queue[0];
-        this.queue[0] = this.queue[--this.size];
+        this.queue[0] = this.queue[--this._size];
         this.downAdjust();
         return head.data;
     }
     /** 上调, 入队时判断入队元素优先级 */
     private upAdjust() {
-        let childIndex = this.size - 1;
+        let childIndex = this._size - 1;
         let parentIndex = Math.floor(childIndex/2);
         let tmp = this.queue[childIndex]
 
@@ -65,8 +69,8 @@ export default class PriorityQueue<T> {
         let parentIndex = 0;
         let tmp = this.queue[parentIndex];
         let childIndex = 1;
-        while(childIndex < this.size) {
-            if(childIndex + 1 < this.size && this.queue[childIndex+1].priority > this.queue[childIndex].priority) {
+        while(childIndex < this._size) {
+            if(childIndex + 1 < this._size && this.queue[childIndex+1].priority > this.queue[childIndex].priority) {
                 childIndex ++;
             }
             if(tmp.priority >= this.queue[childIndex].priority) {
@@ -91,7 +95,7 @@ export default class PriorityQueue<T> {
 
     public toString() {
         let s = '';
-        for(let i=0; i<this.size; i++) {
+        for(let i=0; i<this._size; i++) {
             let data = this.queue[i].data;
             if(data.toString) {
                 s += data.toString();

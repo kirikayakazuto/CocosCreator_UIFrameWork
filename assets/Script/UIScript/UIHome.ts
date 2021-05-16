@@ -1,9 +1,10 @@
 import UIHome_Auto from "../AutoScripts/UIHome_Auto";
 import SceneMgr from "../UIFrame/SceneMgr";
-import { UIScreen } from "../UIFrame/UIForm";
+import { UIFixed, UIScreen } from "../UIFrame/UIForm";
+import UIManager from "../UIFrame/UIManager";
 import UIAbout from "./UIAbout";
-import UILevel from "./UILevel";
-import UIPop from "./UIPop";
+import UIMap from "./UIMap"
+import UISound from "./UISound";
 
 const {ccclass, property} = cc._decorator;
 
@@ -14,27 +15,26 @@ export default class UIHome extends UIScreen {
 
     public view: UIHome_Auto;
     async load() {
+        
+        UIManager.getInstance().loadUIForm(UISound.prefabPath);
         return null;
     }
 
     // onLoad () {}
 
     start () {
+        UISound.openView();
         this.view.Start.addClick(() => {
-            SceneMgr.openScene(UILevel.prefabPath);
+            SceneMgr.open(UIMap.prefabPath);
         }, this);
 
         this.view.About.addClick(() => {
-            SceneMgr.openScene(UIAbout.prefabPath);
+            SceneMgr.open(UIAbout.prefabPath);
         }, this);
 
-        this.view.Tips.addClick(() => {
-            UIPop.openView();
-        }, this);
-
-        this.loadRes("imgs/button2", cc.Texture2D).then((res: cc.Texture2D) => {
+        // this.loadRes("imgs/button2", cc.Texture2D).then((res: cc.Texture2D) => {
             
-        });
+        // });
     }
 
     // update (dt) {}

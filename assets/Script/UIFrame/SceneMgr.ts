@@ -13,7 +13,7 @@ class SceneMgr {
     }
 
     /** 打开一个场景 */
-    public async openScene(scenePath: string, params?: any, formData?: IFormData) {
+    public async open(scenePath: string, params?: any, formData?: IFormData) {
         if(this._currScene == scenePath) {
             cc.warn(TAG, "当前场景和需要open的场景是同一个");
             return ;
@@ -39,7 +39,7 @@ class SceneMgr {
     }
 
     /** 回退一个场景 */
-    public async backScene(params?: any, formData?: IFormData) {
+    public async back(params?: any, formData?: IFormData) {
         if(this._scenes.length <= 1) {
             cc.warn(TAG, "已经是最后一个场景了, 无处可退");
             return ;
@@ -52,13 +52,6 @@ class SceneMgr {
         await UIManager.getInstance().openForm(this._currScene, params, formData);
         await TipsMgr.inst.hideLoadingForm();
     }
-    
-    /** 如果没有通过SceneMgr打开场景, 那么会在UIManager中调用check方法检查一下 */
-    // public checkOpen(scenePath: string) {
-    //     if(scenePath == this._currScene) return true;
-    //     this._currScene = scenePath;
-    //     this.stack.push(this._currScene);
-    // }
 
 }
 

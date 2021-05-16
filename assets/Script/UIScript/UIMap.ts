@@ -1,14 +1,16 @@
 import UILevel_Auto from "../AutoScripts/UILevel_Auto";
 import SceneMgr from "../UIFrame/SceneMgr";
 import { UIScreen } from "../UIFrame/UIForm";
+import WindowMgr from "../UIFrame/WindowMgr";
 import UISetting from "./UISetting";
+import UISkills from "./UISkills";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class UILevel extends UIScreen {
+export default class UIMap extends UIScreen {
 
-    static prefabPath = "Forms/Screen/UILevel";
+    static prefabPath = "Forms/Screen/UIMap";
     view: UILevel_Auto;
 
     // LIFE-CYCLE CALLBACKS:
@@ -17,7 +19,7 @@ export default class UILevel extends UIScreen {
 
     start () {
         this.view.Back.addClick(() => {
-            SceneMgr.backScene();
+            SceneMgr.back();
         }, this);
 
         this.view.Setting.addClick(() => {
@@ -25,7 +27,7 @@ export default class UILevel extends UIScreen {
         }, this);
 
         this.view.Skills.addClick(() => {
-
+            WindowMgr.open(UISkills.prefabPath);
         }, this);
     }
 

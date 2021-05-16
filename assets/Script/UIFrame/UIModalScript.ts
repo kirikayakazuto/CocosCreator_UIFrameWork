@@ -2,6 +2,7 @@ import UIManager from "./UIManager";
 import { ModalOpacity } from "./config/SysDefine";
 import CocosHelper from "./CocosHelper";
 import { UIWindow } from "./UIForm";
+import WindowMgr from "./WindowMgr";
 
 /**
  * @Author: 邓朗 
@@ -96,7 +97,7 @@ export default class UIModalScript extends cc.Component {
     public async clickMaskWindow() {
         let com = UIManager.getInstance().getComponentByFid(this.fid) as UIWindow;
         if(com && com.modalType.clickMaskClose) {
-           await UIManager.getInstance().closeForm(this.fid);
+            await WindowMgr.close(this.fid);
         }
     }
 }

@@ -17,7 +17,7 @@ export default class UIAbout extends UIScreen {
 
     start () {
         this.view.Close.addClick(() => {
-            SceneMgr.backScene();
+            SceneMgr.back();
         }, this);
     }
 
