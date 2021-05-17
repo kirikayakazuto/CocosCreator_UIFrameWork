@@ -25,14 +25,15 @@ class WindowMgr {
             this._currWindow = this._showingList.getTopElement();
             return await UIManager.getInstance().openForm(prefabPath, params, formData);
         }
-
+        
         this._waitingList.enqueue({prefabPath: prefabPath, params: params, formData: formData});
+        
         return await UIManager.getInstance().loadUIForm(prefabPath);
     }
 
     public async close(prefabPath: string) {
         let result = this._showingList.remove(prefabPath);
-        if(!result) return ;
+        if(!result) return false;
 
         await UIManager.getInstance().closeForm(prefabPath);
 
@@ -40,6 +41,7 @@ class WindowMgr {
             let windowData = this._waitingList.dequeue();
             this.open(windowData.prefabPath, windowData.params, windowData.formData);
         }
+        return true;
     }
 
     private _formatParams(params: any) {

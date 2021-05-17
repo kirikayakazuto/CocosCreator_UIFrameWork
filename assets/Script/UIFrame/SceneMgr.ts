@@ -16,7 +16,7 @@ class SceneMgr {
     public async open(scenePath: string, params?: any, formData?: IFormData) {
         if(this._currScene == scenePath) {
             cc.warn(TAG, "当前场景和需要open的场景是同一个");
-            return ;
+            return null;
         }
         await TipsMgr.inst.showLoadingForm();
 
@@ -34,8 +34,9 @@ class SceneMgr {
 
         this._currScene = scenePath;
 
-        await UIManager.getInstance().openForm(scenePath, params, formData);
+        let com = await UIManager.getInstance().openForm(scenePath, params, formData);
         await TipsMgr.inst.hideLoadingForm();
+        return com;
     }
 
     /** 回退一个场景 */
@@ -51,6 +52,13 @@ class SceneMgr {
         this._currScene = this._scenes[this._scenes.length-1];
         await UIManager.getInstance().openForm(this._currScene, params, formData);
         await TipsMgr.inst.hideLoadingForm();
+    }
+
+    public async close(scenePath: string) {
+        let com = UIManager.getInstance().getComponentByFid(scenePath);
+        if(com) {
+            return UIManager.getInstance().closeForm(scenePath);
+        }
     }
 
 }

@@ -6,8 +6,6 @@ import AdapterMgr, { AdaptaterType } from "./AdapterMgr";
 import Scene from "../Scene/Scene";
 import { UIWindow } from "./UIForm";
 import { IFormData } from "./Struct";
-import PriorityStack from "../Common/Utils/PriorityStack";
-import SceneMgr from "./SceneMgr";
 import { EventCenter } from "./EventCenter";
 import { EventType } from "./EventType";
 
@@ -26,7 +24,7 @@ export default class UIManager extends cc.Component {
     private _tipsForms: {[key: string]: UIBase}                        = cc.js.createMap();    // 独立窗体 独立于其他窗体, 不受其他窗体的影响
     private _loadingForm: {[key: string]: ((value: UIBase) => void)[]} = cc.js.createMap();    // 正在加载的form 
     
-    private static instance: UIManager = null;                                          // 单例
+    private static instance: UIManager = null;                                                 // 单例
     public static getInstance(): UIManager {
         if(this.instance == null) {
             let canvas = cc.director.getScene().getChildByName("Canvas");
@@ -90,16 +88,16 @@ export default class UIManager extends cc.Component {
         
         switch(com.formType) {
             case FormType.Screen:
-                await this.enterToScreen(prefabPath, params);
+                await this.enterToScreen(com.fid, params);
             break;
             case FormType.Fixed:
-                await this.enterToFixed(prefabPath, params);
+                await this.enterToFixed(com.fid, params);
             break;
             case FormType.Window:
-                await this.enterToPopup(prefabPath, params);
+                await this.enterToPopup(com.fid, params);
             break;
             case FormType.Tips:                                  // 独立显示
-                await this.enterToTips(prefabPath, params);
+                await this.enterToTips(com.fid, params);
             break;
         }
 
@@ -204,7 +202,7 @@ export default class UIManager extends cc.Component {
     }
 
     /** 添加到screen中 */
-    private async enterToScreen(prefabPath: string, params: any) {
+    private async enterToScreen(fid: string, params: any) {
         // 关闭其他显示的窗口 
         let arr: Array<Promise<boolean>> = [];
         for(let key in this._showingForms) {
@@ -212,9 +210,9 @@ export default class UIManager extends cc.Component {
         }
         await Promise.all(arr);
 
-        let com = this._allForms[prefabPath];
+        let com = this._allForms[fid];
         if(!com) return ;
-        this._showingForms[prefabPath] = com;
+        this._showingForms[fid] = com;
 
         AdapterMgr.inst.adapatByType(AdaptaterType.FullScreen, com.node);
         
@@ -225,19 +223,19 @@ export default class UIManager extends cc.Component {
     }
 
     /** 添加到Fixed中 */
-    private async enterToFixed(prefabPath: string, params: any) {
-        let com = this._allForms[prefabPath];
+    private async enterToFixed(fid: string, params: any) {
+        let com = this._allForms[fid];
         if(!com) return ;
         await com._preInit();
         
         com.onShow(params);
-        this._showingForms[prefabPath] = com;
+        this._showingForms[fid] = com;
         await this.showEffect(com);
     }
 
     /** 添加到popup中 */
-    private async enterToPopup(prefabPath: string, params: any) {
-        let com = this._allForms[prefabPath] as UIWindow;
+    private async enterToPopup(fid: string, params: any) {
+        let com = this._allForms[fid] as UIWindow;
         if(!com) return ;
         await com._preInit();
 
@@ -248,47 +246,47 @@ export default class UIManager extends cc.Component {
         }
 
         com.onShow(params);
-        this._showingForms[prefabPath] = com;
+        this._showingForms[fid] = com;
 
         ModalMgr.inst.checkModalWindow(this._windows);
         await this.showEffect(com);
     }
     
     /** 加载到tips中 */
-    private async enterToTips(prefabPath: string, params: any) {
-        let com = this._allForms[prefabPath];
+    private async enterToTips(fid: string, params: any) {
+        let com = this._allForms[fid];
         if(!com) return ;
         await com._preInit();
-        this._tipsForms[prefabPath] = com;
+        this._tipsForms[fid] = com;
         
         com.onShow(params);
         await this.showEffect(com);
     }
 
-    private async exitToScreen(prefabPath: string) {
-        let com = this._showingForms[prefabPath];
+    private async exitToScreen(fid: string) {
+        let com = this._showingForms[fid];
         if(!com) return ;
         com.onHide();
         await this.hideEffect(com);
         
-        this._showingForms[prefabPath] = null;
-        delete this._showingForms[prefabPath];
+        this._showingForms[fid] = null;
+        delete this._showingForms[fid];
     }
    
-    private async exitToFixed(prefabPath: string) {
-        let com = this._allForms[prefabPath];
+    private async exitToFixed(fid: string) {
+        let com = this._allForms[fid];
         if(!com) return ;
         com.onHide();
         await this.hideEffect(com);
-        this._showingForms[prefabPath] = null;
-        delete this._showingForms[prefabPath];
+        this._showingForms[fid] = null;
+        delete this._showingForms[fid];
     }
     
-    private async exitToPopup(prefabPath: string) {
+    private async exitToPopup(fid: string) {
         if(this._windows.length <= 0) return;
         let com: UIWindow = null;
         for(let i=this._windows.length-1; i>=0; i--) {
-            if(this._windows[i].constructor['prefabPath'] === prefabPath) {
+            if(this._windows[i].fid === fid) {
                 com = this._windows[i];
                 this._windows.splice(i, 1);
             }
@@ -299,18 +297,18 @@ export default class UIManager extends cc.Component {
         ModalMgr.inst.checkModalWindow(this._windows);
         await this.hideEffect(com);
         
-        this._showingForms[prefabPath] = null;
-        delete this._showingForms[prefabPath];
+        this._showingForms[fid] = null;
+        delete this._showingForms[fid];
     }
     
-    private async exitToTips(prefabPath: string) {
-        let com = this._allForms[prefabPath];
+    private async exitToTips(fid: string) {
+        let com = this._allForms[fid];
         if(!com) return ;
         com.onHide();
         await this.hideEffect(com);
 
-        this._tipsForms[prefabPath] = null;
-        delete this._tipsForms[prefabPath];
+        this._tipsForms[fid] = null;
+        delete this._tipsForms[fid];
     }
 
     private async showEffect(baseUI: UIBase) {
@@ -323,16 +321,16 @@ export default class UIManager extends cc.Component {
     }
 
     /** 销毁 */
-    private destoryForm(com: UIBase, prefabPath: string) {
+    private destoryForm(com: UIBase, fid: string) {
         ResMgr.inst.destoryDynamicRes(com.fid);
         ResMgr.inst.destoryForm(com);
         // 从allmap中删除
-        this._allForms[prefabPath] = null;
-        delete this._allForms[prefabPath];
+        this._allForms[fid] = null;
+        delete this._allForms[fid];
     }
     /** 窗体是否正在显示 */
-    public checkFormShowing(prefabPath: string) {
-        let com = this._allForms[prefabPath];
+    public checkFormShowing(fid: string) {
+        let com = this._allForms[fid];
         if (!com) return false;
         return com.node.active;
     }
@@ -343,9 +341,7 @@ export default class UIManager extends cc.Component {
         return !!com;
     }
 
-    /**
-     * 清除栈内所有窗口
-     */
+    /** 关闭所有弹窗 */
     public async clearWindows() {
         if(!this._windows || this._windows.length <= 0) {
             return true;

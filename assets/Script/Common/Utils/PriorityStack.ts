@@ -73,6 +73,7 @@ export default class PriorityStack<T> {
         for(let i=this.stack.length-1; i>=0; i--) {
             if(this.stack[i].data === t) {
                 this.stack.splice(i, 1);
+                this._size --;
                 return true;
             }
         }

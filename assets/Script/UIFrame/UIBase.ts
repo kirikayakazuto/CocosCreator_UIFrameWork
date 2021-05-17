@@ -69,9 +69,6 @@ export default class UIBase extends cc.Component {
     public onHide() {}
     
 
-    public async openForm(prefabPath: string, params: any, formData?: IFormData): Promise<UIBase> {
-       return await UIManager.getInstance().openForm(prefabPath, params, formData);
-    }
     public async closeSelf(): Promise<boolean> {
        return await UIManager.getInstance().closeForm(this.fid);
     }
