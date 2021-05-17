@@ -50,6 +50,11 @@ export default class PriorityQueue<T> {
         this.downAdjust();
         return head.data;
     }
+
+    public clear() {
+        this.queue = [];
+        this._size = 0;
+    }
     /** 上调, 入队时判断入队元素优先级 */
     private upAdjust() {
         let childIndex = this._size - 1;

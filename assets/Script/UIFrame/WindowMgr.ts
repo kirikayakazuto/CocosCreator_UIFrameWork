@@ -18,10 +18,9 @@ class WindowMgr {
     }
 
     /** 打开窗体 */
-    public async open(prefabPath: string, params?: any, formData?: IFormData) {
-        params = this._formatParams(params);
-        if(this._showingList.size <= 0 || (!params.showWait && params.priority >= this._showingList.getTopEPriority())) {
-            this._showingList.push(prefabPath, params.priority);
+    public async open(prefabPath: string, params?: any, formData: IFormData = {showWait: false, priority: EPriority.FIVE}) {
+        if(this._showingList.size <= 0 || (!formData.showWait && formData.priority >= this._showingList.getTopEPriority())) {
+            this._showingList.push(prefabPath, formData.priority);
             this._currWindow = this._showingList.getTopElement();
             return await UIManager.getInstance().openForm(prefabPath, params, formData);
         }
@@ -44,7 +43,19 @@ class WindowMgr {
         return true;
     }
 
-    private _formatParams(params: any) {
+    /** 关闭所有弹窗 */
+    public async closeAll() {
+        this._waitingList.clear();
+
+        for(const fid of this._showingList.getElements()) {
+            await UIManager.getInstance().closeForm(fid);
+        }
+        this._showingList.clear();
+        
+        return true;
+    }
+
+    private _formatFormData(params: any) {
         if(!params) params = {};
 
         if(!params.hasOwnProperty("showWait")) {        // 当前有已经显示的window时, 会放等待列表里, 知道 当前没有正在显示的window时才被显示

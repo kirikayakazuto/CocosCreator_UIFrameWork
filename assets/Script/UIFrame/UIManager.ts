@@ -341,19 +341,6 @@ export default class UIManager extends cc.Component {
         return !!com;
     }
 
-    /** 关闭所有弹窗 */
-    public async clearWindows() {
-        if(!this._windows || this._windows.length <= 0) {
-            return true;
-        }
-        for(const com of this._windows) {
-            await com.closeSelf();
-        }
-        this._windows = [];
-        return true;
-    }
-
-
     /** 获得Component */
     public getComponentByFid(fId: string) {
         return this._allForms[fId];
