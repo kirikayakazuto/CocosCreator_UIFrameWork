@@ -20,7 +20,7 @@ export default class UISetting extends UIWindow {
         }, this);
 
         this.view.Pop.addClick(() => {
-            UIPop.openView(1, {showWait: true});
+            UIPop.openView(1);
         }, this);
     }
 
