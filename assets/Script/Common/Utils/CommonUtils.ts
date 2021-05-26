@@ -559,6 +559,32 @@ export class CommonUtils {
         return uvs;
     }
 
+    public static tweenFloat(from: number, to: number, duration: number, onUpdate: (t: number) => void, onComplete?: Function, autoStart: boolean = true) {
+        let o: Record<string, number> = { _value: from };
+        Object.defineProperty(o, 'value', {
+            get: () => o._value,
+            set: (v: number) => { o._value = v; onUpdate && onUpdate(o._value); },
+        });
+        let tween = cc.tween(o).to(duration, { value: to }).call(onComplete);
+        if (autoStart) {
+            tween.start();
+        }
+        return tween;
+    }
+
+    public static tweenVec2(from: cc.Vec2, to: cc.Vec2, duration: number, onUpdate: (t: cc.Vec2) => void, onComplete?: Function, autoStart: boolean = true) {
+        let o: Record<string, cc.Vec2> = {_value: from};
+        Object.defineProperty(o, 'value', {
+            get: () => o._value,
+            set: (v: cc.Vec2) => { o._value = v; onUpdate && onUpdate(o._value); },
+        });
+        let tween = cc.tween(o).to(duration, { value: to }).call(onComplete);
+        if (autoStart) {
+            tween.start();
+        }
+        return tween;
+    }
+
     
     
 }
