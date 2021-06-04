@@ -15,15 +15,20 @@ export default class UIHome extends UIScreen {
 
     public view: UIHome_Auto;
     async load() {
-        
         UIManager.getInstance().loadUIForm(UISound.prefabPath);
         return null;
+    }
+
+    model = 5;
+
+    refreshView() {
+        console.log(this.model)
     }
 
     // onLoad () {}
 
     start () {
-        UISound.openView();
+        UISound.openView(); 
         this.view.Start.addClick(() => {
             SceneMgr.open(UIMap.prefabPath);
         }, this);

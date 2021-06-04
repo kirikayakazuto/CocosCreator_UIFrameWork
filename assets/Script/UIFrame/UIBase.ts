@@ -3,7 +3,7 @@ import { FormType } from "./config/SysDefine";
 import { IFormData } from "./Struct";
 import AdapterMgr from "./AdapterMgr";
 import ResMgr from "./ResMgr";
-
+import { autorun, observable } from "../Common/Mobx/mobx";
 
 const {ccclass, property} = cc._decorator;
 
@@ -38,6 +38,7 @@ export default class UIBase extends cc.Component {
         if(this._inited) return ;
         this._inited = true;
         this.view = this.getComponent(`${this.node.name}_Auto`);
+        
         autorun(this.refreshView.bind(this));
         // 加载这个UI依赖的其他资源
         let errorMsg = await this.load();
@@ -53,9 +54,9 @@ export default class UIBase extends cc.Component {
     model: any = null;
     /**
      * 这个函数在model的数值发生变化时（前提条件是在这个函数中用到了model），会自动执行，无需手动调用
-     * @param r 
+     * @param r  
      */
-    public refreshView(r: IReactionPublic) {}
+    public refreshView(r) {}
 
     /** 可以在这里进行一些资源的加载, 具体实现可以看test下的代码 */
     public async load(): Promise<string> {

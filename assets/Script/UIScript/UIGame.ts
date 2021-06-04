@@ -1,11 +1,11 @@
 import UIGame_Auto from "../AutoScripts/UIGame_Auto";
 import SceneMgr from "../UIFrame/SceneMgr";
-import UIBase from "../UIFrame/UIBase";
+import { UIScreen } from "../UIFrame/UIForm";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class UIGame extends UIBase {
+export default class UIGame extends UIScreen {
 
     static prefabPath = "Forms/Screen/UIGame";
 
