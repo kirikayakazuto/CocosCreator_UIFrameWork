@@ -1,13 +1,12 @@
 import CameraCapture from "../Common/Components/CameraCapture";
 import DrawBorad from "../Common/Components/DrawBorad";
 import TouchPlus from "../Common/Components/TouchPlus";
-import { FormType } from "../UIFrame/config/SysDefine";
-import UIBase from "../UIFrame/UIBase";
+import { UIScreen } from "../UIFrame/UIForm";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class UICapture extends UIBase {
+export default class UICapture extends UIScreen {
 
     @property(cc.Sprite)
     sprite: cc.Sprite = null;
@@ -19,7 +18,6 @@ export default class UICapture extends UIBase {
     @property(TouchPlus)
     touchPlus: TouchPlus = null;
 
-    formType = FormType.Screen;
     static prefabPath = "UIForms/UICapture";
 
     // onLoad () {}

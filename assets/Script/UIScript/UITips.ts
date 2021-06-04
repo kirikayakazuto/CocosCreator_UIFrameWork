@@ -1,10 +1,10 @@
 import UITips_Auto from "../AutoScripts/UITips_Auto";
-import UIBase from "../UIFrame/UIBase";
+import { UIWindow } from "../UIFrame/UIForm";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class UITips extends UIBase {
+export default class UITips extends UIWindow {
 
     static prefabPath = "Forms/Windows/UITips"
 

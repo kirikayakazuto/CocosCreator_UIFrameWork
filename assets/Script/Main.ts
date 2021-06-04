@@ -2,6 +2,7 @@ import SceneMgr from "./UIFrame/SceneMgr";
 import TipsMgr from "./UIFrame/TipsMgr";
 import UIHome from "./UIScript/UIHome";
 import UILoading from "./UIScript/UILoading";
+import UIMobx from "./UIScript/UIMobx";
 
 const {ccclass, property} = cc._decorator;
 
@@ -13,7 +14,7 @@ export default class Main extends cc.Component {
 
     start () {
         TipsMgr.inst.setLoadingForm(UILoading.prefabPath);
-        SceneMgr.open(UIHome.prefabPath);
+        SceneMgr.open(UIMobx.prefabPath);
     }
 
     onDestroy() {

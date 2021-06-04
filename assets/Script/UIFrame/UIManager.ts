@@ -346,3 +346,5 @@ export default class UIManager extends cc.Component {
         return this._allForms[fId];
     }
 }
+
+window['UIManager'] = UIManager;
