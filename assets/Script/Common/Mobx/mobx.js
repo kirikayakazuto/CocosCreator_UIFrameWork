@@ -1,93 +1,93 @@
-// var niceErrors = {
-//   0: "Invalid value for configuration 'enforceActions', expected 'never', 'always' or 'observed'",
-//   1: function _(annotationType, key) {
-//     return "Cannot apply '" + annotationType + "' to '" + key.toString() + "': Field not found.";
-//   },
+var niceErrors = { 
+  0: "Invalid value for configuration 'enforceActions', expected 'never', 'always' or 'observed'",
+  1: function _(annotationType, key) {
+    return "Cannot apply '" + annotationType + "' to '" + key.toString() + "': Field not found.";
+  },
 
-//   /*
-//   2(prop) {
-//       return `invalid decorator for '${prop.toString()}'`
-//   },
-//   3(prop) {
-//       return `Cannot decorate '${prop.toString()}': action can only be used on properties with a function value.`
-//   },
-//   4(prop) {
-//       return `Cannot decorate '${prop.toString()}': computed can only be used on getter properties.`
-//   },
-//   */
-//   5: "'keys()' can only be used on observable objects, arrays, sets and maps",
-//   6: "'values()' can only be used on observable objects, arrays, sets and maps",
-//   7: "'entries()' can only be used on observable objects, arrays and maps",
-//   8: "'set()' can only be used on observable objects, arrays and maps",
-//   9: "'remove()' can only be used on observable objects, arrays and maps",
-//   10: "'has()' can only be used on observable objects, arrays and maps",
-//   11: "'get()' can only be used on observable objects, arrays and maps",
-//   12: "Invalid annotation",
-//   13: "Dynamic observable objects cannot be frozen",
-//   14: "Intercept handlers should return nothing or a change object",
-//   15: "Observable arrays cannot be frozen",
-//   16: "Modification exception: the internal structure of an observable array was changed.",
-//   17: function _(index, length) {
-//     return "[mobx.array] Index out of bounds, " + index + " is larger than " + length;
-//   },
-//   18: "mobx.map requires Map polyfill for the current browser. Check babel-polyfill or core-js/es6/map.js",
-//   19: function _(other) {
-//     return "Cannot initialize from classes that inherit from Map: " + other.constructor.name;
-//   },
-//   20: function _(other) {
-//     return "Cannot initialize map from " + other;
-//   },
-//   21: function _(dataStructure) {
-//     return "Cannot convert to map from '" + dataStructure + "'";
-//   },
-//   22: "mobx.set requires Set polyfill for the current browser. Check babel-polyfill or core-js/es6/set.js",
-//   23: "It is not possible to get index atoms from arrays",
-//   24: function _(thing) {
-//     return "Cannot obtain administration from " + thing;
-//   },
-//   25: function _(property, name) {
-//     return "the entry '" + property + "' does not exist in the observable map '" + name + "'";
-//   },
-//   26: "please specify a property",
-//   27: function _(property, name) {
-//     return "no observable property '" + property.toString() + "' found on the observable object '" + name + "'";
-//   },
-//   28: function _(thing) {
-//     return "Cannot obtain atom from " + thing;
-//   },
-//   29: "Expecting some object",
-//   30: "invalid action stack. did you forget to finish an action?",
-//   31: "missing option for computed: get",
-//   32: function _(name, derivation) {
-//     return "Cycle detected in computation " + name + ": " + derivation;
-//   },
-//   33: function _(name) {
-//     return "The setter of computed value '" + name + "' is trying to update itself. Did you intend to update an _observable_ value, instead of the computed property?";
-//   },
-//   34: function _(name) {
-//     return "[ComputedValue '" + name + "'] It is not possible to assign a new value to a computed value.";
-//   },
-//   35: "There are multiple, different versions of MobX active. Make sure MobX is loaded only once or use `configure({ isolateGlobalState: true })`",
-//   36: "isolateGlobalState should be called before MobX is running any reactions",
-//   37: function _(method) {
-//     return "[mobx] `observableArray." + method + "()` mutates the array in-place, which is not allowed inside a derivation. Use `array.slice()." + method + "()` instead";
-//   },
-//   38: "'ownKeys()' can only be used on observable objects",
-//   39: "'defineProperty()' can only be used on observable objects"
-// };
-// var errors = process.env.NODE_ENV !== "production" ? niceErrors : {};
+  /*
+  2(prop) {
+      return `invalid decorator for '${prop.toString()}'`
+  },
+  3(prop) {
+      return `Cannot decorate '${prop.toString()}': action can only be used on properties with a function value.`
+  },
+  4(prop) {
+      return `Cannot decorate '${prop.toString()}': computed can only be used on getter properties.`
+  },
+  */
+  5: "'keys()' can only be used on observable objects, arrays, sets and maps",
+  6: "'values()' can only be used on observable objects, arrays, sets and maps",
+  7: "'entries()' can only be used on observable objects, arrays and maps",
+  8: "'set()' can only be used on observable objects, arrays and maps",
+  9: "'remove()' can only be used on observable objects, arrays and maps",
+  10: "'has()' can only be used on observable objects, arrays and maps",
+  11: "'get()' can only be used on observable objects, arrays and maps",
+  12: "Invalid annotation",
+  13: "Dynamic observable objects cannot be frozen",
+  14: "Intercept handlers should return nothing or a change object",
+  15: "Observable arrays cannot be frozen",
+  16: "Modification exception: the internal structure of an observable array was changed.",
+  17: function _(index, length) {
+    return "[mobx.array] Index out of bounds, " + index + " is larger than " + length;
+  },
+  18: "mobx.map requires Map polyfill for the current browser. Check babel-polyfill or core-js/es6/map.js",
+  19: function _(other) {
+    return "Cannot initialize from classes that inherit from Map: " + other.constructor.name;
+  },
+  20: function _(other) {
+    return "Cannot initialize map from " + other;
+  },
+  21: function _(dataStructure) {
+    return "Cannot convert to map from '" + dataStructure + "'";
+  },
+  22: "mobx.set requires Set polyfill for the current browser. Check babel-polyfill or core-js/es6/set.js",
+  23: "It is not possible to get index atoms from arrays",
+  24: function _(thing) {
+    return "Cannot obtain administration from " + thing;
+  },
+  25: function _(property, name) {
+    return "the entry '" + property + "' does not exist in the observable map '" + name + "'";
+  },
+  26: "please specify a property",
+  27: function _(property, name) {
+    return "no observable property '" + property.toString() + "' found on the observable object '" + name + "'";
+  },
+  28: function _(thing) {
+    return "Cannot obtain atom from " + thing;
+  },
+  29: "Expecting some object",
+  30: "invalid action stack. did you forget to finish an action?",
+  31: "missing option for computed: get",
+  32: function _(name, derivation) {
+    return "Cycle detected in computation " + name + ": " + derivation;
+  },
+  33: function _(name) {
+    return "The setter of computed value '" + name + "' is trying to update itself. Did you intend to update an _observable_ value, instead of the computed property?";
+  },
+  34: function _(name) {
+    return "[ComputedValue '" + name + "'] It is not possible to assign a new value to a computed value.";
+  },
+  35: "There are multiple, different versions of MobX active. Make sure MobX is loaded only once or use `configure({ isolateGlobalState: true })`",
+  36: "isolateGlobalState should be called before MobX is running any reactions",
+  37: function _(method) {
+    return "[mobx] `observableArray." + method + "()` mutates the array in-place, which is not allowed inside a derivation. Use `array.slice()." + method + "()` instead";
+  },
+  38: "'ownKeys()' can only be used on observable objects",
+  39: "'defineProperty()' can only be used on observable objects"
+};
+var errors = window.process.env.NODE_ENV !== "production" ? niceErrors : {};
 function die(error) {
-  // for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-  //   args[_key - 1] = arguments[_key];
-  // }
+  for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    args[_key - 1] = arguments[_key];
+  }
 
-  // if (process.env.NODE_ENV !== "production") {
-  //   var e = typeof error === "string" ? error : errors[error];
-  //   if (typeof e === "function") e = e.apply(null, args);
-  //   throw new Error("[MobX] " + e);
-  // }
+  if (window.process.env.NODE_ENV !== "production") {
+    var e = typeof error === "string" ? error : errors[error];
+    if (typeof e === "function") e = e.apply(null, args);
+    throw new Error("[MobX] " + e);
+  }
 
-  // throw new Error(typeof error === "number" ? "[MobX] minified error nr: " + error + (args.length ? " " + args.map(String).join(",") : "") + ". Find the full error at: https://github.com/mobxjs/mobx/blob/main/packages/mobx/src/errors.ts" : "[MobX] " + error);
+  throw new Error(typeof error === "number" ? "[MobX] minified error nr: " + error + (args.length ? " " + args.map(String).join(",") : "") + ". Find the full error at: https://github.com/mobxjs/mobx/blob/main/packages/mobx/src/errors.ts" : "[MobX] " + error);
 }
 
 var mockGlobal = {};
@@ -123,11 +123,11 @@ var hasProxy = typeof Proxy !== "undefined";
 var plainObjectString = /*#__PURE__*/Object.toString();
 function assertProxies() {
   if (!hasProxy) {
-    die(process.env.NODE_ENV !== "production" ? "`Proxy` objects are not available in the current environment. Please configure MobX to enable a fallback implementation.`" : "Proxy not available");
+    die(window.process.env.NODE_ENV !== "production" ? "`Proxy` objects are not available in the current environment. Please configure MobX to enable a fallback implementation.`" : "Proxy not available");
   }
 }
 function warnAboutProxyRequirement(msg) {
-  if (process.env.NODE_ENV !== "production" && globalState.verifyProxies) {
+  if (window.process.env.NODE_ENV !== "production" && globalState.verifyProxies) {
     die("MobX is currently configured to be able to run in ES5 mode, but in ES5 MobX won't be able to " + msg);
   }
 }
@@ -368,7 +368,7 @@ function storeAnnotation(prototype, key, annotation) {
   } // @override must override something
 
 
-  if (process.env.NODE_ENV !== "production" && isOverride(annotation) && !hasProp(prototype[storedAnnotationsSymbol], key)) {
+  if (window.process.env.NODE_ENV !== "production" && isOverride(annotation) && !hasProp(prototype[storedAnnotationsSymbol], key)) {
     var fieldName = prototype.constructor.name + ".prototype." + key.toString();
     die("'" + fieldName + "' is decorated with 'override', " + "but no such decorated member was found on prototype.");
   } // Cannot re-decorate
@@ -382,7 +382,7 @@ function storeAnnotation(prototype, key, annotation) {
 }
 
 function assertNotDecorated(prototype, annotation, key) {
-  if (process.env.NODE_ENV !== "production" && !isOverride(annotation) && hasProp(prototype[storedAnnotationsSymbol], key)) {
+  if (window.process.env.NODE_ENV !== "production" && !isOverride(annotation) && hasProp(prototype[storedAnnotationsSymbol], key)) {
     var fieldName = prototype.constructor.name + ".prototype." + key.toString();
     var currentAnnotationType = prototype[storedAnnotationsSymbol][key].annotationType_;
     var requestedAnnotationType = annotation.annotationType_;
@@ -396,7 +396,7 @@ function assertNotDecorated(prototype, annotation, key) {
 
 function collectStoredAnnotations(target) {
   if (!hasProp(target, storedAnnotationsSymbol)) {
-    if (process.env.NODE_ENV !== "production" && !target[storedAnnotationsSymbol]) {
+    if (window.process.env.NODE_ENV !== "production" && !target[storedAnnotationsSymbol]) {
       die("No annotations were passed to makeObservable, but no decorated members have been found either");
     } // We need a copy as we will remove annotation from the list once it's applied.
 
@@ -417,7 +417,7 @@ var Atom = /*#__PURE__*/function () {
    */
   function Atom(name_) {
     if (name_ === void 0) {
-      name_ = process.env.NODE_ENV !== "production" ? "Atom@" + getNextId() : "Atom";
+      name_ = window.process.env.NODE_ENV !== "production" ? "Atom@" + getNextId() : "Atom";
     }
 
     this.name_ = void 0;
@@ -568,14 +568,14 @@ function shallowEnhancer(v, _, name) {
     name: name,
     deep: false
   });
-  if (process.env.NODE_ENV !== "production") die("The shallow modifier / decorator can only used in combination with arrays, objects, maps and sets");
+  if (window.process.env.NODE_ENV !== "production") die("The shallow modifier / decorator can only used in combination with arrays, objects, maps and sets");
 }
 function referenceEnhancer(newValue) {
   // never turn into an observable
   return newValue;
 }
 function refStructEnhancer(v, oldValue) {
-  if (process.env.NODE_ENV !== "production" && isObservable(v)) die("observable.struct should not be used with observable values");
+  if (window.process.env.NODE_ENV !== "production" && isObservable(v)) die("observable.struct should not be used with observable values");
   if (deepEqual(v, oldValue)) return oldValue;
   return v;
 }
@@ -592,12 +592,12 @@ function isOverride(annotation) {
 
 function make_(adm, key) {
   // Must not be plain object
-  if (process.env.NODE_ENV !== "production" && adm.isPlainObject_) {
+  if (window.process.env.NODE_ENV !== "production" && adm.isPlainObject_) {
     die("Cannot apply '" + this.annotationType_ + "' to '" + adm.name_ + "." + key.toString() + "':" + ("\n'" + this.annotationType_ + "' cannot be used on plain objects."));
   } // Must override something
 
 
-  if (process.env.NODE_ENV !== "production" && !hasProp(adm.appliedAnnotations_, key)) {
+  if (window.process.env.NODE_ENV !== "production" && !hasProp(adm.appliedAnnotations_, key)) {
     die("'" + adm.name_ + "." + key.toString() + "' is annotated with '" + this.annotationType_ + "', " + "but no such annotated member was found on prototype.");
   }
 
@@ -665,7 +665,7 @@ function assertActionDescriptor(adm, _ref, key, _ref2) {
   var annotationType_ = _ref.annotationType_;
   var value = _ref2.value;
 
-  if (process.env.NODE_ENV !== "production" && !isFunction(value)) {
+  if (window.process.env.NODE_ENV !== "production" && !isFunction(value)) {
     die("Cannot apply '" + annotationType_ + "' to '" + adm.name_ + "." + key.toString() + "':" + ("\n'" + annotationType_ + "' can only be used on properties with a function value."));
   }
 }
@@ -755,7 +755,7 @@ function assertFlowDescriptor(adm, _ref, key, _ref2) {
   var annotationType_ = _ref.annotationType_;
   var value = _ref2.value;
 
-  if (process.env.NODE_ENV !== "production" && !isFunction(value)) {
+  if (window.process.env.NODE_ENV !== "production" && !isFunction(value)) {
     die("Cannot apply '" + annotationType_ + "' to '" + adm.name_ + "." + key.toString() + "':" + ("\n'" + annotationType_ + "' can only be used on properties with a generator function value."));
   }
 }
@@ -817,7 +817,7 @@ function assertComputedDescriptor(adm, _ref, key, _ref2) {
   var annotationType_ = _ref.annotationType_;
   var get = _ref2.get;
 
-  if (process.env.NODE_ENV !== "production" && !get) {
+  if (window.process.env.NODE_ENV !== "production" && !get) {
     die("Cannot apply '" + annotationType_ + "' to '" + adm.name_ + "." + key.toString() + "':" + ("\n'" + annotationType_ + "' can only be used on getter(+setter) properties."));
   }
 }
@@ -849,7 +849,7 @@ function extend_$4(adm, key, descriptor, proxyTrap) {
 function assertObservableDescriptor(adm, _ref, key, descriptor) {
   var annotationType_ = _ref.annotationType_;
 
-  if (process.env.NODE_ENV !== "production" && !("value" in descriptor)) {
+  if (window.process.env.NODE_ENV !== "production" && !("value" in descriptor)) {
     die("Cannot apply '" + annotationType_ + "' to '" + adm.name_ + "." + key.toString() + "':" + ("\n'" + annotationType_ + "' cannot be used on getter/setter properties"));
   }
 }
@@ -1073,7 +1073,7 @@ var computed = function computed(arg1, arg2) {
   } // computed(expr, options?)
 
 
-  if (process.env.NODE_ENV !== "production") {
+  if (window.process.env.NODE_ENV !== "production") {
     if (!isFunction(arg1)) die("First argument to `computed` should be an expression.");
     if (isFunction(arg2)) die("A setter as second argument is no longer supported, use `{ set: fn }` option instead");
   }
@@ -1106,7 +1106,7 @@ function createAction(actionName, fn, autoAction, ref) {
     autoAction = false;
   }
 
-  if (process.env.NODE_ENV !== "production") {
+  if (window.process.env.NODE_ENV !== "production") {
     if (!isFunction(fn)) die("`action` can only be invoked on functions");
     if (typeof actionName !== "string" || !actionName) die("actions should have valid names, got: '" + actionName + "'");
   }
@@ -1138,10 +1138,10 @@ function executeAction(actionName, canRunAsDerivation, fn, scope, args) {
 }
 function _startAction(actionName, canRunAsDerivation, // true for autoAction
 scope, args) {
-  var notifySpy_ = process.env.NODE_ENV !== "production" && isSpyEnabled() && !!actionName;
+  var notifySpy_ = window.process.env.NODE_ENV !== "production" && isSpyEnabled() && !!actionName;
   var startTime_ = 0;
 
-  if (process.env.NODE_ENV !== "production" && notifySpy_) {
+  if (window.process.env.NODE_ENV !== "production" && notifySpy_) {
     startTime_ = Date.now();
     var flattenedArgs = args ? Array.from(args) : EMPTY_ARRAY;
     spyReportStart({
@@ -1192,7 +1192,7 @@ function _endAction(runInfo) {
   endBatch();
   if (runInfo.runAsAction_) untrackedEnd(runInfo.prevDerivation_);
 
-  if (process.env.NODE_ENV !== "production" && runInfo.notifySpy_) {
+  if (window.process.env.NODE_ENV !== "production" && runInfo.notifySpy_) {
     spyReportEnd({
       time: Date.now() - runInfo.startTime_
     });
@@ -1228,7 +1228,7 @@ var ObservableValue = /*#__PURE__*/function (_Atom) {
     var _this;
 
     if (name_ === void 0) {
-      name_ = process.env.NODE_ENV !== "production" ? "ObservableValue@" + getNextId() : "ObservableValue";
+      name_ = window.process.env.NODE_ENV !== "production" ? "ObservableValue@" + getNextId() : "ObservableValue";
     }
 
     if (notifySpy === void 0) {
@@ -1253,7 +1253,7 @@ var ObservableValue = /*#__PURE__*/function (_Atom) {
     _this.equals = equals;
     _this.value_ = enhancer(value, undefined, name_);
 
-    if (process.env.NODE_ENV !== "production" && notifySpy && isSpyEnabled()) {
+    if (window.process.env.NODE_ENV !== "production" && notifySpy && isSpyEnabled()) {
       // only notify spy if this is a stand-alone observable
       spyReport({
         type: CREATE,
@@ -1281,7 +1281,7 @@ var ObservableValue = /*#__PURE__*/function (_Atom) {
     if (newValue !== globalState.UNCHANGED) {
       var notifySpy = isSpyEnabled();
 
-      if (process.env.NODE_ENV !== "production" && notifySpy) {
+      if (window.process.env.NODE_ENV !== "production" && notifySpy) {
         spyReportStart({
           type: UPDATE,
           object: this,
@@ -1293,7 +1293,7 @@ var ObservableValue = /*#__PURE__*/function (_Atom) {
       }
 
       this.setNewValue_(newValue);
-      if (process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
+      if (window.process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
     }
   };
 
@@ -1444,10 +1444,10 @@ var ComputedValue = /*#__PURE__*/function () {
     this.onBUOL = void 0;
     if (!options.get) die(31);
     this.derivation = options.get;
-    this.name_ = options.name || (process.env.NODE_ENV !== "production" ? "ComputedValue@" + getNextId() : "ComputedValue");
+    this.name_ = options.name || (window.process.env.NODE_ENV !== "production" ? "ComputedValue@" + getNextId() : "ComputedValue");
 
     if (options.set) {
-      this.setter_ = createAction(process.env.NODE_ENV !== "production" ? this.name_ + "-setter" : "ComputedValue-setter", options.set);
+      this.setter_ = createAction(window.process.env.NODE_ENV !== "production" ? this.name_ + "-setter" : "ComputedValue-setter", options.set);
     }
 
     this.equals_ = options.equals || (options.compareStructural || options.struct ? comparer.structural : comparer["default"]);
@@ -1532,7 +1532,7 @@ var ComputedValue = /*#__PURE__*/function () {
     this.dependenciesState_ === IDerivationState_.NOT_TRACKING_;
     var newValue = this.computeValue_(true);
 
-    if (process.env.NODE_ENV !== "production" && isSpyEnabled()) {
+    if (window.process.env.NODE_ENV !== "production" && isSpyEnabled()) {
       spyReport({
         observableKind: "computed",
         debugObjectName: this.name_,
@@ -1612,7 +1612,7 @@ var ComputedValue = /*#__PURE__*/function () {
   };
 
   _proto.warnAboutUntrackedRead_ = function warnAboutUntrackedRead_() {
-    if (!(process.env.NODE_ENV !== "production")) return;
+    if (!(window.process.env.NODE_ENV !== "production")) return;
 
     if (this.requiresReaction_ === true) {
       die("[mobx] Computed value " + this.name_ + " is read outside a reactive context");
@@ -1749,7 +1749,7 @@ function isComputingDerivation() {
   return globalState.trackingDerivation !== null; // filter out actions inside computations
 }
 function checkIfStateModificationsAreAllowed(atom) {
-  if (!(process.env.NODE_ENV !== "production")) {
+  if (!(window.process.env.NODE_ENV !== "production")) {
     return;
   }
 
@@ -1758,7 +1758,7 @@ function checkIfStateModificationsAreAllowed(atom) {
   if (!globalState.allowStateChanges && (hasObservers || globalState.enforceActions === "always")) console.warn("[MobX] " + (globalState.enforceActions ? "Since strict-mode is enabled, changing (observed) observable values without using an action is not allowed. Tried to modify: " : "Side effects like changing state are not allowed at this point. Are you trying to modify state from, for example, a computed value or the render function of a React component? You can wrap side effects in 'runInAction' (or decorate functions with 'action') if needed. Tried to modify: ") + atom.name_);
 }
 function checkIfStateReadsAreAllowed(observable) {
-  if (process.env.NODE_ENV !== "production" && !globalState.allowStateReads && globalState.observableRequiresReaction) {
+  if (window.process.env.NODE_ENV !== "production" && !globalState.allowStateReads && globalState.observableRequiresReaction) {
     console.warn("[mobx] Observable " + observable.name_ + " being read outside a reactive context");
   }
 }
@@ -1800,7 +1800,7 @@ function trackDerivedFunction(derivation, f, context) {
 }
 
 function warnAboutDerivationWithoutDependencies(derivation) {
-  if (!(process.env.NODE_ENV !== "production")) return;
+  if (!(window.process.env.NODE_ENV !== "production")) return;
   if (derivation.observing_.length !== 0) return;
 
   if (globalState.reactionRequiresObservable || derivation.requiresObservable_) {
@@ -2093,7 +2093,7 @@ function endBatch() {
 
         if (observable instanceof ComputedValue) {
           // computed values are automatically teared down when the last observer leaves
-          // this process happens recursively, this computed might be the last observabe of another, etc..
+          // this window.process happens recursively, this computed might be the last observabe of another, etc..
           observable.suspend_();
         }
       }
@@ -2159,7 +2159,7 @@ function propagateChanged(observable) {
 
   observable.observers_.forEach(function (d) {
     if (d.dependenciesState_ === IDerivationState_.UP_TO_DATE_) {
-      if (process.env.NODE_ENV !== "production" && d.isTracing_ !== TraceMode.NONE) {
+      if (window.process.env.NODE_ENV !== "production" && d.isTracing_ !== TraceMode.NONE) {
         logTraceInfo(d, observable);
       }
 
@@ -2178,7 +2178,7 @@ function propagateChangeConfirmed(observable) {
     if (d.dependenciesState_ === IDerivationState_.POSSIBLY_STALE_) {
       d.dependenciesState_ = IDerivationState_.STALE_;
 
-      if (process.env.NODE_ENV !== "production" && d.isTracing_ !== TraceMode.NONE) {
+      if (window.process.env.NODE_ENV !== "production" && d.isTracing_ !== TraceMode.NONE) {
         logTraceInfo(d, observable);
       }
     } else if (d.dependenciesState_ === IDerivationState_.UP_TO_DATE_ // this happens during computing of `d`, just keep lowestObserverState up to date.
@@ -2228,7 +2228,7 @@ var Reaction = /*#__PURE__*/function () {
   // nodes we are looking at. Our value depends on these nodes
   function Reaction(name_, onInvalidate_, errorHandler_, requiresObservable_) {
     if (name_ === void 0) {
-      name_ = process.env.NODE_ENV !== "production" ? "Reaction@" + getNextId() : "Reaction";
+      name_ = window.process.env.NODE_ENV !== "production" ? "Reaction@" + getNextId() : "Reaction";
     }
 
     if (requiresObservable_ === void 0) {
@@ -2291,7 +2291,7 @@ var Reaction = /*#__PURE__*/function () {
         try {
           this.onInvalidate_();
 
-          if (process.env.NODE_ENV !== "production" && this.isTrackPending_ && isSpyEnabled()) {
+          if (window.process.env.NODE_ENV !== "production" && this.isTrackPending_ && isSpyEnabled()) {
             // onInvalidate didn't trigger track right away..
             spyReport({
               name: this.name_,
@@ -2317,7 +2317,7 @@ var Reaction = /*#__PURE__*/function () {
     var notify = isSpyEnabled();
     var startTime;
 
-    if (process.env.NODE_ENV !== "production" && notify) {
+    if (window.process.env.NODE_ENV !== "production" && notify) {
       startTime = Date.now();
       spyReportStart({
         name: this.name_,
@@ -2341,7 +2341,7 @@ var Reaction = /*#__PURE__*/function () {
 
     if (isCaughtException(result)) this.reportExceptionInDerivation_(result.cause);
 
-    if (process.env.NODE_ENV !== "production" && notify) {
+    if (window.process.env.NODE_ENV !== "production" && notify) {
       spyReportEnd({
         time: Date.now() - startTime
       });
@@ -2359,15 +2359,15 @@ var Reaction = /*#__PURE__*/function () {
     }
 
     if (globalState.disableErrorBoundaries) throw error;
-    var message = process.env.NODE_ENV !== "production" ? "[mobx] Encountered an uncaught exception that was thrown by a reaction or observer component, in: '" + this + "'" : "[mobx] uncaught error in '" + this + "'";
+    var message = window.process.env.NODE_ENV !== "production" ? "[mobx] Encountered an uncaught exception that was thrown by a reaction or observer component, in: '" + this + "'" : "[mobx] uncaught error in '" + this + "'";
 
     if (!globalState.suppressReactionErrors) {
       console.error(message, error);
       /** If debugging brought you here, please, read the above message :-). Tnx! */
-    } else if (process.env.NODE_ENV !== "production") console.warn("[mobx] (error in reaction '" + this.name_ + "' suppressed, fix error of causing action below)"); // prettier-ignore
+    } else if (window.process.env.NODE_ENV !== "production") console.warn("[mobx] (error in reaction '" + this.name_ + "' suppressed, fix error of causing action below)"); // prettier-ignore
 
 
-    if (process.env.NODE_ENV !== "production" && isSpyEnabled()) {
+    if (window.process.env.NODE_ENV !== "production" && isSpyEnabled()) {
       spyReport({
         type: "error",
         name: this.name_,
@@ -2448,7 +2448,7 @@ function runReactionsHelper() {
 
   while (allReactions.length > 0) {
     if (++iterations === MAX_REACTION_ITERATIONS) {
-      console.error(process.env.NODE_ENV !== "production" ? "Reaction doesn't converge to a stable state after " + MAX_REACTION_ITERATIONS + " iterations." + (" Probably there is a cycle in the reactive function: " + allReactions[0]) : "[mobx] cycle in reaction: " + allReactions[0]);
+      console.error(window.process.env.NODE_ENV !== "production" ? "Reaction doesn't converge to a stable state after " + MAX_REACTION_ITERATIONS + " iterations." + (" Probably there is a cycle in the reactive function: " + allReactions[0]) : "[mobx] cycle in reaction: " + allReactions[0]);
       allReactions.splice(0); // clear reactions
     }
 
@@ -2474,10 +2474,10 @@ function setReactionScheduler(fn) {
 }
 
 function isSpyEnabled() {
-  return process.env.NODE_ENV !== "production" && !!globalState.spyListeners.length;
+  return window.process.env.NODE_ENV !== "production" && !!globalState.spyListeners.length;
 }
 function spyReport(event) {
-  if (!(process.env.NODE_ENV !== "production")) return; // dead code elimination can do the rest
+  if (!(window.process.env.NODE_ENV !== "production")) return; // dead code elimination can do the rest
 
   if (!globalState.spyListeners.length) return;
   var listeners = globalState.spyListeners;
@@ -2487,7 +2487,7 @@ function spyReport(event) {
   }
 }
 function spyReportStart(event) {
-  if (!(process.env.NODE_ENV !== "production")) return;
+  if (!(window.process.env.NODE_ENV !== "production")) return;
 
   var change = _extends({}, event, {
     spyReportStart: true
@@ -2500,14 +2500,14 @@ var END_EVENT = {
   spyReportEnd: true
 };
 function spyReportEnd(change) {
-  if (!(process.env.NODE_ENV !== "production")) return;
+  if (!(window.process.env.NODE_ENV !== "production")) return;
   if (change) spyReport(_extends({}, change, {
     type: "report-end",
     spyReportEnd: true
   }));else spyReport(END_EVENT);
 }
 function spy(listener) {
-  if (!(process.env.NODE_ENV !== "production")) {
+  if (!(window.process.env.NODE_ENV !== "production")) {
     console.warn("[mobx.spy] Is a no-op in production builds");
     return function () {};
   } else {
@@ -2556,7 +2556,7 @@ function createActionFactory(autoAction) {
       }));
     }
 
-    if (process.env.NODE_ENV !== "production") die("Invalid arguments for `action`");
+    if (window.process.env.NODE_ENV !== "production") die("Invalid arguments for `action`");
   };
 
   return res;
@@ -2589,12 +2589,12 @@ function autorun(view, opts) {
     opts = EMPTY_OBJECT;
   }
 
-  if (process.env.NODE_ENV !== "production") {
+  if (window.process.env.NODE_ENV !== "production") {
     if (!isFunction(view)) die("Autorun expects a function as first argument");
     if (isAction(view)) die("Autorun does not accept actions since actions are untrackable");
   }
 
-  var name = (_opts$name = (_opts = opts) == null ? void 0 : _opts.name) != null ? _opts$name : process.env.NODE_ENV !== "production" ? view.name || "Autorun@" + getNextId() : "Autorun";
+  var name = (_opts$name = (_opts = opts) == null ? void 0 : _opts.name) != null ? _opts$name : window.process.env.NODE_ENV !== "production" ? view.name || "Autorun@" + getNextId() : "Autorun";
   var runSync = !opts.scheduler && !opts.delay;
   var reaction;
 
@@ -2643,12 +2643,12 @@ function reaction(expression, effect, opts) {
     opts = EMPTY_OBJECT;
   }
 
-  if (process.env.NODE_ENV !== "production") {
+  if (window.process.env.NODE_ENV !== "production") {
     if (!isFunction(expression) || !isFunction(effect)) die("First and second argument to reaction should be functions");
     if (!isPlainObject(opts)) die("Third argument of reactions should be an object");
   }
 
-  var name = (_opts$name2 = opts.name) != null ? _opts$name2 : process.env.NODE_ENV !== "production" ? "Reaction@" + getNextId() : "Reaction";
+  var name = (_opts$name2 = opts.name) != null ? _opts$name2 : window.process.env.NODE_ENV !== "production" ? "Reaction@" + getNextId() : "Reaction";
   var effectAction = action(name, opts.onError ? wrapErrorHandler(opts.onError, effect) : effect);
   var runSync = !opts.scheduler && !opts.delay;
   var scheduler = createSchedulerFromOptions(opts);
@@ -2758,7 +2758,7 @@ function configure(options) {
   });
   globalState.allowStateReads = !globalState.observableRequiresReaction;
 
-  if (process.env.NODE_ENV !== "production" && globalState.disableErrorBoundaries === true) {
+  if (window.process.env.NODE_ENV !== "production" && globalState.disableErrorBoundaries === true) {
     console.warn("WARNING: Debug feature only. MobX will NOT recover from errors when `disableErrorBoundaries` is enabled.");
   }
 
@@ -2768,7 +2768,7 @@ function configure(options) {
 }
 
 function extendObservable(target, properties, annotations, options) {
-  if (process.env.NODE_ENV !== "production") {
+  if (window.process.env.NODE_ENV !== "production") {
     if (arguments.length > 4) die("'extendObservable' expected 2-4 arguments");
     if (typeof target !== "object") die("'extendObservable' expects an object as first argument");
     if (isObservableMap(target)) die("'extendObservable' should not be used on maps, use map.merge instead");
@@ -2840,7 +2840,7 @@ var flow = /*#__PURE__*/Object.assign(function flow(arg1, arg2) {
   } // flow(fn)
 
 
-  if (process.env.NODE_ENV !== "production" && arguments.length !== 1) die("Flow expects single argument with generator function");
+  if (window.process.env.NODE_ENV !== "production" && arguments.length !== 1) die("Flow expects single argument with generator function");
   var generator = arg1;
   var name = generator.name || "<unnamed flow>"; // Implementation based on https://github.com/tj/co/blob/master/index.js
 
@@ -2893,7 +2893,7 @@ var flow = /*#__PURE__*/Object.assign(function flow(arg1, arg2) {
         return pendingPromise.then(onFulfilled, onRejected);
       }
 
-      onFulfilled(undefined); // kick off the process
+      onFulfilled(undefined); // kick off the window.process
     });
     promise.cancel = action(name + " - runid: " + runId + " - cancel", function () {
       try {
@@ -2937,13 +2937,13 @@ function interceptReads(thing, propOrHandler, handler) {
   if (isObservableMap(thing) || isObservableArray(thing) || isObservableValue(thing)) {
     target = getAdministration(thing);
   } else if (isObservableObject(thing)) {
-    if (process.env.NODE_ENV !== "production" && !isStringish(propOrHandler)) return die("InterceptReads can only be used with a specific property, not with an object in general");
+    if (window.process.env.NODE_ENV !== "production" && !isStringish(propOrHandler)) return die("InterceptReads can only be used with a specific property, not with an object in general");
     target = getAdministration(thing, propOrHandler);
-  } else if (process.env.NODE_ENV !== "production") {
+  } else if (window.process.env.NODE_ENV !== "production") {
     return die("Expected observable map, object or array as first array");
   }
 
-  if (process.env.NODE_ENV !== "production" && target.dehancer !== undefined) return die("An intercept reader was already established");
+  if (window.process.env.NODE_ENV !== "production" && target.dehancer !== undefined) return die("An intercept reader was already established");
   target.dehancer = typeof propOrHandler === "function" ? propOrHandler : handler;
   return function () {
     target.dehancer = undefined;
@@ -2973,11 +2973,11 @@ function _isComputed(value, property) {
   return isComputedValue(value);
 }
 function isComputed(value) {
-  if (process.env.NODE_ENV !== "production" && arguments.length > 1) return die("isComputed expects only 1 argument. Use isComputedProp to inspect the observability of a property");
+  if (window.process.env.NODE_ENV !== "production" && arguments.length > 1) return die("isComputed expects only 1 argument. Use isComputedProp to inspect the observability of a property");
   return _isComputed(value);
 }
 function isComputedProp(value, propName) {
-  if (process.env.NODE_ENV !== "production" && !isStringish(propName)) return die("isComputed expected a property name as second argument");
+  if (window.process.env.NODE_ENV !== "production" && !isStringish(propName)) return die("isComputed expected a property name as second argument");
   return _isComputed(value, propName);
 }
 
@@ -2985,7 +2985,7 @@ function _isObservable(value, property) {
   if (!value) return false;
 
   if (property !== undefined) {
-    if (process.env.NODE_ENV !== "production" && (isObservableMap(value) || isObservableArray(value))) return die("isObservable(object, propertyName) is not supported for arrays and maps. Use map.has or array.length instead.");
+    if (window.process.env.NODE_ENV !== "production" && (isObservableMap(value) || isObservableArray(value))) return die("isObservable(object, propertyName) is not supported for arrays and maps. Use map.has or array.length instead.");
 
     if (isObservableObject(value)) {
       return value[$mobx].values_.has(property);
@@ -2999,11 +2999,11 @@ function _isObservable(value, property) {
 }
 
 function isObservable(value) {
-  if (process.env.NODE_ENV !== "production" && arguments.length !== 1) die("isObservable expects only 1 argument. Use isObservableProp to inspect the observability of a property");
+  if (window.process.env.NODE_ENV !== "production" && arguments.length !== 1) die("isObservable expects only 1 argument. Use isObservableProp to inspect the observability of a property");
   return _isObservable(value);
 }
 function isObservableProp(value, propName) {
-  if (process.env.NODE_ENV !== "production" && !isStringish(propName)) return die("expected a property name as second argument");
+  if (window.process.env.NODE_ENV !== "production" && !isStringish(propName)) return die("expected a property name as second argument");
   return _isObservable(value, propName);
 }
 
@@ -3225,12 +3225,12 @@ function toJSHelper(source, __alreadySeen) {
 
 
 function toJS(source, options) {
-  if (process.env.NODE_ENV !== "production" && options) die("toJS no longer supports options");
+  if (window.process.env.NODE_ENV !== "production" && options) die("toJS no longer supports options");
   return toJSHelper(source, new Map());
 }
 
 function trace() {
-  if (!(process.env.NODE_ENV !== "production")) die("trace() is not available in production builds");
+  if (!(window.process.env.NODE_ENV !== "production")) die("trace() is not available in production builds");
   var enterBreakPoint = false;
 
   for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -3304,8 +3304,8 @@ function _when(predicate, effect, opts) {
     }, opts.timeout);
   }
 
-  opts.name = process.env.NODE_ENV !== "production" ? opts.name || "When@" + getNextId() : "When";
-  var effectAction = createAction(process.env.NODE_ENV !== "production" ? opts.name + "-effect" : "When-effect", effect); // eslint-disable-next-line
+  opts.name = window.process.env.NODE_ENV !== "production" ? opts.name || "When@" + getNextId() : "When";
+  var effectAction = createAction(window.process.env.NODE_ENV !== "production" ? opts.name + "-effect" : "When-effect", effect); // eslint-disable-next-line
 
   var disposer = autorun(function (r) {
     // predicate should not change state
@@ -3321,7 +3321,7 @@ function _when(predicate, effect, opts) {
 }
 
 function whenPromise(predicate, opts) {
-  if (process.env.NODE_ENV !== "production" && opts && opts.onError) return die("the options 'onError' and 'promise' cannot be combined");
+  if (window.process.env.NODE_ENV !== "production" && opts && opts.onError) return die("the options 'onError' and 'promise' cannot be combined");
   var cancel;
   var res = new Promise(function (resolve, reject) {
     var disposer = _when(predicate, resolve, _extends({}, opts, {
@@ -3345,7 +3345,7 @@ function getAdm(target) {
 
 var objectProxyTraps = {
   has: function has(target, name) {
-    if (process.env.NODE_ENV !== "production" && globalState.trackingDerivation) warnAboutProxyRequirement("detect new properties using the 'in' operator. Use 'has' from 'mobx' instead.");
+    if (window.process.env.NODE_ENV !== "production" && globalState.trackingDerivation) warnAboutProxyRequirement("detect new properties using the 'in' operator. Use 'has' from 'mobx' instead.");
     return getAdm(target).has_(name);
   },
   get: function get(target, name) {
@@ -3356,7 +3356,7 @@ var objectProxyTraps = {
 
     if (!isStringish(name)) return false;
 
-    if (process.env.NODE_ENV !== "production" && !getAdm(target).values_.has(name)) {
+    if (window.process.env.NODE_ENV !== "production" && !getAdm(target).values_.has(name)) {
       warnAboutProxyRequirement("add a new observable property through direct assignment. Use 'set' from 'mobx' instead.");
     } // null (intercepted) -> true (success)
 
@@ -3366,7 +3366,7 @@ var objectProxyTraps = {
   deleteProperty: function deleteProperty(target, name) {
     var _getAdm$delete_;
 
-    if (process.env.NODE_ENV !== "production") {
+    if (window.process.env.NODE_ENV !== "production") {
       warnAboutProxyRequirement("delete properties from an observable object. Use 'remove' from 'mobx' instead.");
     }
 
@@ -3377,7 +3377,7 @@ var objectProxyTraps = {
   defineProperty: function defineProperty(target, name, descriptor) {
     var _getAdm$definePropert;
 
-    if (process.env.NODE_ENV !== "production") {
+    if (window.process.env.NODE_ENV !== "production") {
       warnAboutProxyRequirement("define property on an observable object. Use 'defineProperty' from 'mobx' instead.");
     } // null (intercepted) -> true (success)
 
@@ -3385,7 +3385,7 @@ var objectProxyTraps = {
     return (_getAdm$definePropert = getAdm(target).defineProperty_(name, descriptor)) != null ? _getAdm$definePropert : true;
   },
   ownKeys: function ownKeys(target) {
-    if (process.env.NODE_ENV !== "production" && globalState.trackingDerivation) warnAboutProxyRequirement("iterate keys to detect added / removed properties. Use 'keys' from 'mobx' instead.");
+    if (window.process.env.NODE_ENV !== "production" && globalState.trackingDerivation) warnAboutProxyRequirement("iterate keys to detect added / removed properties. Use 'keys' from 'mobx' instead.");
     return getAdm(target).ownKeys_();
   },
   preventExtensions: function preventExtensions(target) {
@@ -3476,7 +3476,7 @@ function makeObservable(target, annotations, options) {
 
 var keysSymbol = /*#__PURE__*/Symbol("mobx-keys");
 function makeAutoObservable(target, overrides, options) {
-  if (process.env.NODE_ENV !== "production") {
+  if (window.process.env.NODE_ENV !== "production") {
     if (!isPlainObject(target) && !isPlainObject(Object.getPrototypeOf(target))) die("'makeAutoObservable' can only be used for classes that don't have a superclass");
     if (isObservableObject(target)) die("makeAutoObservable can only be used on objects not already made observable");
   } // Optimization: avoid visiting protos
@@ -3556,7 +3556,7 @@ var ObservableArrayAdministration = /*#__PURE__*/function () {
   // this is the prop that gets proxied, so can't replace it!
   function ObservableArrayAdministration(name, enhancer, owned_, legacyMode_) {
     if (name === void 0) {
-      name = process.env.NODE_ENV !== "production" ? "ObservableArray@" + getNextId() : "ObservableArray";
+      name = window.process.env.NODE_ENV !== "production" ? "ObservableArray@" + getNextId() : "ObservableArray";
     }
 
     this.owned_ = void 0;
@@ -3574,7 +3574,7 @@ var ObservableArrayAdministration = /*#__PURE__*/function () {
     this.atom_ = new Atom(name);
 
     this.enhancer_ = function (newV, oldV) {
-      return enhancer(newV, oldV, process.env.NODE_ENV !== "production" ? name + "[..]" : "ObservableArray[..]");
+      return enhancer(newV, oldV, window.process.env.NODE_ENV !== "production" ? name + "[..]" : "ObservableArray[..]");
     };
   }
 
@@ -3668,7 +3668,7 @@ var ObservableArrayAdministration = /*#__PURE__*/function () {
       return _this.enhancer_(v, undefined);
     });
 
-    if (this.legacyMode_ || process.env.NODE_ENV !== "production") {
+    if (this.legacyMode_ || window.process.env.NODE_ENV !== "production") {
       var lengthDelta = newItems.length - deleteCount;
       this.updateArrayLength_(length, lengthDelta); // checks if internal array wasn't modified
     }
@@ -3714,10 +3714,10 @@ var ObservableArrayAdministration = /*#__PURE__*/function () {
     } : null; // The reason why this is on right hand side here (and not above), is this way the uglifier will drop it, but it won't
     // cause any runtime overhead in development mode without NODE_ENV set, unless spying is enabled
 
-    if (process.env.NODE_ENV !== "production" && notifySpy) spyReportStart(change);
+    if (window.process.env.NODE_ENV !== "production" && notifySpy) spyReportStart(change);
     this.atom_.reportChanged();
     if (notify) notifyListeners(this, change);
-    if (process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
+    if (window.process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
   };
 
   _proto.notifyArraySplice_ = function notifyArraySplice_(index, added, removed) {
@@ -3734,11 +3734,11 @@ var ObservableArrayAdministration = /*#__PURE__*/function () {
       removedCount: removed.length,
       addedCount: added.length
     } : null;
-    if (process.env.NODE_ENV !== "production" && notifySpy) spyReportStart(change);
+    if (window.process.env.NODE_ENV !== "production" && notifySpy) spyReportStart(change);
     this.atom_.reportChanged(); // conform: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/observe
 
     if (notify) notifyListeners(this, change);
-    if (process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
+    if (window.process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
   };
 
   _proto.get_ = function get_(index) {
@@ -3747,7 +3747,7 @@ var ObservableArrayAdministration = /*#__PURE__*/function () {
       return this.dehanceValue_(this.values_[index]);
     }
 
-    console.warn(process.env.NODE_ENV !== "production" ? "[mobx] Out of bounds read: " + index : "[mobx.array] Attempt to read an array index (" + index + ") that is out of bounds (" + this.values_.length + "). Please check length first. Out of bound indices will not be tracked by MobX");
+    console.warn(window.process.env.NODE_ENV !== "production" ? "[mobx] Out of bounds read: " + index : "[mobx.array] Attempt to read an array index (" + index + ") that is out of bounds (" + this.values_.length + "). Please check length first. Out of bound indices will not be tracked by MobX");
   };
 
   _proto.set_ = function set_(index, newValue) {
@@ -3789,7 +3789,7 @@ var ObservableArrayAdministration = /*#__PURE__*/function () {
 }();
 function createObservableArray(initialValues, enhancer, name, owned) {
   if (name === void 0) {
-    name = process.env.NODE_ENV !== "production" ? "ObservableArray@" + getNextId() : "ObservableArray";
+    name = window.process.env.NODE_ENV !== "production" ? "ObservableArray@" + getNextId() : "ObservableArray";
   }
 
   if (owned === void 0) {
@@ -4011,7 +4011,7 @@ var ObservableMap = /*#__PURE__*/function () {
     }
 
     if (name_ === void 0) {
-      name_ = process.env.NODE_ENV !== "production" ? "ObservableMap@" + getNextId() : "ObservableMap";
+      name_ = window.process.env.NODE_ENV !== "production" ? "ObservableMap@" + getNextId() : "ObservableMap";
     }
 
     this.enhancer_ = void 0;
@@ -4030,7 +4030,7 @@ var ObservableMap = /*#__PURE__*/function () {
       die(18);
     }
 
-    this.keysAtom_ = createAtom(process.env.NODE_ENV !== "production" ? this.name_ + ".keys()" : "ObservableMap.keys()");
+    this.keysAtom_ = createAtom(window.process.env.NODE_ENV !== "production" ? this.name_ + ".keys()" : "ObservableMap.keys()");
     this.data_ = new Map();
     this.hasMap_ = new Map();
     this.merge(initialData);
@@ -4049,7 +4049,7 @@ var ObservableMap = /*#__PURE__*/function () {
     var entry = this.hasMap_.get(key);
 
     if (!entry) {
-      var newEntry = entry = new ObservableValue(this.has_(key), referenceEnhancer, process.env.NODE_ENV !== "production" ? this.name_ + "." + stringifyKey(key) + "?" : "ObservableMap.key?", false);
+      var newEntry = entry = new ObservableValue(this.has_(key), referenceEnhancer, window.process.env.NODE_ENV !== "production" ? this.name_ + "." + stringifyKey(key) + "?" : "ObservableMap.key?", false);
       this.hasMap_.set(key, newEntry);
       onBecomeUnobserved(newEntry, function () {
         return _this.hasMap_["delete"](key);
@@ -4109,7 +4109,7 @@ var ObservableMap = /*#__PURE__*/function () {
         name: key
       } : null;
 
-      if (process.env.NODE_ENV !== "production" && notifySpy) spyReportStart(_change);
+      if (window.process.env.NODE_ENV !== "production" && notifySpy) spyReportStart(_change);
       transaction(function () {
         _this2.keysAtom_.reportChanged();
 
@@ -4122,7 +4122,7 @@ var ObservableMap = /*#__PURE__*/function () {
         _this2.data_["delete"](key);
       });
       if (notify) notifyListeners(this, _change);
-      if (process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
+      if (window.process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
       return true;
     }
 
@@ -4153,10 +4153,10 @@ var ObservableMap = /*#__PURE__*/function () {
         name: key,
         newValue: newValue
       } : null;
-      if (process.env.NODE_ENV !== "production" && notifySpy) spyReportStart(change);
+      if (window.process.env.NODE_ENV !== "production" && notifySpy) spyReportStart(change);
       observable.setNewValue_(newValue);
       if (notify) notifyListeners(this, change);
-      if (process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
+      if (window.process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
     }
   };
 
@@ -4165,7 +4165,7 @@ var ObservableMap = /*#__PURE__*/function () {
 
     checkIfStateModificationsAreAllowed(this.keysAtom_);
     transaction(function () {
-      var observable = new ObservableValue(newValue, _this3.enhancer_, process.env.NODE_ENV !== "production" ? _this3.name_ + "." + stringifyKey(key) : "ObservableMap.key", false);
+      var observable = new ObservableValue(newValue, _this3.enhancer_, window.process.env.NODE_ENV !== "production" ? _this3.name_ + "." + stringifyKey(key) : "ObservableMap.key", false);
 
       _this3.data_.set(key, observable);
 
@@ -4185,9 +4185,9 @@ var ObservableMap = /*#__PURE__*/function () {
       name: key,
       newValue: newValue
     } : null;
-    if (process.env.NODE_ENV !== "production" && notifySpy) spyReportStart(change);
+    if (window.process.env.NODE_ENV !== "production" && notifySpy) spyReportStart(change);
     if (notify) notifyListeners(this, change);
-    if (process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
+    if (window.process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
   };
 
   _proto.get = function get(key) {
@@ -4407,7 +4407,7 @@ var ObservableMap = /*#__PURE__*/function () {
    * for callback details
    */
   _proto.observe_ = function observe_(listener, fireImmediately) {
-    if (process.env.NODE_ENV !== "production" && fireImmediately === true) die("`observe` doesn't support fireImmediately=true in combination with maps.");
+    if (window.process.env.NODE_ENV !== "production" && fireImmediately === true) die("`observe` doesn't support fireImmediately=true in combination with maps.");
     return registerListener(this, listener);
   };
 
@@ -4462,7 +4462,7 @@ var ObservableSet = /*#__PURE__*/function () {
     }
 
     if (name_ === void 0) {
-      name_ = process.env.NODE_ENV !== "production" ? "ObservableSet@" + getNextId() : "ObservableSet";
+      name_ = window.process.env.NODE_ENV !== "production" ? "ObservableSet@" + getNextId() : "ObservableSet";
     }
 
     this.name_ = void 0;
@@ -4542,7 +4542,7 @@ var ObservableSet = /*#__PURE__*/function () {
 
         _this2.atom_.reportChanged();
       });
-      var notifySpy = process.env.NODE_ENV !== "production" && isSpyEnabled();
+      var notifySpy = window.process.env.NODE_ENV !== "production" && isSpyEnabled();
       var notify = hasListeners(this);
 
       var _change = notify || notifySpy ? {
@@ -4553,9 +4553,9 @@ var ObservableSet = /*#__PURE__*/function () {
         newValue: value
       } : null;
 
-      if (notifySpy && process.env.NODE_ENV !== "production") spyReportStart(_change);
+      if (notifySpy && window.process.env.NODE_ENV !== "production") spyReportStart(_change);
       if (notify) notifyListeners(this, _change);
-      if (notifySpy && process.env.NODE_ENV !== "production") spyReportEnd();
+      if (notifySpy && window.process.env.NODE_ENV !== "production") spyReportEnd();
     }
 
     return this;
@@ -4574,7 +4574,7 @@ var ObservableSet = /*#__PURE__*/function () {
     }
 
     if (this.has(value)) {
-      var notifySpy = process.env.NODE_ENV !== "production" && isSpyEnabled();
+      var notifySpy = window.process.env.NODE_ENV !== "production" && isSpyEnabled();
       var notify = hasListeners(this);
 
       var _change2 = notify || notifySpy ? {
@@ -4585,14 +4585,14 @@ var ObservableSet = /*#__PURE__*/function () {
         oldValue: value
       } : null;
 
-      if (notifySpy && process.env.NODE_ENV !== "production") spyReportStart(_change2);
+      if (notifySpy && window.process.env.NODE_ENV !== "production") spyReportStart(_change2);
       transaction(function () {
         _this3.atom_.reportChanged();
 
         _this3.data_["delete"](value);
       });
       if (notify) notifyListeners(this, _change2);
-      if (notifySpy && process.env.NODE_ENV !== "production") spyReportEnd();
+      if (notifySpy && window.process.env.NODE_ENV !== "production") spyReportEnd();
       return true;
     }
 
@@ -4672,7 +4672,7 @@ var ObservableSet = /*#__PURE__*/function () {
 
   _proto.observe_ = function observe_(listener, fireImmediately) {
     // ... 'fireImmediately' could also be true?
-    if (process.env.NODE_ENV !== "production" && fireImmediately === true) die("`observe` doesn't support fireImmediately=true in combination with sets.");
+    if (window.process.env.NODE_ENV !== "production" && fireImmediately === true) die("`observe` doesn't support fireImmediately=true in combination with sets.");
     return registerListener(this, listener);
   };
 
@@ -4738,15 +4738,15 @@ var ObservableObjectAdministration = /*#__PURE__*/function () {
     this.values_ = values_;
     this.name_ = name_;
     this.defaultAnnotation_ = defaultAnnotation_;
-    this.keysAtom_ = new Atom(process.env.NODE_ENV !== "production" ? this.name_ + ".keys" : "ObservableObject.keys"); // Optimization: we use this frequently
+    this.keysAtom_ = new Atom(window.process.env.NODE_ENV !== "production" ? this.name_ + ".keys" : "ObservableObject.keys"); // Optimization: we use this frequently
 
     this.isPlainObject_ = isPlainObject(this.target_);
 
-    if (process.env.NODE_ENV !== "production" && !isAnnotation(this.defaultAnnotation_)) {
+    if (window.process.env.NODE_ENV !== "production" && !isAnnotation(this.defaultAnnotation_)) {
       die("defaultAnnotation must be valid annotation");
     }
 
-    if (process.env.NODE_ENV !== "production") {
+    if (window.process.env.NODE_ENV !== "production") {
       // Prepare structure for tracking which fields were already annotated
       this.appliedAnnotations_ = {};
     }
@@ -4782,7 +4782,7 @@ var ObservableObjectAdministration = /*#__PURE__*/function () {
 
     if (newValue !== globalState.UNCHANGED) {
       var notify = hasListeners(this);
-      var notifySpy = process.env.NODE_ENV !== "production" && isSpyEnabled();
+      var notifySpy = window.process.env.NODE_ENV !== "production" && isSpyEnabled();
 
       var _change = notify || notifySpy ? {
         type: UPDATE,
@@ -4794,10 +4794,10 @@ var ObservableObjectAdministration = /*#__PURE__*/function () {
         newValue: newValue
       } : null;
 
-      if (process.env.NODE_ENV !== "production" && notifySpy) spyReportStart(_change);
+      if (window.process.env.NODE_ENV !== "production" && notifySpy) spyReportStart(_change);
       observable.setNewValue_(newValue);
       if (notify) notifyListeners(this, _change);
-      if (process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
+      if (window.process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
     }
 
     return true;
@@ -4861,7 +4861,7 @@ var ObservableObjectAdministration = /*#__PURE__*/function () {
     var entry = this.pendingKeys_.get(key);
 
     if (!entry) {
-      entry = new ObservableValue(key in this.target_, referenceEnhancer, process.env.NODE_ENV !== "production" ? this.name_ + "." + stringifyKey(key) + "?" : "ObservableObject.key?", false);
+      entry = new ObservableValue(key in this.target_, referenceEnhancer, window.process.env.NODE_ENV !== "production" ? this.name_ + "." + stringifyKey(key) + "?" : "ObservableObject.key?", false);
       this.pendingKeys_.set(key, entry);
     }
 
@@ -5053,7 +5053,7 @@ var ObservableObjectAdministration = /*#__PURE__*/function () {
         defineProperty(this.target_, key, descriptor);
       }
 
-      var observable = new ObservableValue(value, enhancer, process.env.NODE_ENV !== "production" ? this.name_ + "." + key.toString() : "ObservableObject.key", false);
+      var observable = new ObservableValue(value, enhancer, window.process.env.NODE_ENV !== "production" ? this.name_ + "." + key.toString() : "ObservableObject.key", false);
       this.values_.set(key, observable); // Notify (value possibly changed by ObservableValue)
 
       this.notifyPropertyAddition_(key, observable.value_);
@@ -5091,7 +5091,7 @@ var ObservableObjectAdministration = /*#__PURE__*/function () {
         if (!change) return null;
       }
 
-      options.name || (options.name = process.env.NODE_ENV !== "production" ? this.name_ + "." + key.toString() : "ObservableObject.key");
+      options.name || (options.name = window.process.env.NODE_ENV !== "production" ? this.name_ + "." + key.toString() : "ObservableObject.key");
       options.context = this.proxy_ || this.target_;
       var cachedDescriptor = getCachedObservablePropDescriptor(key);
       var descriptor = {
@@ -5153,7 +5153,7 @@ var ObservableObjectAdministration = /*#__PURE__*/function () {
 
       startBatch();
       var notify = hasListeners(this);
-      var notifySpy = process.env.NODE_ENV !== "production" && isSpyEnabled();
+      var notifySpy = window.process.env.NODE_ENV !== "production" && isSpyEnabled();
       var observable = this.values_.get(key); // Value needed for spies/listeners
 
       var value = undefined; // Optimization: don't pull the value unless we will need it
@@ -5174,7 +5174,7 @@ var ObservableObjectAdministration = /*#__PURE__*/function () {
       } // Allow re-annotating this field
 
 
-      if (process.env.NODE_ENV !== "production") {
+      if (window.process.env.NODE_ENV !== "production") {
         delete this.appliedAnnotations_[key];
       } // Clear observable
 
@@ -5205,9 +5205,9 @@ var ObservableObjectAdministration = /*#__PURE__*/function () {
           oldValue: value,
           name: key
         };
-        if (process.env.NODE_ENV !== "production" && notifySpy) spyReportStart(_change2);
+        if (window.process.env.NODE_ENV !== "production" && notifySpy) spyReportStart(_change2);
         if (notify) notifyListeners(this, _change2);
-        if (process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
+        if (window.process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
       }
     } finally {
       endBatch();
@@ -5223,7 +5223,7 @@ var ObservableObjectAdministration = /*#__PURE__*/function () {
   ;
 
   _proto.observe_ = function observe_(callback, fireImmediately) {
-    if (process.env.NODE_ENV !== "production" && fireImmediately === true) die("`observe` doesn't support the fire immediately property for observable objects.");
+    if (window.process.env.NODE_ENV !== "production" && fireImmediately === true) die("`observe` doesn't support the fire immediately property for observable objects.");
     return registerListener(this, callback);
   };
 
@@ -5235,7 +5235,7 @@ var ObservableObjectAdministration = /*#__PURE__*/function () {
     var _this$pendingKeys_2, _this$pendingKeys_2$g;
 
     var notify = hasListeners(this);
-    var notifySpy = process.env.NODE_ENV !== "production" && isSpyEnabled();
+    var notifySpy = window.process.env.NODE_ENV !== "production" && isSpyEnabled();
 
     if (notify || notifySpy) {
       var change = notify || notifySpy ? {
@@ -5246,9 +5246,9 @@ var ObservableObjectAdministration = /*#__PURE__*/function () {
         name: key,
         newValue: value
       } : null;
-      if (process.env.NODE_ENV !== "production" && notifySpy) spyReportStart(change);
+      if (window.process.env.NODE_ENV !== "production" && notifySpy) spyReportStart(change);
       if (notify) notifyListeners(this, change);
-      if (process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
+      if (window.process.env.NODE_ENV !== "production" && notifySpy) spyReportEnd();
     }
 
     (_this$pendingKeys_2 = this.pendingKeys_) == null ? void 0 : (_this$pendingKeys_2$g = _this$pendingKeys_2.get(key)) == null ? void 0 : _this$pendingKeys_2$g.set(true); // Notify "keys/entries/values" observers
@@ -5277,20 +5277,20 @@ var ObservableObjectAdministration = /*#__PURE__*/function () {
 function asObservableObject(target, options) {
   var _options$name;
 
-  if (process.env.NODE_ENV !== "production" && options && isObservableObject(target)) {
+  if (window.process.env.NODE_ENV !== "production" && options && isObservableObject(target)) {
     die("Options can't be provided for already observable objects.");
   }
 
   if (hasProp(target, $mobx)) {
-    if (process.env.NODE_ENV !== "production" && !(getAdministration(target) instanceof ObservableObjectAdministration)) {
+    if (window.process.env.NODE_ENV !== "production" && !(getAdministration(target) instanceof ObservableObjectAdministration)) {
       die("Cannot convert '" + getDebugName(target) + "' into observable object:" + "\nThe target is already observable of different type." + "\nExtending builtins is not supported.");
     }
 
     return target;
   }
 
-  if (process.env.NODE_ENV !== "production" && !Object.isExtensible(target)) die("Cannot make the designated object observable; it is not extensible");
-  var name = (_options$name = options == null ? void 0 : options.name) != null ? _options$name : process.env.NODE_ENV !== "production" ? (isPlainObject(target) ? "ObservableObject" : target.constructor.name) + "@" + getNextId() : "ObservableObject";
+  if (window.process.env.NODE_ENV !== "production" && !Object.isExtensible(target)) die("Cannot make the designated object observable; it is not extensible");
+  var name = (_options$name = options == null ? void 0 : options.name) != null ? _options$name : window.process.env.NODE_ENV !== "production" ? (isPlainObject(target) ? "ObservableObject" : target.constructor.name) + "@" + getNextId() : "ObservableObject";
   var adm = new ObservableObjectAdministration(target, new Map(), String(name), getAnnotationFromOptions(options));
   addHiddenProp(target, $mobx, adm);
   return target;
@@ -5318,7 +5318,7 @@ function isObservableObject(thing) {
 function recordAnnotationApplied(adm, annotation, key) {
   var _adm$target_$storedAn;
 
-  if (process.env.NODE_ENV !== "production") {
+  if (window.process.env.NODE_ENV !== "production") {
     adm.appliedAnnotations_[key] = annotation;
   } // Remove applied decorator annotation so we don't try to apply it again in subclass constructor
 
@@ -5328,7 +5328,7 @@ function recordAnnotationApplied(adm, annotation, key) {
 
 function assertAnnotable(adm, annotation, key) {
   // Valid annotation
-  if (process.env.NODE_ENV !== "production" && !isAnnotation(annotation)) {
+  if (window.process.env.NODE_ENV !== "production" && !isAnnotation(annotation)) {
     die("Cannot annotate '" + adm.name_ + "." + key.toString() + "': Invalid annotation.");
   }
   /*
@@ -5364,7 +5364,7 @@ function assertAnnotable(adm, annotation, key) {
   // Not annotated
 
 
-  if (process.env.NODE_ENV !== "production" && !isOverride(annotation) && hasProp(adm.appliedAnnotations_, key)) {
+  if (window.process.env.NODE_ENV !== "production" && !isOverride(annotation) && hasProp(adm.appliedAnnotations_, key)) {
     var fieldName = adm.name_ + "." + key.toString();
     var currentAnnotationType = adm.appliedAnnotations_[key].annotationType_;
     var requestedAnnotationType = annotation.annotationType_;
@@ -5403,7 +5403,7 @@ var LegacyObservableArray = /*#__PURE__*/function (_StubArray) {
     var _this;
 
     if (name === void 0) {
-      name = process.env.NODE_ENV !== "production" ? "ObservableArray@" + getNextId() : "ObservableArray";
+      name = window.process.env.NODE_ENV !== "production" ? "ObservableArray@" + getNextId() : "ObservableArray";
     }
 
     if (owned === void 0) {

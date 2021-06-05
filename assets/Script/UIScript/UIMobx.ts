@@ -1,15 +1,13 @@
 import UIMobx_Auto from "../AutoScripts/UIMobx_Auto";
-import { computed, makeAutoObservable } from "../Common/Mobx/mobx";
-import { autorun } from "../Common/Mobx/mobx";
-import { observable } from "../Common/Mobx/mobx";
-import { UIScreen } from "../UIFrame/UIForm";
+import { observable, computed, reaction, autorun, when, IReactionPublic, makeAutoObservable } from "../Common/Mobx/mobx";
+import { UIWindow } from "../UIFrame/UIForm";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class UIMobx extends UIScreen {
+export default class UIMobx extends UIWindow {
 
-    static prefabPath = "Forms/Screen/UIMobx"
+    static prefabPath = "Forms/Windows/UIMobx"
 
     view: UIMobx_Auto;
 
@@ -19,19 +17,54 @@ export default class UIMobx extends UIScreen {
         makeAutoObservable(this);
     }
     
-    @observable
-    obj = 1;
+    @observable num1 = 0;
+    @observable num2 = 0;
+    @computed get total() {
+        return this.num1 * this.num2;
+    }
+    @observable obj = {num3: 0};
 
     // onLoad () {}
 
     start () {
-        
+        this.view.Close.addClick(() => {
+            this.closeSelf();
+        }, this);
+        autorun(this.refreshView.bind(this));
+        this.view.Btn1.addClick(() => {
+            this.num1 ++;
+        }, this);
+        this.view.Btn2.addClick(() => {
+            this.num2 ++;
+        }, this);
+
+        this.view.Btn3.addClick(() => {
+            this.obj.num3 ++;
+        }, this);
+
+        when(() => this.total > 10).then(() => {
+            this.view.Txt4.node.active = this.total > 10;
+        });
+
+        reaction((() => this.obj && this.obj.num3), (arg: any, prev: number, r: IReactionPublic) => {
+            if(!cc.isValid(this.node)) return ;
+            this.view.Txt5.string = '' + arg;
+            // r.dispose();
+        });
         
     }
+
+    refreshView() {
+        this.view.Txt1.string = '' + this.num1;
+        this.view.Txt2.string = '' + this.num2;
+        this.view.Txt3.string = '' + this.total;
+    }
+
+    
 
     onShow() {
-        autorun(() => this.view.A.string = this.obj + "");
+        
     }
 
-    // update (dt) {}
+
 }

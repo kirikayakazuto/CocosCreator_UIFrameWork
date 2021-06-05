@@ -1,6 +1,8 @@
+import UICapture_Auto from "../AutoScripts/UICapture_Auto";
 import CameraCapture from "../Common/Components/CameraCapture";
 import DrawBorad from "../Common/Components/DrawBorad";
 import TouchPlus from "../Common/Components/TouchPlus";
+import SceneMgr from "../UIFrame/SceneMgr";
 import { UIScreen } from "../UIFrame/UIForm";
 
 const {ccclass, property} = cc._decorator;
@@ -18,7 +20,9 @@ export default class UICapture extends UIScreen {
     @property(TouchPlus)
     touchPlus: TouchPlus = null;
 
-    static prefabPath = "UIForms/UICapture";
+    static prefabPath = "Forms/Screen/UICapture";
+
+    view: UICapture_Auto;
 
     // onLoad () {}
 
@@ -28,6 +32,13 @@ export default class UICapture extends UIScreen {
             this.touchPlus.node.x += delta.x;
             this.touchPlus.node.y += delta.y;
         });
+
+        this.view.Back.addClick(() => {
+            SceneMgr.back();
+        }, this);
+        this.view.Capture.addClick(this.onClickCapture, this);
+        this.view.Pen.addClick(this.onClickPen, this);
+        this.view.Reaser.addClick(this.onClickReaser, this);
 
         this.onClickCapture();
     }

@@ -14,11 +14,11 @@ export default class Main extends cc.Component {
 
     start () {
         TipsMgr.inst.setLoadingForm(UILoading.prefabPath);
-        SceneMgr.open(UIMobx.prefabPath);
+        SceneMgr.open(UIHome.prefabPath);
     }
 
     onDestroy() {
 
-    } 
+    }  
     
 }

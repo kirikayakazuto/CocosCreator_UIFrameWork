@@ -1,7 +1,13 @@
 import UISetting_Auto from "../AutoScripts/UISetting_Auto";
 import AdapterMgr from "../UIFrame/AdapterMgr";
 import CocosHelper from "../UIFrame/CocosHelper";
+import { ModalOpacity } from "../UIFrame/config/SysDefine";
+import SceneMgr from "../UIFrame/SceneMgr";
+import { ModalType } from "../UIFrame/Struct";
 import { UIWindow } from "../UIFrame/UIForm";
+import WindowMgr from "../UIFrame/WindowMgr";
+import UICapture from "./UICapture";
+import UIMobx from "./UIMobx";
 import UIPop from "./UIPop";
 
 const {ccclass, property} = cc._decorator;
@@ -12,15 +18,22 @@ export default class UISetting extends UIWindow {
     static prefabPath = "Forms/Windows/UISetting";
     view: UISetting_Auto;
 
+    modalType = new ModalType(ModalOpacity.OpacityHalf, true);
+
     // onLoad () {}
 
     start () {
-        this.view.Close.addClick(() => {
-            this.closeSelf();
-        }, this);
 
         this.view.Pop.addClick(() => {
-            UIPop.openView(1);
+            WindowMgr.open(UIPop.prefabPath);
+        }, this);
+
+        this.view.Mobx.addClick(() => {
+            WindowMgr.open(UIMobx.prefabPath);
+        }, this);
+
+        this.view.Capture.addClick(() => {
+            SceneMgr.open(UICapture.prefabPath);
         }, this);
     }
 
