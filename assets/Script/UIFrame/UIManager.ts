@@ -49,9 +49,6 @@ export default class UIManager extends cc.Component {
         }
         return this.instance;
     }
-    
-    start() {        
-    }
 
     /** 预加载UIForm */
     public async loadUIForm(prefabPath: string) {
@@ -220,6 +217,7 @@ export default class UIManager extends cc.Component {
         com.onShow(params);
 
         await this.showEffect(com);
+        com.onAfterShow(params);
     }
 
     /** 添加到Fixed中 */
@@ -231,6 +229,7 @@ export default class UIManager extends cc.Component {
         com.onShow(params);
         this._showingForms[fid] = com;
         await this.showEffect(com);
+        com.onAfterShow(params);
     }
 
     /** 添加到popup中 */
@@ -250,6 +249,7 @@ export default class UIManager extends cc.Component {
 
         ModalMgr.inst.checkModalWindow(this._windows);
         await this.showEffect(com);
+        com.onAfterShow(params);
     }
     
     /** 加载到tips中 */
@@ -261,6 +261,7 @@ export default class UIManager extends cc.Component {
         
         com.onShow(params);
         await this.showEffect(com);
+        com.onAfterShow(params);
     }
 
     private async exitToScreen(fid: string) {
@@ -268,7 +269,8 @@ export default class UIManager extends cc.Component {
         if(!com) return ;
         com.onHide();
         await this.hideEffect(com);
-        
+        com.onAfterHide();
+
         this._showingForms[fid] = null;
         delete this._showingForms[fid];
     }
@@ -278,6 +280,8 @@ export default class UIManager extends cc.Component {
         if(!com) return ;
         com.onHide();
         await this.hideEffect(com);
+        com.onAfterHide();
+
         this._showingForms[fid] = null;
         delete this._showingForms[fid];
     }
@@ -296,7 +300,8 @@ export default class UIManager extends cc.Component {
         com.onHide();
         ModalMgr.inst.checkModalWindow(this._windows);
         await this.hideEffect(com);
-        
+        com.onAfterHide();
+
         this._showingForms[fid] = null;
         delete this._showingForms[fid];
     }
@@ -306,6 +311,7 @@ export default class UIManager extends cc.Component {
         if(!com) return ;
         com.onHide();
         await this.hideEffect(com);
+        com.onAfterHide();
 
         this._tipsForms[fid] = null;
         delete this._tipsForms[fid];

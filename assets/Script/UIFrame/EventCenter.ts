@@ -17,6 +17,7 @@ export class EventInfo implements IPool {
         this.once = once;
     }
 }
+
 class RemoveCommand {
     public eventName:string;
     public targetId:string;
@@ -64,7 +65,6 @@ export class EventCenter {
         eventInfo.init(cb, target, once);
         events.push(eventInfo);
     }
-
 
     public static off(eventName: string, callback: Function, target: any = undefined) {
         target = target || this;

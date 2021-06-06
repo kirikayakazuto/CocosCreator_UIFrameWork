@@ -3,6 +3,7 @@ import UIMap_Auto from "../AutoScripts/UIMap_Auto";
 import SceneMgr from "../UIFrame/SceneMgr";
 import { UIScreen } from "../UIFrame/UIForm";
 import WindowMgr from "../UIFrame/WindowMgr";
+import UIFunction from "./UIFunction";
 import UIGame from "./UIGame";
 import UISetting from "./UISetting";
 import UISkills from "./UISkills";
@@ -19,6 +20,12 @@ export default class UIMap extends UIScreen {
 
     // onLoad () {}
 
+    async load() {
+        console.log("called")
+        await UIFunction.openView();
+        return '';
+    }
+
     start () {
 
         this.view.Round.addClick(() => {
@@ -26,14 +33,6 @@ export default class UIMap extends UIScreen {
         }, this);
         this.view.Back.addClick(() => {
             SceneMgr.back();
-        }, this);
-
-        this.view.Setting.addClick(() => {
-            UISetting.openView();
-        }, this);
-
-        this.view.Skills.addClick(() => {
-            WindowMgr.open(UISkills.prefabPath);
         }, this);
     }
 

@@ -3,10 +3,10 @@ import ButtonPlus from "./../Common/Components/ButtonPlus"
 
 const {ccclass, property} = cc._decorator;
 @ccclass
-export default class UIMap_Auto extends cc.Component {
+export default class UIFunction_Auto extends cc.Component {
 	@property(ButtonPlus)
-	Round: ButtonPlus = null;
+	Setting: ButtonPlus = null;
 	@property(ButtonPlus)
-	Back: ButtonPlus = null;
+	Skills: ButtonPlus = null;
  
 }

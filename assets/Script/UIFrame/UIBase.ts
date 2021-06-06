@@ -58,10 +58,10 @@ export default class UIBase extends cc.Component {
     public onInit() {}
 
     public onShow(params: any) {}
+    public onAfterShow(params: any) {}
 
-    public onHide() {}
-    
-    public refreshView() {};
+    public onHide() {}    
+    public onAfterHide() {}
 
     public async closeSelf(): Promise<boolean> {
        return await UIManager.getInstance().closeForm(this.fid);
