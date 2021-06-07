@@ -54,6 +54,7 @@ export default class UIMobx extends UIWindow {
         
     }
 
+    
     refreshView() {
         this.view.Txt1.string = '' + this.num1;
         this.view.Txt2.string = '' + this.num2;

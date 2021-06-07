@@ -25,9 +25,12 @@ export default class UIHome extends UIScreen {
         console.log(this.model)
     }
 
-    // onLoad () {}
+    onLoad () {
+        console.log("called onload")
+    }
 
     start () {
+        console.log("called start")
         UISound.openView(); 
         this.view.Start.addClick(() => {
             SceneMgr.open(UIMap.prefabPath);
@@ -40,6 +43,10 @@ export default class UIHome extends UIScreen {
         // this.loadRes("imgs/button2", cc.Texture2D).then((res: cc.Texture2D) => {
             
         // });
+    }
+
+    onShow() {
+        console.log("called onshow")
     }
 
     
