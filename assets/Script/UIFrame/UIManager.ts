@@ -135,7 +135,7 @@ export default class UIManager extends cc.Component {
         }
         // 判断是否销毁该窗体
         if(com.willDestory) {
-            this.destoryForm(com, prefabPath);
+            this.destoryForm(com);
         }
         return true;
     }
@@ -167,12 +167,7 @@ export default class UIManager extends cc.Component {
      * @param prefabPath 
      */
     private async _doLoadUIForm(prefabPath: string) {
-        let prefab = await ResMgr.inst.loadForm(prefabPath);
-        if(!prefab) {
-            cc.warn(`${prefabPath} 资源加载失败, 请确认路径是否正确`);
-            return null;
-        }
-        let node = cc.instantiate(prefab);
+        let node = await ResMgr.inst.loadForm(prefabPath);
         let com = node.getComponent(UIBase);
         if(!com) {
             cc.warn(`${prefabPath} 结点没有绑定UIBase`);
@@ -327,12 +322,12 @@ export default class UIManager extends cc.Component {
     }
 
     /** 销毁 */
-    private destoryForm(com: UIBase, fid: string) {
+    private destoryForm(com: UIBase) {
         ResMgr.inst.destoryDynamicRes(com.fid);
         ResMgr.inst.destoryForm(com);
         // 从allmap中删除
-        this._allForms[fid] = null;
-        delete this._allForms[fid];
+        this._allForms[com.fid] = null;
+        delete this._allForms[com.fid];
     }
     /** 窗体是否正在显示 */
     public checkFormShowing(fid: string) {

@@ -25,12 +25,7 @@ export default class UIHome extends UIScreen {
         console.log(this.model)
     }
 
-    onLoad () {
-        console.log("called onload")
-    }
-
     start () {
-        console.log("called start")
         UISound.openView(); 
         this.view.Start.addClick(() => {
             SceneMgr.open(UIMap.prefabPath);
@@ -44,12 +39,6 @@ export default class UIHome extends UIScreen {
             
         // });
     }
-
-    onShow() {
-        console.log("called onshow")
-    }
-
-    
 
     // update (dt) {}
 }

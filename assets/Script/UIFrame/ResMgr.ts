@@ -1,7 +1,6 @@
 import CocosHelper from "./CocosHelper";
 import UIBase from "./UIBase";
 import { EventCenter } from "./EventCenter";
-import { timeStamp } from "console";
 
 /**
  * 资源加载, 针对的是Form
@@ -12,6 +11,10 @@ import { timeStamp } from "console";
  * 对于静态资源
  * 1, 加载  在加载prefab时, cocos会将其依赖的图片一并加载, 所有不需要我们担心
  * 2, 释放  这里采用的引用计数的管理方法, 只需要调用destoryForm即可
+ * 
+ * 加载一个窗体
+ * 第一步 加载prefab, 第二步 实例化prefab 获得 node
+ * 所以销毁一个窗体 也需要两步, 销毁node, 销毁prefab
  */
 export default class ResMgr {
     private static instance: ResMgr = null;
@@ -21,10 +24,12 @@ export default class ResMgr {
         }
         return this.instance;
     }
+
+    private _prefabCache: {[key: string]: cc.Prefab} = cc.js.createMap();
     /** 
      * 采用计数管理的办法, 管理form所依赖的资源
      */
-    private _prefabs: {[key: string]: cc.Prefab} = cc.js.createMap();
+    private _prefabDepends: {[key: string]: Array<string>} = cc.js.createMap();
     private _staticDepends:{[key: string]: number} = cc.js.createMap();
     private _dynamicDepends: {[key: string]: number} = cc.js.createMap();
     private _dynamicTags: {[key: string]: Array<string>} = cc.js.createMap();
@@ -66,32 +71,45 @@ export default class ResMgr {
     }
 
     /** 加载窗体 */
-    public async loadForm(formName: string) {
-        let form = await CocosHelper.loadResSync<cc.Prefab>(formName, cc.Prefab, this._addTmpStaticDepends.bind(this));
-        this._prefabs[formName] = form;
-
-        this._clearTmpStaticDepends();
-        let deps = cc.assetManager.dependUtil.getDepsRecursively(form['_uuid']);
-        this.addStaticDepends(deps);
-        return form;
+    public async loadForm(fid: string) {
+        let prefab = this._prefabCache[fid];
+        if(!prefab) {
+            prefab = await CocosHelper.loadResSync<cc.Prefab>(fid, cc.Prefab, this._addTmpStaticDepends.bind(this));
+            if(!prefab) return null;
+            this._prefabCache[fid] = prefab;
+            this._clearTmpStaticDepends();
+            let deps = cc.assetManager.dependUtil.getDepsRecursively(prefab['_uuid']);
+            this._prefabDepends[fid] = deps;
+            this.addStaticDepends(deps);
+        }
+        return cc.instantiate(prefab);
     }
 
     /** 销毁窗体 */
     public destoryForm(com: UIBase) {
         if(!com) return;
         EventCenter.targetOff(com);
-        let prefab = this._prefabs[com.fid];
-        let uuid = prefab['_uuid'];
-        let deps = cc.assetManager.dependUtil.getDepsRecursively(uuid);
-        
+
+        // 销毁依赖的资源
+        let deps = this._prefabDepends[com.fid];            
         this.removeStaticDepends(deps);
-        com.node.destroy();
+        this._prefabDepends[com.fid] = null;
+        delete this._prefabDepends[com.fid];
+
+        // 销毁prefab
+        let prefab = this._prefabCache[com.fid];
         prefab.destroy();
+        let uuid = prefab['_uuid'];
         cc.assetManager.assets.remove(uuid);
         cc.assetManager.dependUtil['remove'](uuid);
+        this._prefabCache[com.fid] = null;
+        delete this._prefabCache[com.fid];
 
-        this._prefabs[com.fid] = null;
-        delete this._prefabs[com.fid];
+        // 销毁node
+        com.node.destroy();
+
+        // 销毁组件
+        com.destroy();
     }
 
 

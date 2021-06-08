@@ -49,7 +49,7 @@ export class UIWindow extends UIBase {
 
 export class UIFixed extends UIBase {
     formType = FormType.Fixed;
-    
+    willDestory = true;
     
 }
 
