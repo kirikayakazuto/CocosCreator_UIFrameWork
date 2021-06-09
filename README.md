@@ -28,7 +28,7 @@ tips: **Screen**窗体切换时会隐藏当前显示的**Fixed**, **Window**窗�
 
 ## 1,框架结构
 
-<img src="./doc/framework.png" width="480">
+<img src="./doc/framework.png" width="680">
 
 采用UIBase + UIManager两个核心类管理整个框架, 其他的Manager辅助UIManager进行管理.
 
@@ -41,15 +41,15 @@ UIBase中定义窗体的属性和一系列的生命周期方法</br>
 实际项目中不要直接继承UIBase, 请继承它的子类 UIScreen, UIFixed, UIWindow, UITips. 子类中预实现了一些功能.</br>
 
 生命周期方法</br>
-+ async load(): string;                         // 只调用一次, 异步方法, 使用者可以在这里加载一些窗体需要的资源, 返回一个错误信息.
-+ onInit(): void;                               // 只调用一次, 初始化.
-+ onShow(): void;                               // 每次显示时调用.
-+ onload(): void;                               // cocos提供
-+ start(): void;                                // cocos提供
-+ onAfterShow(): void;                          // 显示动画结束后调用
-+ onHide(): void;                               // 隐藏时调用
-+ onAfterHide(): void;                          // 隐藏动画结束后调用
-+ onDestory(): void;                            // cocos提供
++ async load(): string;                         // *只调用一次, 异步方法, 使用者可以在这里加载一些窗体需要的资源,返回一个错误信息.*|
++ onInit(): void;                               // *只调用一次, 初始化.*
++ onShow(): void;                               // *每次显示时调用.*
++ onload(): void;                               // *cocos提供*
++ start(): void;                                // *cocos提供*
++ onAfterShow(): void;                          // *显示动画结束后调用*
++ onHide(): void;                               // *隐藏时调用*
++ onAfterHide(): void;                          // *隐藏动画结束后调用*
++ onDestory(): void;                            // *cocos提供*
 
 显示和隐藏动画, 使用者可以重写下面两个方法, 实现自定义的显示隐藏动画.</br>
 - async showEffect(): void;
@@ -74,7 +74,7 @@ UIManager在打开窗体时, 会获取窗体上的UIBase组件, 然后根据类�
 ### 其他Manager
 
 ResMgr资源管理类</br>
-ResMgr管理窗体的资源, 实现的思路 **我释放的是我加载的资源, 我加载的资源会被释放**.
+ResMgr管理窗体的资源, 恪守**我释放的是我加载的资源, 我加载的资源会被释放**.
 
 待补充...
 
