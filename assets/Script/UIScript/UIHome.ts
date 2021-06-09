@@ -1,4 +1,5 @@
 import UIHome_Auto from "../AutoScripts/UIHome_Auto";
+import * as StateMathine from "../Common/StateMachine/StateMachine"
 import SceneMgr from "../UIFrame/SceneMgr";
 import { UIFixed, UIScreen } from "../UIFrame/UIForm";
 import UIManager from "../UIFrame/UIManager";
