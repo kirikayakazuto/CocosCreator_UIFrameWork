@@ -2,7 +2,7 @@ import UIBase from "./UIBase";
 import { SysDefine, FormType } from "./config/SysDefine";
 import ResMgr from "./ResMgr";
 import ModalMgr from "./ModalMgr";
-import AdapterMgr, { AdaptaterType } from "./AdapterMgr";
+import AdapterMgr, { AdapterType } from "./AdapterMgr";
 import Scene from "../Scene/Scene";
 import { UIWindow } from "./UIForm";
 import { IFormData } from "./Struct";
@@ -206,7 +206,7 @@ export default class UIManager extends cc.Component {
         if(!com) return ;
         this._showingForms[fid] = com;
 
-        AdapterMgr.inst.adapatByType(AdaptaterType.FullScreen, com.node);
+        AdapterMgr.inst.adapteByType(AdapterType.StretchHeight | AdapterType.StretchWidth, com.node);
         
         await com._preInit();
         com.onShow(params);

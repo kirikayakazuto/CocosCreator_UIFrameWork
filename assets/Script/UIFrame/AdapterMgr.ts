@@ -4,6 +4,33 @@
  * @Describe: 适配组件, 主要适配背景大小,窗体的位置
  */
 
+let flagOffset = 0;
+const _None = 1 << flagOffset ++;
+const _Left = 1 << flagOffset ++;            // 左对齐
+const _Right = 1 << flagOffset ++;           // 右对齐
+const _Top = 1 << flagOffset ++;             // 上对齐
+const _Bottom = 1 << flagOffset ++;          // 下对齐
+const _StretchWidth = _Left | _Right;          // 拉伸宽
+const _StretchHeight = _Top | _Bottom;         // 拉伸高
+
+const _FullWidth = 1 << flagOffset ++;       // 等比充满宽
+const _FullHeight = 1 << flagOffset ++;      // 等比充满高
+const _Final = 1 << flagOffset++;
+
+/**  */
+export enum AdapterType {
+    Top = _Top,
+    Bottom = _Bottom,
+    Left = _Left,
+    Right = _Right,
+
+    StretchWidth = _StretchWidth,
+    StretchHeight = _StretchHeight,
+
+    FullWidth = _FullWidth,
+    FullHeight = _FullHeight,
+}
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -22,70 +49,66 @@ export default class AdapterMgr {
     /** 屏幕尺寸 */
     public visibleSize: cc.Size;
 
-    /**
-     * 适配靠边的UI
-     * @param type 
-     * @param node 
-     * @param distance 
-     */
-    public adapatByType(type: AdaptaterType, node: cc.Node, distance?: number) {
+    public adapteByType(flag: number, node: cc.Node, distance = 0) {
+        let tFlag = _Final;
+        while (tFlag > 0) {
+            if (tFlag & flag)
+                this._doAdapte(tFlag, node, distance);
+            tFlag = tFlag >> 1;
+        }
+        let widget = node.getComponent(cc.Widget);
+        widget.target = cc.find("Canvas");
+        widget.updateAlignment();
+    }
+
+    private _doAdapte(flag: number, node: cc.Node, distance: number = 0) {
         let widget = node.getComponent(cc.Widget);
         if(!widget) {
             widget = node.addComponent(cc.Widget);
         }
-        switch(type) {
-            case AdaptaterType.Top:
+        switch(flag) {
+            case _None:
+                break;
+            case _Left:
+                widget.isAlignLeft = true;
+                widget.isAbsoluteLeft = true;
+                widget.left = distance ? distance : 0;
+            case _Right:
+                widget.isAlignRight = true;
+                widget.isAbsoluteRight = true;
+                widget.right = distance ? distance : 0;
+                break;
+            case _Top:
                 if(cc.sys.platform === cc.sys.WECHAT_GAME) {     // 微信小游戏适配刘海屏
                     let menuInfo = window["wx"].getMenuButtonBoundingClientRect();
                     let systemInfo = window["wx"].getSystemInfoSync();
-                    distance = cc.find("Canvas").height * (menuInfo.top / systemInfo.screenHeight);
+                    distance += cc.find("Canvas").height * (menuInfo.top / systemInfo.screenHeight);
                 }
-                widget.top = distance ? distance : 0;
+                widget.isAlignTop = true;
                 widget.isAbsoluteTop = true;
-                widget.isAlignTop = true;
-            break;
-            case AdaptaterType.Bottom:
-                widget.bottom = distance ? distance : 0;
+                widget.top = distance ? distance : 0;
+                break;
+            case _Bottom:
+                widget.isAlignBottom = true;
                 widget.isAbsoluteBottom = true;
-                widget.isAlignBottom = true;
-            break;
-            case AdaptaterType.Left:
-                widget.left = distance ? distance : 0;
-                widget.isAbsoluteLeft = true;
-                widget.isAlignLeft = true;
-            break;
-            case AdaptaterType.Right:
-                widget.right = distance ? distance : 0;
-                widget.isAbsoluteRight = true;
-                widget.isAlignRight = true;
-            break;
-            case AdaptaterType.FullScreen:
-                widget.right = 0;
-                widget.left = 0;
-                widget.top = 0;
-                widget.bottom = 0;
-                widget.isAlignLeft = true;
-                widget.isAlignRight = true;
-                widget.isAlignBottom = true;
-                widget.isAlignTop = true;
-            break;
+                widget.bottom = distance ? distance : 0;
+                break;
+            case _FullWidth:
+                node.height /= node.width / this.visibleSize.width;
+                node.width = this.visibleSize.width;
+                break;
+            case _FullHeight:
+                node.width /= node.height / this.visibleSize.height;
+                node.height = this.visibleSize.height;
+                break;
         }
-        widget.target = cc.find("Canvas");
-        widget.updateAlignment();
     }
+
+
     /** 移除 */
     removeAdaptater(node: cc.Node) {
         if(node.getComponent(cc.Widget)) {
             node.removeComponent(cc.Widget);
         }
     }
-}
-/**  */
-export enum AdaptaterType {
-    Center = 0,
-    Top = 1,
-    Bottom = 2,
-    Left = 3,
-    Right = 4,
-    FullScreen = 5,
 }

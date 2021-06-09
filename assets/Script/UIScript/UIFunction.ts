@@ -1,5 +1,5 @@
 import UIFunction_Auto from "../AutoScripts/UIFunction_Auto";
-import AdapterMgr, { AdaptaterType } from "../UIFrame/AdapterMgr";
+import AdapterMgr, { AdapterType } from "../UIFrame/AdapterMgr";
 import { UIFixed } from "../UIFrame/UIForm";
 import WindowMgr from "../UIFrame/WindowMgr";
 import UISetting from "./UISetting";
@@ -15,7 +15,7 @@ export default class UIFunction extends UIFixed {
     // onLoad () {}
 
     start () {
-        AdapterMgr.inst.adapatByType(AdaptaterType.Bottom, this.node, 50);
+        AdapterMgr.inst.adapteByType(AdapterType.Bottom, this.node, 50);
         
         this.view.Setting.addClick(() => {
             UISetting.openView();

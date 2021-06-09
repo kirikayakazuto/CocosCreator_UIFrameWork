@@ -1,5 +1,5 @@
 import Game from "../Logic/Game";
-import AdapterMgr, { AdaptaterType } from "../UIFrame/AdapterMgr";
+import AdapterMgr, { AdapterType } from "../UIFrame/AdapterMgr";
 import { EventCenter } from "../UIFrame/EventCenter";
 import { EventType } from "../UIFrame/EventType";
 
@@ -22,7 +22,7 @@ export default class Scene extends cc.Component {
 
     public async start() {
         Scene.inst = this;
-        AdapterMgr.inst.adapatByType(AdaptaterType.FullScreen, this.node);
+        AdapterMgr.inst.adapteByType(AdapterType.StretchHeight | AdapterType.StretchWidth, this.node);
         await this.onGameInit();
         this.registerEvent();
     }

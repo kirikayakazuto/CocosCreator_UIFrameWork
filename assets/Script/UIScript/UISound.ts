@@ -1,4 +1,4 @@
-import AdapterMgr, { AdaptaterType } from "../UIFrame/AdapterMgr";
+import AdapterMgr, { AdapterType } from "../UIFrame/AdapterMgr";
 import { UIFixed } from "../UIFrame/UIForm";
 
 const {ccclass, property} = cc._decorator;
@@ -14,8 +14,7 @@ export default class UISound extends UIFixed {
     // onLoad () {}
 
     start () {
-        AdapterMgr.inst.adapatByType(AdaptaterType.Right, this.node);
-        AdapterMgr.inst.adapatByType(AdaptaterType.Top, this.node);
+        AdapterMgr.inst.adapteByType(AdapterType.Right | AdapterType.Top, this.node);
     }
 
     // update (dt) {}
