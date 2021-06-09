@@ -1,84 +1,89 @@
 
-## 使用过程中有任何问题 可以添加我的QQ 1099263878
-### Cocos Creator交流群: 521643513
+## 基于cocos creator的UI框架, 使用过程中有任何问题,可以添加我的QQ:1099263878
+
+tips: 当前使用的cocos creator版本2.4.4版本. 理论上支持2.2.x ~ 2.4.x的所有版本.
+
+## 0, 简单介绍
+
+基于Cocos Creator的UI框架, 采用单场景+多预制体模式. 界面中的窗体都按需加载, 复用性高. 使用者只需要关心界面内的逻辑, 其他的
+场景切换, 弹窗管理, 资源管理都可以交给框架.
+
+对于游戏中的窗体, 可以大致分为4类.
+
++ Screen
++ Fixed
++ Window
++ Tips
+
+以下图为例
+
+<img src="./doc/uilayout.png" width="480">
+
+**Screen**可以理解为场景, 一般是会铺满屏幕. 如上图黄色框中的地图. </br>
+**Fixed**则是一下固定在场景屏幕边缘的功能性UI, 如上图红色框中的两个按钮.</br>
+**Window**则是游戏中的各种弹出窗体, 一般会有一个弹出动画. 如上图蓝色框中的面板.</br>
+**Tips**则是一些提示性窗体, 比如断线提示窗体. 这种窗体的特点是不受其他窗体的影响, 只管自己显示和隐藏.</br>
+
+tips: **Screen**窗体切换时会隐藏当前显示的**Fixed**, **Window**窗体, 以到达切换场景的效果.
+
+## 1,框架结构
+
+<img src="./doc/framework.png" width="480">
+
+采用UIBase + UIManager两个核心类管理整个框架, 其他的Manager辅助UIManager进行管理.
+
+### UIBase篇
+
+UIBase中定义窗体的属性和一系列的生命周期方法</br>
++ formType: FormType;           // 窗体类型
++ willDestory: bool;            // 是否会被销毁
+
+实际项目中不要直接继承UIBase, 请继承它的子类 UIScreen, UIFixed, UIWindow, UITips. 子类中预实现了一些功能.</br>
+
+生命周期方法</br>
++ async load(): string;                         // 只调用一次, 异步方法, 使用者可以在这里加载一些窗体需要的资源, 返回一个错误信息.
++ onInit(): void;                               // 只调用一次, 初始化.
++ onShow(): void;                               // 每次显示时调用.
++ onload(): void;                               // cocos提供
++ start(): void;                                // cocos提供
++ onAfterShow(): void;                          // 显示动画结束后调用
++ onHide(): void;                               // 隐藏时调用
++ onAfterHide(): void;                          // 隐藏动画结束后调用
++ onDestory(): void;                            // cocos提供
+
+显示和隐藏动画, 使用者可以重写下面两个方法, 实现自定义的显示隐藏动画.</br>
+- async showEffect(): void;
+- async hideEffect(): void;
+
+### UIManager篇
+
+UIManager在getInstance()时, 会自动的创建UIROOT和四个子节点. 结构如下图</br>
+<img src="./doc/tree.png" width="280"></br>
+这四个子节点对应的UIBase中的四种类型, 对应类型的窗体会被挂载到对应结点下.
+
+UIManager只暴露的四个接口.
+
++ loadForm(path: string): UIBase;                                       // 预加载窗体
++ openForm(path: string, param: any, formData: IFormData): UIBase;      // 打开窗体
++ closeForm(path: string): UIBase;                                      // 隐藏窗体
++ getForm(path: string): UIBase;                                        // 获得窗体
+
+UIManager在打开窗体时, 会获取窗体上的UIBase组件, 然后根据类型, 将窗体挂载到不同的node上. 然后触发UIBase中的
+生命周期方法.
+
+### 其他Manager
+
+ResMgr资源管理类</br>
+ResMgr管理窗体的资源, 实现的思路 **我释放的是我加载的资源, 我加载的资源会被释放**.
+
+待补充...
 
 
+### 自动绑定结点插件 AutoBinder
+待补充...
 
-# 基于cocos creator的UI框架, 当前使用的cocos creator版本2.4.3版本
-        中心思想, 将所有的UI窗体分为4类管理(screen窗体, 固定窗体, 弹出窗体, 独立窗体), 再将窗体制作成预制体, 动态加载与释放;
-        使用UIManager.getInstance().openUIForm("窗体名字"); 显示窗体
-        -Scene(管理UIManager)
-        -- UIROOT(UIManager脚本挂载结点)
-        ---- screen(普通窗体)
-        ---- fixed(固定窗体)
-        ---- popup(弹出窗体)
-        ---- TopTips(独立窗体)
-        不同类型的窗体放置在不同的节点上, 统一管理
-
-- UIManager.ts
-
-        核心脚本,包括了加载,显示,隐藏窗体等功能. 
-- UIBase.ts
-
-        包好了生命周期函数,如load,init,onShow,onHide等
-- AdapterMgr.ts 
-
-        适配管理
-- ModalMgr.ts
-- UIModalScript.ts
-
-        弹窗模态层管理
-- EventCenter.ts
-
-        事件管理
-- ResMgr.ts
-
-        资源管理,包括加载释放等
-- SoundMgr.ts
-
-        音频管理,包括播放,暂停,声音大小,本地保存等
-- Binder.ts
-
-        自动绑定结点, 通过特殊的结点命名方式
-
-
-## 使用方法
-
-下载本项目后, 将assets\Script下的UIFrame文件夹拷贝到自己的项目, 如果你希望使用ButtonPlus和MaskPlus等扩展组件, 那么还需将packages下的文件夹拷贝到你的项目packages下
-
-新建一个预制体,并将其放在resources目录下. 在新建一个脚本继承于UIBase, 重写prefabPath指定预制体路径(注意: prefabPath需要使用static声明)和窗体类型formType, 将脚本挂载在预制体根节点上.
-```
-这是项目中的例子, 继承UIBase,重写prefabPath和formType.
-const {ccclass, property} = cc._decorator;
-
-@ccclass
-export default class UIHall extends UIBase {
-    static prefabPath = "UIForms/UIHall";               // resources下的路径
-    public formType = FormType.Screen;                  // 窗体类型
-    ...
-}
-```
-
-最后使用UIHall.openView(); 既可.
-
-
-项目结点都是动态生成的, 使用UIManger.getInstance()时就会动态创建Scene结点和UIROOT等结点.
-
-
-# 基本功能
-
-![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/yanshi.png)
-
-        我们将这个场景分成5个部分, 
-        1, 表示Top部分的玩家信息
-        2, 表示左侧的玩家列表
-        3, 表示房间入口按钮
-        4, 表示底部的功能列表
-        5, 表示背景
-
-前4个我们将其挂载在Fixed结点上, 5号挂载在Normal结点上并设置HideOther属性然后使用AdapterMgr组件使结点在个个位置适配
-
-演示视屏: 暂无
+### 状态控制器 PropController
+待补充...
 
 ## 2021/01/31 Binder plus, 升级了项目中的自动结点绑定
 注意: 目前第一次生成脚本时无法立即绑定到对应结点上, 需要再次执行一次run 即可.

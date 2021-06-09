@@ -3,7 +3,6 @@ import { FormType } from "./config/SysDefine";
 import { IFormData } from "./Struct";
 import AdapterMgr from "./AdapterMgr";
 import ResMgr from "./ResMgr";
-import { autorun } from "../Common/Mobx/mobx";
 
 const {ccclass, property} = cc._decorator;
 
@@ -31,6 +30,7 @@ export default class UIBase extends cc.Component {
     public static async closeView(): Promise<boolean> {
         return await UIManager.getInstance().closeForm(this.prefabPath);
     }
+    
     public view: cc.Component;
 
     /** 预先初始化 */

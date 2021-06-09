@@ -21,7 +21,6 @@ export default class UIMap extends UIScreen {
     // onLoad () {}
 
     async load() {
-        console.log("called")
         await UIFunction.openView();
         return '';
     }
