@@ -9,7 +9,7 @@ class SceneMgr {
     private _currScene: string = "";
 
     public getCurrScene() {
-        return UIManager.getInstance().getComponentByFid(this._currScene);
+        return UIManager.getInstance().getForm(this._currScene);
     }
 
     /** 打开一个场景 */
@@ -55,7 +55,7 @@ class SceneMgr {
     }
 
     public async close(scenePath: string) {
-        let com = UIManager.getInstance().getComponentByFid(scenePath);
+        let com = UIManager.getInstance().getForm(scenePath);
         if(com) {
             return UIManager.getInstance().closeForm(scenePath);
         }

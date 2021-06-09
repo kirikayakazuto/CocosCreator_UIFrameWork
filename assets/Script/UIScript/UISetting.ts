@@ -9,6 +9,7 @@ import WindowMgr from "../UIFrame/WindowMgr";
 import UICapture from "./UICapture";
 import UIMobx from "./UIMobx";
 import UIPop from "./UIPop";
+import UITips from "./UITips";
 
 const {ccclass, property} = cc._decorator;
 
@@ -26,6 +27,8 @@ export default class UISetting extends UIWindow {
 
         this.view.Pop.addClick(() => {
             WindowMgr.open(UIPop.prefabPath);
+            WindowMgr.open(UITips.prefabPath, "关闭后才显示的弹窗1", {showWait: true});
+            WindowMgr.open(UITips.prefabPath, "关闭后才显示的弹窗2", {showWait: true})
         }, this);
 
         this.view.Mobx.addClick(() => {

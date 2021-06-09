@@ -343,7 +343,7 @@ export default class UIManager extends cc.Component {
     }
 
     /** 获得Component */
-    public getComponentByFid(fId: string) {
+    public getForm(fId: string) {
         return this._allForms[fId];
     }
 }

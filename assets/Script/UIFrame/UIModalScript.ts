@@ -95,7 +95,7 @@ export default class UIModalScript extends cc.Component {
     }
 
     public async clickMaskWindow() {
-        let com = UIManager.getInstance().getComponentByFid(this.fid) as UIWindow;
+        let com = UIManager.getInstance().getForm(this.fid) as UIWindow;
         if(com && com.modalType.clickMaskClose) {
             await WindowMgr.close(this.fid);
         }

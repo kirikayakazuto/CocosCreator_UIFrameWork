@@ -24,6 +24,12 @@ export default class UIMobx extends UIWindow {
     }
     @observable obj = {num3: 0};
 
+    refreshView() {
+        this.view.Txt1.string = '' + this.num1;
+        this.view.Txt2.string = '' + this.num2;
+        this.view.Txt3.string = '' + this.total;
+    }
+
     // onLoad () {}
 
     start () {
@@ -31,6 +37,17 @@ export default class UIMobx extends UIWindow {
             this.closeSelf();
         }, this);
         autorun(this.refreshView.bind(this));
+        
+        when(() => this.total > 10).then(() => {
+            this.view.Txt4.node.active = this.total > 10;
+        });
+
+        reaction((() => this.obj && this.obj.num3), (arg: any, prev: number, r: IReactionPublic) => {
+            if(!cc.isValid(this.node)) return ;
+            this.view.Txt5.string = '' + arg;
+            // r.dispose();
+        });
+
         this.view.Btn1.addClick(() => {
             this.num1 ++;
         }, this);
@@ -41,25 +58,11 @@ export default class UIMobx extends UIWindow {
         this.view.Btn3.addClick(() => {
             this.obj.num3 ++;
         }, this);
-
-        when(() => this.total > 10).then(() => {
-            this.view.Txt4.node.active = this.total > 10;
-        });
-
-        reaction((() => this.obj && this.obj.num3), (arg: any, prev: number, r: IReactionPublic) => {
-            if(!cc.isValid(this.node)) return ;
-            this.view.Txt5.string = '' + arg;
-            // r.dispose();
-        });
         
     }
 
     
-    refreshView() {
-        this.view.Txt1.string = '' + this.num1;
-        this.view.Txt2.string = '' + this.num2;
-        this.view.Txt3.string = '' + this.total;
-    }
+    
 
     
 
