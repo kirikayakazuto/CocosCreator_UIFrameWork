@@ -1,19 +1,37 @@
-export default class Quadtree {
+export class Bound {
+    uid?: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
 
+    constructor(x: number, y: number, width: number, height: number, uid = "") {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.uid = uid;
+    }
+}
+/**
+ * 四叉树
+ */
+export default class Quadtree {
     private _maxObject = 10;
     private _maxLevel = 4;
     private _level = 0;
-    private _bound: cc.Rect = null;
-    private objects: cc.Rect[]    = [];
-    private nodes: Quadtree[]   = new Array<Quadtree>(4);
+    private _bound: Bound = null;
+    private _objects: Bound[] = [];
+    private _nodes: Quadtree[] = [];
     
-    constructor(bound: cc.Rect, maxObjects?: number, maxLevels?: number, level?: number) {
+    constructor(bound: Bound, maxObjects?: number, maxLevels?: number, level?: number) {
         this._bound = bound;
         this._maxObject = maxObjects || this._maxObject;
         this._maxLevel = maxLevels || this._maxLevel;
         this._level = level || this._level;
     }
 
+    /** 切 */
     public split() {
         let nextLevel   = this._level + 1;
         let subWidth    = this._bound.width/2;
@@ -22,27 +40,52 @@ export default class Quadtree {
         let y           = this._bound.y;
  
         //top right node
-        this.nodes[0] = new Quadtree(cc.rect(x+subWidth, y, subWidth, subHeight), this._maxObject, this._maxLevel, nextLevel);
+        this._nodes[0] = new Quadtree({
+            uid: `${nextLevel}-top-right`,
+            x: x+subWidth,
+            y: y, 
+            width: subWidth,
+            height: subHeight
+        }, this._maxObject, this._maxLevel, nextLevel);
         
         //top left node
-        this.nodes[1] = new Quadtree(cc.rect(x, y, subWidth, subHeight), this._maxObject, this._maxLevel, nextLevel);
+        this._nodes[1] = new Quadtree({
+            uid: `${nextLevel}-top-left`,
+            x: x,
+            y: y,
+            width: subWidth,
+            height: subHeight
+        }, this._maxObject, this._maxLevel, nextLevel);
         
         //bottom left node
-        this.nodes[2] = new Quadtree(cc.rect(x, y+subHeight, subWidth, subHeight), this._maxObject, this._maxLevel, nextLevel);
+        this._nodes[2] = new Quadtree({
+            uid: `${nextLevel}-bottom-left`,
+            x: x,
+            y: y+subHeight,
+            width: subWidth,
+            height: subHeight
+        }, this._maxObject, this._maxLevel, nextLevel);
         
         //bottom right node
-        this.nodes[3] = new Quadtree(cc.rect(x + subWidth, y+subHeight, subWidth, subHeight), this._maxObject, this._maxLevel, nextLevel);
+        this._nodes[3] = new Quadtree({
+            uid: `${nextLevel}-bottom-right`,
+            x: x + subWidth,
+            y: y+subHeight,
+            width: subWidth,
+            height: subHeight
+        }, this._maxObject, this._maxLevel, nextLevel);
     }
 
-    public getIndex(pRect: cc.Rect) {
+    /**  */
+    public getIndex(bound: Bound) {
         let indexes: number[] = [],
         verticalMidpoint    = this._bound.x + (this._bound.width/2),
         horizontalMidpoint  = this._bound.y + (this._bound.height/2);    
 
-        let startIsNorth = pRect.y < horizontalMidpoint,
-            startIsWest  = pRect.x < verticalMidpoint,
-            endIsEast    = pRect.x + pRect.width > verticalMidpoint,
-            endIsSouth   = pRect.y + pRect.height > horizontalMidpoint;    
+        let startIsNorth = bound.y < horizontalMidpoint,
+            startIsWest  = bound.x < verticalMidpoint,
+            endIsEast    = bound.x + bound.width > verticalMidpoint,
+            endIsSouth   = bound.y + bound.height > horizontalMidpoint;    
 
         //top-right quad
         if(startIsNorth && endIsEast) {
@@ -67,53 +110,54 @@ export default class Quadtree {
         return indexes;
     }
 
-    public insert(pRect: cc.Rect) {
+    /** 插入一个bound */
+    public insert(bound: Bound) {
         let i = 0;
         let indexes: number[] = [];
          
         //if we have subnodes, call insert on matching subnodes
-        if(this.nodes.length) {
-            indexes = this.getIndex(pRect);
+        if(this._nodes.length) {
+            indexes = this.getIndex(bound);
      
             for(i=0; i<indexes.length; i++) {
-                this.nodes[indexes[i]].insert(pRect);     
+                this._nodes[indexes[i]].insert(bound);     
             }
             return;
         }
      
         //otherwise, store object here
-        this.objects.push(pRect);
+        this._objects.push(bound);
 
         //max_objects reached
-        if(this.objects.length > this._maxObject && this._level < this._maxLevel) {
+        if(this._objects.length > this._maxObject && this._level < this._maxLevel) {
 
             //split if we don't already have subnodes
-            if(!this.nodes.length) {
+            if(!this._nodes.length) {
                 this.split();
             }
             
             //add all objects to their corresponding subnode
-            for(i=0; i<this.objects.length; i++) {
-                indexes = this.getIndex(this.objects[i]);
+            for(i=0; i<this._objects.length; i++) {
+                indexes = this.getIndex(this._objects[i]);
                 for(let k=0; k<indexes.length; k++) {
-                    this.nodes[indexes[k]].insert(this.objects[i]);
+                    this._nodes[indexes[k]].insert(this._objects[i]);
                 }
             }
 
             //clean up this node
-            this.objects = [];
+            this._objects = [];
         }
     }
 
-    public retrieve(pRect: cc.Rect): cc.Rect[] {
+    public retrieve(bound: Bound): Bound[] {
          
-        let indexes = this.getIndex(pRect),
-            returnObjects = this.objects;
+        let indexes = this.getIndex(bound),
+            returnObjects = this._objects;
             
         //if we have subnodes, retrieve their objects
-        if(this.nodes.length) {
+        if(this._nodes.length) {
             for(let i=0; i<indexes.length; i++) {
-                returnObjects = returnObjects.concat(this.nodes[indexes[i]].retrieve(pRect));
+                returnObjects = returnObjects.concat(this._nodes[indexes[i]].retrieve(bound));
             }
         }
 
@@ -126,12 +170,12 @@ export default class Quadtree {
     }
 
     public clear() {
-        this.objects = [];
-        for(let i=0; i < this.nodes.length; i++) {
-            if(this.nodes.length) {
-                this.nodes[i].clear();
+        this._objects = [];
+        for(let i=0; i < this._nodes.length; i++) {
+            if(this._nodes.length) {
+                this._nodes[i].clear();
               }
         }
-        this.nodes = [];
+        this._nodes = [];
     }
 }

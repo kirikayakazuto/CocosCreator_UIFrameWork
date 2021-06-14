@@ -7,6 +7,7 @@ import { ModalType } from "../UIFrame/Struct";
 import { UIWindow } from "../UIFrame/UIForm";
 import WindowMgr from "../UIFrame/WindowMgr";
 import UICapture from "./UICapture";
+import UILight from "./UILight";
 import UIMobx from "./UIMobx";
 import UIPop from "./UIPop";
 import UITips from "./UITips";
@@ -37,6 +38,10 @@ export default class UISetting extends UIWindow {
 
         this.view.Capture.addClick(() => {
             SceneMgr.open(UICapture.prefabPath);
+        }, this);
+
+        this.view.Light.addClick(() => {
+            SceneMgr.open(UILight.prefabPath);
         }, this);
     }
 

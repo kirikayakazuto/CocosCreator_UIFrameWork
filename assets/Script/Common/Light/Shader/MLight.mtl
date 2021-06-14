@@ -1,0 +1,15 @@
+{
+  "__type__": "cc.Material",
+  "_name": "MLight",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "f4d0429a-69d8-4f8c-8b94-166091b78df8"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "defines": {}
+    }
+  }
+}

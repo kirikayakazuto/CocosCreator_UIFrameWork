@@ -10,5 +10,7 @@ export default class UISetting_Auto extends cc.Component {
 	Mobx: ButtonPlus = null;
 	@property(ButtonPlus)
 	Capture: ButtonPlus = null;
+	@property(ButtonPlus)
+	Light: ButtonPlus = null;
  
 }
