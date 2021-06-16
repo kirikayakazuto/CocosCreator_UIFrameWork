@@ -20,7 +20,7 @@ export default class Light extends cc.Component {
     canvasSize: cc.Size = null;
     visiableSize: cc.Size = null;
 
-    radius = 300;
+    radius = 150;
     fade = 1;
 
     // graphics
@@ -29,6 +29,7 @@ export default class Light extends cc.Component {
     onLoad () {
         this._material = this.graphics.getMaterial(0);
         
+        // Light.ts:34 Size {width: 568, height: 320} Size {width: 1065, height: 600}
         this.canvasSize = cc.view.getCanvasSize();
         this.visiableSize = cc.view.getVisibleSize();
         

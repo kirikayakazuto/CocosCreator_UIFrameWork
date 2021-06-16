@@ -17,9 +17,17 @@
           "b": 0,
           "a": 255
         },
-        "glowType": 0.5,
-        "glowRange": 0.03,
-        "glowThreshold": 0.2
+        "glowType": 0.7,
+        "glowRange": 20,
+        "glowThreshold": 0.2,
+        "textureSize": {
+          "__type__": "cc.Vec2",
+          "x": 272,
+          "y": 238
+        },
+        "texture": {
+          "__uuid__": "7a4f96f9-c496-4cec-a4fd-323aaced7235"
+        }
       },
       "defines": {
         "USE_TEXTURE": true,

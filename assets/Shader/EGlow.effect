@@ -24,8 +24,7 @@ CCEffect %{
         glowRange: {
           value: 0.1,
           editor: {
-            tooltip: "内发光范围",
-            range: [0.0, 1.0]
+            tooltip: "内发光范围, 像素为单位",
           }
         }
         glowType: {
@@ -40,6 +39,12 @@ CCEffect %{
           editor: {
             tooltip: "发光阈值（只有超过这个透明度的点才会发光）",
             range: [0.0, 1.0]
+          }
+        }
+        textureSize: {
+          value: [0.0, 0.0], 
+          editor: {
+            tooltip: "图片宽高",
           }
         }
 }%
@@ -97,9 +102,12 @@ CCProgram fs %{
   #endif
 
   uniform glow {
+    
     // 发光颜色
     vec4 glowColor;
-    // 内发光范围
+    // 图片大小
+    vec2 textureSize;
+    // 发光范围, 像素为单位
     float glowRange;
     // 大于0.6则为外发光, 大于0.3为内发光, 其余为默认
     float glowType;
@@ -125,8 +133,8 @@ CCProgram fs %{
           if(srcColor.a < glowThreshold) return srcColor.a;
         }
         // 每一圈的对应的步长, 百分比
-        float stepX = (glowRange / range);
-        float stepY = (glowRange / range);
+        float stepX = (glowRange / textureSize.x) / range;
+        float stepY = (glowRange / textureSize.y) / range;
 
         // 取样周边一定范围透明度
         float totalAlpha = 0.0;

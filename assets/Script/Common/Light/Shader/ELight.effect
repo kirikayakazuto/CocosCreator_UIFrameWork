@@ -72,12 +72,9 @@ CCProgram fs %{
 
     ALPHA_TEST(o);
 
-    vec2 uv = st - lightPos;
-    float rx = abs(uv.x);
-    float ry = abs(uv.y);
-
-    float radius = length(vec2(rx * scaleWH, ry));      // 算半径
-    o.a = 1.0 - smoothstep(0.0, maxRadius, radius);      // 渐变
+    vec2 diff = st - lightPos;
+    float radius = length(vec2(abs(diff.x) * scaleWH, abs(diff.y)));      // 算半径
+    o.a = 1.0 - smoothstep(0.0, maxRadius, radius);                       // 渐变
     
     #if CC_SUPPORT_standard_derivatives
       float aa = fwidth(v_dist);
