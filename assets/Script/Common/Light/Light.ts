@@ -8,6 +8,7 @@ export enum LightType {
     Sector,     // 扇形
 }
 
+let LightBound = new Bound(0, 0, 0, 0);
 @ccclass
 export default class Light extends cc.Component {
     /** 画笔 */
@@ -51,17 +52,20 @@ export default class Light extends cc.Component {
         this.node.off(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
     }
 
-    onTouchMove(e: cc.Event.EventTouch) {
+    private onTouchMove(e: cc.Event.EventTouch) {
         this.node.x += e.getDeltaX();
         this.node.y += e.getDeltaY();
     }
 
     public getBound() {
         let pos = this.node.getPosition();
-        return new Bound(pos.x-this.radius/2, pos.y-this.radius/2, this.radius, this.radius);
+        LightBound.x = pos.x-this.radius/2; LightBound.y = pos.y-this.radius/2; 
+        LightBound.width = LightBound.height = this.radius;
+        return LightBound;
     }
     
 
+    /** 绘制光 */
     public draw(intersections: Intersection[]) {
         let lightPos = this.node.getPosition();
         this._doDraw(this.graphics, lightPos, intersections);

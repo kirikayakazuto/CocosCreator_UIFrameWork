@@ -9,14 +9,15 @@ export default class LightUtils {
         let intersects: Intersection[] = [];
         for(const rayEnd of rayEnds) {
             // 这里需要对rayend 进行一次分散, 因为在与多边形交点判断时, 需要判断光线在交点周围的情况
-            // 这里可以做一次优化, 主要是可以不计算三角函数 牺牲一些精度, 让rayEnd左右移动确定值实现分散
-            let angle = Math.atan2(rayEnd.y-rayStart.y,rayEnd.x-rayStart.x);
+            
+            let l = this.getNormal(rayEnd.sub(rayStart))
             for(let i=-1; i<=1; i++) {
-                let tmpRayEnd = cc.v2(Math.cos(angle+i*0.00001)+rayEnd.x, Math.sin(angle + i*0.00001)+rayEnd.y);
+                let tmpRayEnd = rayEnd.add(l.mul(i * 0.001));
                 let intersect = this.getIntersection(polygons, rayStart, tmpRayEnd);
                 if(!intersect) continue;
                 // 计算角度 用来对交点进行排序
-                intersect.angle = angle;
+                
+                intersect.angle = Math.atan2(tmpRayEnd.y - rayStart.y, tmpRayEnd.x - rayStart.x);
                 intersects.push(intersect);
             }
         }
@@ -26,24 +27,27 @@ export default class LightUtils {
 
         return intersects;
     }
-    /** 获得射线, 做了一次去除 */
+
+    /** 求垂直向量 */
+    private static getNormal(line: cc.Vec2) {
+        let l = line.normalize();
+        let tmp = l.x; l.x = l.y; l.y = -tmp;
+        return l;
+    }
+
+    /** 获得射线 */
     private static getRayEnds(polygons: cc.Vec2[][]) {
         let rayEnds: cc.Vec2[] = [];
-        let set = {};
         for(let i=0; i<polygons.length; i++) {
             let seg = polygons[i];
             for(let j=0; j<seg.length; j++) {
-                // let key = seg[j].x + ',' + seg[j].y;
-                // if(key in set) {
-                //     continue;
-                // }
                 rayEnds.push(seg[j]);
             }
         }
         return rayEnds;
     }
 
-    /** 获得射线和多边形们最近交点 */
+    /** 获得射线和多边形们最近交点, 有很大的优化空间, 比如建立一个按角度划分的四叉树, 减少遍历次数 */
     private static getIntersection(polygons: cc.Vec2[][], rayStart: cc.Vec2, rayEnd: cc.Vec2) {
         let closestIntersect: Intersection = null;  // 交点
         for(let i=0; i<polygons.length; i++) {
@@ -58,28 +62,6 @@ export default class LightUtils {
         }
         return closestIntersect;
     }
-    
-    // private static _doGetIntersection(ray1: cc.Vec2, ray2: cc.Vec2, seg1: cc.Vec2, seg2: cc.Vec2): Intersection {  
-    //     let area_abc = (ray1.x - seg1.x) * (ray2.y - seg1.y) - (ray1.y - seg1.y) * (ray2.x - seg1.x);  
-    //     let area_abd = (ray1.x - seg2.x) * (ray2.y - seg2.y) - (ray1.y - seg2.y) * (ray2.x - seg2.x);   
-    //     // 面积符号相同则两点在线段同侧,不相交 
-    //     if (area_abc * area_abd >= 0) return null;
-    //     // 三角形cda 面积的2倍  
-    //     let area_cda = (seg1.x - ray1.x) * (seg2.y - ray1.y) - (seg1.y - ray1.y) * (seg2.x - ray1.x);
-    //     // 三角形cdb 面积的2倍  
-    //     let area_cdb = area_cda + area_abc - area_abd;
-    //     if (area_cda * area_cdb >= 0) return null;
-
-    //     //计算交点坐标  
-    //     let t = area_cda / (area_abd - area_abc);
-    //     let dx = t * (ray2.x - ray1.x),  dy = t * (ray2.y - ray1.y);  
-
-    //     return {
-    //         x: ray1.x + dx,
-    //         y: ray1.y + dy,
-    //         len: dx * dx + dy * dy
-    //     }      
-    // }  
 
     /** 通过角度剔除交点, 角度是逆时针方向 */
     public static getIntersectionByAngle(startAngle: number, angleRange: number, light: cc.Vec2, polygons: cc.Vec2[][]) {
@@ -111,7 +93,7 @@ export default class LightUtils {
     }
 
 
-    public static binarySearchIntersects(arr: Intersection[], angle: number, findFlag = false) {
+    private static binarySearchIntersects(arr: Intersection[], angle: number, findFlag = false) {
         let start = 0, end = arr.length-1;
         while(end-start > 1){
             let idx = Math.floor((start + end) / 2);
@@ -140,14 +122,11 @@ export default class LightUtils {
         let s_dy = seg2.y - seg1.y;
 
         // 射线长度
-        let r_mag = Math.sqrt(r_dx * r_dx + r_dy * r_dy);
+        let r_mag = r_dx * r_dx + r_dy * r_dy;
         // 线段长度
-        let s_mag = Math.sqrt(s_dx * s_dx + s_dy * s_dy);
+        let s_mag = s_dx * s_dx + s_dy * s_dy;
         // 两向量方向相同, return
-        if(r_dx / r_mag == s_dx / s_mag && r_dy / r_mag == s_dy / s_mag){
-            // Unit vectors are the same.
-            return null;
-        }
+        if(r_dx / r_mag == s_dx / s_mag && r_dy / r_mag == s_dy / s_mag) return null;
 
         let T2 = (r_dx * (s_py - r_py) + r_dy * (r_px - s_px)) / (s_dx * r_dy - s_dy * r_dx);
         let T1 = (s_px + s_dx * T2 - r_px) / r_dx;
@@ -155,7 +134,8 @@ export default class LightUtils {
         // Must be within parametic whatevers for RAY/SEGMENT
         if(T1 < 0) return null;
         if(T2 < 0 || T2 > 1) return null;
-
+    
+        
         // Return the POINT OF INTERSECTION
         return {
             x: r_px + r_dx * T1,
