@@ -192,5 +192,5 @@ BaseUIForm中添加CloseAndDestory属性, 当此属性为true时, 关闭此窗�
 
 
 <style type="text/css">
-@import "./readme.css";
+@import url("./readme.css");
 </style>
