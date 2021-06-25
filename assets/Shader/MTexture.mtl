@@ -1,0 +1,37 @@
+{
+  "__type__": "cc.Material",
+  "_name": "MTexture",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "a009c06a-56f0-4838-9eee-e72285a941c8"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "defines": {
+        "USE_TEXTURE": true
+      },
+      "props": {
+        "shadowColor": {
+          "__type__": "cc.Color",
+          "r": 162,
+          "g": 162,
+          "b": 162,
+          "a": 255
+        },
+        "offset": {
+          "__type__": "cc.Vec2",
+          "x": 6,
+          "y": 7
+        },
+        "shadowRange": 4,
+        "textureSize": {
+          "__type__": "cc.Vec2",
+          "x": 166,
+          "y": 72
+        }
+      }
+    }
+  }
+}

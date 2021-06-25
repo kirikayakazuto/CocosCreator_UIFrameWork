@@ -16,7 +16,7 @@ const {ccclass, inspector, executeInEditMode, mixins, property} = cc._decorator;
 @ccclass
 @executeInEditMode
 // @inspector('packages://inspector/share/blend.js')
-// @mixins(cc.BlendFunc)
+@mixins(cc.BlendFunc)
 export default class TexturePlus extends cc.RenderComponent {
     static Type = TextureType;
 
@@ -89,7 +89,7 @@ export default class TexturePlus extends cc.RenderComponent {
         }
         this.setVertsDirty();
         
-        // cc.BlendFunc.prototype['_updateMaterial'].call(this);
+        this['__proto__']._updateBlendFunc.call(this);
     }
 
     public _validateRender() {

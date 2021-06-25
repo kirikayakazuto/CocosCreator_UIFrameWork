@@ -1,0 +1,248 @@
+// Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.  
+
+CCEffect %{
+  techniques:
+  - passes:
+    - name: first
+      vert: first-vs:vert
+      frag: first-fs:frag
+      blendState:
+        targets:
+        - blend: true
+      rasterizerState:
+        cullMode: none
+      properties:
+        texture: { value: white }
+        alphaThreshold: { value: 0.5 }
+        shadowColor: { 
+          value: [1.0, 1.0, 0.0, 1.0], 
+          editor: { 
+            type: color,
+            tooltip: "阴影颜色"
+          } 
+        }
+        offset: {
+          value: [0.0, 0.0], 
+          editor: {
+            tooltip: "偏移量",
+          }
+        }
+        threshold: {
+          value: 0.1,
+          editor: {
+            tooltip: "透明度阈值",
+            range: [0.0, 1.0]
+          }
+        }
+        shadowRange: {
+          value: 0.1,
+          editor: {
+            tooltip: "范围, 像素为单位",
+          }
+        }
+        textureSize: {
+          value: [0.0, 0.0], 
+          editor: {
+            tooltip: "图片宽高",
+          }
+        }
+    - name: sceond
+      vert: sceond-vs:vert
+      frag: sceond-fs:frag
+      blendState:
+        targets:
+        - blend: true
+      rasterizerState:
+        cullMode: none
+      properties:
+        texture: { value: white }
+        alphaThreshold: { value: 0.5 }
+}%
+
+
+CCProgram first-vs %{
+  precision highp float;
+
+  #include <cc-global>
+  #include <cc-local>
+
+  in vec3 a_position;
+  in vec4 a_color;
+  out vec4 v_color;
+
+  uniform u_shadow {
+    vec4 shadowColor;
+    vec2 offset;
+    vec2 textureSize;
+    float threshold;
+    float shadowRange;
+  };
+
+  #if USE_TEXTURE
+  in vec2 a_uv0;
+  out vec2 v_uv0;
+  #endif
+
+  vec4 vert () {
+    vec4 pos = vec4(a_position, 1) - vec4(offset.x, offset.y, 0.0, 0.0);
+
+    #if CC_USE_MODEL
+    pos = cc_matViewProj * cc_matWorld * pos;
+    #else
+    pos = cc_matViewProj * pos;
+    #endif
+
+    #if USE_TEXTURE
+    v_uv0 = a_uv0;
+    #endif
+
+    v_color = a_color;
+
+    return pos;
+  }
+}%
+
+
+CCProgram first-fs %{
+  precision highp float;
+  
+  #include <alpha-test>
+  #include <texture>
+
+  // 定义向周边搜索的圈数
+  #define range 6.0
+
+  in vec4 v_color;
+
+  uniform u_shadow {
+    vec4 shadowColor;
+    vec2 offset;
+    vec2 textureSize;
+    float threshold;
+    float shadowRange;
+  };
+
+  #if USE_TEXTURE
+  in vec2 v_uv0;
+  uniform sampler2D texture;
+  #endif
+
+  vec4 getTextureColor(sampler2D texture, vec2 v_uv0) {
+      if (v_uv0.x > 1.0 || v_uv0.x < 0.0 || v_uv0.y > 1.0 || v_uv0.y < 0.0) {
+          return vec4(0.0, 0.0, 0.0, 0.0);
+      }
+      return texture(texture, v_uv0);
+  }
+
+  // 获取当前范围的平均透明度, collectOut是否采集透明区域
+  float getRangeAlphaRect(bool collectOut) {
+    if (shadowRange <= 0.0) {
+      return 0.0;
+    }
+
+    vec4 srcColor = getTextureColor(texture, v_uv0);
+    if(!collectOut) {   // 不采集透明区域
+      if(srcColor.a < threshold) return srcColor.a;
+    }
+    // 每一圈的对应的步长, 百分比
+    float stepX = (shadowRange / textureSize.x) / range;
+    float stepY = (shadowRange / textureSize.y) / range;
+
+    // 取样周边一定范围透明度
+    float totalAlpha = 0.0;
+    for (float x = -range; x <= range; x++) { 
+        for (float y = -range; y <= range; y++) {
+          float a = getTextureColor(texture, v_uv0 + vec2(x * stepX, y * stepY)).a;
+          if(a < threshold) a = 0.0;
+            totalAlpha += a;
+        }
+    }
+    return totalAlpha / pow((range + range + 1.0), 2.0);
+  }
+
+  vec4 frag () {
+    vec4 o = vec4(1, 1, 1, 1);
+
+    #if USE_TEXTURE
+      CCTexture(texture, v_uv0, o);
+    #endif
+
+
+    float alpha = getRangeAlphaRect(false);
+    if(alpha > threshold) {
+      alpha = pow(alpha, 2.0);
+      o = shadowColor * alpha;
+    }else {
+      o = shadowColor * o.a;
+    }
+
+    
+
+    ALPHA_TEST(o);
+
+    return o;
+  }
+
+}%
+
+
+CCProgram sceond-vs %{
+  precision highp float;
+
+  #include <cc-global>
+  #include <cc-local>
+
+  in vec3 a_position;
+  in vec4 a_color;
+  out vec4 v_color;
+
+  #if USE_TEXTURE
+  in vec2 a_uv0;
+  out vec2 v_uv0;
+  #endif
+
+  vec4 vert () {
+    vec4 pos = vec4(a_position, 1);
+
+    #if CC_USE_MODEL
+    pos = cc_matViewProj * cc_matWorld * pos;
+    #else
+    pos = cc_matViewProj * pos;
+    #endif
+
+    #if USE_TEXTURE
+    v_uv0 = a_uv0;
+    #endif
+
+    v_color = a_color;
+    return pos;
+  }
+}%
+
+
+CCProgram sceond-fs %{
+  precision highp float;
+  
+  #include <alpha-test>
+  #include <texture>
+
+  in vec4 v_color;
+
+  #if USE_TEXTURE
+  in vec2 v_uv0;
+  uniform sampler2D texture;
+  #endif
+
+  vec4 frag () {
+    vec4 o = vec4(1, 1, 1, 1);
+
+    #if USE_TEXTURE
+      CCTexture(texture, v_uv0, o);
+    #endif
+
+    o *= v_color;
+    ALPHA_TEST(o);
+    return o;
+  }
+
+}%

@@ -1,0 +1,18 @@
+{
+  "__type__": "cc.Material",
+  "_name": "MTest",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "09da45ec-6593-4fcb-9636-ef950a17db73"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "props": {},
+      "defines": {
+        "USE_TEXTURE": true
+      }
+    }
+  }
+}
