@@ -206,9 +206,9 @@
     "_clearFlags": 7,
     "_backgroundColor": {
       "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
+      "r": 191,
+      "g": 191,
+      "b": 191,
       "a": 255
     },
     "_depth": -1,
@@ -285,8 +285,8 @@
       "y": 0,
       "z": 0
     },
-    "_skewX": 0,
-    "_skewY": 0,
+    "_skewX": 10,
+    "_skewY": 5,
     "_is3DNode": false,
     "_groupIndex": 0,
     "groupIndex": 0,

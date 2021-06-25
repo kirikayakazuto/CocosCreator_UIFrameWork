@@ -61,6 +61,8 @@ export default class TexturePlus extends cc.RenderComponent {
     _assembler: cc.Assembler = null;
 
     onLoad() {
+        this['srcBlendFactor'] = cc.macro.BlendFactor.SRC_ALPHA;
+        this['dstBlendFactor'] = cc.macro.BlendFactor.ONE_MINUS_SRC_ALPHA;
         this.node['_hitTest'] = this._hitTest.bind(this);
     }
 
@@ -87,9 +89,8 @@ export default class TexturePlus extends cc.RenderComponent {
             }
             material.setProperty("texture", texture);
         }
-        this.setVertsDirty();
-        
         this['__proto__']._updateBlendFunc.call(this);
+        this.setVertsDirty();        
     }
 
     public _validateRender() {

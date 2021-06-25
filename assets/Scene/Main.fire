@@ -294,9 +294,9 @@
     "_clearFlags": 7,
     "_backgroundColor": {
       "__type__": "cc.Color",
-      "r": 132,
-      "g": 247,
-      "b": 125,
+      "r": 96,
+      "g": 96,
+      "b": 96,
       "a": 255
     },
     "_depth": -1,
