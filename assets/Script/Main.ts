@@ -15,6 +15,8 @@ export default class Main extends cc.Component {
     start () {
         TipsMgr.inst.setLoadingForm(UILoading.prefabPath);
         SceneMgr.open(UIHome.prefabPath);
+        //1233
+        //123
     }
 
     onDestroy() {
