@@ -116,6 +116,7 @@ export default class ResMgr {
     /** 静态资源的计数管理 */
     private addStaticDepends(deps: Array<string>) {
         for(let s of deps) {
+            if(this._checkIsBuiltinAssets(s)) continue;
             if(this._staticDepends[s]) {
                 this._staticDepends[s] += 1;
             }else {
@@ -127,18 +128,19 @@ export default class ResMgr {
         for(let s of deps) {
             if(!this._staticDepends[s] || this._staticDepends[s] === 0) continue;
             this._staticDepends[s] --;
-            if(this._staticDepends[s] === 0) {
-                // 可以销毁
+            if(this._staticDepends[s] === 0) {                
+                if(this._checkIsBuiltinAssets(s)) continue;
                 cc.assetManager.releaseAsset(cc.assetManager.assets.get(s));
                 cc.assetManager.assets.remove(s);
                 delete this._staticDepends[s];
+                // 可以销毁
+                
             }
         }
     }
     /** 动态资源管理, 通过tag标记当前资源, 统一释放 */
     public async loadDynamicRes<T>(url: string, type: typeof cc.Asset, tag: string) {
         let sources = await CocosHelper.loadResSync<T>(url, type);
-        
         let uuid = sources['_uuid'];
         if(this._dynamicDepends[uuid]) {
             this._dynamicDepends[uuid] += 1;
@@ -190,5 +192,13 @@ export default class ResMgr {
             }
         });
         return `缓存 [纹理总数:${count}][纹理缓存:${totalTextureSize.toFixed(2) + 'M'}]`;
+    }
+
+    private _checkIsBuiltinAssets(url: string) {
+        let asset = cc.assetManager.assets.get(url);
+        if(asset && asset['_name'].indexOf("builtin") != -1) {
+            return true;
+        }
+        return false;
     }
 }

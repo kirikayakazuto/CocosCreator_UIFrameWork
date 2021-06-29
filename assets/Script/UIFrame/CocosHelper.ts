@@ -102,7 +102,7 @@ export default class CocosHelper {
     }
 
     private static _loadingMap: {[key: string]: Function[]} = {};
-    public static async loadRes<T>(url: string, type: typeof cc.Asset, callback: Function ) {
+    public static loadRes<T>(url: string, type: typeof cc.Asset, callback: Function ) {
         if(this._loadingMap[url]) {
             this._loadingMap[url].push(callback);
             return ;
