@@ -36,9 +36,9 @@ export default class UIHome extends UIScreen {
             SceneMgr.open(UIAbout.prefabPath);
         }, this);
 
-        // this.loadRes("imgs/button2", cc.Texture2D).then((res: cc.Texture2D) => {
+        this.loadRes("item", cc.Prefab).then((res: cc.Texture2D) => {
             
-        // });
+        });
     }
 
     // update (dt) {}

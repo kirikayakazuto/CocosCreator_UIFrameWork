@@ -25,64 +25,21 @@ export default class ResMgr {
         return this.instance;
     }
 
-    private _prefabCache: {[key: string]: cc.Prefab} = cc.js.createMap();
     /** 
      * 采用计数管理的办法, 管理form所依赖的资源
      */
     private _prefabDepends: {[key: string]: Array<string>} = cc.js.createMap();
-    private _staticDepends:{[key: string]: number} = cc.js.createMap();
-    private _dynamicDepends: {[key: string]: number} = cc.js.createMap();
-    private _dynamicTags: {[key: string]: Array<string>} = cc.js.createMap();
-    private _tmpStaticDepends: Array<string> = [];
+    private _dynamicTags: {[key: string]: Array<string>} = cc.js.createMap();       
 
-    private _stubRes: {[type: string]: {[name: string]: cc.Asset}} = {};
-    public addStub(res: cc.Asset, type: typeof cc.Asset) {
-        let content = this._stubRes[type.name];
-        if(!content) {
-            content = this._stubRes[type.name] = {};
-        }
-        content[res.name] = res;
-    }
-    public getStubRes(resName: string, type: typeof cc.Asset) {
-        let content = this._stubRes[type.name];
-        if(!content) {
-            return null;
-        }
-        return content[resName];
-    }
+    private _tmpAssetsDepends: string[] = [];                                       // 临时缓存
+    private _assetsReference: {[key: string]: number} = cc.js.createMap();          // 资源引用计数
 
-    private _addTmpStaticDepends(completedCount: number, totalCount: number, item: any) {
-        this._tmpStaticDepends[this._tmpStaticDepends.length] = item.uuid;
-        if(this._staticDepends[item.uuid]) {
-            this._staticDepends[item.uuid] ++;
-        }else {
-            this._staticDepends[item.uuid] = 1;
-        }
-}
-    private _clearTmpStaticDepends() {
-        for(let s of this._tmpStaticDepends) {
-            if(!this._staticDepends[s] || this._staticDepends[s] === 0) continue;
-            this._staticDepends[s] --;
-            if(this._staticDepends[s] === 0) {
-                delete this._staticDepends[s];           // 这里不清理缓存
-            }
-        }
-        this._tmpStaticDepends = [];
-    }
-
+    
     /** 加载窗体 */
     public async loadForm(fid: string) {
-        let prefab = this._prefabCache[fid];
-        if(!prefab) {
-            prefab = await CocosHelper.loadResSync<cc.Prefab>(fid, cc.Prefab, this._addTmpStaticDepends.bind(this));
-            if(!prefab) return null;
-            this._prefabCache[fid] = prefab;
-            this._clearTmpStaticDepends();
-            let deps = cc.assetManager.dependUtil.getDepsRecursively(prefab['_uuid']);
-            this._prefabDepends[fid] = deps;
-            this.addStaticDepends(deps);
-        }
-        return cc.instantiate(prefab);
+        let {res, deps} = await this._loadResWithReference<cc.Prefab>(fid, cc.Prefab);
+        this._prefabDepends[fid] = deps;
+        return cc.instantiate(res);
     }
 
     /** 销毁窗体 */
@@ -91,69 +48,24 @@ export default class ResMgr {
         EventCenter.targetOff(com);
 
         // 销毁依赖的资源
-        let deps = this._prefabDepends[com.fid];            
-        this.removeStaticDepends(deps);
+        this._destoryResWithReference(this._prefabDepends[com.fid]);
+
         this._prefabDepends[com.fid] = null;
         delete this._prefabDepends[com.fid];
 
-        // 销毁prefab
-        let prefab = this._prefabCache[com.fid];
-        prefab.destroy();
-        let uuid = prefab['_uuid'];
-        cc.assetManager.assets.remove(uuid);
-        cc.assetManager.dependUtil['remove'](uuid);
-        this._prefabCache[com.fid] = null;
-        delete this._prefabCache[com.fid];
-
         // 销毁node
         com.node.destroy();
-
-        // 销毁组件
-        com.destroy();
     }
 
 
-    /** 静态资源的计数管理 */
-    private addStaticDepends(deps: Array<string>) {
-        for(let s of deps) {
-            if(this._checkIsBuiltinAssets(s)) continue;
-            if(this._staticDepends[s]) {
-                this._staticDepends[s] += 1;
-            }else {
-                this._staticDepends[s] = 1;
-            }
-        }
-    }
-    private removeStaticDepends(deps: Array<string>) {
-        for(let s of deps) {
-            if(!this._staticDepends[s] || this._staticDepends[s] === 0) continue;
-            this._staticDepends[s] --;
-            if(this._staticDepends[s] === 0) {                
-                if(this._checkIsBuiltinAssets(s)) continue;
-                cc.assetManager.releaseAsset(cc.assetManager.assets.get(s));
-                cc.assetManager.assets.remove(s);
-                delete this._staticDepends[s];
-                // 可以销毁
-                
-            }
-        }
-    }
     /** 动态资源管理, 通过tag标记当前资源, 统一释放 */
     public async loadDynamicRes<T>(url: string, type: typeof cc.Asset, tag: string) {
-        let sources = await CocosHelper.loadResSync<T>(url, type);
-        let uuid = sources['_uuid'];
-        if(this._dynamicDepends[uuid]) {
-            this._dynamicDepends[uuid] += 1;
-        }else {
-            this._dynamicDepends[uuid] = 1;
-        }
-
+        let {res, deps} = await this._loadResWithReference<T>(url, type);
         if(!this._dynamicTags[tag]) {
             this._dynamicTags[tag] = [];
         }
-        this._dynamicTags[tag].push(uuid);
-        
-        return sources;
+        this._dynamicTags[tag].push(...deps);
+        return res;
     }
 
     /** 销毁动态资源  */
@@ -161,19 +73,105 @@ export default class ResMgr {
         if(!this._dynamicTags[tag]) {       // 销毁
             return false;
         }
-        for(const s of this._dynamicTags[tag]) {
-            if(!this._dynamicDepends[s] || this._dynamicDepends[s] == 0) continue;
-            this._dynamicDepends[s] --;
-            if(this._dynamicDepends[s] == 0) {      // 应该被销毁了
-                cc.assetManager.releaseAsset(cc.assetManager.assets.get(s));
-                cc.assetManager.assets.remove(s);
-                delete this._dynamicDepends[s];
-            }
-        }
+        this._destoryResWithReference(this._dynamicTags[tag])
+        
         this._dynamicTags[tag] = null;
         delete this._dynamicTags[tag];
 
         return true;
+    }
+
+
+    /** 加载资源并添加引用计数 */
+    private async _loadResWithReference<T>(url: string, type: typeof cc.Asset) {
+        let res = await CocosHelper.loadResSync<T>(url, type, this._addTmpAssetsDepends.bind(this));
+        if(!res) {
+            this._clearTmpAssetsDepends();    
+            return null;
+        }
+        this._clearTmpAssetsDepends();
+        let deps = cc.assetManager.dependUtil.getDepsRecursively(res['_uuid']) || [];
+        deps.push(res['_uuid']);
+        this.addAssetsDepends(deps);
+
+        return {
+            res: res,
+            deps: deps
+        };
+    }
+
+    /** 更加引用销毁资源 */
+    private _destoryResWithReference(deps: string[]) {
+        let _toDeletes = this.removeAssetsDepends(deps);
+        this._destoryAssets(_toDeletes);
+        return true;
+    } 
+
+    /** 添加资源计数 */
+    private addAssetsDepends(deps: Array<string>) {
+        for(let s of deps) {
+            if(this._checkIsBuiltinAssets(s)) continue;
+            if(this._assetsReference[s]) {
+                this._assetsReference[s] += 1;
+            }else {
+                this._assetsReference[s] = 1;
+            }
+        }
+    }
+    /** 删除资源计数 */
+    private removeAssetsDepends(deps: Array<string>) {
+        let _deletes: string[] = [];
+        for(let s of deps) {
+            if(!this._assetsReference[s] || this._assetsReference[s] === 0) continue;
+            this._assetsReference[s] --;
+            if(this._assetsReference[s] === 0) {     
+                _deletes.push(s);
+                delete this._assetsReference[s];                  // 删除key;
+            }
+        }
+        return _deletes;
+    }
+    private _destoryAssets(urls: string[]) {
+        for(const url of urls) {
+            this._destoryAsset(url);
+        }
+    }
+    /** 销毁资源 */
+    private _destoryAsset(url: string) {
+        if(this._checkIsBuiltinAssets(url)) return;
+        cc.assetManager.assets.remove(url);               // 从缓存中清除
+        let asset = cc.assetManager.assets.get(url);      // 销毁该资源
+        asset && asset.destroy();
+        cc.assetManager.dependUtil['remove'](url);        // 从依赖中删除
+    }
+
+    /** 临时添加资源计数 */
+    private _addTmpAssetsDepends(completedCount: number, totalCount: number, item: any) {
+        let deps = (cc.assetManager.dependUtil.getDepsRecursively(item.uuid) || []);
+        deps.push(item.uuid);
+        this.addAssetsDepends(deps);
+
+        this._tmpAssetsDepends.push(...deps);
+    }
+    /** 删除临时添加的计数 */
+    private _clearTmpAssetsDepends() {
+        for(let s of this._tmpAssetsDepends) {
+            if(!this._assetsReference[s] || this._assetsReference[s] === 0) continue;
+            this._assetsReference[s] --;
+            if(this._assetsReference[s] === 0) {
+                delete this._assetsReference[s];           // 这里不清理缓存
+            }
+        }
+        this._tmpAssetsDepends = [];
+    }
+
+    /** 检查是否是builtin内的资源 */
+    private _checkIsBuiltinAssets(url: string) {
+        let asset = cc.assetManager.assets.get(url);
+        if(asset && asset['_name'].indexOf("builtin") != -1) {
+            return true;
+        }
+        return false;
     }
 
     /** 计算当前纹理数量和缓存 */
@@ -194,11 +192,4 @@ export default class ResMgr {
         return `缓存 [纹理总数:${count}][纹理缓存:${totalTextureSize.toFixed(2) + 'M'}]`;
     }
 
-    private _checkIsBuiltinAssets(url: string) {
-        let asset = cc.assetManager.assets.get(url);
-        if(asset && asset['_name'].indexOf("builtin") != -1) {
-            return true;
-        }
-        return false;
-    }
 }
