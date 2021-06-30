@@ -71,6 +71,9 @@ UIManager只暴露的四个接口.
 UIManager在打开窗体时, 会获取窗体上的UIBase组件, 然后根据类型, 将窗体挂载到不同的node上. 然后触发UIBase中的
 生命周期方法.
 
+UIManager内部控制流程如下图.. </br>
+<img src="./doc/uimanager.png" width="880">
+
 ### 其他Manager
 
 #### WindowMgr 窗体控制器
