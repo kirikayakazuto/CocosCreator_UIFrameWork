@@ -184,16 +184,12 @@ EventCenter替换GEventManager，EventCenter使用双层Map，优化了emit的�
 
 需要注意的是 自动绑定的结点必须是是挂载脚本的结点或者子节点, 如图
 
-![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/UIBind_dist.png)
-
+<img src="./doc/UIBind_dist.png">
 
 只会在BindTest结点的子节点自动绑定结点, 那么我现在有一个结点希望自动绑定, 但是其父节点没有挂载脚本, 怎么办呢.
 UIHelper还提供了了bindNode()方法, 将对方结点或者其父节点传入, 那么你就可以在其他脚本将结点自动绑定
 
 还需要注意的是 重复绑定, 因为每次进行查询绑定操作时, 都会对其所有的子节点进行查找, 所有可能会出现重复绑定!
-
-
-
 
 ## 8月3日新增功能
 
