@@ -1,4 +1,5 @@
 import UIHome_Auto from "../AutoScripts/UIHome_Auto";
+import PropController from "../Common/Components/PropController";
 import * as StateMathine from "../Common/StateMachine/StateMachine"
 import SceneMgr from "../UIFrame/SceneMgr";
 import { UIFixed, UIScreen } from "../UIFrame/UIForm";
@@ -36,7 +37,19 @@ export default class UIHome extends UIScreen {
             SceneMgr.open(UIAbout.prefabPath);
         }, this);
 
-        this.loadRes("item", cc.Prefab).then((res: cc.Texture2D) => {
+        this.loadRes("buildings/Building", cc.Prefab).then((res: cc.Prefab) => {
+            let node = cc.instantiate(res);
+            node.parent = this.node;
+
+            this.scheduleOnce(() => {
+                node.getComponent(PropController).state = 0;
+            }, 1);
+            this.scheduleOnce(() => {
+                node.getComponent(PropController).state = 1;
+            }, 3);
+            this.scheduleOnce(() => {
+                node.getComponent(PropController).state = 2;
+            }, 5);
             
         });
     }

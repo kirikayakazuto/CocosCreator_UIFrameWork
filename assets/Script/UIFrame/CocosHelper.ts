@@ -1,4 +1,3 @@
-import { SysDefine } from "./config/SysDefine";
 export class LoadProgress {
     public url: string;
     public completedCount: number;

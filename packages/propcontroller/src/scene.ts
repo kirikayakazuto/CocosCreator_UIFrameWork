@@ -1,6 +1,3 @@
-import Const from "./Const";
-const fs = require('fire-fs');
-
 const _localSaveFunc: {[key: number]: (saveData: any, com: any, comPropCtrl: any) => void} = {};
 let ROOT_NODE: cc.Node = null as any;
 
@@ -10,29 +7,19 @@ module scene {
         let node = cc.director.getScene().getChildByUuid(t.nodeUuid);
         let coms = node.getComponents("PropController");
         for(const com of coms) {
-            // Editor.log(com.uuid, t.comUuid);
             if(com.uuid == t.comUuid) {
                 com.state = t.state;
             }
         }
     }
-    
-    function _readFile(path: string, callback: Function) {
-        fs.readFile(path, 'utf8', (err: any, data: string) => {
-            if(!err) {
-                callback(JSON.parse(data));
-            }else {
-                callback({});
-            }
-        });  
-    }
+
     
     function _doSetProp(comPropCtrl: any, NodeRoot: cc.Node, saveData: any) {
         let coms = NodeRoot.getComponentsInChildren("PropSelector");
         for(const com of coms) {
             // 只处理当前状态的控制器属性
             let ctrl = NodeRoot.getComponents("PropController")[com.ctrlId];
-            if(ctrl.uid !== comPropCtrl.uid) {
+            if(!ctrl || ctrl.uid !== comPropCtrl.uid) {
                 continue;
             }
             
@@ -63,8 +50,6 @@ module scene {
     
             let saveData: {[key: string]: any} = {};
             let ProjectDir = Editor.Project.path;
-            let ScriptName = `${NodeRoot.name}_${comPropCtrl.uid}_Auto`;
-            let ScriptPath = `${ProjectDir}/${Const.JsonsDir}/${ScriptName}.json`.replace(/\\/g, "/");
             
             if(!comPropCtrl.uid || comPropCtrl.uid.length <= 0) {
                 cc.warn(`PropController, 请设置 PropController 的 uid ${comPropCtrl.uid} `);
@@ -75,43 +60,24 @@ module scene {
                 cc.warn(`PropController, ${comPropCtrl.uid} 控制器越界了`);
                 return ;
             }
-    
-            _readFile(ScriptPath, (data: any) => {
-                saveData = data;
-                // 把当前状态的数据置空
-                saveData[comPropCtrl.state] = {};
-                // 删除已经不存在的状态
-                for(const e in saveData) {
-                    if(parseInt(e) >= comPropCtrl.states.length) {  // 表示这个状态已经废弃了
-                        saveData[e] = null;
-                        delete saveData[e];
-                    }
+            if(comPropCtrl.propertyJson) {
+                saveData = JSON.parse(comPropCtrl.propertyJson);
+            }
+            
+            // 把当前状态的数据置空
+            saveData[comPropCtrl.state] = {};
+            // 删除已经不存在的状态
+            for(const e in saveData) {
+                if(parseInt(e) >= comPropCtrl.states.length) {  // 表示这个状态已经废弃了
+                    saveData[e] = null;
+                    delete saveData[e];
                 }
-                // 把当前控制器下的
-                _doSetProp(comPropCtrl, NodeRoot, saveData);
-    
-                let json = JSON.stringify(saveData);
-                checkScriptDir();
-                
-                fs.writeFileSync(ScriptPath, json);
-                let dbJsonPath = ScriptPath.replace(ProjectDir, "db:/");
-                Editor.assetdb.refresh(dbJsonPath, (err: any, data: any) => {
-                    cc.assetManager.loadAny({uuid: data[0].uuid}, (err: any, data: any) => {
-                        comPropCtrl.propertyJson = data;
-                        Editor.log('控制器数据保存成功-', dbJsonPath);
-                    });
-                });
-    
-            }); 
+            }
+            // 把当前控制器下的
+            _doSetProp(comPropCtrl, NodeRoot, saveData);
+            comPropCtrl.propertyJson = JSON.stringify(saveData);
+            Editor.log('控制器数据保存成功');
         }
-    }
-
-    function checkScriptDir() {
-        let dir = Editor.Project.path + '/' + Const.JsonsDir;
-        if(!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);
-        }
-        return dir;
     }
 
     function _getNodePath(node: cc.Node, rootNode: cc.Node) {
@@ -210,6 +176,12 @@ module scene {
         let d = _checkSaveData(saveData, com, controller);
         d[(cc as any).PropEmum.Label_String] = com.getComponent(cc.Label).string;
     }
+
+    function _saveSpriteTexture(saveData: any, com: any, controller: any) {
+        if(!com.getComponent(cc.Sprite)) return ;
+        let d = _checkSaveData(saveData, com, controller);
+        d[(cc as any).PropEmum.Sprite_Texture] = com.getComponent(cc.Sprite).spriteFrame['_uuid'];
+    }
     
     _regiestSaveFunction((cc as any).PropEmum.Active, _saveActive);
     _regiestSaveFunction((cc as any).PropEmum.Position, _savePosition);
@@ -221,6 +193,7 @@ module scene {
     _regiestSaveFunction((cc as any).PropEmum.Size, _saveSize);
     _regiestSaveFunction((cc as any).PropEmum.Anchor, _saveAnchor);
     _regiestSaveFunction((cc as any).PropEmum.Label_String, _saveLabelString);
+    _regiestSaveFunction((cc as any).PropEmum.Sprite_Texture, _saveSpriteTexture);
     
     
 }

@@ -1,9 +1,10 @@
 import PropSelector, { PropEmum } from "./PropSelector";
 
-const {ccclass, executeInEditMode, inspector, property} = cc._decorator;
+const {ccclass, executeInEditMode, menu, inspector, property} = cc._decorator;
 
 @ccclass
 @executeInEditMode
+@menu('i18n:状态控制/PropController')
 @inspector('packages://propcontroller/dist/inspector.js')
 export default class PropController extends cc.Component {
 
@@ -42,8 +43,8 @@ export default class PropController extends cc.Component {
         this._refresh();
     }
 
-    @property(cc.JsonAsset)
-    propertyJson: cc.JsonAsset = null;
+    @property()
+    propertyJson = '';
 
     onLoad () {
         this._refresh();
@@ -58,7 +59,7 @@ export default class PropController extends cc.Component {
         //     t = this.states[type];
         // }
 
-        let ctrl = this.propertyJson.json;
+        let ctrl = JSON.parse(this.propertyJson);
 
         let map = ctrl[t];      
         for(const path in map) {
@@ -135,6 +136,15 @@ function _setActive(node: cc.Node, prop: any) {
 function _setLabelString(node: cc.Node, prop: any) {
     node.getComponent(cc.Label).string = prop;
 }
+function _setSpriteTexture(node: cc.Node, prop: any) {
+    cc.assetManager.loadAny({uuid: prop}, (error, data) => {        
+        if(error) {
+            Editor.warn('PropController  load sprite texture faild', prop, error);
+            return ;
+        };
+        node.getComponent(cc.Sprite).spriteFrame = data;
+    });
+}
 
 const _localSetFunc: {[key: number]: (node: cc.Node, prop: any) => void} = {};
 function _regiestSetFunction(id: number, func: (node: cc.Node, prop: any) => void) {
@@ -154,3 +164,4 @@ _regiestSetFunction(PropEmum.Slew, _setSlew);
 _regiestSetFunction(PropEmum.Size, _setSize);
 _regiestSetFunction(PropEmum.Anchor, _setAnchor);
 _regiestSetFunction(PropEmum.Label_String, _setLabelString);
+_regiestSetFunction(PropEmum.Sprite_Texture, _setSpriteTexture);

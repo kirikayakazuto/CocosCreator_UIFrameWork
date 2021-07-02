@@ -20,6 +20,8 @@ export default class UIMobx_Auto extends cc.Component {
 	Txt4: cc.Label = null;
 	@property(ButtonPlus)
 	Btn3: ButtonPlus = null;
+	@property(ButtonPlus)
+	Btn4: ButtonPlus = null;
 	@property(cc.Label)
 	Txt5: cc.Label = null;
  
