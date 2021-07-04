@@ -1,6 +1,7 @@
 "use strict";
 var _localSaveFunc = {};
 var ROOT_NODE = null;
+var NodePathType = 1;
 var scene;
 (function (scene) {
     function setState(event, t) {
@@ -34,8 +35,6 @@ var scene;
      * 入口
      * 1, 查看是否启用了controller, 即检查根结点是否有PropController脚本即可
      * 2, 查找所有PropSelector, 根据所属控制器和所属type, 生成json文件并保持到本地
-     * 3, 将json文件绑定到对应的controller中
-     *
      */
     function start() {
         var childs = cc.director.getScene().children;
@@ -49,23 +48,23 @@ var scene;
                 continue;
             }
             var saveData = {};
-            var ProjectDir = Editor.Project.path;
             if (!comPropCtrl.uid || comPropCtrl.uid.length <= 0) {
-                cc.warn("PropController, \u8BF7\u8BBE\u7F6E PropController \u7684 uid " + comPropCtrl.uid + " ");
+                cc.warn("PropController, \u8BF7\u8BBE\u7F6E PropController \u7684 uid " + comPropCtrl.node.name + " ");
                 return;
             }
             if (comPropCtrl.state < 0 || comPropCtrl.state >= comPropCtrl.states.length) {
                 cc.warn("PropController, " + comPropCtrl.uid + " \u63A7\u5236\u5668\u8D8A\u754C\u4E86");
                 return;
             }
+            NodePathType = comPropCtrl.nodePathType;
             if (comPropCtrl.propertyJson) {
                 saveData = JSON.parse(comPropCtrl.propertyJson);
             }
-            // 把当前状态的数据置空
+            // 把当前状态的数据置空, 重新保存
             saveData[comPropCtrl.state] = {};
             // 删除已经不存在的状态
             for (var e in saveData) {
-                if (parseInt(e) >= comPropCtrl.states.length) { // 表示这个状态已经废弃了
+                if (+e >= comPropCtrl.states.length) { // 表示这个状态已经废弃了
                     saveData[e] = null;
                     delete saveData[e];
                 }
@@ -77,7 +76,7 @@ var scene;
         }
     }
     scene.start = start;
-    function _getNodePath(node, rootNode) {
+    function _getNodePathByName(node, rootNode) {
         var parent = node;
         var path = '';
         while (parent) {
@@ -87,7 +86,15 @@ var scene;
             path += '/' + parent.name;
             parent = parent.parent;
         }
-        return path;
+        return "0:" + path;
+    }
+    function _getNodePathBySilblineIndex(node, rootNode) {
+        var path = '';
+        while (node.uuid != rootNode.uuid) {
+            path += '/' + node.getSiblingIndex();
+            node = node.parent;
+        }
+        return "1:" + path;
     }
     function _regiestSaveFunction(propId, func) {
         if (_localSaveFunc[propId]) {
@@ -101,7 +108,15 @@ var scene;
         var map = saveData[state];
         if (!map)
             map = saveData[state] = {};
-        var path = _getNodePath(com.node, ROOT_NODE);
+        var path = '';
+        switch (NodePathType) {
+            case cc.NodePathType.Name:
+                path = _getNodePathByName(com.node, ROOT_NODE);
+                break;
+            case cc.NodePathType.SiblingIndex:
+                path = _getNodePathBySilblineIndex(com.node, ROOT_NODE);
+                break;
+        }
         var d = map[path];
         if (!d)
             d = map[path] = {};

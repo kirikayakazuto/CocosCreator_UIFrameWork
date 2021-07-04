@@ -24,6 +24,8 @@ export default class UIFunction extends UIFixed {
         this.view.Skills.addClick(() => {
             WindowMgr.open(UISkills.prefabPath);
         }, this);
+
+        
     }
 
     // update (dt) {}

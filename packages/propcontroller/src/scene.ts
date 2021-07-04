@@ -1,5 +1,6 @@
 const _localSaveFunc: {[key: number]: (saveData: any, com: any, comPropCtrl: any) => void} = {};
 let ROOT_NODE: cc.Node = null as any;
+let NodePathType = 1;
 
 module scene {
 
@@ -12,7 +13,6 @@ module scene {
             }
         }
     }
-
     
     function _doSetProp(comPropCtrl: any, NodeRoot: cc.Node, saveData: any) {
         let coms = NodeRoot.getComponentsInChildren("PropSelector");
@@ -34,8 +34,6 @@ module scene {
      * 入口
      * 1, 查看是否启用了controller, 即检查根结点是否有PropController脚本即可
      * 2, 查找所有PropSelector, 根据所属控制器和所属type, 生成json文件并保持到本地
-     * 3, 将json文件绑定到对应的controller中
-     *      
      */
     export function start() { 
         let childs = cc.director.getScene().children;
@@ -47,12 +45,10 @@ module scene {
             if(!comPropCtrl || !comPropCtrl.open) {            
                 continue;
             }
-    
             let saveData: {[key: string]: any} = {};
-            let ProjectDir = Editor.Project.path;
             
             if(!comPropCtrl.uid || comPropCtrl.uid.length <= 0) {
-                cc.warn(`PropController, 请设置 PropController 的 uid ${comPropCtrl.uid} `);
+                cc.warn(`PropController, 请设置 PropController 的 uid ${comPropCtrl.node.name} `);
                 return ;
             }
     
@@ -60,15 +56,17 @@ module scene {
                 cc.warn(`PropController, ${comPropCtrl.uid} 控制器越界了`);
                 return ;
             }
+
+            NodePathType = comPropCtrl.nodePathType;
+
             if(comPropCtrl.propertyJson) {
                 saveData = JSON.parse(comPropCtrl.propertyJson);
             }
-            
-            // 把当前状态的数据置空
+            // 把当前状态的数据置空, 重新保存
             saveData[comPropCtrl.state] = {};
             // 删除已经不存在的状态
             for(const e in saveData) {
-                if(parseInt(e) >= comPropCtrl.states.length) {  // 表示这个状态已经废弃了
+                if(+e >= comPropCtrl.states.length) {  // 表示这个状态已经废弃了
                     saveData[e] = null;
                     delete saveData[e];
                 }
@@ -80,7 +78,7 @@ module scene {
         }
     }
 
-    function _getNodePath(node: cc.Node, rootNode: cc.Node) {
+    function _getNodePathByName(node: cc.Node, rootNode: cc.Node) {
         let parent = node;
         let path = '';
         while(parent) {
@@ -90,7 +88,16 @@ module scene {
             path += '/' + parent.name;
             parent = parent.parent;
         }
-        return path;
+        return "0:" + path;
+    }
+
+    function _getNodePathBySilblineIndex(node: cc.Node, rootNode: cc.Node) {
+        let path = '';
+        while(node.uuid != rootNode.uuid) {
+            path += '/' + node.getSiblingIndex();
+            node = node.parent;
+        }
+        return "1:" + path;
     }
 
     function _regiestSaveFunction(propId: number, func: (saveData: any, com: any, comPropCtrl: any) => void) {
@@ -105,10 +112,18 @@ module scene {
         let state = controller.state;
         let map = saveData[state];
         if(!map) map = saveData[state] = {};
-        let path = _getNodePath(com.node, ROOT_NODE);
+        let path = '';
+        switch(NodePathType) {
+            case (cc as any).NodePathType.Name:
+                path = _getNodePathByName(com.node, ROOT_NODE);
+                break;
+            case (cc as any).NodePathType.SiblingIndex:
+                path = _getNodePathBySilblineIndex(com.node, ROOT_NODE);
+                break;
+        }
+
         let d = map[path];
         if(!d) d = map[path] = {};
-
         return d;
     }
 

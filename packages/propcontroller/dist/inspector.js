@@ -2,6 +2,7 @@
 "use strict";
 Vue.component("propcontroller", {
     template:'\n    '+
+    '   <ui-prop\n      v-prop="target.nodePathType"\n   :multi-values="multi"\n    >\n    </ui-prop>\n  '+
     '   <ui-prop\n      v-prop="target.open"\n   :multi-values="multi"\n    >\n    </ui-prop>\n  '+
     '   <ui-prop\n      v-prop="target.uid"\n   :multi-values="multi"\n    >\n    </ui-prop>\n  '+
     '   <ui-prop name="State">\n'+

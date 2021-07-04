@@ -1,5 +1,11 @@
 import PropSelector, { PropEmum } from "./PropSelector";
 
+export enum NodePathType {
+    Name,
+    SiblingIndex,
+}
+cc['NodePathType'] = NodePathType;
+
 const {ccclass, executeInEditMode, menu, inspector, property} = cc._decorator;
 
 @ccclass
@@ -7,6 +13,9 @@ const {ccclass, executeInEditMode, menu, inspector, property} = cc._decorator;
 @menu('i18n:状态控制/PropController')
 @inspector('packages://propcontroller/dist/inspector.js')
 export default class PropController extends cc.Component {
+
+    @property({type: cc.Enum(NodePathType), tooltip: "Name: 根据node name保存, SiblingIndex: 根据node 在children的index保存"})
+    nodePathType = NodePathType.SiblingIndex;
 
     @property({tooltip: "是否启用控制器"})
     open = true;
@@ -55,16 +64,21 @@ export default class PropController extends cc.Component {
 
     public doControl(type: string | number) {
         let t = type;
-        // if(typeof type == "string") {
-        //     t = this.states[type];
-        // }
-
         let ctrl = JSON.parse(this.propertyJson);
 
         let map = ctrl[t];      
         for(const path in map) {
-            let node = cc.find(path, this.node);
-            if(!node) continue;
+            let paths = path.split(":");
+            let node: cc.Node = null;
+            switch(+paths[0]) {
+                case NodePathType.Name:
+                    node = cc.find(paths[1], this.node);
+                    break;
+                case NodePathType.SiblingIndex:
+                    node = this._getNodeBySiblingIndex(paths[1], this.node);
+                    break;
+            }
+            if(!node) { cc.warn("find node faild, path:", path); continue;}
             let nodeProps = map[path];
             for(const key in nodeProps) {  
                 let func = _localSetFunc[key];
@@ -72,6 +86,14 @@ export default class PropController extends cc.Component {
                 func(node, nodeProps[key])
             }
         }
+    }
+
+    private _getNodeBySiblingIndex(path: string, node: cc.Node) {
+        path = (path[0] == '/') ? path.substring(1) : path;
+        for(const e of path.split("/")) {
+            node = node.children[+e];
+        }
+        return node;
     }
 
     private _refresh() {
