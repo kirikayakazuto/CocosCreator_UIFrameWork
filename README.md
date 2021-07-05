@@ -90,12 +90,12 @@ ResMgr管理窗体的资源, 恪守  **我释放的是我加载的资源, 我加
 #### AdapterMgr 适配控制器
 
 
-
 ### 自动绑定结点插件 AutoBinder
 待补充...
 
 ### 状态控制器 PropController
-待补充...
+
+视频介绍: https://www.bilibili.com/video/BV1ig411u7vK#reply4845159639
 
 ## 2021/01/31 Binder plus, 升级了项目中的自动结点绑定
 注意: 目前第一次生成脚本时无法立即绑定到对应结点上, 需要再次执行一次run 即可.
