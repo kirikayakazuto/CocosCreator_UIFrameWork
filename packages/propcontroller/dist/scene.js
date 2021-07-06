@@ -2,8 +2,46 @@
 var _localSaveFunc = {};
 var ROOT_NODE = null;
 var NodePathType = 1;
+var fs = require('fire-fs');
+var path = require("fire-path");
+var dirName = "assets/PropComponent";
 var scene;
 (function (scene) {
+    function _checkScriptDir() {
+        var dir = path.join(Editor.Project.path, dirName);
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
+        }
+    }
+    function _readFile(path, callback) {
+        fs.readFile(path, 'utf8', function (err, data) {
+            if (!err) {
+                callback(data);
+                return;
+            }
+            Editor.log(path);
+            Editor.error(JSON.stringify(err));
+            callback(null);
+        });
+    }
+    function copyScript() {
+        _checkScriptDir();
+        _copyScript("PropController.ts", function () {
+            _copyScript("PropSelector.ts", function () {
+                Editor.assetdb.refresh("db://" + dirName);
+            });
+        });
+    }
+    scene.copyScript = copyScript;
+    function _copyScript(scriptName, callback) {
+        _readFile(Editor.url("packages://propcontroller/dist/Scripts/" + scriptName), function (data) {
+            if (!data)
+                return;
+            var url = path.join(Editor.Project.path, dirName, scriptName);
+            fs.writeFileSync(url, data);
+            callback && callback();
+        });
+    }
     function setState(event, t) {
         var node = cc.director.getScene().getChildByUuid(t.nodeUuid);
         var coms = node.getComponents("PropController");

@@ -27,6 +27,10 @@ var main;
         run: function () {
             Editor.Scene.callSceneScript("propcontroller", "start");
         },
+        /** 添加脚本 */
+        addScript: function () {
+            Editor.Scene.callSceneScript("propcontroller", "copyScript");
+        },
     };
 })(main || (main = {}));
 module.exports = main;

@@ -2,7 +2,50 @@ const _localSaveFunc: {[key: number]: (saveData: any, com: any, comPropCtrl: any
 let ROOT_NODE: cc.Node = null as any;
 let NodePathType = 1;
 
+const fs = require('fire-fs');
+const path = require("fire-path");
+
+const dirName = "assets/PropComponent";
+
 module scene {
+
+    function _checkScriptDir() {
+        let dir = path.join(Editor.Project.path, dirName);
+        if(!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
+        }
+    }
+
+    function _readFile(path: string, callback: Function) {
+        fs.readFile(path, 'utf8', (err: any, data: string) => {
+            if(!err) {
+                callback(data);
+                return ;
+            }
+            Editor.log(path)
+            Editor.error(JSON.stringify(err));
+            callback(null);
+        });  
+    }
+
+    export function copyScript() {
+        _checkScriptDir();
+        _copyScript("PropController.ts", () => {
+            _copyScript("PropSelector.ts", () => {
+                Editor.assetdb.refresh("db://" + dirName);
+            });
+        });
+        
+    }
+
+    function _copyScript(scriptName: string, callback: Function ) {
+        _readFile(Editor.url("packages://propcontroller/dist/Scripts/" + scriptName), (data: any) => {
+            if(!data) return ;
+            let url = path.join(Editor.Project.path, dirName, scriptName);
+            fs.writeFileSync(url, data);
+            callback && callback();
+        });
+    }
 
     export function setState(event: any, t: any) {
         let node = cc.director.getScene().getChildByUuid(t.nodeUuid);
