@@ -36,22 +36,6 @@ export default class UIHome extends UIScreen {
         this.view.About.addClick(() => {
             SceneMgr.open(UIAbout.prefabPath);
         }, this);
-
-        this.loadRes("buildings/Building", cc.Prefab).then((res: cc.Prefab) => {
-            let node = cc.instantiate(res);
-            node.parent = this.node;
-
-            this.scheduleOnce(() => {
-                node.getComponent(PropController).state = 0;
-            }, 1);
-            this.scheduleOnce(() => {
-                node.getComponent(PropController).state = 1;
-            }, 3);
-            this.scheduleOnce(() => {
-                node.getComponent(PropController).state = 2;
-            }, 5);
-            
-        });
     }
 
     // update (dt) {}

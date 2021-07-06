@@ -114,7 +114,7 @@ export class MathUtils {
      * @param arr 数组
      * @returns {any} 随机出来的结果
      */
-    public static randomArray(arr: Array<any>): any {
+    public static randomArray<T>(arr: Array<T>): T {
         var index: number = Math.floor(Math.random() * arr.length);
         return arr[index];
     }
