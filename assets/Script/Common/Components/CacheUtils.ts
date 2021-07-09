@@ -15,7 +15,10 @@ export default class CacheUtils extends cc.Component {
     
 
     start () {
-
+        this.node.on(cc.Node.EventType.TOUCH_MOVE, (e: cc.Event.EventTouch) => {
+            this.node.x += e.getDeltaX();
+            this.node.y += e.getDeltaY();
+        }, this);
     }
 
     private passTime = 0;
