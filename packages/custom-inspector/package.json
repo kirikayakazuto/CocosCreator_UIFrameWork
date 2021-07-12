@@ -5,12 +5,5 @@
   "author": "honmono",
   "main": "main.js",
   "main-menu": {
-  },
-  "panel": {
-    "main": "panel/index.js",
-    "type": "dockable",
-    "title": "custom-inspector",
-    "width": 400,
-    "height": 300
   }
 }
