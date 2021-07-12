@@ -64,10 +64,11 @@ export default class MaskPlus extends cc.Mask {
     @property({type: cc.Enum(MaskPlusType), override: true})
     _type: MaskPlusType = 0;
     @property({type: cc.Enum(MaskPlusType), override: true})
+    // @ts-ignore
     get type() {
         return this._type; 
     }
-    
+    // @ts-ignore
     set type(value) {
         if (this._type !== value) {
             this['_resetAssembler']();

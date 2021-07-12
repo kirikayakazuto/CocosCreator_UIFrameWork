@@ -26,7 +26,19 @@ tips: 当前使用的cocos creator版本2.4.4版本. 理论上支持2.2.x ~ 2.4.
 
 tips: **Screen**窗体切换时会隐藏当前显示的**Fixed**, **Window**窗体, 以到达切换场景的效果.
 
-## 1,框架结构
+## 1, 项目结构
+
+<img src="./doc/proj_dir.png" width="380">
+
+- AutoScripts: 是插件AutoBinder生成的代码. (待实现: 自动清理未被使用的文件)
+- Common: 一些公共的脚本文件, 有工具类, 和一些封装好的组件.
+- Logic: 用户自定义的管理类, 如ConfigMgr
+- types: 提供wx小游戏的api提示
+- UIFrame: 框架核心脚本
+- UIScript: 用户自定义的界面控制脚本
+- Main.ts: 类似入口脚本
+
+## 2, 框架结构
 
 <img src="./doc/framework.png" width="680">
 
@@ -102,15 +114,14 @@ ResMgr管理窗体的资源, 恪守  **我释放的是我加载的资源, 我加
 
 支持代码生成和结点绑定
 
-![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/doc/autobinder.gif)
-
+<img src="./doc/autobinder.gif" width="880">
 
 ## 2020/10/19 Mask Plus, 支持自定义遮罩
 扩展了cc.Mask, 添加了一种枚举类型Polygon
-![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/doc/addMaskPlus.gif)
+<img src="./doc/addMaskPlus.gif" width="880">
 
 ## 2020/10/15 添加2d光线功能
-2d光影效果, 项目在2dlight分支, 目前还在优化中 关键代码在Script/Common/light下, 有兴趣的可以看看,
+2d光影效果, 项目在2dlight分支, 目前还在优化中 关键代码在Script/Common/light下, 有兴趣的可以看看
 ![](https://github.com/kirikayakazuto/UIFrameWorld/blob/master/doc/2dlight.png)
 
 

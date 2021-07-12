@@ -11,15 +11,15 @@ enum TextureType {
 let _vec2_temp = new cc.Vec2();
 let _mat4_temp = new cc.Mat4();
 
-const {ccclass, inspector, executeInEditMode, mixins, property} = cc._decorator;
+const {ccclass, menu, executeInEditMode, mixins, property} = cc._decorator;
 
 @ccclass
 @executeInEditMode
-// @inspector('packages://inspector/share/blend.js')
+@menu('i18n:MAIN_MENU.component.ui/TexturePlus')
 @mixins(cc.BlendFunc)
 export default class TexturePlus extends cc.RenderComponent {
     static Type = TextureType;
-
+    
     @property(cc.Texture2D)
     _texture: cc.Texture2D = null;
     @property(cc.Texture2D)
@@ -34,15 +34,15 @@ export default class TexturePlus extends cc.RenderComponent {
         this._updateMaterial();
     }
 
-    _type: TextureType = 0;
-    @property({type: cc.Enum(TextureType), serializable: true})
-    get type() {
-        return this._type;
-    }
-    set type(val: TextureType) {
-        this._type = val;
-        this.setVertsDirty();
-    }
+    // _type: TextureType = 0;
+    // @property({type: cc.Enum(TextureType), serializable: true})
+    // get type() {
+    //     return this._type;
+    // }
+    // set type(val: TextureType) {
+    //     this._type = val;
+    //     this.setVertsDirty();
+    // }
 
     @property({type: [cc.Vec2], serializable: true})
     _polygon: cc.Vec2[] = [];
@@ -55,14 +55,18 @@ export default class TexturePlus extends cc.RenderComponent {
         this._updateVerts();
     }
 
+    @property({type: cc.Enum(cc.macro.BlendFactor), override: true})
+    srcBlendFactor: cc.macro.BlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
+
+    @property({type: cc.Enum(cc.macro.BlendFactor), override: true})
+    dstBlendFactor: cc.macro.BlendFactor = cc.macro.BlendFactor.ONE_MINUS_SRC_ALPHA;
+
     @property(cc.Boolean)
     editing: boolean = false;
     
     _assembler: cc.Assembler = null;
 
     onLoad() {
-        this['srcBlendFactor'] = cc.macro.BlendFactor.SRC_ALPHA;
-        this['dstBlendFactor'] = cc.macro.BlendFactor.ONE_MINUS_SRC_ALPHA;
         this.node['_hitTest'] = this._hitTest.bind(this);
     }
 
