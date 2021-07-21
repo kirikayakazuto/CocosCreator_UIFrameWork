@@ -73,6 +73,7 @@ export default class AdapterMgr {
                 widget.isAlignLeft = true;
                 widget.isAbsoluteLeft = true;
                 widget.left = distance ? distance : 0;
+                break;
             case _Right:
                 widget.isAlignRight = true;
                 widget.isAbsoluteRight = true;
