@@ -13,8 +13,8 @@
         "USE_TEXTURE": true
       },
       "props": {
-        "radius": 0.2,
-        "progress": 0.68
+        "radius": 0.05,
+        "progress": 0.86
       }
     }
   }

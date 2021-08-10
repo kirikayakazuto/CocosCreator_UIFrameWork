@@ -91,45 +91,54 @@ CCProgram fs %{
     float range = 3.0 / 4.0;
     vec2 c_uv0 = v_uv0;
 
+    float realX = v_uv0.x;
+    float offset = x-progress;
 
-    float realX = c_uv0.x;
-    float endX = 1.0;
-    float startX = progress;
-    outLen = min(primeter * range, outLen);
-    if(outLen < primeter * 0.25) {
-      endX = progress + sin(outLen / radius) * radius;
-    }else if(outLen > primeter * 0.25) {
-      endX = progress + radius;
-    }else if(outLen > primeter * 0.5) {
-      endX = progress + radius;
-      startX = progress - sin(outLen - primeter * 0.5) * radius;
-    }
-
-    if(x > startX && x < endX) {
-        float offset = asin((x - progress)/radius) * radius;
-        if(offset > 0.0) {
-          if(outLen > primeter * 0.25) {
-            realX = offset + primeter * 0.25 + progress;
-          }else {
-            realX = offset + progress;
-          }
+    bool draw = true;
+    if(x > progress) {    // 两种情况
+      if(outLen <= primeter * 0.25) {
+        if(offset > sin(outLen / radius) * radius) {
+          draw = false;
         }else {
-          if(outLen > primeter * 0.75) {
-            realX = offset + primeter * 0.75 + progress;
-          }else {
-            realX = offset + primeter * 0.5 + progress;
-          }
+          realX = asin(offset / radius) * radius + progress;
         }
-
-        c_uv0.x = realX;
-        CCTexture(texture, c_uv0, o);
-    }else if(x > endX) {
-      o.a = 0.0;
-      o.rgb *= o.a;
+      }else {
+        if(outLen < primeter * 0.5 && offset < cos((outLen - primeter * 0.25) / radius) * radius) {
+          realX = asin(offset / radius) * radius + progress;
+        }else if(offset >= radius) {
+          draw = false;
+        }else {
+          realX = acos(offset / radius) * radius + progress + primeter * .25;
+        }
+      }
+    }else if(outLen > primeter * 0.5) {
+      if(outLen < primeter * 0.75) {
+        outLen = outLen - primeter * 0.5;
+        if(offset < -sin(outLen / radius) * radius) {
+          realX = realX;
+        }else {
+          realX = asin(-offset / radius) * radius + progress + primeter * 0.5;
+        }
+      }else {
+        if(offset < -radius) {
+          realX = realX;
+        }else {
+          realX = asin(-offset / radius) * radius + progress + primeter * 0.5;
+        }      
+      }
     }else {
-      CCTexture(texture, c_uv0, o);
+      
     }
-
+    
+    
+    if(draw) {
+      c_uv0.x = realX;
+      CCTexture(texture, c_uv0, o);
+    }else {
+      o.a = 0.0;
+    }
+    
+  
     o *= v_color;
 
     ALPHA_TEST(o);
