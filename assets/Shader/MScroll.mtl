@@ -1,0 +1,21 @@
+{
+  "__type__": "cc.Material",
+  "_name": "MScroll",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "291c678e-7016-45fe-b31f-74eb392ec952"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "defines": {
+        "USE_TEXTURE": true
+      },
+      "props": {
+        "radius": 0.2,
+        "progress": 0.68
+      }
+    }
+  }
+}

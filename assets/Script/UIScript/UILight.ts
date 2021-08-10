@@ -16,9 +16,26 @@ export default class UILight extends UIScreen {
     private obstacle: Obstacle = null;
     @property(Light)
     private light: Light = null;
-    
 
-    // onLoad () {}
+    @property(cc.Camera)
+    camera: cc.Camera = null;
+    @property(cc.Sprite) spShadow: cc.Sprite = null;
+
+    private _shadowTexture: cc.RenderTexture = new cc.RenderTexture();
+
+    onLoad () {
+        cc.director.on(cc.Director.EVENT_BEFORE_DRAW, () => {
+            this._shadowTexture = new cc.RenderTexture();
+            this._shadowTexture.initWithSize(cc.visibleRect.width, cc.visibleRect.height, cc.game._renderContext.STENCIL_INDEX8);
+            this.camera.targetTexture = this._shadowTexture;
+        }, this);
+
+        cc.director.on(cc.Director.EVENT_AFTER_DRAW, () => {
+            this.spShadow.spriteFrame.setTexture(this._shadowTexture);
+            this.spShadow.spriteFrame.setFlipY(true);
+            this.spShadow.markForRender(true)
+        }, this);
+    }
 
     start () {
         let viewSize = cc.view.getVisibleSize();
@@ -42,11 +59,12 @@ export default class UILight extends UIScreen {
 
     private draw() {
         let polygons = this.obstacle.getPolygons(this.light.getBound());
+        
         let intersections = LightUtils.getIntersections(this.light.node.getPosition(), polygons);
         this.light.draw(intersections);
     }
 
     update (dt: number) {
-        this.draw();
+        this.draw();       
     }
 }

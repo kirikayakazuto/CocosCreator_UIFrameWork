@@ -75,7 +75,7 @@ CCProgram fs %{
     vec2 diff = st - lightPos;
     float radius = length(vec2(abs(diff.x) * scaleWH, abs(diff.y)));      // 算半径
     o.a = 1.0 - smoothstep(0.0, maxRadius, radius);                       // 渐变
-    
+    o.a = pow(o.a, 0.5);
     #if CC_SUPPORT_standard_derivatives
       float aa = fwidth(v_dist);
     #else

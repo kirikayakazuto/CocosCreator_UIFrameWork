@@ -14,6 +14,7 @@ export default class UISound extends UIFixed {
     // onLoad () {}
 
     start () {
+        
         AdapterMgr.inst.adapteByType(AdapterType.Right | AdapterType.Top, this.node);
     }
 

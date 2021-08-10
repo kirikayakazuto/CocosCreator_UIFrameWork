@@ -21,7 +21,7 @@ export default class Light extends cc.Component {
     canvasSize: cc.Size = null;
     visiableSize: cc.Size = null;
 
-    radius = 150;
+    radius = 200;
     fade = 1;
 
     // graphics
@@ -29,8 +29,7 @@ export default class Light extends cc.Component {
 
     onLoad () {
         this._material = this.graphics.getMaterial(0);
-        
-        // Light.ts:34 Size {width: 568, height: 320} Size {width: 1065, height: 600}
+    
         this.canvasSize = cc.view.getCanvasSize();
         this.visiableSize = cc.view.getVisibleSize();
         
@@ -67,6 +66,7 @@ export default class Light extends cc.Component {
 
     /** 绘制光 */
     public draw(intersections: Intersection[]) {
+        console.log(intersections.length)
         let lightPos = this.node.getPosition();
         this._doDraw(this.graphics, lightPos, intersections);
         this._material.setProperty("lightPos", cc.v2(lightPos.x/this.visiableSize.width, lightPos.y/this.visiableSize.height));
