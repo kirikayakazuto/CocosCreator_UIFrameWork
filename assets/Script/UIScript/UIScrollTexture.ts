@@ -7,7 +7,6 @@ export default class UIScrollTexture extends UIScreen {
 
     @property(cc.Sprite) spTexture: cc.Sprite = null;
 
-    static prefabPath = "Forms/Screen/UIScrollTexture";
 
     // onLoad () {}
 

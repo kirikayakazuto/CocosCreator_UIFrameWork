@@ -7,7 +7,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIGame extends UIScreen {
 
-    static prefabPath = "Forms/Screen/UIGame";
 
     view: UIGame_Auto;
 

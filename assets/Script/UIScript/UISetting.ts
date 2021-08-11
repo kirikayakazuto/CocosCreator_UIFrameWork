@@ -5,19 +5,14 @@ import { ModalOpacity } from "../UIFrame/config/SysDefine";
 import SceneMgr from "../UIFrame/SceneMgr";
 import { ModalType } from "../UIFrame/Struct";
 import { UIWindow } from "../UIFrame/UIForm";
-import WindowMgr from "../UIFrame/WindowMgr";
-import UICapture from "./UICapture";
-import UILight from "./UILight";
-import UIMobx from "./UIMobx";
-import UIPop from "./UIPop";
-import UITips from "./UITips";
+import WindowMgr from "../UIFrame/WindowMgr";;
+import UIConfig from "./UIConfig";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class UISetting extends UIWindow {
     willDestory = true;
-    static prefabPath = "Forms/Windows/UISetting";
     view: UISetting_Auto;
 
     modalType = new ModalType(ModalOpacity.OpacityHalf, true);
@@ -27,21 +22,21 @@ export default class UISetting extends UIWindow {
     start () {
 
         this.view.Pop.addClick(() => {
-            WindowMgr.open(UIPop.prefabPath);
-            WindowMgr.open(UITips.prefabPath, "关闭后才显示的弹窗1", {showWait: true});
-            WindowMgr.open(UITips.prefabPath, "关闭后才显示的弹窗2", {showWait: true})
+            WindowMgr.open(UIConfig.Pop.prefabUrl);
+            WindowMgr.open(UIConfig.Tips.prefabUrl, "关闭后才显示的弹窗1", {showWait: true});
+            WindowMgr.open(UIConfig.Tips.prefabUrl, "关闭后才显示的弹窗2", {showWait: true})
         }, this);
 
         this.view.Mobx.addClick(() => {
-            WindowMgr.open(UIMobx.prefabPath);
+            WindowMgr.open(UIConfig.Mobx.prefabUrl);
         }, this);
 
         this.view.Capture.addClick(() => {
-            SceneMgr.open(UICapture.prefabPath);
+            SceneMgr.open(UIConfig.capture.prefabUrl);
         }, this);
 
         this.view.Light.addClick(() => {
-            SceneMgr.open(UILight.prefabPath);
+            SceneMgr.open(UIConfig.Light.prefabUrl);
         }, this);
     }
 

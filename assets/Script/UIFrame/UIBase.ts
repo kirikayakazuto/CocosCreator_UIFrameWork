@@ -19,18 +19,7 @@ export default class UIBase extends cc.Component {
     public willDestory = false;
     /** 是否已经调用过preinit方法 */
     private _inited = false;
-    /** 资源路径 */
-    public static prefabPath = "";
 
-    
-    /** 打开UIBase */
-    public static async openView(parmas?: any, formData?: IFormData): Promise<UIBase> {
-        return await UIManager.getInstance().openForm(this.prefabPath, parmas, formData);
-    }
-    public static async closeView(): Promise<boolean> {
-        return await UIManager.getInstance().closeForm(this.prefabPath);
-    }
-    
     public view: cc.Component;
 
     /** 预先初始化 */

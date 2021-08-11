@@ -8,7 +8,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UILoading extends UITips {
 
-    static prefabPath = "Forms/Tips/UILoading";
     view: UILoading_Auto;
 
     // onLoad () {}

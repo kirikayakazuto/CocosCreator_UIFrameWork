@@ -6,8 +6,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UISkills extends UIWindow {
 
-    static prefabPath = "Forms/Windows/UISkills";
-
     view: UISkills_Auto;
 
     // onLoad () {}

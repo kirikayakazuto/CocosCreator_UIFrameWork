@@ -6,7 +6,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIPop extends UIWindow {
 
-    static prefabPath = "Forms/Windows/UIPop";
 
     willDestory = true;
 

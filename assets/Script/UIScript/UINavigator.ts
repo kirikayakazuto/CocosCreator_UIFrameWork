@@ -2,20 +2,14 @@ import UINavigator_Auto from "../AutoScripts/UINavigator_Auto";
 import SceneMgr from "../UIFrame/SceneMgr";
 import { UIScreen } from "../UIFrame/UIForm";
 import WindowMgr from "../UIFrame/WindowMgr";
-import UICapture from "./UICapture";
-import UIDungeon from "./UIDungeon";
-import UIHome from "./UIHome";
-import UILight from "./UILight";
-import UIMobx from "./UIMobx";
-import UIScrollTexture from "./UIScrollTexture";
-import UISplitTexture from "./UISplitTexture";
+import UIConfig from "./UIConfig";
+
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class UINavigator extends UIScreen {
 
-    static prefabPath = "Forms/Screen/UINavigator";
     view: UINavigator_Auto;
 
     start () {
@@ -29,25 +23,25 @@ export default class UINavigator extends UIScreen {
         let node = e.getCurrentTarget();
         switch(node.name) {
             case "project":
-                SceneMgr.open(UIHome.prefabPath);
+                SceneMgr.open(UIConfig.Home.prefabUrl);
                 break;
             case "light":
-                SceneMgr.open(UILight.prefabPath);
+                SceneMgr.open(UIConfig.Light.prefabUrl);
                 break;
             case "capture":
-                SceneMgr.open(UICapture.prefabPath);
+                SceneMgr.open(UIConfig.capture.prefabUrl);
                 break;
             case "mobx":
-                WindowMgr.open(UIMobx.prefabPath);
+                WindowMgr.open(UIConfig.Mobx.prefabUrl);
                 break;
             case "dungeon":
-                SceneMgr.open(UIDungeon.prefabPath);
+                SceneMgr.open(UIConfig.Dungeon.prefabUrl);
                 break;
             case "splitTexture":
-                SceneMgr.open(UISplitTexture.prefabPath);
+                SceneMgr.open(UIConfig.SplitTexture.prefabUrl);
                 break;
             case "scrollTexture":
-                SceneMgr.open(UIScrollTexture.prefabPath);
+                SceneMgr.open(UIConfig.ScrollTexture.prefabUrl);
                 break;
         }
     }

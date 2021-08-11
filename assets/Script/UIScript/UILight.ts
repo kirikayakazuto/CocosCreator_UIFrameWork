@@ -10,9 +10,6 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class UILight extends UIScreen {
-
-    static prefabPath = "Forms/Screen/UILight";
-
     
     @property(Obstacle)
     private obstacle: Obstacle = null;

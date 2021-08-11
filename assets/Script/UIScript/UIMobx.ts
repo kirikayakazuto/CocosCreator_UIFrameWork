@@ -7,7 +7,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIMobx extends UIWindow {
 
-    static prefabPath = "Forms/Windows/UIMobx"
 
     view: UIMobx_Auto;
 

@@ -7,8 +7,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIAbout extends UIScreen {
 
-    static prefabPath = "Forms/Screen/UIAbout";
-
     view: UIAbout_Auto;
 
     // LIFE-CYCLE CALLBACKS:

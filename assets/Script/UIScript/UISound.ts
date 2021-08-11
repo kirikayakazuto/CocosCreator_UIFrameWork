@@ -6,8 +6,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UISound extends UIFixed {
 
-    static prefabPath = "Forms/Fixed/UISound"
-
 
     // LIFE-CYCLE CALLBACKS:
 

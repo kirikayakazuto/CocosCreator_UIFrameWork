@@ -8,7 +8,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UITips extends UIWindow {
 
-    static prefabPath = "Forms/Windows/UITips";
     modalType = new ModalType(ModalOpacity.OpacityHalf, true);
 
     view: UITips_Auto;

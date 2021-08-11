@@ -20,8 +20,6 @@ export default class UICapture extends UIScreen {
     @property(TouchPlus)
     touchPlus: TouchPlus = null;
 
-    static prefabPath = "Forms/Screen/UICapture";
-
     view: UICapture_Auto;
 
     // onLoad () {}

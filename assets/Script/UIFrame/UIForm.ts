@@ -1,5 +1,6 @@
 import CocosHelper from "./CocosHelper";
 import { FormType } from "./config/SysDefine";
+import FixedMgr from "./FixedMgr";
 import SceneMgr from "./SceneMgr";
 import { IFormData, ModalType } from "./Struct";
 import UIBase from "./UIBase";
@@ -9,13 +10,6 @@ export class UIScreen extends UIBase {
     formType = FormType.Screen;
     willDestory = true;
 
-    /** 打开UIScreen */
-    public static async openView(parmas?: any, formData?: IFormData): Promise<UIBase> {
-        return await SceneMgr.open(this.prefabPath, parmas, formData);
-    }
-    public static async closeView(): Promise<boolean> {
-        return await SceneMgr.close(this.prefabPath);
-    }
 
     public async closeSelf(): Promise<boolean> {
         return await SceneMgr.close(this.fid);
@@ -33,14 +27,6 @@ export class UIWindow extends UIBase {
         await CocosHelper.runTweenSync(this.node, cc.tween().to(0.3, {scale: 1}, cc.easeBackOut()));
     }
 
-    /** 打开UIWindow */
-    public static async openView(parmas?: any, formData?: IFormData): Promise<UIBase> {
-        return await WindowMgr.open(this.prefabPath, parmas, formData);
-    }
-    public static async closeView(): Promise<boolean> {
-        return await WindowMgr.close(this.prefabPath);
-    }
-
     public async closeSelf(): Promise<boolean> {
         return await WindowMgr.close(this.fid);
     }
@@ -50,6 +36,10 @@ export class UIWindow extends UIBase {
 export class UIFixed extends UIBase {
     formType = FormType.Fixed;
     willDestory = true;
+
+    public async closeSelf(): Promise<boolean> {
+        return await FixedMgr.close(this.fid);
+    }
     
 }
 

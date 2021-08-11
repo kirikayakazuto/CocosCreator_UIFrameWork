@@ -8,7 +8,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UIDungeon extends UIScreen {
 
-    static prefabPath = "Forms/Screen/UIDungeon";
 
     @property(cc.Prefab) pfGrid: cc.Prefab = null;
 

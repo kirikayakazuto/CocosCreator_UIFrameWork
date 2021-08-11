@@ -9,7 +9,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UISplitTexture extends UIScreen {
 
-    static prefabPath = "Forms/Screen/UISplitTexture";
 
     @property(cc.Node)
     textureRoot: cc.Node = null;
