@@ -4,6 +4,7 @@ import TipsMgr from "./UIFrame/TipsMgr";
 import UIHome from "./UIScript/UIHome";
 import UILight from "./UIScript/UILight";
 import UILoading from "./UIScript/UILoading";
+import UINavigator from "./UIScript/UINavigator";
 
 const {ccclass, property} = cc._decorator;
 
@@ -15,13 +16,14 @@ export default class Main extends cc.Component {
 
     start () {
         TipsMgr.inst.setLoadingForm(UILoading.prefabPath);
-        SceneMgr.open(UIHome.prefabPath);
-        Log.d(true, "aaa 这个log会被显示");
-        Log.d(false, "bbb这个log不会被显示");
+        SceneMgr.open(UINavigator.prefabPath);
     }
 
     onDestroy() {
 
     }  
     
+    update(dt: number) {
+       
+    }
 }

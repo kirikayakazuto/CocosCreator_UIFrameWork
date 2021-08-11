@@ -36,6 +36,10 @@ export default class UIHome extends UIScreen {
         this.view.About.addClick(() => {
             SceneMgr.open(UIAbout.prefabPath);
         }, this);
+
+        this.view.Back.addClick(() => {
+            SceneMgr.back();
+        }, this);
     }
 
     // update (dt) {}

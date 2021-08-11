@@ -1,7 +1,9 @@
+import UILight_Auto from "../AutoScripts/UILight_Auto";
 import TexturePlus from "../Common/Components/TexturePlus";
 import Light from "../Common/Light/Light";
 import LightUtils from "../Common/Light/LightUtils";
 import Obstacle from "../Common/Light/Obstacle";
+import SceneMgr from "../UIFrame/SceneMgr";
 import { UIScreen } from "../UIFrame/UIForm";
 
 const {ccclass, property} = cc._decorator;
@@ -9,7 +11,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UILight extends UIScreen {
 
-    static prefabPath = "Forms/Windows/UILight";
+    static prefabPath = "Forms/Screen/UILight";
 
     
     @property(Obstacle)
@@ -22,7 +24,7 @@ export default class UILight extends UIScreen {
     @property(cc.Sprite) spShadow: cc.Sprite = null;
 
     private _shadowTexture: cc.RenderTexture = new cc.RenderTexture();
-
+    view: UILight_Auto;
     onLoad () {
         cc.director.on(cc.Director.EVENT_BEFORE_DRAW, () => {
             this._shadowTexture = new cc.RenderTexture();
@@ -54,6 +56,10 @@ export default class UILight extends UIScreen {
 
             this.obstacle.addPolygon(com.node.uuid, points);
         }
+
+        this.view.Back.addClick(() => {
+            SceneMgr.back();
+        }, this);
     }
 
 

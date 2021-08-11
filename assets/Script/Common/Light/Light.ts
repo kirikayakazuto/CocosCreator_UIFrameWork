@@ -66,7 +66,7 @@ export default class Light extends cc.Component {
 
     /** 绘制光 */
     public draw(intersections: Intersection[]) {
-        console.log(intersections.length)
+        // console.log(intersections.length)
         let lightPos = this.node.getPosition();
         this._doDraw(this.graphics, lightPos, intersections);
         this._material.setProperty("lightPos", cc.v2(lightPos.x/this.visiableSize.width, lightPos.y/this.visiableSize.height));

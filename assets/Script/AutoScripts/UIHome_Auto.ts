@@ -10,5 +10,7 @@ export default class UIHome_Auto extends cc.Component {
 	Start: ButtonPlus = null;
 	@property(ButtonPlus)
 	About: ButtonPlus = null;
+	@property(ButtonPlus)
+	Back: ButtonPlus = null;
  
 }
