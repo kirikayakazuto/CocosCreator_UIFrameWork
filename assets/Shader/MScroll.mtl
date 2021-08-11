@@ -14,7 +14,10 @@
       },
       "props": {
         "radius": 0.05,
-        "progress": 1
+        "progress": 0.5,
+        "texture2": {
+          "__uuid__": "0402165d-b852-4014-ae66-1be98220fd61"
+        }
       }
     }
   }

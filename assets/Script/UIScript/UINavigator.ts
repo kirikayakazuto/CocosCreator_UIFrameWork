@@ -7,6 +7,7 @@ import UIDungeon from "./UIDungeon";
 import UIHome from "./UIHome";
 import UILight from "./UILight";
 import UIMobx from "./UIMobx";
+import UIScrollTexture from "./UIScrollTexture";
 import UISplitTexture from "./UISplitTexture";
 
 const {ccclass, property} = cc._decorator;
@@ -44,6 +45,9 @@ export default class UINavigator extends UIScreen {
                 break;
             case "splitTexture":
                 SceneMgr.open(UISplitTexture.prefabPath);
+                break;
+            case "scrollTexture":
+                SceneMgr.open(UIScrollTexture.prefabPath);
                 break;
         }
     }

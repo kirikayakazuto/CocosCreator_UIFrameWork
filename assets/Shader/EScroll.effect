@@ -22,6 +22,7 @@ CCEffect %{
         progress: {
           value: 0.5
         }
+        texture2: { value: white }
 }%
 
 
@@ -80,6 +81,7 @@ CCProgram fs %{
     float radius;
     float progress;
   };
+  uniform sampler2D texture2;
 
 
   void main () {
@@ -95,6 +97,7 @@ CCProgram fs %{
     float offset = x-progress;
 
     bool draw = true;
+    bool useTexture2 = false;
     if(x > progress) {    // 两种情况
       if(outLen <= primeter * 0.25) {
         if(offset > sin(outLen / radius) * radius) {
@@ -109,6 +112,7 @@ CCProgram fs %{
           draw = false;
         }else {
           realX = acos(offset / radius) * radius + progress + primeter * .25;
+          useTexture2 = true;
         }
       }
     }else if(outLen > primeter * 0.5) {
@@ -118,12 +122,14 @@ CCProgram fs %{
           realX = realX;
         }else {
           realX = asin(-offset / radius) * radius + progress + primeter * 0.5;
+          useTexture2 = true;
         }
       }else {
         if(offset < -radius) {
           realX = realX;
         }else {
           realX = asin(-offset / radius) * radius + progress + primeter * 0.5;
+          useTexture2 = true;
         }      
       }
     }else {
@@ -133,7 +139,12 @@ CCProgram fs %{
     
     if(draw) {
       c_uv0.x = realX;
-      CCTexture(texture, c_uv0, o);
+      if(useTexture2) {
+        CCTexture(texture2, c_uv0, o);
+      }else {
+        CCTexture(texture, c_uv0, o);
+      }
+      
     }else {
       o.a = 0.0;
     }
