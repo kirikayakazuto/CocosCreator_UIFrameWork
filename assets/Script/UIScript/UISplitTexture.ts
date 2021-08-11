@@ -1,6 +1,8 @@
 import TexturePlus from "../Common/Components/TexturePlus";
 import { PolygonUtil } from "../Common/Utils/PolygonUtil";
 import { UIScreen } from "../UIFrame/UIForm";
+import UISplitTexture_Auto from "../AutoScripts/UISplitTexture_Auto";
+import SceneMgr from "../UIFrame/SceneMgr";
 
 const {ccclass, property} = cc._decorator;
 
@@ -20,6 +22,8 @@ export default class UISplitTexture extends UIScreen {
     private startPoint: cc.Vec2 = null;
     private endPoint: cc.Vec2 = null;
 
+    view: UISplitTexture_Auto;
+
     start() {
         this.init();
 
@@ -30,6 +34,10 @@ export default class UISplitTexture extends UIScreen {
 
         this.graphics.node.x = -cc.visibleRect.width/2;
         this.graphics.node.y = -cc.visibleRect.height/2;
+
+        this.view.Close.addClick(() => {
+            SceneMgr.back();
+        }, this);
     }
 
     init() {
