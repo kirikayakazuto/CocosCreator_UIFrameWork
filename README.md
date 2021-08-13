@@ -102,8 +102,19 @@ ResMgr管理窗体的资源, 恪守  **我释放的是我加载的资源, 我加
 #### AdapterMgr 适配控制器
 
 
-### 自动绑定结点插件 AutoBinder
-待补充...
+### 自动绑定结点插件 AutoBinder </br>
+
+根据规范的命名规则实现代码自动生成和结点绑定 </br>
+如: _Label$Name </br>
+_ 下划线表示这个结点是需要被绑定的 </br>
+Label 表示属性的类型, 支持自定义组件, 命名映射可以修改 </br>
+$ 分隔符 </br>
+Name 属性名称 </br>
+
+通过Alt + g就会自动生成 </br>
+@property(cc.Label) Name: cc.Label = null;的代码 </br>
+然后将脚本挂载在根节点上, 在将_Label$Name结点绑定在组件上 </br>
+
 
 ### 状态控制器 PropController
 
