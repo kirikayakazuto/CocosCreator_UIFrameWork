@@ -120,6 +120,10 @@ Name 属性名称 </br>
 
 视频介绍: https://www.bilibili.com/video/BV1ig411u7vK#reply4845159639
 
+## 更新了2dlight, 实现了取反的阴影效果
+<img src="./doc/2dlight.gif" width="880">
+
+
 ## 2021/01/31 Binder plus, 升级了项目中的自动结点绑定
 注意: 目前第一次生成脚本时无法立即绑定到对应结点上, 需要再次执行一次run 即可.
 
