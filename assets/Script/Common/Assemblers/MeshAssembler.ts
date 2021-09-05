@@ -1,4 +1,4 @@
-import ScrollTexture from "./ScrollTexture";
+import MeshTexture from "../Components/MeshTexture";
 
 const gfx = cc['gfx'];
 
@@ -9,7 +9,7 @@ let vfmtPosUvColor = new gfx.VertexFormat([
     { name: gfx.ATTR_COLOR, type: gfx.ATTR_TYPE_UINT8, num: 4, normalize: true },
 ]);
 
-export default class ScrollAssembler extends cc.Assembler{
+export default class MeshAssembler extends cc.Assembler{
 
     constructor() {
         super();
@@ -130,7 +130,7 @@ export default class ScrollAssembler extends cc.Assembler{
         verts[(vertIdx + this._realCol+1) * this.floatsPerVert+1] = arr[3].y;
     }
 
-    public resetData(comp: ScrollTexture) {
+    public resetData(comp: MeshTexture) {
         if(!comp.texture) return ;
         let width = comp.texture.width;
         let height = comp.texture.height;
@@ -343,7 +343,7 @@ export default class ScrollAssembler extends cc.Assembler{
     }
 
     /** 更新renderdata */
-    protected updateRenderData(comp: ScrollTexture) {
+    protected updateRenderData(comp: MeshTexture) {
         if (comp._vertsDirty) {
             this.resetData(comp);
             this.updateUVs(comp);

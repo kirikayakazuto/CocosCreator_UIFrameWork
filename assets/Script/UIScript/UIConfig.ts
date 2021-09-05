@@ -53,4 +53,7 @@ export default class UIConfig {
     static Tips = {
         prefabUrl: "Forms/Windows/UITips"
     }
+    static MeshTexture = {
+        prefabUrl: "Forms/Screen/UIMeshTexture"
+    }
 }

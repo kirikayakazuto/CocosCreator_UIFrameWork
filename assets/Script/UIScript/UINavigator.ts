@@ -43,6 +43,9 @@ export default class UINavigator extends UIScreen {
             case "scrollTexture":
                 SceneMgr.open(UIConfig.ScrollTexture.prefabUrl);
                 break;
+            case "meshTexture":
+                SceneMgr.open(UIConfig.MeshTexture.prefabUrl);
+                break;
         }
     }
 
