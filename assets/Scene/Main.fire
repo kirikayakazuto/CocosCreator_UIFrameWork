@@ -143,7 +143,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Main Camera",
+    "_name": "Camera",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -531,16 +531,6 @@
     "_id": "5b9UK/l/BP4Kc7/XTh8Pbb"
   },
   {
-    "__type__": "e1b90/rohdEk4SdmmEZANaD",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
-    },
-    "_enabled": true,
-    "_id": "779e1HBVBFzZQH7DCo/0x8"
-  },
-  {
     "__type__": "cc.Widget",
     "_name": "",
     "_objFlags": 0,
@@ -566,5 +556,15 @@
     "_originalWidth": 0,
     "_originalHeight": 0,
     "_id": "5231Z5cNZJdJZWA/u1XdNd"
+  },
+  {
+    "__type__": "e1b90/rohdEk4SdmmEZANaD",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "_id": "00QU7S+A5MH7txvnQcvgap"
   }
 ]

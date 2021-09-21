@@ -1,11 +1,7 @@
-import Log from "./UIFrame/Log";
-import SceneMgr from "./UIFrame/SceneMgr";
-import TipsMgr from "./UIFrame/TipsMgr";
-import UIConfig from "./UIScript/UIConfig";
-import UIHome from "./UIScript/UIHome";
-import UILight from "./UIScript/UILight";
-import UILoading from "./UIScript/UILoading";
-import UINavigator from "./UIScript/UINavigator";
+import { Batcher } from "./ECS/Graphics/Batcher";
+import { Input } from "./ECS/Input/Input";
+import { KeyboardUtils } from "./ECS/Input/KeyboardUtils";
+import BaseScene from "./ECS/Scenes/BaseScene";
 
 const {ccclass, property} = cc._decorator;
 
@@ -16,8 +12,15 @@ export default class Main extends cc.Component {
     }
 
     start () {
-        TipsMgr.inst.setLoadingForm(UIConfig.Loading.prefabUrl);
-        SceneMgr.open(UIConfig.Navigator.prefabUrl);
+        es.Core.debugRenderEndabled = true;
+        es.Core.create(true);
+
+        es.Graphics.instance = new es.Graphics(new Batcher());
+
+        KeyboardUtils.init();
+        Input.initialize();
+
+        es.Core.scene = new BaseScene();
     }
 
     onDestroy() {
@@ -25,6 +28,6 @@ export default class Main extends cc.Component {
     }  
     
     update(dt: number) {
-       
+        es.Core.emitter.emit(es.CoreEvents.frameUpdated, dt);
     }
 }

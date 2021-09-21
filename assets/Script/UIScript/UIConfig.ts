@@ -56,4 +56,7 @@ export default class UIConfig {
     static MeshTexture = {
         prefabUrl: "Forms/Screen/UIMeshTexture"
     }
+    static ECSView = {
+        prefabUrl: "Forms/Screen/UIECSView"
+    }
 }
