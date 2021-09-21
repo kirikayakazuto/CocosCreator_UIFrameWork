@@ -162,9 +162,10 @@ export default class MaskPlus extends cc.Mask {
         if (!cc.Mat4.invert(_mat4_temp, node['_worldMatrix'])) {
             return false;
         }
-        cc.Vec2.transformMat4(testPt, cameraPt, _mat4_temp);
-        testPt.x += node['_anchorPoint'].x * w;
-        testPt.y += node['_anchorPoint'].y * h;
+        let point = cc.v2(0, 0);
+        cc.Vec2.transformMat4(point, cameraPt, _mat4_temp);
+        testPt.x = point.x + node['_anchorPoint'].x * w;
+        testPt.y = point.y + node['_anchorPoint'].y * h;
 
         let result = false;
         if (this.type === MaskPlusType.RECT || this.type === MaskPlusType.IMAGE_STENCIL) {
@@ -175,7 +176,7 @@ export default class MaskPlus extends cc.Mask {
             let px = testPt.x - 0.5 * w, py = testPt.y - 0.5 * h;
             result = px * px / (rx * rx) + py * py / (ry * ry) < 1;
         }else if(this.type === MaskPlusType.Polygon) {
-            result = CommonUtils.isInPolygon(testPt, this.polygon);
+            result = CommonUtils.isInPolygon(point, this.polygon);
         }
         if (this.inverted) {
             result = !result;
