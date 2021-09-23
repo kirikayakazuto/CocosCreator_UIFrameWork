@@ -143,6 +143,8 @@ export default class MeshAssembler extends cc.Assembler{
         this._realRow = 2 + (this.row - 2) * 2;
         this._realCol = 2 + (this.col - 2) * 2;
 
+        cc.log(this.row, this.col);
+
         this.verticesCount = this._realRow * this._realCol;
         this.indicesCount = (this.row-1) * (this.col - 1) * 6;
         this._renderData['clear']();

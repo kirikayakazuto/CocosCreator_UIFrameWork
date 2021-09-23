@@ -126,7 +126,7 @@ export default class DrawingBoard {
     private setPointColorByRGBA(data: Uint8Array) {
         this.colorCount = {};
         for (let y = 0; y < this.height; ++y) {
-            let i = y * this.height;
+            let i=y * this.width * 4
             for (let x = 0; x < this.width; ++x) {
                 let color = this.convertToNumber(data[i++], data[i++], data[i++], data[i++]);
                 this.pointColor[x][y] = color;

@@ -496,7 +496,7 @@ export class CommonUtils {
             }
             p1 = p2;
         }
-        return counter % 2 != 0
+        return (counter & 1) !== 0;
     }
 
     // 多边形 三角切割

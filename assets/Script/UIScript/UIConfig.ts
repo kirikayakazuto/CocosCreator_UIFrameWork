@@ -59,4 +59,7 @@ export default class UIConfig {
     static ECSView = {
         prefabUrl: "Forms/Screen/UIECSView"
     }
+    static ScrollPlus = {
+        prefabUrl: "Forms/Windows/UIScrollPlus"
+    }
 }

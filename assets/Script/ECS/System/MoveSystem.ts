@@ -7,6 +7,7 @@ export class MoveSystem extends es.EntityProcessingSystem {
     }
 
     processEntity(entity: es.Entity) {
+        console.log('call process entity')
         const move = entity.getComponent(MoveComponent);
         if(!move.enabled) return ;
         move.enabled = false;

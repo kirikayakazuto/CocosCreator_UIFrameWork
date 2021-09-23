@@ -8,5 +8,7 @@ export default class UIFunction_Auto extends cc.Component {
 	Setting: ButtonPlus = null;
 	@property(ButtonPlus)
 	Skills: ButtonPlus = null;
+	@property(ButtonPlus)
+	ScrollHelper: ButtonPlus = null;
  
 }

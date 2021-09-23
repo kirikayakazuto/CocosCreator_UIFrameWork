@@ -59,14 +59,6 @@ export default class MeshTexture extends cc.RenderComponent {
     }
 
 
-
-
-
-
-
-
-    
-
     private getPolygonCenter(polygon: cc.Vec2[]) {
         let x = 0, y = 0;
         for(let i=0; i<polygon.length; i++) {
@@ -137,27 +129,25 @@ export default class MeshTexture extends cc.RenderComponent {
         let pos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
 
         for(let i=0; i<rectCount; i++) {
-            let arr = this._assembler.getRect(i);
+            let idx = rectCount - i -1;
+            let arr = this._assembler.getRect(idx);
 
             let targetPos = dir.mul(400);
             this.tweenVec2Bezier(cc.v2(0, 0), targetPos, 1, (dt: cc.Vec2) => {
-
-                this._assembler.setRect(i, [
+                this._assembler.setRect(idx, [
                     arr[0].add(dt),
                     arr[1].add(dt),
                     arr[2].add(dt),
                     arr[3].add(dt),
                 ]);
             }, () => {
-                this._assembler.setRect(i, [
+                this._assembler.setRect(idx, [
                     arr[0].add(targetPos),
                     arr[1].add(targetPos),
                     arr[2].add(targetPos),
                     arr[3].add(targetPos),
                 ]);
-            }, i%10 * 0.1);
-
-
+            }, Math.floor(i/40) * 0.1);
         }
     }
 

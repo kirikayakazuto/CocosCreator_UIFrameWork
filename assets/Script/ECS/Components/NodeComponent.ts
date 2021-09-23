@@ -20,7 +20,7 @@ export class NodeComponent extends es.Component {
                 this.node.setPosition(this.transform.position.x, this.transform.position.y);
                 break;
             case es.ComponentTransform.rotation:
-                this.node.rotation = this.transform.rotation;
+                this.node.angle = -this.transform.rotation;
                 break;
             case es.ComponentTransform.scale:
                 this.node.setScale(this.transform.scale.x, this.transform.scale.y);

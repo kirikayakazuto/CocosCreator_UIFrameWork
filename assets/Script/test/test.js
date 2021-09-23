@@ -1,0 +1,1 @@
+cc.macro.ENABLE_WEBGL_ANTIALIAS = true;

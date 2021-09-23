@@ -4,11 +4,15 @@ import UIECSView from "../../UIScript/UIECSView";
 
 export class ViewMainComponent extends es.Component {
 
-    private view: UIECSView = null;
+    public view: UIECSView = null;
+
+    public async showView() {
+        this.view = await SceneMgr.open(UIConfig.ECSView.prefabUrl) as UIECSView;
+        return this.view;
+    }
 
     async onAddedToEntity() {
-        console.log("======== on start", UIConfig.ECSView.prefabUrl)
-        this.view = await SceneMgr.open(UIConfig.ECSView.prefabUrl) as UIECSView;
+        console.log("======== on start", UIConfig.ECSView.prefabUrl);
     }
 
     async onRemovedFromEntity() {

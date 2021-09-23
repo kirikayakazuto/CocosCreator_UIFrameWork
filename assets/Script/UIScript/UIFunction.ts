@@ -24,6 +24,10 @@ export default class UIFunction extends UIFixed {
             WindowMgr.open(UIConfig.Skills.prefabUrl);
         }, this);
 
+        this.view.ScrollHelper.addClick(() => {
+            WindowMgr.open(UIConfig.ScrollPlus.prefabUrl)
+        }, this);
+
         
     }
 
