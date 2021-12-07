@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "55df5eb2-a2ae-4a64-b015-707cf0617616",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "chengjiu_up": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "94edd8f3-1199-4686-96b2-28f30f02b600",
+      "importer": "sprite-frame",
       "rawTextureUuid": "55df5eb2-a2ae-4a64-b015-707cf0617616",
       "trimType": "auto",
       "trimThreshold": 1,

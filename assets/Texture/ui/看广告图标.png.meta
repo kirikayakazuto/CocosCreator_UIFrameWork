@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "a93ee380-8dd8-44e5-b2af-ad2d96833011",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "看广告图标": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "3ab5e43b-e73c-4761-932f-828cfd3e4b02",
+      "importer": "sprite-frame",
       "rawTextureUuid": "a93ee380-8dd8-44e5-b2af-ad2d96833011",
       "trimType": "auto",
       "trimThreshold": 1,
