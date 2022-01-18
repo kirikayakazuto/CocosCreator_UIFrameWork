@@ -95,6 +95,10 @@ UIManager中其实已经通过栈结构实现了简单的窗体控制, 但是对
 
 
 #### SceneMgr 场景控制器
+// 打开场景
+SceneMgr.open(scenePath: string, params?: any, formData?: IFormData);
+// 退回上一个场景
+SceneMgr.back(params?: any, formData?: IFormData);
 
 #### ResMgr 资源控制器
 ResMgr管理窗体的资源, 恪守  **我释放的是我加载的资源, 我加载的资源会被释放**. </br>
