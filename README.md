@@ -134,6 +134,9 @@ Name 属性名称 </br>
 <img src="./doc/2dlight.gif" width="880">
 
 
+## 更新了画板, 可以在图片上绘制图案, 擦除颜色等
+<img src="./doc/draw.gif" width="880">
+
 ## 2021/01/31 Binder plus, 升级了项目中的自动结点绑定
 注意: 目前第一次生成脚本时无法立即绑定到对应结点上, 需要再次执行一次run 即可.
 
