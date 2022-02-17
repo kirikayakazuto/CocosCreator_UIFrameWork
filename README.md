@@ -1,13 +1,13 @@
-# 注意! 本框架是学习使用, 尚不稳定, 请勿直接用来进行商业开发!
-## 基于cocos creator的UI框架, 使用过程中有任何问题,可以添加我的QQ:1099263878
+# 注意! 本框架是个人开发, 用于商业开发前建议先做一下评估.
 
-tips: 当前使用的cocos creator版本2.4.4版本. 理论上支持2.2.x ~ 2.4.x的所有版本.
+## 基于cocos creator的UI框架, 使用过程中有任何问题,可以添加我的 QQ: 1099263878 / wx: kirikayarat  (备注Cocos)
+
+### 当前使用的cocos creator版本2.4.8版本. 理论上支持2.2.x ~ 2.4.x的所有版本.  3d版本目前在开发中... 尽请期待
 
 // todo list
-+ 简单的2d物理系统 仅支持矩形.
++ 简单的2d物理系统 仅支持矩形, 方便做同步.
 + AdapterMgr优化, 支持可视化设置.
 + 添加浮窗层, 浮窗层和弹窗层级独立.
-
 
 ## 0, 简单介绍
 
@@ -59,19 +59,23 @@ UIBase中定义窗体的属性和一系列的生命周期方法</br>
 实际项目中不要直接继承UIBase, 请继承它的子类 UIScreen, UIFixed, UIWindow, UITips. 子类中预实现了一些功能.</br>
 
 生命周期方法</br>
-+ async load(): string;                         // *只调用一次, 异步方法, 使用者可以在这里加载一些窗体需要的资源,返回一个错误信息.*|
-+ onInit(): void;                               // *只调用一次, 初始化.*
-+ onShow(): void;                               // *每次显示时调用.*
-+ onload(): void;                               // *cocos提供*
-+ start(): void;                                // *cocos提供*
-+ onAfterShow(): void;                          // *显示动画结束后调用*
-+ onHide(): void;                               // *隐藏时调用*
-+ onAfterHide(): void;                          // *隐藏动画结束后调用*
-+ onDestory(): void;                            // *cocos提供*
+```
+async load(): string;                         // 只调用一次, 异步方法, 返回一个错误信息.
+onInit(): void;                               // 只调用一次, 初始化.
+onShow(): void;                               // 每次显示时调用.
+onload(): void;                               // cocos提供
+start(): void;                                // cocos提供
+onAfterShow(): void;                          // 显示动画结束后调用
+onHide(): void;                               // 隐藏时调用
+onAfterHide(): void;                          // 隐藏动画结束后调用
+onDestory(): void;                            // cocos提供
+```
 
 显示和隐藏动画, 使用者可以重写下面两个方法, 实现自定义的显示隐藏动画.</br>
-- async showEffect(): void;
-- async hideEffect(): void;
+```
+async showEffect(): void;                      // 窗体显示动画
+async hideEffect(): void;                      // 窗体隐藏动画
+```
 
 ### UIManager篇
 
@@ -110,7 +114,14 @@ SceneMgr.back(params?: any, formData?: IFormData);
 ResMgr管理窗体的资源, 恪守  **我释放的是我加载的资源, 我加载的资源会被释放**. </br>
 
 #### AdapterMgr 适配控制器
+对窗体进行位置适配, 比如对于screen类型的窗体, 框架默认为它添加了全屏的适配, 如下
+```
+AdapterMgr.inst.adapteByType(AdapterType.StretchHeight | AdapterType.StretchWidth, this.node);
+```
 
+todo... 做成可视化组件
+
+## 插件和demo, 都是我日常开发中觉得可以提高开发效率的一些产品和尝试
 
 ### 自动绑定结点插件 AutoBinder </br>
 
@@ -127,7 +138,7 @@ Name 属性名称 </br>
 
 
 ### 状态控制器 PropController
-
+类似fgui中的状态控制器, 已经在实际项目中使用过, 状态控制只需一行代码. 支持自定义脚本的自定义属性.
 视频介绍: https://www.bilibili.com/video/BV1ig411u7vK#reply4845159639
 
 ## 更新了2dlight, 实现了取反的阴影效果
