@@ -49,6 +49,8 @@ tips: **Screen**窗体切换时会隐藏当前显示的**Fixed**, **Window**窗�
 打开Main场景, 在结点树上可以看到有一个Scene结点
 <img src="./doc/Scene.png" width="380">
 
+
+
 Scene结点很关键, 它作为框架的UI层级的父节点, 所以如果你有其他独立与UI框架的层级的需求时,可以根据Scene结点的层级做调整.
 
 Scene结点上挂载了Scene脚本, 打开这个脚本可以看到onGameInit方法, 这个方法控制游戏的初始化流程.  流程如下
