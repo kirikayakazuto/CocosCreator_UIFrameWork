@@ -35,7 +35,7 @@ class Game {
      */
     public update(dt: number) {
         if(!this.inited) return ;
-        // 例如Task.update(dt);,更新任务进度
+        // 例如Task.update(dt); 更新任务进度
     }
 }
 

@@ -33,7 +33,7 @@
 
 tips: **Screen**窗体切换时会隐藏当前显示的**Fixed**, **Window**窗体, 以到达切换场景的效果.
 
-## 1, 项目结构
+## 1. 项目结构
 
 <img src="./doc/proj_dir.png" width="380">
 
@@ -45,7 +45,44 @@ tips: **Screen**窗体切换时会隐藏当前显示的**Fixed**, **Window**窗�
 - UIScript: 用户自定义的界面控制脚本
 - Main.ts: 类似入口脚本
 
-## 2, 框架结构
+## 2. 启动流程
+打开Main场景, 在结点树上可以看到有一个Scene结点
+<img src="./doc/Scene.png" width="380">
+
+Scene结点很关键, 它作为框架的UI层级的父节点, 所以如果你有其他独立与UI框架的层级的需求时,可以根据Scene结点的层级做调整.
+
+Scene结点上挂载了Scene脚本, 打开这个脚本可以看到onGameInit方法, 这个方法控制游戏的初始化流程.  流程如下
+```typescript
+// 第一步 展示loading页面，当然有些默认就是loading页面, 可以把loading界面做在场景中, 遮挡住Scene结点.
+
+// 第二步 初始化游戏（Managers，Configs，SDKs）
+await Game.init(this.node);
+// 第三步 构建初始场景（加载必要的prefab，音频，texture）
+await ResMgr.loadRes() 或者 await UIManager.getInstance().loadForm() 等等
+// 第四步 加载主界面UI,关掉loading页面,正式进入游戏
+await SceneMgr.open("");
+this.loading.destory();// 假设你已经获取到了loading ui
+```
+
+Game.ts脚本则是作为游戏的逻辑层控制器. 打开可以开到init方法, 这个方法控制游戏内控制器的初始化.
+```typescript
+// 初始化Manager, 例如new ConfigMgr();
+this.configMgr = new ConfigMgr();
+this.playerMgr = new PlayerMgr();
+// 初始化平台sdk
+
+// 加载配置信息, 因为在这里就已经加装完毕配置信息了, 所以后面加装主界面UI时, 就可以读取相关配置了
+await this.configMgr.loadConfigs();
+```
+
+Game.ts脚本还可以控制逻辑控制器的时间更新, 打开update方法.
+
+```typescript
+if(!this.inited) return ;
+Task.update(dt); // 更新任务进度
+```
+
+## 3. 框架结构
 
 <img src="./doc/framework.png" width="680">
 
@@ -54,15 +91,15 @@ tips: **Screen**窗体切换时会隐藏当前显示的**Fixed**, **Window**窗�
 ### UIBase篇
 
 UIBase中定义窗体的属性和一系列的生命周期方法</br>
-```
+```typescript
 formType: FormType;           // 窗体类型
-willDestory: bool;            // 是否会被销毁
+willDestory: bool;            // 是否会被销毁, 只有这个标记为true时, 关闭窗体时才会销毁这个窗体, 不然就是隐藏
 ```
 
 实际项目中不要直接继承UIBase, 请继承它的子类 UIScreen, UIFixed, UIWindow, UITips. 子类中预实现了一些功能.</br>
 
 生命周期方法</br>
-```
+```typescript
 async load(): string;                         // 只调用一次, 异步方法, 返回一个错误信息.
 onInit(): void;                               // 只调用一次, 初始化.
 onShow(): void;                               // 每次显示时调用.
@@ -75,7 +112,7 @@ onDestory(): void;                            // cocos提供
 ```
 
 显示和隐藏动画, 使用者可以重写下面两个方法, 实现自定义的显示隐藏动画.</br>
-```
+```typescript
 async showEffect(): void;                      // 窗体显示动画
 async hideEffect(): void;                      // 窗体隐藏动画
 ```
@@ -88,16 +125,20 @@ UIManager在getInstance()时, 会自动的创建UIROOT和四个子节点. 结构
 
 UIManager只暴露的四个接口.
 
-+ loadForm(path: string): UIBase;                                       // 预加载窗体
-+ openForm(path: string, param: any, formData: IFormData): UIBase;      // 打开窗体
-+ closeForm(path: string): UIBase;                                      // 隐藏窗体
-+ getForm(path: string): UIBase;                                        // 获得窗体
+```typescript
+loadForm(path: string): UIBase;                                       // 预加载窗体
+openForm(path: string, param: any, formData: IFormData): UIBase;      // 打开窗体
+closeForm(path: string): UIBase;                                      // 隐藏窗体
+getForm(path: string): UIBase;                                        // 获得窗体
+```
 
 UIManager在打开窗体时, 会获取窗体上的UIBase组件, 然后根据类型, 将窗体挂载到不同的node上. 然后触发UIBase中的
 生命周期方法.
 
 UIManager内部控制流程如下图.. </br>
 <img src="./doc/uimanager.png" width="880">
+
+loadForm和openForm复用同一个加装回调, 所以不用担心预加载窗体后, 还没等预加载结束就调用openForm导致的加装浪费.
 
 ### 其他Manager
 
@@ -106,25 +147,39 @@ UIManager中其实已经通过栈结构实现了简单的窗体控制, 但是对
 比如优先栈和等待栈, 优先栈指的 每一个窗体有一个优先级, 根据优先级的不同在优先栈会有不同的排序效果, 从而影响窗体弹出顺序.
 等待栈指的
 
+```typescript
+WindowMgr.open(prefabPath: string, params?: any, formData: IFormData = {showWait: false, priority: EPriority.FIVE});														 // 打开, formData中 showWait表示是否进入等待队列, priority表示优先级.
+WindowMgr.close(prefabPath: string);					// 关闭
+```
 
 #### SceneMgr 场景控制器
+```typescript
 // 打开场景
 SceneMgr.open(scenePath: string, params?: any, formData?: IFormData);
 // 退回上一个场景
 SceneMgr.back(params?: any, formData?: IFormData);
+```
 
 #### ResMgr 资源控制器
+
 ResMgr管理窗体的资源, 恪守  **我释放的是我加载的资源, 我加载的资源会被释放**. </br>
+
+不建议用户直接使用这个Manager. 里面主要是加载窗体,和动态资源.
+
+```typescript
+ResMgr.inst.loadDynamicRes(url: string, type: typeof cc.Asset, tag: string);		// 加载动态资源, 内部使用
+// 上面的方法请通过这个方法调用 UIBase.loadRes(url: string, type?: typeof cc.Asset);														
+```
 
 #### AdapterMgr 适配控制器
 对窗体进行位置适配, 比如对于screen类型的窗体, 框架默认为它添加了全屏的适配, 如下
-```
+```typescript
 AdapterMgr.inst.adapteByType(AdapterType.StretchHeight | AdapterType.StretchWidth, this.node);
 ```
 
 todo... 做成可视化组件
 
-## 插件和demo, 都是我日常开发中觉得可以提高开发效率的一些产品和尝试
+## 4 .插件和demo, 都是我日常开发中觉得可以提高开发效率的一些产品和尝试
 
 ### 自动绑定结点插件 AutoBinder </br>
 
@@ -138,6 +193,8 @@ Name 属性名称 </br>
 通过Alt + g就会自动生成 </br>
 @property(cc.Label) Name: cc.Label = null;的代码 </br>
 然后将脚本挂载在根节点上, 在将_Label$Name结点绑定在组件上 </br>
+
+<img src="./doc/AutoBinderPlus.gif" width="680">
 
 
 ### 状态控制器 PropController
