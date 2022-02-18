@@ -8,6 +8,7 @@
 + 简单的2d物理系统 仅支持矩形, 方便做同步.
 + AdapterMgr优化, 支持可视化设置.
 + 添加浮窗层, 浮窗层和弹窗层级独立.
++ 自动生成UIConfig.ts
 
 ## 0, 简单介绍
 
@@ -53,8 +54,10 @@ tips: **Screen**窗体切换时会隐藏当前显示的**Fixed**, **Window**窗�
 ### UIBase篇
 
 UIBase中定义窗体的属性和一系列的生命周期方法</br>
-+ formType: FormType;           // 窗体类型
-+ willDestory: bool;            // 是否会被销毁
+```
+formType: FormType;           // 窗体类型
+willDestory: bool;            // 是否会被销毁
+```
 
 实际项目中不要直接继承UIBase, 请继承它的子类 UIScreen, UIFixed, UIWindow, UITips. 子类中预实现了一些功能.</br>
 
