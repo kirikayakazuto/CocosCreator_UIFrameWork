@@ -1,4 +1,5 @@
 
+
 // api: https://docs.cocos.com/creator/manual/zh/extension/api/editor-framework/renderer/gizmo.html
 class PointsPolygonGizmo extends Editor.Gizmo {
     init() {
@@ -59,8 +60,10 @@ class PointsPolygonGizmo extends Editor.Gizmo {
           if (!start_vertex) {
             start_vertex = target.polygon[i].clone();
           }
-          target.polygon[i].x = start_vertex.x + dx / this._view.scale;
-          target.polygon[i].y = start_vertex.y + dy / this._view.scale;
+          let pos = cc.v2(dx, dy);
+          pos = this.transformPos(pos, target.node, true);
+          target.polygon[i].x = start_vertex.x + pos.x / this._view.scale;
+          target.polygon[i].y = start_vertex.y + pos.y / this._view.scale;
           target.polygon = target.polygon;
           // this.adjustValue(target);
         },
@@ -72,6 +75,23 @@ class PointsPolygonGizmo extends Editor.Gizmo {
         end: (updated, event) => {
         }
       };
+    }
+
+    transformPos(pos, node, invert) {
+
+      let _mat4_temp = cc.mat4();
+      let matrixm = node._worldMatrix.m;
+      if(invert) {
+        cc.Mat4.invert(_mat4_temp, node._worldMatrix)
+        matrixm = _mat4_temp.m;
+      }
+      let a = matrixm[0], b = matrixm[1], c = matrixm[4], d = matrixm[5];
+
+      let v = cc.v2(pos);
+      let x = v.x, y = v.y;
+      v.x = x * a + y * c;
+      v.y = x * b + y * d;
+      return v;
     }
   
     onCreateRoot() {
@@ -87,6 +107,9 @@ class PointsPolygonGizmo extends Editor.Gizmo {
       const lines = [];
       // 接下来要定义绘画函数
       this._tool.plot = (points, position) => {
+        
+        
+        
         // 移动到节点位置
         this._tool.move(position.x, position.y);
         // 清除原来的点
@@ -94,7 +117,7 @@ class PointsPolygonGizmo extends Editor.Gizmo {
         lines.forEach(v => v.plot(0, 0, 0, 0));
         
         for(let i=0; i<points.length; i++) {
-          let v = points[i];
+          let v = this.transformPos(points[i], target.node);
           v = Editor.GizmosUtils.snapPixelWihVec2(v.mul(this._view.scale));
           let line = lines[i]
           if(!line) {
@@ -104,12 +127,14 @@ class PointsPolygonGizmo extends Editor.Gizmo {
             this.registerMoveSvg(line, [i, "line"]);
           }
           let nextPoint = i== points.length-1 ? points[0] : points[i+1];
-          nextPoint = Editor.GizmosUtils.snapPixelWihVec2(nextPoint.mul(this._view.scale))
-          line.plot(v.x, -v.y, nextPoint.x, -nextPoint.y).stroke({ width: 4 * this._view.scale });
+
+          let n = this.transformPos(nextPoint, target.node);
+          n = Editor.GizmosUtils.snapPixelWihVec2(n.mul(this._view.scale))
+          line.plot(v.x, -v.y, n.x, -n.y).stroke({ width: 4 * this._view.scale });
         }
 
         for(let i=0; i<points.length; i++) {
-            let v = points[i];
+            let v = this.transformPos(points[i], target.node);
             v = Editor.GizmosUtils.snapPixelWihVec2(v.mul(this._view.scale));
 
             let circle = circles[i];
