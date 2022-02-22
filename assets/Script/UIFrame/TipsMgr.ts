@@ -1,5 +1,4 @@
 import UIManager from "./UIManager";
-import UIToast from "../test/UIToast";
 
 const {ccclass, property} = cc._decorator;
 /***
@@ -39,6 +38,6 @@ export default class TipsMgr{
         this.tipsFormName = tipsFormName;
     }
     public async showToast() {
-        await UIToast.popUp("");
+        
     }
 }
