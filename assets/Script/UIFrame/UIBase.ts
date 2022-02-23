@@ -4,9 +4,7 @@ import { IFormData } from "./Struct";
 import AdapterMgr from "./AdapterMgr";
 import ResMgr from "./ResMgr";
 
-const {ccclass, property} = cc._decorator;
 
-@ccclass
 export default class UIBase extends cc.Component {
 
     /** 窗体id,该窗体的唯一标示(请不要对这个值进行赋值操作, 内部已经实现了对应的赋值) */
@@ -44,14 +42,20 @@ export default class UIBase extends cc.Component {
         return null;
     }
 
+    /** 初始化, 只调用一次 */
     public onInit() {}
 
+    // 显示回调
     public onShow(params: any) {}
+    // 在显示动画结束后回调
     public onAfterShow(params: any) {}
 
+    // 隐藏回调
     public onHide() {}    
+    // 在隐藏动画结束后回调
     public onAfterHide() {}
 
+    // 关闭自己
     public async closeSelf(): Promise<boolean> {
        return await UIManager.getInstance().closeForm(this.fid);
     }

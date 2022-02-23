@@ -6,6 +6,7 @@ import { IFormData, ModalType } from "./Struct";
 import UIBase from "./UIBase";
 import WindowMgr from "./WindowMgr";
 
+
 export class UIScreen extends UIBase {
     formType = FormType.Screen;
     willDestory = true;

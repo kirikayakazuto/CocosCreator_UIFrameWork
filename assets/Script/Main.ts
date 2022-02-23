@@ -13,7 +13,7 @@ export default class Main extends cc.Component {
         SceneMgr.open(UIConfig.Navigator.prefabUrl);
 
     }
-
+    
     onDestroy() {
 
     }      

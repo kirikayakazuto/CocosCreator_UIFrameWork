@@ -9,10 +9,7 @@ import { IFormData } from "./Struct";
 import { EventCenter } from "./EventCenter";
 import { EventType } from "./EventType";
 
-const {ccclass, property} = cc._decorator;
-
-@ccclass
-export default class UIManager extends cc.Component {    
+export default class UIManager {    
     private _ndScreen: cc.Node = null;  // 全屏显示的UI 挂载结点
     private _ndFixed: cc.Node  = null;  // 固定显示的UI
     private _ndPopUp: cc.Node  = null;  // 弹出窗口
@@ -27,6 +24,7 @@ export default class UIManager extends cc.Component {
     private static instance: UIManager = null;                                                 // 单例
     public static getInstance(): UIManager {
         if(this.instance == null) {
+            this.instance = new UIManager();
             let canvas = cc.director.getScene().getChildByName("Canvas");
             let scene = canvas.getChildByName(SysDefine.SYS_SCENE_NODE);
             if(!scene) {
@@ -36,7 +34,6 @@ export default class UIManager extends cc.Component {
             }
             let UIROOT = new cc.Node(SysDefine.SYS_UIROOT_NODE);
             scene.addChild(UIROOT);
-            this.instance = cc.find(SysDefine.SYS_UIROOT_NAME).addComponent<UIManager>(this);
 
             UIROOT.addChild(this.instance._ndScreen = new cc.Node(SysDefine.SYS_SCREEN_NODE));
             UIROOT.addChild(this.instance._ndFixed = new cc.Node(SysDefine.SYS_FIXED_NODE));
@@ -44,7 +41,7 @@ export default class UIManager extends cc.Component {
             UIROOT.addChild(this.instance._ndTips = new cc.Node(SysDefine.SYS_TOPTIPS_NODE));
             cc.director.once(cc.Director.EVENT_BEFORE_SCENE_LAUNCH, () => {
                 this.instance = null;
-            });
+            });            
         }
         return this.instance;
     }
@@ -347,4 +344,6 @@ export default class UIManager extends cc.Component {
     }
 }
 
-window['UIManager'] = UIManager;
+if(CC_DEBUG) {
+    window['UIManager'] = UIManager;
+}
