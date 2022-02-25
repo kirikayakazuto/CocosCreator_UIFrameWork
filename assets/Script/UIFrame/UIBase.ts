@@ -4,13 +4,11 @@ import { IFormData } from "./Struct";
 import AdapterMgr from "./AdapterMgr";
 import ResMgr from "./ResMgr";
 
-
 export default class UIBase extends cc.Component {
-
     /** 窗体id,该窗体的唯一标示(请不要对这个值进行赋值操作, 内部已经实现了对应的赋值) */
     public fid: string;
     /** 窗体数据 */
-    public formData: IFormData = null;
+    public formData: IFormData = null!;
     /** 窗体类型 */
     public formType: FormType = 0;
     /** 关闭窗口后销毁, 会将其依赖的资源一并销毁, 采用了引用计数的管理, 不用担心会影响其他窗体 */
@@ -18,38 +16,36 @@ export default class UIBase extends cc.Component {
     /** 是否已经调用过preinit方法 */
     private _inited = false;
 
-    public view: cc.Component;
+    public view: cc.Component = null!;
 
     /** 预先初始化 */
-    public async _preInit() {
+    public async _preInit(params: any) {
         if(this._inited) return ;
         this._inited = true;
         this.view = this.getComponent(`${this.node.name}_Auto`);
         // 加载这个UI依赖的其他资源
-        let errorMsg = await this.load();
+        let errorMsg = await this.load(params);
         if(errorMsg) {
             cc.error(errorMsg);
             this.closeSelf();
             return ;
         }
-        this.onInit();
+        this.onInit(params);
     }
 
     model: any = null; 
 
     /** 可以在这里进行一些资源的加载, 具体实现可以看test下的代码 */
-    public async load(): Promise<string> {
+    public async load(params: any): Promise<string> {
         return null;
     }
 
     /** 初始化, 只调用一次 */
-    public onInit() {}
-
+    public onInit(params: any) {}
     // 显示回调
     public onShow(params: any) {}
     // 在显示动画结束后回调
     public onAfterShow(params: any) {}
-
     // 隐藏回调
     public onHide() {}    
     // 在隐藏动画结束后回调
@@ -83,7 +79,5 @@ export default class UIBase extends cc.Component {
     }
 }
 
-if(CC_EDITOR) {
-    cc['UIBase'] = UIBase;
-}
-
+//@ts-ignore
+cc.UIBase = UIBase;

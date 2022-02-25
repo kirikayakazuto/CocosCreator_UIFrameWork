@@ -1,5 +1,6 @@
 import SceneMgr from "./UIFrame/SceneMgr";
-import UIConfig from "./UIScript/UIConfig";
+import UIConfig from "./UIConfig";
+import FormMgr from "./UIFrame/FormMgr";
 
 const {ccclass, property} = cc._decorator;
 
@@ -10,8 +11,7 @@ export default class Main extends cc.Component {
     }
 
     start () {
-        SceneMgr.open(UIConfig.Navigator.prefabUrl);
-
+        FormMgr.open(UIConfig.UINavigator);
     }
     
     onDestroy() {

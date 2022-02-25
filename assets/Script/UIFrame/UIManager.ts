@@ -204,7 +204,7 @@ export default class UIManager {
 
         AdapterMgr.inst.adapteByType(AdapterType.StretchHeight | AdapterType.StretchWidth, com.node);
         
-        await com._preInit();
+        await com._preInit(params);
         com.onShow(params);
 
         await this.showEffect(com);
@@ -215,7 +215,7 @@ export default class UIManager {
     private async enterToFixed(fid: string, params: any) {
         let com = this._allForms[fid];
         if(!com) return ;
-        await com._preInit();
+        await com._preInit(params);
         
         com.onShow(params);
         this._showingForms[fid] = com;
@@ -227,7 +227,7 @@ export default class UIManager {
     private async enterToPopup(fid: string, params: any) {
         let com = this._allForms[fid] as UIWindow;
         if(!com) return ;
-        await com._preInit();
+        await com._preInit(params);
 
         this._windows.push(com);
         
@@ -247,7 +247,7 @@ export default class UIManager {
     private async enterToTips(fid: string, params: any) {
         let com = this._allForms[fid];
         if(!com) return ;
-        await com._preInit();
+        await com._preInit(params);
         this._tipsForms[fid] = com;
         
         com.onShow(params);

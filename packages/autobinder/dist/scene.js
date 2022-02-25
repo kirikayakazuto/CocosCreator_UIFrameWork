@@ -34,9 +34,9 @@ var scene;
             _str_content += "\t@property(".concat(type, ")\n\t").concat(key, ": ").concat(type, " = null;\n");
         }
         var strScript = "\n".concat(_str_import, "\nconst {ccclass, property} = cc._decorator;\n@ccclass\nexport default class ").concat(ScriptName, " extends cc.Component {\n").concat(_str_content, " \n}");
-        checkScriptDir();
-        fs.writeFileSync(ScriptPath, strScript);
         var dbScriptPath = ScriptPath.replace(Editor.Project.path.replace(/\\/g, "/"), "db:/");
+        saveFile(dbScriptPath, strScript);
+        //fs.writeFileSync(ScriptPath, strScript);        
         Editor.assetdb.refresh(dbScriptPath, function (err, data) {
             if (err) {
                 Editor.warn("\u5237\u65B0\u811A\u672C\u5931\u8D25\uFF1A".concat(dbScriptPath));
@@ -67,6 +67,18 @@ var scene;
         });
     }
     scene.start = start;
+    function saveFile(ScriptPath, strScript) {
+        return new Promise(function (resolve, reject) {
+            // main process or renderer process
+            Editor.assetdb.createOrSave(ScriptPath, strScript, function (err, meta) {
+                if (err) {
+                    resolve(null);
+                    return;
+                }
+                resolve(meta);
+            });
+        });
+    }
     /** 计算相对路径 */
     function getImportPath(exportPath, currPath) {
         exportPath = exportPath.replace(/\\/g, "/").substr(0, exportPath.lastIndexOf("."));
@@ -89,13 +101,13 @@ var scene;
         tmp = tmp.substr(0, tmp.length - 1);
         return tmp;
     }
-    function checkScriptDir() {
-        var dir = Editor.Project.path + '/' + Const_1.default.ScriptsDir;
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);
-        }
-        return dir;
-    }
+    // function checkScriptDir() {
+    //     let dir = Editor.Project.path + '/' + Const.ScriptsDir;
+    //     if(!fs.existsSync(dir)) {
+    //         fs.mkdirSync(dir);
+    //     }
+    //     return dir;
+    // }
     function findNodes(node, _nodeMaps, _importMaps) {
         var name = node.name;
         if (checkBindChildren(name)) {

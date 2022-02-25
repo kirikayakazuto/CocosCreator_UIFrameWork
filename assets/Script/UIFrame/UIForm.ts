@@ -48,3 +48,11 @@ export class UITips extends UIBase {
     formType = FormType.Tips;
 }
 
+// @ts-ignore
+cc.UIScreen = UIScreen;
+// @ts-ignore
+cc.UIWindow = UIWindow;
+// @ts-ignore
+cc.UIFixed = UIFixed;
+// @ts-ignore
+cc.UITips = UITips;

@@ -1,9 +1,6 @@
 import Const from "./Const";
 
 
-//@ts-ignore
-const fs = require('fire-fs');
-
 module scene {
     export function start() {
         
@@ -44,17 +41,13 @@ export default class ${ScriptName} extends cc.Component {
 ${_str_content} 
 }`; 
 
-        checkScriptDir();
-        
-        fs.writeFileSync(ScriptPath, strScript);
-
         let dbScriptPath = ScriptPath.replace(Editor.Project.path.replace(/\\/g, "/"), "db:/");
+        saveFile(dbScriptPath, strScript)     
         Editor.assetdb.refresh(dbScriptPath, (err: any, data: any) => {
             if(err) {
                 Editor.warn(`刷新脚本失败：${dbScriptPath}`);
                 return ;
             }
-            // let s = ScriptPath.replace(`${ProjectDir}`, `${ProjectDir}/temp/quick-scripts/dst`).replace(".ts", ".js");            
 
             let comp = NodeRoot.getComponent(ScriptName);
             if(!comp) {
@@ -80,6 +73,19 @@ ${_str_content}
         });
     }
 
+    function saveFile(ScriptPath: string, strScript: string) {
+        return new Promise((resolve, reject) => {
+            // main process or renderer process
+            Editor.assetdb.createOrSave(ScriptPath, strScript, function (err: any, meta: any) {
+                if(err) {
+                    resolve(null);
+                    return;
+                }
+                resolve(meta);
+            });
+        });
+    }
+
     /** 计算相对路径 */
     function getImportPath(exportPath: string, currPath: string): string {
         exportPath = exportPath.replace(/\\/g, "/").substr(0, exportPath.lastIndexOf("."));
@@ -101,14 +107,6 @@ ${_str_content}
         }
         tmp = tmp.substr(0, tmp.length - 1);
         return tmp;
-    }
-
-    function checkScriptDir() {
-        let dir = Editor.Project.path + '/' + Const.ScriptsDir;
-        if(!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);
-        }
-        return dir;
     }
 
     function findNodes(node: cc.Node, _nodeMaps: {[key: string]: string[]}, _importMaps: {[key: string]: string}) {

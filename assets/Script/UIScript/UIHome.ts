@@ -2,7 +2,7 @@ import UIHome_Auto from "../AutoScripts/UIHome_Auto";
 import SceneMgr from "../UIFrame/SceneMgr";
 import { UIFixed, UIScreen } from "../UIFrame/UIForm";
 import UIManager from "../UIFrame/UIManager";
-import UIConfig from "./UIConfig";
+import UIConfig from "./../UIConfig";
 
 
 const {ccclass, property} = cc._decorator;
@@ -12,7 +12,7 @@ export default class UIHome extends UIScreen {
 
     public view: UIHome_Auto;
     async load() {
-        await UIManager.getInstance().openForm(UIConfig.Sound.prefabUrl);;
+        await UIManager.getInstance().openForm(UIConfig.UISound.prefabUrl);;
         return null;
     }
 
@@ -23,11 +23,11 @@ export default class UIHome extends UIScreen {
 
     start () {
         this.view.Start.addClick(() => {
-            SceneMgr.open(UIConfig.Map.prefabUrl);
+            SceneMgr.open(UIConfig.UIMap.prefabUrl);
         }, this);
 
         this.view.About.addClick(() => {
-            SceneMgr.open(UIConfig.About.prefabUrl);
+            SceneMgr.open(UIConfig.UIAbout.prefabUrl);
         }, this);
 
         this.view.Back.addClick(() => {

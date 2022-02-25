@@ -2,7 +2,7 @@ import UIFunction_Auto from "../AutoScripts/UIFunction_Auto";
 import AdapterMgr, { AdapterType } from "../UIFrame/AdapterMgr";
 import { UIFixed } from "../UIFrame/UIForm";
 import WindowMgr from "../UIFrame/WindowMgr";
-import UIConfig from "./UIConfig";
+import UIConfig from "./../UIConfig";
 import UISkills from "./UISkills";
 
 const {ccclass, property} = cc._decorator;
@@ -17,15 +17,15 @@ export default class UIFunction extends UIFixed {
         AdapterMgr.inst.adapteByType(AdapterType.Bottom, this.node, 50);
         
         this.view.Setting.addClick(() => {            
-            WindowMgr.open(UIConfig.Setting.prefabUrl);
+            WindowMgr.open(UIConfig.UISetting.prefabUrl);
         }, this);
 
         this.view.Skills.addClick(() => {
-            WindowMgr.open(UIConfig.Skills.prefabUrl);
+            WindowMgr.open(UIConfig.UISkills.prefabUrl);
         }, this);
 
         this.view.ScrollHelper.addClick(() => {
-            WindowMgr.open(UIConfig.ScrollPlus.prefabUrl)
+            WindowMgr.open(UIConfig.UIScrollPlus.prefabUrl)
         }, this);
 
         
