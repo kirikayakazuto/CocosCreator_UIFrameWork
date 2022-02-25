@@ -82,3 +82,8 @@ export default class UIBase extends cc.Component {
         return await ResMgr.inst.loadDynamicRes(url, type, this.fid);
     }
 }
+
+if(CC_EDITOR) {
+    cc['UIBase'] = UIBase;
+}
+

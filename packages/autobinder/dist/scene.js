@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Const_1 = __importDefault(require("./Const"));
+//@ts-ignore
 var fs = require('fire-fs');
 var scene;
 (function (scene) {
@@ -12,31 +13,33 @@ var scene;
         if (childs.length < 3)
             return null;
         var NodeRoot = childs[1];
-        if (!NodeRoot.getComponent("UIBase")) {
-            Editor.warn(NodeRoot.name + " \u6CA1\u6709\u6302\u8F7D UIbase \u811A\u672C");
+        //@ts-ignore
+        var UIBase = cc.UIBase;
+        if (!NodeRoot.getComponent(UIBase)) {
+            Editor.warn("".concat(NodeRoot.name, " \u6CA1\u6709\u6302\u8F7D UIbase \u811A\u672C"));
             return;
         }
         var ProjectDir = Editor.Project.path;
-        var ScriptName = NodeRoot.name + "_Auto";
-        var ScriptPath = (ProjectDir + "/" + Const_1.default.ScriptsDir + "/" + ScriptName + ".ts").replace(/\\/g, "/");
+        var ScriptName = "".concat(NodeRoot.name, "_Auto");
+        var ScriptPath = "".concat(ProjectDir, "/").concat(Const_1.default.ScriptsDir, "/").concat(ScriptName, ".ts").replace(/\\/g, "/");
         var nodeMaps = {}, importMaps = {};
         findNodes(NodeRoot, nodeMaps, importMaps);
         var _str_import = "";
         for (var key in importMaps) {
-            _str_import += "import " + key + " from \"" + getImportPath(importMaps[key], ScriptPath) + "\"\n";
+            _str_import += "import ".concat(key, " from \"").concat(getImportPath(importMaps[key], ScriptPath), "\"\n");
         }
         var _str_content = "";
         for (var key in nodeMaps) {
             var type = nodeMaps[key][0];
-            _str_content += "\t@property(" + type + ")\n\t" + key + ": " + type + " = null;\n";
+            _str_content += "\t@property(".concat(type, ")\n\t").concat(key, ": ").concat(type, " = null;\n");
         }
-        var strScript = "\n" + _str_import + "\nconst {ccclass, property} = cc._decorator;\n@ccclass\nexport default class " + ScriptName + " extends cc.Component {\n" + _str_content + " \n}";
+        var strScript = "\n".concat(_str_import, "\nconst {ccclass, property} = cc._decorator;\n@ccclass\nexport default class ").concat(ScriptName, " extends cc.Component {\n").concat(_str_content, " \n}");
         checkScriptDir();
         fs.writeFileSync(ScriptPath, strScript);
         var dbScriptPath = ScriptPath.replace(Editor.Project.path.replace(/\\/g, "/"), "db:/");
         Editor.assetdb.refresh(dbScriptPath, function (err, data) {
             if (err) {
-                Editor.warn("\u5237\u65B0\u811A\u672C\u5931\u8D25\uFF1A" + dbScriptPath);
+                Editor.warn("\u5237\u65B0\u811A\u672C\u5931\u8D25\uFF1A".concat(dbScriptPath));
                 return;
             }
             // let s = ScriptPath.replace(`${ProjectDir}`, `${ProjectDir}/temp/quick-scripts/dst`).replace(".ts", ".js");            
@@ -81,7 +84,7 @@ var scene;
             tmp += "../";
         }
         for (start = end; start < exportStr.length; ++start) {
-            tmp += exportStr[start] + "/";
+            tmp += "".concat(exportStr[start], "/");
         }
         tmp = tmp.substr(0, tmp.length - 1);
         return tmp;
@@ -100,7 +103,7 @@ var scene;
                 // 获得这个组件的类型 和 名称
                 var names = getPrefixNames(name);
                 if (names === null || names.length !== 2) {
-                    Editor.log(name + " \u547D\u4EE4\u4E0D\u89C4\u8303, \u8BF7\u4F7F\u7528_Label$xxx\u7684\u683C\u5F0F!, \u6216\u8005\u662F\u5728SysDefine\u4E2D\u6CA1\u6709\u5B9A\u4E49");
+                    Editor.log("".concat(name, " \u547D\u4EE4\u4E0D\u89C4\u8303, \u8BF7\u4F7F\u7528_Label$xxx\u7684\u683C\u5F0F!, \u6216\u8005\u662F\u5728SysDefine\u4E2D\u6CA1\u6709\u5B9A\u4E49"));
                     return;
                 }
                 var type = Const_1.default.SeparatorMap[names[0]] || names[0];

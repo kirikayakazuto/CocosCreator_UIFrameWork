@@ -1,5 +1,7 @@
 import Const from "./Const";
 
+
+//@ts-ignore
 const fs = require('fire-fs');
 
 module scene {
@@ -9,7 +11,9 @@ module scene {
         if(childs.length < 3) return null;
         let NodeRoot = childs[1];
 
-        if(!NodeRoot.getComponent("UIBase")) {
+        //@ts-ignore
+        const UIBase = cc.UIBase;
+        if(!NodeRoot.getComponent(UIBase)) {
             Editor.warn(`${NodeRoot.name} 没有挂载 UIbase 脚本`);
             return;
         }
