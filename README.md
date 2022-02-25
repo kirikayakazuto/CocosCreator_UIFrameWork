@@ -181,8 +181,15 @@ todo... 做成可视化组件
 
 ## 4 .插件和demo, 都是我日常开发中觉得可以提高开发效率的一些产品和尝试
 
-### 自动绑定结点插件 AutoBinder </br>
+### 自动生成UIConfig插件 AutoConfig </br>
+快捷键 alt + f
 
+<img src="./doc/AutoConfig.gif" width="680"></br>
+
+UIConfig文件里除存储的是UI名称和UI路径的关系, 现在可以自动生成UIConfig文件了.
+
+### 自动绑定结点插件 AutoBinder </br>
+快捷键 alt + g
 根据规范的命名规则实现代码自动生成和结点绑定 </br>
 如: _Label$Name </br>
 _ 下划线表示这个结点是需要被绑定的 </br>
