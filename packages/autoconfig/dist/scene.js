@@ -45,8 +45,6 @@ var fs = require('fs');
 //@ts-ignore
 var path = require('path');
 var ProjectPath = Editor.Project.path;
-//@ts-ignore
-var UIBase = cc.UIBase, UIScreen = cc.UIScreen, UIWindow = cc.UIWindow, UIFixed = cc.UIFixed, UITips = cc.UITips;
 var scene;
 (function (scene) {
     var map = {};
@@ -92,7 +90,7 @@ var scene;
                         for (key in map) {
                             contentStr += "static ".concat(key, " = {\n        prefabUrl: \"").concat(map[key].prefabUrl, "\",\n        type: \"").concat(map[key].type, "\"\n    }\n    ");
                         }
-                        strScript = "export default class UIConfig {\n    ".concat(contentStr, "\n        }");
+                        strScript = "export default class UIConfig {\n    ".concat(contentStr, "\n    }");
                         dbConfigPath = ConfigPath.replace(Editor.Project.path.replace(/\\/g, "/"), "db:/");
                         return [4 /*yield*/, saveFile(dbConfigPath, strScript)];
                     case 2:
@@ -127,6 +125,8 @@ var scene;
                     resolve(null);
                     return;
                 }
+                //@ts-ignore
+                var UIBase = cc.UIBase, UIScreen = cc.UIScreen, UIWindow = cc.UIWindow, UIFixed = cc.UIFixed, UITips = cc.UITips;
                 var node = asset.data;
                 var com = node.getComponent(UIBase);
                 if (!com) {

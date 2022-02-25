@@ -21,7 +21,6 @@ export default class UIMap extends UIScreen {
     }
 
     start () {
-
         this.view.Round.addClick(() => {
             SceneMgr.open(UIConfig.UIGame.prefabUrl);
         }, this);

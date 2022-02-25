@@ -6,8 +6,6 @@ const fs = require('fs');
 const path = require('path');
 
 const ProjectPath = Editor.Project.path;
-//@ts-ignore
-const UIBase = cc.UIBase, UIScreen = cc.UIScreen, UIWindow = cc.UIWindow, UIFixed = cc.UIFixed, UITips = cc.UITips;
 
 module scene {
     let map: {[key: string]: any} = {};
@@ -43,7 +41,7 @@ module scene {
         }
         let strScript = `export default class UIConfig {
     ${contentStr}
-        }`;
+    }`;
 
         let dbConfigPath = ConfigPath.replace(Editor.Project.path.replace(/\\/g, "/"), "db:/");
         await saveFile(dbConfigPath, strScript);
@@ -75,6 +73,8 @@ module scene {
                     resolve(null);
                     return ;
                 }
+                //@ts-ignore
+                const UIBase = cc.UIBase, UIScreen = cc.UIScreen, UIWindow = cc.UIWindow, UIFixed = cc.UIFixed, UITips = cc.UITips;
                 let node = (asset as cc.Prefab).data;
                 let com = node.getComponent(UIBase);
                 if(!com) {
