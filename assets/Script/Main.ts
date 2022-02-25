@@ -1,4 +1,3 @@
-import SceneMgr from "./UIFrame/SceneMgr";
 import UIConfig from "./UIConfig";
 import FormMgr from "./UIFrame/FormMgr";
 
@@ -11,7 +10,7 @@ export default class Main extends cc.Component {
     }
 
     start () {
-        FormMgr.open(UIConfig.UINavigator);
+        FormMgr.open(UIConfig.UINavigator, null, {loadingForm: UIConfig.UILoading});
     }
     
     onDestroy() {

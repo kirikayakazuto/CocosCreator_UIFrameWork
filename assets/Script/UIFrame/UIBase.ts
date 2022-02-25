@@ -10,7 +10,7 @@ export default class UIBase extends cc.Component {
     /** 窗体数据 */
     public formData: IFormData = null!;
     /** 窗体类型 */
-    public formType: FormType = 0;
+    public formType: FormType;
     /** 关闭窗口后销毁, 会将其依赖的资源一并销毁, 采用了引用计数的管理, 不用担心会影响其他窗体 */
     public willDestory = false;
     /** 是否已经调用过preinit方法 */

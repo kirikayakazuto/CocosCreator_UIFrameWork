@@ -1,10 +1,8 @@
 import CocosHelper from "./CocosHelper";
 import { FormType } from "./config/SysDefine";
-import FixedMgr from "./FixedMgr";
-import SceneMgr from "./SceneMgr";
-import { IFormData, ModalType } from "./Struct";
+import FormMgr from "./FormMgr";
+import { ModalType } from "./Struct";
 import UIBase from "./UIBase";
-import WindowMgr from "./WindowMgr";
 
 
 export class UIScreen extends UIBase {
@@ -13,7 +11,7 @@ export class UIScreen extends UIBase {
 
 
     public async closeSelf(): Promise<boolean> {
-        return await SceneMgr.close(this.fid);
+        return await FormMgr.close({prefabUrl: this.fid, type: this.formType});
     }
 }
 
@@ -29,7 +27,7 @@ export class UIWindow extends UIBase {
     }
 
     public async closeSelf(): Promise<boolean> {
-        return await WindowMgr.close(this.fid);
+        return await FormMgr.close({prefabUrl: this.fid, type: this.formType});
     }
 
 }
@@ -39,13 +37,17 @@ export class UIFixed extends UIBase {
     willDestory = true;
 
     public async closeSelf(): Promise<boolean> {
-        return await FixedMgr.close(this.fid);
+        return await FormMgr.close({prefabUrl: this.fid, type: this.formType});
     }
     
 }
 
 export class UITips extends UIBase {
     formType = FormType.Tips;
+
+    public async closeSelf(): Promise<boolean> {
+        return await FormMgr.close({prefabUrl: this.fid, type: this.formType});
+    }
 }
 
 // @ts-ignore

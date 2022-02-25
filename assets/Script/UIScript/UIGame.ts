@@ -1,5 +1,5 @@
 import UIGame_Auto from "../AutoScripts/UIGame_Auto";
-import SceneMgr from "../UIFrame/SceneMgr";
+import FormMgr from "../UIFrame/FormMgr";
 import { UIScreen } from "../UIFrame/UIForm";
 
 const {ccclass, property} = cc._decorator;
@@ -14,7 +14,7 @@ export default class UIGame extends UIScreen {
 
     start () {
         this.view.Back.addClick(() => {
-            SceneMgr.back();
+            FormMgr.backScene();
         }, this);
     }
 

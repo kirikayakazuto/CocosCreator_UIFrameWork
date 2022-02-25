@@ -2,7 +2,7 @@ import UISetting_Auto from "../AutoScripts/UISetting_Auto";
 import AdapterMgr from "../UIFrame/AdapterMgr";
 import CocosHelper from "../UIFrame/CocosHelper";
 import { ModalOpacity } from "../UIFrame/config/SysDefine";
-import SceneMgr from "../UIFrame/SceneMgr";
+import FormMgr from "../UIFrame/FormMgr";
 import { ModalType } from "../UIFrame/Struct";
 import { UIWindow } from "../UIFrame/UIForm";
 import WindowMgr from "../UIFrame/WindowMgr";;
@@ -22,21 +22,21 @@ export default class UISetting extends UIWindow {
     start () {
 
         this.view.Pop.addClick(() => {
-            WindowMgr.open(UIConfig.UIPop.prefabUrl);
-            WindowMgr.open(UIConfig.UITips.prefabUrl, "关闭后才显示的弹窗1", {showWait: true});
-            WindowMgr.open(UIConfig.UITips.prefabUrl, "关闭后才显示的弹窗2", {showWait: true})
+            FormMgr.open(UIConfig.UIPop);
+            FormMgr.open(UIConfig.UITips, "关闭后才显示的弹窗1", {showWait: true});
+            FormMgr.open(UIConfig.UITips, "关闭后才显示的弹窗2", {showWait: true})
         }, this);
 
         this.view.Mobx.addClick(() => {
-            WindowMgr.open(UIConfig.UIMobx.prefabUrl);
+            FormMgr.open(UIConfig.UIMobx);
         }, this);
 
         this.view.Capture.addClick(() => {
-            SceneMgr.open(UIConfig.UICapture.prefabUrl);
+            FormMgr.open(UIConfig.UICapture);
         }, this);
 
         this.view.Light.addClick(() => {
-            SceneMgr.open(UIConfig.UILight.prefabUrl);
+            FormMgr.open(UIConfig.UILight);
         }, this);
     }
 

@@ -1,13 +1,16 @@
+import UIConfig from "../../UIConfig";
+import { IFormConfig } from "../Struct";
+
 /**窗体类型 */
 export enum FormType {
     /** 屏幕 */
-    Screen,
+    Screen = "UIScreen",
     /** 固定窗口 */
-    Fixed,
+    Fixed = "UIFixed",
     /** 弹出窗口 */
-    Window,
+    Window = "UIWindow",
     /** 独立窗口 */
-    Tips,
+    Tips = "UITips",
 }
 /**透明度类型 */
 export enum ModalOpacity {
@@ -33,6 +36,7 @@ export enum UIState {
 }
 /** 常量 */
 export class SysDefine {
+    public static defaultLoadingForm: IFormConfig = UIConfig.UILoading;
     /* 路径常量 */
     public static SYS_PATH_CANVAS = "Canvas";
     public static SYS_PATH_UIFORMS_CONFIG_INFO = "UIFormsConfigInfo";

@@ -3,7 +3,7 @@ import TexturePlus from "../Common/Components/TexturePlus";
 import Light from "../Common/Light/Light";
 import LightUtils from "../Common/Light/LightUtils";
 import Obstacle from "../Common/Light/Obstacle";
-import SceneMgr from "../UIFrame/SceneMgr";
+import FormMgr from "../UIFrame/FormMgr";
 import { UIScreen } from "../UIFrame/UIForm";
 
 const {ccclass, property} = cc._decorator;
@@ -55,7 +55,7 @@ export default class UILight extends UIScreen {
         }
 
         this.view.Back.addClick(() => {
-            SceneMgr.back();
+            FormMgr.backScene();
         }, this);
     }
 

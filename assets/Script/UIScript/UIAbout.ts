@@ -1,5 +1,5 @@
 import UIAbout_Auto from "../AutoScripts/UIAbout_Auto";
-import SceneMgr from "../UIFrame/SceneMgr";
+import FormMgr from "../UIFrame/FormMgr";
 import { UIScreen } from "../UIFrame/UIForm";
 
 const {ccclass, property} = cc._decorator;
@@ -15,7 +15,7 @@ export default class UIAbout extends UIScreen {
 
     start () {
         this.view.Close.addClick(() => {
-            SceneMgr.back();
+            FormMgr.backScene();
         }, this);
     }
 

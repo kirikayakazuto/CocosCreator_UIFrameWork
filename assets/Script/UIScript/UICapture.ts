@@ -2,7 +2,7 @@ import UICapture_Auto from "../AutoScripts/UICapture_Auto";
 import CameraCapture from "../Common/Components/CameraCapture";
 import DrawBorad from "../Common/Components/DrawBorad";
 import TouchPlus from "../Common/Components/TouchPlus";
-import SceneMgr from "../UIFrame/SceneMgr";
+import FormMgr from "../UIFrame/FormMgr";
 import { UIScreen } from "../UIFrame/UIForm";
 
 const {ccclass, property} = cc._decorator;
@@ -32,7 +32,7 @@ export default class UICapture extends UIScreen {
         });
 
         this.view.Back.addClick(() => {
-            SceneMgr.back();
+            FormMgr.backScene();
         }, this);
         this.view.Capture.addClick(this.onClickCapture, this);
         this.view.Pen.addClick(this.onClickPen, this);

@@ -1,5 +1,5 @@
 import UIHome_Auto from "../AutoScripts/UIHome_Auto";
-import SceneMgr from "../UIFrame/SceneMgr";
+import FormMgr from "../UIFrame/FormMgr";
 import { UIFixed, UIScreen } from "../UIFrame/UIForm";
 import UIManager from "../UIFrame/UIManager";
 import UIConfig from "./../UIConfig";
@@ -23,15 +23,15 @@ export default class UIHome extends UIScreen {
 
     start () {
         this.view.Start.addClick(() => {
-            SceneMgr.open(UIConfig.UIMap.prefabUrl);
+            FormMgr.open(UIConfig.UIMap);
         }, this);
 
         this.view.About.addClick(() => {
-            SceneMgr.open(UIConfig.UIAbout.prefabUrl);
+            FormMgr.open(UIConfig.UIAbout);
         }, this);
 
         this.view.Back.addClick(() => {
-            SceneMgr.back();
+            FormMgr.backScene();
         }, this);
     }
 

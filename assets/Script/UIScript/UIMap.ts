@@ -1,6 +1,5 @@
 import UIMap_Auto from "../AutoScripts/UIMap_Auto";
-import FixedMgr from "../UIFrame/FixedMgr";
-import SceneMgr from "../UIFrame/SceneMgr";
+import FormMgr from "../UIFrame/FormMgr";
 import { UIScreen } from "../UIFrame/UIForm";
 import UIConfig from "./../UIConfig";
 
@@ -16,16 +15,16 @@ export default class UIMap extends UIScreen {
     // onLoad () {}
 
     async load() {
-        await FixedMgr.open(UIConfig.UIFunction.prefabUrl);
+        await FormMgr.open(UIConfig.UIFunction);
         return '';
     }
 
     start () {
         this.view.Round.addClick(() => {
-            SceneMgr.open(UIConfig.UIGame.prefabUrl);
+            FormMgr.open(UIConfig.UIGame);
         }, this);
         this.view.Back.addClick(() => {
-            SceneMgr.back();
+            FormMgr.backScene();
         }, this);
     }
 

@@ -1,7 +1,6 @@
 import UINavigator_Auto from "../AutoScripts/UINavigator_Auto";
-import SceneMgr from "../UIFrame/SceneMgr";
+import FormMgr from "../UIFrame/FormMgr";
 import { UIScreen } from "../UIFrame/UIForm";
-import WindowMgr from "../UIFrame/WindowMgr";
 import UIConfig from "./../UIConfig";
 
 
@@ -23,28 +22,28 @@ export default class UINavigator extends UIScreen {
         let node = e.getCurrentTarget();
         switch(node.name) {
             case "project":
-                SceneMgr.open(UIConfig.UIHome.prefabUrl);
+                FormMgr.open(UIConfig.UIHome);
                 break;
             case "light":
-                SceneMgr.open(UIConfig.UILight.prefabUrl);
+                FormMgr.open(UIConfig.UILight);
                 break;
             case "capture":
-                SceneMgr.open(UIConfig.UICapture.prefabUrl);
+                FormMgr.open(UIConfig.UICapture);
                 break;
             case "mobx":
-                WindowMgr.open(UIConfig.UIMobx.prefabUrl);
+                FormMgr.open(UIConfig.UIMobx);
                 break;
             case "dungeon":
-                SceneMgr.open(UIConfig.UIDungeon.prefabUrl);
+                FormMgr.open(UIConfig.UIDungeon);
                 break;
             case "splitTexture":
-                SceneMgr.open(UIConfig.UISplitTexture.prefabUrl);
+                FormMgr.open(UIConfig.UISplitTexture);
                 break;
             case "scrollTexture":
-                SceneMgr.open(UIConfig.UIScrollTexture.prefabUrl);
+                FormMgr.open(UIConfig.UIScrollTexture);
                 break;
             case "meshTexture":
-                SceneMgr.open(UIConfig.UIMeshTexture.prefabUrl);
+                FormMgr.open(UIConfig.UIMeshTexture);
                 break;
         }
     }

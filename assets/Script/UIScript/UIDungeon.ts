@@ -1,6 +1,6 @@
 import UIDungeon_Auto from "../AutoScripts/UIDungeon_Auto";
 import { Dungeon, GridType } from "../Common/Utils/Dungeon";
-import SceneMgr from "../UIFrame/SceneMgr";
+import FormMgr from "../UIFrame/FormMgr";
 import { UIScreen } from "../UIFrame/UIForm";
 
 const {ccclass, property} = cc._decorator;
@@ -16,7 +16,7 @@ export default class UIDungeon extends UIScreen {
 
     start() {
         this.view.Back.addClick(() => {
-            SceneMgr.back();
+            FormMgr.backScene();
         }, this);
         this.dungeon = new Dungeon(63, 63);
         let map = this.dungeon.generate();

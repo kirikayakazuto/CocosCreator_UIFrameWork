@@ -1,5 +1,6 @@
 import UIFunction_Auto from "../AutoScripts/UIFunction_Auto";
 import AdapterMgr, { AdapterType } from "../UIFrame/AdapterMgr";
+import FormMgr from "../UIFrame/FormMgr";
 import { UIFixed } from "../UIFrame/UIForm";
 import WindowMgr from "../UIFrame/WindowMgr";
 import UIConfig from "./../UIConfig";
@@ -17,15 +18,15 @@ export default class UIFunction extends UIFixed {
         AdapterMgr.inst.adapteByType(AdapterType.Bottom, this.node, 50);
         
         this.view.Setting.addClick(() => {            
-            WindowMgr.open(UIConfig.UISetting.prefabUrl);
+            FormMgr.open(UIConfig.UISetting);
         }, this);
 
         this.view.Skills.addClick(() => {
-            WindowMgr.open(UIConfig.UISkills.prefabUrl);
+            FormMgr.open(UIConfig.UISkills);
         }, this);
 
         this.view.ScrollHelper.addClick(() => {
-            WindowMgr.open(UIConfig.UIScrollPlus.prefabUrl)
+            FormMgr.open(UIConfig.UIScrollPlus)
         }, this);
 
         

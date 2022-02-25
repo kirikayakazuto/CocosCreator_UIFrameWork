@@ -1,8 +1,9 @@
+import { IFormData } from "./Struct";
 import UIManager from "./UIManager";
 
 class FixedMgr {
-    public async open(url: string) {
-        return await UIManager.getInstance().openForm(url);
+    public async open(url: string, params?: any, formData?: IFormData) {
+        return await UIManager.getInstance().openForm(url, params, formData);
     }
     public async close(url: string) {
         return await UIManager.getInstance().closeForm(url);
