@@ -258,7 +258,5 @@ export default class CocosHelper {
         newTexture.readPixels(data, rect.x, rect.y, rect.width, rect.height);
         return data;
     }
-
-
 }
 

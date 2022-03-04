@@ -1,5 +1,5 @@
 
-import { SysDefine } from "./config/SysDefine";
+import { ModalOpacity, SysDefine } from "./config/SysDefine";
 import UIModalScript from "./UIModalScript";
 import { ModalType } from "./Struct";
 import { UIWindow } from "./UIForm";
@@ -18,12 +18,17 @@ export default class ModalMgr extends cc.Component {
             this._inst = new ModalMgr();
 
             let node = new cc.Node("UIModalNode");
-            cc.find(ModalMgr.popUpRoot).addChild(node);
+            let rootNode = cc.find(ModalMgr.popUpRoot);
+            rootNode.addChild(node);
             ModalMgr.inst.uiModal = node.addComponent(UIModalScript);
-            ModalMgr.inst.uiModal.init();
+
+            let camera = rootNode.addComponent(cc.Camera);
+            camera.enabled = false;
+            ModalMgr.inst.uiModal.init(camera, new Uint8Array(cc.visibleRect.width * cc.visibleRect.height * 4));
         }
         return this._inst;
     }
+
     private uiModal:UIModalScript = null;
 
     /** 为mask添加颜色 */
@@ -48,5 +53,9 @@ export default class ModalMgr extends cc.Component {
                 break;
             }
         }
+        
     }
+
+
 }
+

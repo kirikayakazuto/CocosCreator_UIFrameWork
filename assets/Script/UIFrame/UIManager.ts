@@ -10,6 +10,7 @@ import { EventCenter } from "./EventCenter";
 import { EventType } from "./EventType";
 
 export default class UIManager {    
+    private _UIROOT: cc.Node = null;    // UIROOT
     private _ndScreen: cc.Node = null;  // 全屏显示的UI 挂载结点
     private _ndFixed: cc.Node  = null;  // 固定显示的UI
     private _ndPopUp: cc.Node  = null;  // 弹出窗口
@@ -32,7 +33,7 @@ export default class UIManager {
                 scene.addComponent(Scene);
                 scene.parent = canvas;
             }
-            let UIROOT = new cc.Node(SysDefine.SYS_UIROOT_NODE);
+            let UIROOT = this.instance._UIROOT = new cc.Node(SysDefine.SYS_UIROOT_NODE);
             scene.addChild(UIROOT);
 
             UIROOT.addChild(this.instance._ndScreen = new cc.Node(SysDefine.SYS_SCREEN_NODE));
@@ -341,6 +342,10 @@ export default class UIManager {
     /** 获得Component */
     public getForm(fId: string) {
         return this._allForms[fId];
+    }
+
+    public getUIROOT() {
+        return this._UIROOT;
     }
 }
 

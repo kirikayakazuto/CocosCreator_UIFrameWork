@@ -26,6 +26,8 @@ export enum ModalOpacity {
     OpacityHigh,
     /** 完全不透明 */
     OpacityFull,
+    /** 高斯模糊 */
+    GaussianBlur
 }
 /** UI的状态 */
 export enum UIState {
@@ -52,6 +54,7 @@ export class SysDefine {
     public static SYS_FIXED_NODE = "FixedUI";
     public static SYS_POPUP_NODE = "PopUp";  
     public static SYS_TOPTIPS_NODE = "TopTips";
+    public static SYS_MODAL_NODE = "UIModalNode";
     /** 规范符号 */
     public static SYS_STANDARD_Prefix = '_';
     public static SYS_STANDARD_Separator = '$';

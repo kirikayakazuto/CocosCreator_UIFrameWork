@@ -1,6 +1,6 @@
 import UIConfig from "./UIConfig";
 import FormMgr from "./UIFrame/FormMgr";
-
+const BAN_FALG = (cc.RenderFlow.FLAG_RENDER | cc.RenderFlow.FLAG_POST_RENDER);
 const {ccclass, property} = cc._decorator;
 
 @ccclass

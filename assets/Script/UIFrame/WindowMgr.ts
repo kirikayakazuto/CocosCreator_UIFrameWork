@@ -26,8 +26,9 @@ class WindowMgr {
             return await UIManager.getInstance().openForm(prefabPath, params, formData);
         }
         
+        // 入等待队列
         this._waitingList.enqueue({prefabPath: prefabPath, params: params, formData: formData});
-        
+        // 加载窗体
         return await UIManager.getInstance().loadUIForm(prefabPath);
     }
 

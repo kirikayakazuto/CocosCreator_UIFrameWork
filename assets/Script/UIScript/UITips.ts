@@ -8,7 +8,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class UITips extends UIWindow {
 
-    modalType = new ModalType(ModalOpacity.OpacityHalf, true);
+    modalType = new ModalType(ModalOpacity.GaussianBlur, true);
 
     view: UITips_Auto;
     
