@@ -9,6 +9,14 @@ export class LoadProgress {
 /** 一些cocos api 的封装, promise函数统一加上sync后缀 */
 export default class CocosHelper {
 
+    public static async callInNextTick() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(true);
+            }, 0);
+        })
+    }
+
     /** 加载进度 */
     public static loadProgress = new LoadProgress();
 

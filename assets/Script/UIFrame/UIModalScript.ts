@@ -69,8 +69,10 @@ export default class UIModalScript extends cc.Component {
             break;
             case ModalOpacity.GaussianBlur:
                 o = 255;
-                this.sprite.spriteFrame = new cc.SpriteFrame(this.genGaussBlur(this.pixelData, this.blurCamera));
-                this.sprite.spriteFrame.setFlipY(true);
+                this.genGaussBlur(this.pixelData, this.blurCamera).then((texture: cc.Texture2D) => {
+                    this.sprite.spriteFrame = new cc.SpriteFrame(texture);
+                    this.sprite.spriteFrame.setFlipY(true);
+                });
                 this.node.color = new cc.Color(255, 255, 255);
             break;
         }
@@ -113,7 +115,7 @@ export default class UIModalScript extends cc.Component {
         return this._texture;
     }
 
-    private genGaussBlur(pixes: Uint8Array, camera: cc.Camera) {
+    private async genGaussBlur(pixes: Uint8Array, camera: cc.Camera) {
 
         let dirtyNodes: cc.Node[] = [];
         let disrenderChildren = () => {
@@ -136,28 +138,22 @@ export default class UIModalScript extends cc.Component {
                 node._renderFlag |= cc.RenderFlow.FLAG_CHILDREN;
             }
         }
-        disrenderChildren();
-        
         let renderTexture = new cc.RenderTexture();
         renderTexture.initWithSize(cc.visibleRect.width, cc.visibleRect.height, cc.game._renderContext.STENCIL_INDEX8);
         camera.enabled = true;
         camera.targetTexture = renderTexture;
+        disrenderChildren();
         camera.render();
+        rerenderChildren();
         renderTexture.readPixels(pixes, 0, 0, renderTexture.width, renderTexture.height);
-        pixes = getGaussBlur(pixes, renderTexture.width, renderTexture.height, 5, 0);
+        pixes = await getGaussBlur(pixes, renderTexture.width, renderTexture.height, 5, 0);
         camera.enabled = false;
         renderTexture.initWithData(pixes, cc.Texture2D.PixelFormat.RGBA8888, renderTexture.width, renderTexture.height);
-
-        rerenderChildren();
         return renderTexture;
-    }
-
-    public updateTexture() {
-
     }
 }
 
-function getGaussBlur(pixes: Uint8Array, width: number, height: number,radius: number, sigma: number) {
+async function getGaussBlur(pixes: Uint8Array, width: number, height: number,radius: number, sigma: number) {
     let gaussMatrix = [],
         gaussSum = 0,
         x: number, y: number,
@@ -175,12 +171,13 @@ function getGaussBlur(pixes: Uint8Array, width: number, height: number,radius: n
         g = a * Math.exp(b * x * x);
         gaussMatrix[i] = g;
         gaussSum += g;
-
     }
+
     //归一化, 保证高斯矩阵的值在[0,1]之间
     for (i = 0, len = gaussMatrix.length; i < len; i++) {
         gaussMatrix[i] /= gaussSum;
     }
+
     //x 方向一维高斯运算
     for (y = 0; y < height; y++) {
         for (x = 0; x < width; x++) {
@@ -194,19 +191,19 @@ function getGaussBlur(pixes: Uint8Array, width: number, height: number,radius: n
                     r += pixes[i] * gaussMatrix[j + radius];
                     g += pixes[i + 1] * gaussMatrix[j + radius];
                     b += pixes[i + 2] * gaussMatrix[j + radius];
-                    // a += pixes[i + 3] * gaussMatrix[j];
                     gaussSum += gaussMatrix[j + radius];
                 }
             }
             i = (y * width + x) * 4;
             // 除以 gaussSum 是为了消除处于边缘的像素, 高斯运算不足的问题
-            // console.log(gaussSum)
             pixes[i] = r / gaussSum;
             pixes[i + 1] = g / gaussSum;
             pixes[i + 2] = b / gaussSum;
             pixes[i + 3] = 255;
         }
+        await CocosHelper.callInNextTick();
     }
+
     //y 方向一维高斯运算
     for (x = 0; x < width; x++) {
         for (y = 0; y < height; y++) {
@@ -219,7 +216,6 @@ function getGaussBlur(pixes: Uint8Array, width: number, height: number,radius: n
                     r += pixes[i] * gaussMatrix[j + radius];
                     g += pixes[i + 1] * gaussMatrix[j + radius];
                     b += pixes[i + 2] * gaussMatrix[j + radius];
-                    // a += pixes[i + 3] * gaussMatrix[j];
                     gaussSum += gaussMatrix[j + radius];
                 }
             }
@@ -227,12 +223,11 @@ function getGaussBlur(pixes: Uint8Array, width: number, height: number,radius: n
             pixes[i] = r / gaussSum;
             pixes[i + 1] = g / gaussSum;
             pixes[i + 2] = b / gaussSum;
-            // pixes[i] = r ;
-            // pixes[i + 1] = g ;
-            // pixes[i + 2] = b ;
             pixes[i + 3] = 255;
         }
+        await CocosHelper.callInNextTick();
     }
+
     //end
     return pixes;
 }

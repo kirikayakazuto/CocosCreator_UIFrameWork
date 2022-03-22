@@ -30,14 +30,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 12
+        "__id__": 13
       },
       {
-        "__id__": 13
+        "__id__": 14
       }
     ],
     "_prefab": {
-      "__id__": 14
+      "__id__": 15
     },
     "_opacity": 255,
     "_color": {
@@ -188,7 +188,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "420b6552-3ef0-4550-9959-ab25699e8eeb"
+      "__id__": 0
     },
     "fileId": "196u4R9AFGgq0dXbB6hXOH",
     "sync": false
@@ -372,7 +372,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "420b6552-3ef0-4550-9959-ab25699e8eeb"
+      "__id__": 0
     },
     "fileId": "edi0EZ61lPaap4KHkElEaz",
     "sync": false
@@ -389,10 +389,13 @@
     "_components": [
       {
         "__id__": 10
+      },
+      {
+        "__id__": 11
       }
     ],
     "_prefab": {
-      "__id__": 11
+      "__id__": 12
     },
     "_opacity": 255,
     "_color": {
@@ -474,12 +477,86 @@
     "_id": ""
   },
   {
+    "__type__": "3eaf8iLxgtDEKVcEmFvrbqy",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 9
+    },
+    "_enabled": true,
+    "_normalMaterial": null,
+    "_grayMaterial": null,
+    "duration": 0.1,
+    "zoomScale": 1.2,
+    "clickEvents": [],
+    "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
+    "_N$transition": 0,
+    "transition": 0,
+    "_N$normalColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_N$pressedColor": {
+      "__type__": "cc.Color",
+      "r": 211,
+      "g": 211,
+      "b": 211,
+      "a": 255
+    },
+    "pressedColor": {
+      "__type__": "cc.Color",
+      "r": 211,
+      "g": 211,
+      "b": 211,
+      "a": 255
+    },
+    "_N$hoverColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "hoverColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_N$disabledColor": {
+      "__type__": "cc.Color",
+      "r": 124,
+      "g": 124,
+      "b": 124,
+      "a": 255
+    },
+    "_N$normalSprite": null,
+    "_N$pressedSprite": null,
+    "pressedSprite": null,
+    "_N$hoverSprite": null,
+    "hoverSprite": null,
+    "_N$disabledSprite": null,
+    "_N$target": null,
+    "audioUrl": "",
+    "_N$string": "",
+    "openContinuous": true,
+    "continuousTime": 1,
+    "openLongPress": false,
+    "longPressTime": 1,
+    "_id": ""
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "420b6552-3ef0-4550-9959-ab25699e8eeb"
+      "__id__": 0
     },
     "fileId": "120VKY7TZLNLKXomZt1Vxj",
     "sync": false
@@ -513,7 +590,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "420b6552-3ef0-4550-9959-ab25699e8eeb"
+      "__id__": 0
     },
     "fileId": "",
     "sync": false

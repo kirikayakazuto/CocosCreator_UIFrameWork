@@ -15,7 +15,7 @@ export default class UISetting extends UIWindow {
     willDestory = true;
     view: UISetting_Auto;
 
-    modalType = new ModalType(ModalOpacity.GaussianBlur, true);
+    modalType = new ModalType(ModalOpacity.OpacityHalf, true);
 
     // onLoad () {}
 
