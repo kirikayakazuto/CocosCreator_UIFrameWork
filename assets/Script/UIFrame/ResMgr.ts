@@ -1,3 +1,5 @@
+import * as cc from "cc";
+
 import CocosHelper from "./CocosHelper";
 import UIBase from "./UIBase";
 import { EventCenter } from "./EventCenter";

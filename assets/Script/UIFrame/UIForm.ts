@@ -1,3 +1,5 @@
+import * as cc from "cc";
+
 import CocosHelper from "./CocosHelper";
 import { FormType } from "./config/SysDefine";
 import FormMgr from "./FormMgr";
@@ -22,8 +24,10 @@ export class UIWindow extends UIBase {
 
     /** 显示效果 */
     public async showEffect() {
-        this.node.scale = 0;
-        await CocosHelper.runTweenSync(this.node, cc.tween().to(0.3, {scale: 1}, cc.easeBackOut()));
+        this.node.setScale(cc.v3(0, 0));
+        
+        
+        await CocosHelper.runTweenSync(this.node, cc.tween().to(0.3, {scale: new cc.Vec3(1, 1)}, {}));
     }
 
     public async closeSelf(): Promise<boolean> {

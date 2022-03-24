@@ -1,3 +1,4 @@
+import * as cc from "cc";
 
 import { ModalOpacity, SysDefine } from "./config/SysDefine";
 import UIModalScript from "./UIModalScript";
@@ -21,10 +22,7 @@ export default class ModalMgr extends cc.Component {
             let rootNode = cc.find(ModalMgr.popUpRoot);
             rootNode.addChild(node);
             ModalMgr.inst.uiModal = node.addComponent(UIModalScript);
-
-            let camera = rootNode.addComponent(cc.Camera);
-            camera.enabled = false;
-            ModalMgr.inst.uiModal.init(camera, new Uint8Array(cc.visibleRect.width * cc.visibleRect.height * 4));
+            ModalMgr.inst.uiModal.init();
         }
         return this._inst;
     }
@@ -47,7 +45,7 @@ export default class ModalMgr extends cc.Component {
         }
         for(let i=coms.length-1; i>=0; i--) {
             if(coms[i].modalType.opacity > 0) {
-                cc.find(ModalMgr.popUpRoot).addChild(this.uiModal.node, Math.max(coms[i].node.zIndex-1, 0));
+                cc.find(ModalMgr.popUpRoot).insertChild(this.uiModal.node, Math.max(coms[i].node.getSiblingIndex()-1, 0));
                 this.uiModal.fid = coms[i].fid;
                 this.showModal(coms[i].modalType);
                 break;

@@ -1,3 +1,5 @@
+import * as cc from "cc";
+
 import { FormType } from "./config/SysDefine";
 import FixedMgr from "./FixedMgr";
 import SceneMgr from "./SceneMgr";

@@ -1,3 +1,5 @@
+import * as cc from "cc";
+
 import { Pool, IPool } from "../Common/Utils/Pool";
 
 export class EventInfo implements IPool {

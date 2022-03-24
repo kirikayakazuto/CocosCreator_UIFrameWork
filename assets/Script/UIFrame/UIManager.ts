@@ -1,3 +1,5 @@
+import * as cc from "cc";
+
 import UIBase from "./UIBase";
 import { SysDefine, FormType } from "./config/SysDefine";
 import ResMgr from "./ResMgr";
@@ -27,7 +29,7 @@ export default class UIManager {
         if(this.instance == null) {
             this.instance = new UIManager();
             let canvas = cc.director.getScene().getChildByName("Canvas");
-            let scene = canvas.getChildByName(SysDefine.SYS_SCENE_NODE);
+            let scene: any = canvas.getChildByName(SysDefine.SYS_SCENE_NODE);
             if(!scene) {
                 scene = new cc.Node(SysDefine.SYS_SCENE_NODE);
                 scene.addComponent(Scene);
@@ -233,7 +235,7 @@ export default class UIManager {
         this._windows.push(com);
         
         for(let i=0; i<this._windows.length; i++) {
-            this._windows[i].node.zIndex = i+1;
+            this._windows[i].node.setSiblingIndex(i+1);
         }
 
         com.onShow(params);
@@ -349,6 +351,4 @@ export default class UIManager {
     }
 }
 
-if(CC_DEBUG) {
-    window['UIManager'] = UIManager;
-}
+window['UIManager'] = UIManager;

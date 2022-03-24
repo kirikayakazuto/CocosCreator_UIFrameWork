@@ -1,19 +1,17 @@
-import UIConfig from "./UIConfig";
-import FormMgr from "./UIFrame/FormMgr";
-const BAN_FALG = (cc.RenderFlow.FLAG_RENDER | cc.RenderFlow.FLAG_POST_RENDER);
-const {ccclass, property} = cc._decorator;
 
-@ccclass
-export default class Main extends cc.Component {
+import { _decorator, Component, Node } from 'cc';
+import { FormType } from './UIFrame/config/SysDefine';
+import FormMgr from './UIFrame/FormMgr';
+const { ccclass, property } = _decorator;
 
-    onLoad() {        
-    }
+ 
+@ccclass('Main')
+export class Main extends Component {
 
     start () {
-        FormMgr.open(UIConfig.UINavigator, null, {loadingForm: UIConfig.UILoading});
+        FormMgr.open({
+            prefabUrl: "forms/UIHome",
+            type: FormType.Screen
+        });
     }
-    
-    onDestroy() {
-        
-    }      
 }

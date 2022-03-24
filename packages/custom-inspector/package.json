@@ -1,9 +1,0 @@
-{
-  "name": "custom-inspector",
-  "version": "0.0.1",
-  "description": "The package template for getting started.",
-  "author": "honmono",
-  "main": "main.js",
-  "main-menu": {
-  }
-}

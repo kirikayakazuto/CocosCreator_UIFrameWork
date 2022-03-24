@@ -1,3 +1,4 @@
+import * as cc from "cc";
 import PriorityQueue from "../Common/Utils/PriorityQueue";
 
 /**

@@ -1,4 +1,4 @@
-import UIConfig from "../../UIConfig";
+//import UIConfig from "../../UIConfig";
 import { IFormConfig } from "../Struct";
 
 /**窗体类型 */
@@ -38,7 +38,7 @@ export enum UIState {
 }
 /** 常量 */
 export class SysDefine {
-    public static defaultLoadingForm: IFormConfig = UIConfig.UILoading;
+    public static defaultLoadingForm: IFormConfig = null;
     /* 路径常量 */
     public static SYS_PATH_CANVAS = "Canvas";
     public static SYS_PATH_UIFORMS_CONFIG_INFO = "UIFormsConfigInfo";

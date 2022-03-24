@@ -1,3 +1,5 @@
+import * as cc from "cc";
+
 import { SysDefine } from "./config/SysDefine";
 import { IFormConfig, IFormData } from "./Struct";
 import TipsMgr from "./TipsMgr";

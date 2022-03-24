@@ -9,7 +9,7 @@ class Game {
     public inited = false;
     public configMgr: ConfigMgr = null;
     public playerMgr: PlayerMgr = null;
-    public async init(uiRoot: cc.Node) {
+    public async init() {
         // 初始化Manager, 例如new ConfigMgr();
         this.configMgr = new ConfigMgr();
         this.playerMgr = new PlayerMgr();

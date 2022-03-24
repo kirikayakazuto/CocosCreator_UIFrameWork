@@ -1,8 +1,4 @@
-/**
- * @Author: 邓朗 
- * @Date: 2019-06-12 17:18:04  
- * @Describe: 适配组件, 主要适配背景大小,窗体的位置
- */
+import * as cc from "cc";
 
 let flagOffset = 0;
 const _None = 1 << flagOffset ++;
@@ -33,7 +29,7 @@ export enum AdapterType {
 
 const {ccclass, property} = cc._decorator;
 
-@ccclass
+@ccclass("AdapterMgr")
 export default class AdapterMgr {
 
     private static _instance: AdapterMgr = null;                     // 单例
@@ -66,6 +62,7 @@ export default class AdapterMgr {
         if(!widget) {
             widget = node.addComponent(cc.Widget);
         }
+        let trans = node.getComponent(cc.UITransform);
         switch(flag) {
             case _None:
                 break;
@@ -80,11 +77,11 @@ export default class AdapterMgr {
                 widget.right = distance ? distance : 0;
                 break;
             case _Top:
-                if(cc.sys.platform === cc.sys.WECHAT_GAME) {     // 微信小游戏适配刘海屏
-                    let menuInfo = window["wx"].getMenuButtonBoundingClientRect();
-                    let systemInfo = window["wx"].getSystemInfoSync();
-                    distance += cc.find("Canvas").height * (menuInfo.top / systemInfo.screenHeight);
-                }
+                // if(cc.sys.platform === cc.sys.WECHAT_GAME) {     // 微信小游戏适配刘海屏
+                //     let menuInfo = window["wx"].getMenuButtonBoundingClientRect();
+                //     let systemInfo = window["wx"].getSystemInfoSync();
+                //     distance += cc.find("Canvas").height * (menuInfo.top / systemInfo.screenHeight);
+                // }
                 widget.isAlignTop = true;
                 widget.isAbsoluteTop = true;
                 widget.top = distance ? distance : 0;
@@ -95,12 +92,12 @@ export default class AdapterMgr {
                 widget.bottom = distance ? distance : 0;
                 break;
             case _FullWidth:
-                node.height /= node.width / this.visibleSize.width;
-                node.width = this.visibleSize.width;
+                trans.height /= trans.width / this.visibleSize.width;
+                trans.width = this.visibleSize.width;
                 break;
             case _FullHeight:
-                node.width /= node.height / this.visibleSize.height;
-                node.height = this.visibleSize.height;
+                trans.width /= trans.height / this.visibleSize.height;
+                trans.height = this.visibleSize.height;
                 break;
         }
     }

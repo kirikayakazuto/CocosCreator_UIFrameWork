@@ -1,3 +1,5 @@
+import * as cc from "cc";
+
 import UIManager from "./UIManager";
 import { FormType } from "./config/SysDefine";
 import { IFormData } from "./Struct";
@@ -68,8 +70,9 @@ export default class UIBase extends cc.Component {
         if(!this._blocker)  {
             let node = new cc.Node('block_input_events');
             this._blocker = node.addComponent(cc.BlockInputEvents);
-            this._blocker.node.setContentSize(AdapterMgr.inst.visibleSize);
-            this.node.addChild(this._blocker.node, cc.macro.MAX_ZINDEX);
+            let trans = node.getComponent(cc.UITransform);
+            trans.setContentSize(AdapterMgr.inst.visibleSize);
+            this.node.insertChild(this._blocker.node, 9999);
         }
         this._blocker.node.active = block;
     }

@@ -1,3 +1,5 @@
+import * as cc from "cc";
+
 import CocosHelper from "./CocosHelper";
 import { SysDefine } from "./config/SysDefine";
 
@@ -29,11 +31,12 @@ export default class SoundMgr extends cc.Component {
         }
         this.setVolumeToLocal();
 
-        cc.game.on(cc.game.EVENT_HIDE, () => {
-            cc.audioEngine.pauseAll();
+        cc.game.on(cc.Game.EVENT_HIDE, () => {
+            //cc.audioEngine.pauseAll();
+            cc
         }, this);
-        cc.game.on(cc.game.EVENT_SHOW, () => {
-            cc.audioEngine.resumeAll();
+        cc.game.on(cc.Game.EVENT_SHOW, () => {
+            //cc.audioEngine.resumeAll();
         }, this);
     }
     /** volume */
@@ -59,24 +62,24 @@ export default class SoundMgr extends cc.Component {
         if(!url || url === '') return ;
         
         if(this.audioCache[url]) {
-            cc.audioEngine.playMusic(this.audioCache[url], loop);
+            //cc.audioEngine.playMusic(this.audioCache[url], loop);
             return ;
         }
         let sound = await CocosHelper.loadResSync<cc.AudioClip>(url, cc.AudioClip);
         this.audioCache[url] = sound;
-        this.currMusicId = cc.audioEngine.playMusic(sound, loop);
+        //this.currMusicId = cc.audioEngine.playMusic(sound, loop);
     }
     /** 播放音效 */
     public async playEffect(url: string, loop = false) {
         if(!url || url === '') return ;
         
         if(this.audioCache[url]) {
-            cc.audioEngine.playEffect(this.audioCache[url], loop);
+            //cc.audioEngine.playEffect(this.audioCache[url], loop);
             return ;
         }
         let sound = await CocosHelper.loadResSync<cc.AudioClip>(url, cc.AudioClip);
         this.audioCache[url] = sound;
-        this.currEffectId = cc.audioEngine.playEffect(sound, loop);
+        //this.currEffectId = cc.audioEngine.playEffect(sound, loop);
     }
 
     /** 从本地读取 */
@@ -89,17 +92,17 @@ export default class SoundMgr extends cc.Component {
     }
     /** 设置音量 */
     private setVolumeToLocal() {
-        cc.audioEngine.setMusicVolume(this.volume.musicVolume);
-        cc.audioEngine.setEffectsVolume(this.volume.effectVolume);
+        // cc.audioEngine.setMusicVolume(this.volume.musicVolume);
+        // cc.audioEngine.setEffectsVolume(this.volume.effectVolume);
 
         cc.sys.localStorage.setItem("Volume_For_Creator", JSON.stringify(this.volume));
     }
 
     public setEffectActive(active: boolean, id: number = -1) {
         if(active) {
-            cc.audioEngine.stop(id < 0 ? this.currEffectId : id);
+            //cc.audioEngine.stop(id < 0 ? this.currEffectId : id);
         }else {
-            cc.audioEngine.resume(id < 0 ? this.currEffectId : id);
+            //cc.audioEngine.resume(id < 0 ? this.currEffectId : id); 
         }
     }
 

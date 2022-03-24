@@ -1,3 +1,5 @@
+import * as cc from "cc";
+
 import Game from "../Logic/Game";
 import AdapterMgr, { AdapterType } from "../UIFrame/AdapterMgr";
 import { EventCenter } from "../UIFrame/EventCenter";
@@ -17,7 +19,7 @@ export default class Scene extends cc.Component {
     public initBlockNode() {
         this.ndBlock = new cc.Node("block");
         this.ndBlock.addComponent(cc.BlockInputEvents);
-        this.node.addChild(this.ndBlock, cc.macro.MAX_ZINDEX);
+        this.node.insertChild(this.ndBlock, 9999);
     }
 
     public async start() {
@@ -31,7 +33,7 @@ export default class Scene extends cc.Component {
         // 第一步 展示loading页面，当然有些默认就是loading页面
 
         // 第二步 初始化游戏（Managers，Configs，SDKs）
-        await Game.init(this.node);
+        await Game.init();
         // 第三步 构建初始场景（加载必要的prefab，音频，texture）
 
         // 第四步 加载主界面UI,关掉loading页面,正式进入游戏
@@ -39,16 +41,11 @@ export default class Scene extends cc.Component {
     }
     /** 初始化事件 */
     private registerEvent() {
-        if(cc.sys.platform === cc.sys.WECHAT_GAME) {
-            wx.onShow(this.onGameShow.bind(this));
-            wx.onHide(this.onGameHide.bind(this));
-        }else {
-            cc.game.on(cc.game.EVENT_SHOW, this.onGameShow, this);
-            cc.game.on(cc.game.EVENT_HIDE, this.onGameHide, this);
-        }
+        cc.game.on(cc.Game.EVENT_SHOW, this.onGameShow, this);
+        cc.game.on(cc.Game.EVENT_HIDE, this.onGameHide, this);
     }
 
-    private onGameShow(param: any) {
+    private onGameShow(param?: any) {
         EventCenter.emit(EventType.GameShow, param);
         cc.director.resume()
     }
