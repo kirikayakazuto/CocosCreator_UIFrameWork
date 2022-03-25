@@ -10,10 +10,12 @@ export default class SoundMgr extends cc.Component {
 
     private audioCache: {[key: string]: cc.AudioClip} = cc.js.createMap();
 
-    private static _inst: SoundMgr = null;                     // 单例
-    public static get inst(): SoundMgr {
+    private static _inst: SoundMgr | null = null;                     // 单例
+    public static get inst(): SoundMgr | null {
         if(this._inst == null) {
-            this._inst = cc.find(SysDefine.SYS_UIROOT_NAME).addComponent<SoundMgr>(this);
+            let root = cc.find(SysDefine.SYS_UIROOT_NAME);
+            if(!root) return null;
+            this._inst = root.addComponent<SoundMgr>(this);
         }
         return this._inst;
     }
@@ -66,7 +68,7 @@ export default class SoundMgr extends cc.Component {
             return ;
         }
         let sound = await CocosHelper.loadResSync<cc.AudioClip>(url, cc.AudioClip);
-        this.audioCache[url] = sound;
+        if(sound) this.audioCache[url] = sound;
         //this.currMusicId = cc.audioEngine.playMusic(sound, loop);
     }
     /** 播放音效 */
@@ -78,7 +80,7 @@ export default class SoundMgr extends cc.Component {
             return ;
         }
         let sound = await CocosHelper.loadResSync<cc.AudioClip>(url, cc.AudioClip);
-        this.audioCache[url] = sound;
+        if(sound) this.audioCache[url] = sound;
         //this.currEffectId = cc.audioEngine.playEffect(sound, loop);
     }
 
@@ -110,6 +112,6 @@ export default class SoundMgr extends cc.Component {
 }
 
 class Volume {
-    musicVolume: number;
-    effectVolume: number;
+    musicVolume: number = 0;
+    effectVolume: number = 0;
 }

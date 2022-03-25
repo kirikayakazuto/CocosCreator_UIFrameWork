@@ -50,6 +50,7 @@ class SceneMgr {
         }
         await this.openLoading(formData?.loadingForm, params, formData);
         let currScene = this._scenes.pop();
+        if(!currScene) return ;
         await UIManager.getInstance().closeForm(currScene);
 
         this._currScene = this._scenes[this._scenes.length-1];
@@ -62,14 +63,15 @@ class SceneMgr {
         if(com) {
             return UIManager.getInstance().closeForm(scenePath);
         }
+        return false;
     }
 
-    private async openLoading(formConfig: IFormConfig, params: any, formData: IFormData) {
+    private async openLoading(formConfig?: IFormConfig, params?: any, formData?: IFormData) {
         let form = formConfig || SysDefine.defaultLoadingForm;
         if(!form) return ;
         await TipsMgr.open(form.prefabUrl, params, formData);
     }
-    private async closeLoading(formConfig: IFormConfig) {
+    private async closeLoading(formConfig?: IFormConfig) {
         let form = formConfig || SysDefine.defaultLoadingForm;
         if(!form) return ;
         await TipsMgr.close(form.prefabUrl);

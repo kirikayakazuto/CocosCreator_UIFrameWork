@@ -12,11 +12,11 @@ import { EventCenter } from "./EventCenter";
 import { EventType } from "./EventType";
 
 export default class UIManager {    
-    private _UIROOT: cc.Node = null;    // UIROOT
-    private _ndScreen: cc.Node = null;  // 全屏显示的UI 挂载结点
-    private _ndFixed: cc.Node  = null;  // 固定显示的UI
-    private _ndPopUp: cc.Node  = null;  // 弹出窗口
-    private _ndTips: cc.Node   = null;  // 独立窗体
+    private _UIROOT: cc.Node | null = null;    // UIROOT
+    private _ndScreen: cc.Node | null = null;  // 全屏显示的UI 挂载结点
+    private _ndFixed: cc.Node | null  = null;  // 固定显示的UI
+    private _ndPopUp: cc.Node | null  = null;  // 弹出窗口
+    private _ndTips: cc.Node | null   = null;  // 独立窗体
 
     private _windows: UIWindow[]                                       = [];                   // 存储弹出的窗体
     private _allForms: {[key: string]: UIBase}                         = cc.js.createMap();    // 所有已经挂载的窗体, 可能没有显示
@@ -24,11 +24,12 @@ export default class UIManager {
     private _tipsForms: {[key: string]: UIBase}                        = cc.js.createMap();    // 独立窗体 独立于其他窗体, 不受其他窗体的影响
     private _loadingForm: {[key: string]: ((value: UIBase) => void)[]} = cc.js.createMap();    // 正在加载的form 
     
-    private static instance: UIManager = null;                                                 // 单例
+    private static instance: UIManager | null = null;                                                 // 单例
     public static getInstance(): UIManager {
         if(this.instance == null) {
             this.instance = new UIManager();
-            let canvas = cc.director.getScene().getChildByName("Canvas");
+            let canvas = cc.director.getScene()?.getChildByName("Canvas");
+            if(!canvas) return this.instance;
             let scene: any = canvas.getChildByName(SysDefine.SYS_SCENE_NODE);
             if(!scene) {
                 scene = new cc.Node(SysDefine.SYS_SCENE_NODE);
@@ -106,7 +107,7 @@ export default class UIManager {
     public async closeForm(prefabPath: string) {
         if(!prefabPath || prefabPath.length <= 0) {
             cc.warn(`${prefabPath}, 参数错误`);
-            return ;
+            return false;
         };
         let com = this._allForms[prefabPath];
         if(!com) return false;
@@ -151,11 +152,11 @@ export default class UIManager {
                 return ;
             }
             this._loadingForm[prefabPath] = [resolve];
-            this._doLoadUIForm(prefabPath).then((com: UIBase) => {
+            this._doLoadUIForm(prefabPath).then((com: UIBase | null) => {
+                if(!com) return ;
                 for(const func of this._loadingForm[prefabPath]) {
                     func(com);
                 }
-                this._loadingForm[prefabPath] = null;
                 delete this._loadingForm[prefabPath];
             });
         });
@@ -167,6 +168,7 @@ export default class UIManager {
      */
     private async _doLoadUIForm(prefabPath: string) {
         let node = await ResMgr.inst.loadForm(prefabPath);
+        if(!node) return null;
         let com = node.getComponent(UIBase);
         if(!com) {
             cc.warn(`${prefabPath} 结点没有绑定UIBase`);
@@ -175,16 +177,16 @@ export default class UIManager {
         node.active = false;                    // 避免baseCom调用了onload方法
         switch(com.formType) {
             case FormType.Screen:
-                this._ndScreen.addChild(node);
+                this._ndScreen?.addChild(node);
             break;
             case FormType.Fixed:
-                this._ndFixed.addChild(node);
+                this._ndFixed?.addChild(node);
             break;
             case FormType.Window:
-                this._ndPopUp.addChild(node);
+                this._ndPopUp?.addChild(node);
             break;
             case FormType.Tips:
-                this._ndTips.addChild(node);
+                this._ndTips?.addChild(node);
             break;
         }
         this._allForms[prefabPath] = com;
@@ -265,7 +267,6 @@ export default class UIManager {
         await this.hideEffect(com);
         com.onAfterHide();
 
-        this._showingForms[fid] = null;
         delete this._showingForms[fid];
     }
    
@@ -276,13 +277,12 @@ export default class UIManager {
         await this.hideEffect(com);
         com.onAfterHide();
 
-        this._showingForms[fid] = null;
         delete this._showingForms[fid];
     }
     
     private async exitToPopup(fid: string) {
         if(this._windows.length <= 0) return;
-        let com: UIWindow = null;
+        let com: UIWindow | null = null;
         for(let i=this._windows.length-1; i>=0; i--) {
             if(this._windows[i].fid === fid) {
                 com = this._windows[i];
@@ -296,7 +296,6 @@ export default class UIManager {
         await this.hideEffect(com);
         com.onAfterHide();
 
-        this._showingForms[fid] = null;
         delete this._showingForms[fid];
     }
     
@@ -307,7 +306,6 @@ export default class UIManager {
         await this.hideEffect(com);
         com.onAfterHide();
 
-        this._tipsForms[fid] = null;
         delete this._tipsForms[fid];
     }
 
@@ -325,7 +323,6 @@ export default class UIManager {
         ResMgr.inst.destoryDynamicRes(com.fid);
         ResMgr.inst.destoryForm(com);
         // 从allmap中删除
-        this._allForms[com.fid] = null;
         delete this._allForms[com.fid];
     }
     /** 窗体是否正在显示 */
@@ -351,4 +348,5 @@ export default class UIManager {
     }
 }
 
+//@ts-ignore
 window['UIManager'] = UIManager;

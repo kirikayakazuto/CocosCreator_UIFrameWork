@@ -3,9 +3,9 @@ import * as cc from "cc";
 import { Pool, IPool } from "../Common/Utils/Pool";
 
 export class EventInfo implements IPool {
-    callback: Function;
+    callback: Function | null = null;
     target: any;
-    once: boolean;
+    once: boolean = false;
 
     free() {
         this.callback = null;
@@ -23,9 +23,9 @@ export class EventInfo implements IPool {
 class RemoveCommand {
     public eventName:string;
     public targetId:string;
-    public callback: Function;
+    public callback: Function | null;
 
-    constructor(eventName: string, callback: Function, targetId: string) {
+    constructor(eventName: string, callback: Function | null, targetId: string) {
         this.eventName = eventName;
         this.callback = callback;
         this.targetId = targetId;
@@ -93,7 +93,7 @@ export class EventCenter {
             this.doOff(eventName, callback, targetId);
         }
     }
-    private static doOff(eventName: string, callback: Function, targetId: string) {
+    private static doOff(eventName: string, callback: Function | null, targetId: string) {
         let collection = this._listeners[eventName];
         if(!collection) return ;
         let events = collection[targetId];
@@ -104,7 +104,6 @@ export class EventCenter {
             }
         }
         if(events.length === 0) {
-            collection[targetId] = null;
             delete collection[targetId];
         }
     }
@@ -125,7 +124,7 @@ export class EventCenter {
         this._dispatching ++;
         for(let targetId in collection) {
             for(let eventInfo of collection[targetId]) {
-                eventInfo.callback.call(eventInfo.target, ...param);
+                eventInfo.callback && eventInfo.callback.call(eventInfo.target, ...param);
                 if(eventInfo.once) {
                     let cmd = new RemoveCommand(eventName, eventInfo.callback, targetId);
                     this._removeCommands.push(cmd);

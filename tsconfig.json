@@ -1,9 +1,28 @@
 {
   /* Base configuration. Do not edit this field. */
-  "extends": "./temp/tsconfig.cocos.json",
-
-  /* Add your custom configuration here. */
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "strict": false
+    "target": "ES2015",
+    "module": "ES2015",
+    "strict": true,
+    "types": [
+      "./temp/declarations/jsb",
+      "./temp/declarations/cc.custom-macro",
+      "./temp/declarations/cc.env",
+      "./temp/declarations/cc"
+    ],
+    "paths": {
+      "db://internal/*": [
+        "/Applications/CocosCreator/Creator/3.4.2/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/*"
+      ],
+      "db://assets/*": [
+        "/Users/denglang/workspace/CocosProj/CocosCreator_UIFrameWork/assets/*"
+      ]
+    },
+    "experimentalDecorators": true,
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true
   }
 }

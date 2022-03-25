@@ -8,7 +8,7 @@ class WindowMgr {
     private _showingList: PriorityStack<string> = new PriorityStack();
     private _waitingList: PriorityQueue<WindowData> = new PriorityQueue();
     
-    private _currWindow: string = "";
+    private _currWindow: string | null = null;
     public get currWindow() {
         return this._currWindow;
     }
@@ -20,7 +20,7 @@ class WindowMgr {
     /** 打开窗体 */
     public async open(prefabPath: string, params?: any, formData: IFormData = {showWait: false, priority: EPriority.FIVE}) {
         this._formatFormData(formData);
-        if(this._showingList.size <= 0 || (!formData.showWait && formData.priority >= this._showingList.getTopEPriority())) {
+        if(this._showingList.size <= 0 || (!formData.showWait && formData.priority || 0 >= this._showingList.getTopEPriority())) {
             this._showingList.push(prefabPath, formData.priority);
             this._currWindow = this._showingList.getTopElement();
             return await UIManager.getInstance().openForm(prefabPath, params, formData);
@@ -40,7 +40,7 @@ class WindowMgr {
 
         if(this._showingList.size <= 0 && this._waitingList.size > 0) {
             let windowData = this._waitingList.dequeue();
-            this.open(windowData.prefabPath, windowData.params, windowData.formData);
+            if(windowData) this.open(windowData.prefabPath, windowData.params, windowData.formData);
         }
         return true;
     }
@@ -72,7 +72,7 @@ class WindowMgr {
 }
 
 class WindowData {
-    prefabPath: string;
+    prefabPath: string = '';
     params?: any;
     formData?: any;
 }

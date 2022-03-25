@@ -324,7 +324,7 @@ export class CommonUtils {
         }
     }
 
-    private static getExponent(value) {
+    private static getExponent(value: number) {
         var exp = 0;
         while (value >= 10) {
             exp++;
@@ -393,7 +393,7 @@ export class CommonUtils {
         return name;
     }
 
-    private static strlen(str) {
+    private static strlen(str: string) {
         let len = 0;
         for (let i = 0; i < str.length; i++) {
           let c = str.charCodeAt(i);

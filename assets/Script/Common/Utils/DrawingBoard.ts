@@ -5,31 +5,31 @@
  * 使用的坐标系为原点在左上角，X轴向右为正，Y轴向下为正。
  */
 export default class DrawingBoard {
-    private _witdh: number;
+    private _witdh: number = 0;
     /**画板宽度 */
     public get width(): number { return this._witdh; }
-    private _height: number;
+    private _height: number = 0;
     /**画板高度 */
     public get height(): number { return this._height; }
 
     /**记录每个像素点的颜色值的数组，颜色值用十六进制表示，RGBA格式 */
-    private pointColor: number[][];
+    private pointColor: number[][] = [];
     /**存储像素数据的内存块 */
-    private buffer: ArrayBuffer;
+    private buffer: ArrayBuffer | null = null;
     /**颜色分量一维数组，供渲染使用 */
-    private pixelColor: Uint8Array;
+    private pixelColor: Uint8Array | null = null;
     /**记录各种颜色的像素的数量 */
-    private colorCount: { [key: number]: number };
+    private colorCount: { [key: number]: number } = {};
 
     /**记录最近一次绘制像素的颜色(十六进制颜色值)，调用绘制函数且未指定颜色值时，将使用该值 */
-    private curColor: number;
+    private curColor: number = 0;
 
     /**临时存储的颜色值 */
-    private tempColor: number;
-    private tempR: number;
-    private tempG: number;
-    private tempB: number;
-    private tempA: number;
+    private tempColor: number = 0;
+    private tempR: number = 0;
+    private tempG: number = 0;
+    private tempB: number = 0;
+    private tempA: number = 0;
 
     /**
      * 可对每个像素点绘制的画板，画板使用的坐标系原点为左下角，X轴向右为正，Y轴向上为正
@@ -95,7 +95,7 @@ export default class DrawingBoard {
         }
     }
     private resetPixelColor() {
-        this.pixelColor.fill(0);
+        this.pixelColor?.fill(0);
     }
 
     /**
@@ -117,7 +117,7 @@ export default class DrawingBoard {
      * @param data 颜色分量一维数组
      */
     private setPixelColorByRGBA(data: Uint8Array) {
-        this.pixelColor.set(data);
+        this.pixelColor?.set(data);
     }
     /**
      * 按像素点的坐标记录像素点的颜色值
@@ -148,6 +148,7 @@ export default class DrawingBoard {
         if (undefined === data) {
             data = [];
         }
+        if(!this.pixelColor) return data;
         for (let i = 0, count = this.pixelColor.length; i < count; ++i) {
             data[i] = this.pixelColor[i];
         }
@@ -157,11 +158,11 @@ export default class DrawingBoard {
      * 获取画板中记录每个像素的颜色分量的数据
      * @returns 将直接返回画板内部的数组；注：若使用者需要对该数据进行修改，请使用 copyData 方法获取，以免影响画板的像素个数计数功能
      */
-    public getData(): Uint8Array {
+    public getData(): Uint8Array | null {
         return this.pixelColor;
     }
     /**获取画板内部使用的内存块，若仅需要获取像素数据，不进一步处理，使用 getData 即可 */
-    public getBuffer(): ArrayBuffer {
+    public getBuffer(): ArrayBuffer | null {
         return this.buffer;
     }
     /**
@@ -200,13 +201,13 @@ export default class DrawingBoard {
 
     //直线
     /**上一次绘制的直线的终点 */
-    private previousLineEndPos: Vec2;
-    private previousLineEndPosT: Vec2;
-    private previousLineEndPosB: Vec2;
+    private previousLineEndPos: Vec2 = new Vec2();
+    private previousLineEndPosT: Vec2 = new Vec2();
+    private previousLineEndPosB: Vec2 = new Vec2();
     /**上一次绘制的直线的端点样式 */
-    private previousLineCircleEnd: boolean;
+    private previousLineCircleEnd: boolean = false;
     /**上一次绘制的直线的宽度 */
-    private previousLineWidth: number;
+    private previousLineWidth: number = 0;
     private initLineData() {
         this.previousLineEndPos = new Vec2();
         this.previousLineEndPosT = new Vec2();
@@ -602,7 +603,7 @@ export default class DrawingBoard {
     }
     /**绘制一个像素点的颜色 */
     private _drawPixel(x: number, y: number) {
-        if (this.pointColor[x][y] == this.tempColor) return;
+        if (this.pointColor[x][y] == this.tempColor || !this.pixelColor) return;
         let index = (y * this.width + x) * 4;
         this.pixelColor[index] = this.tempR;
         this.pixelColor[index + 1] = this.tempG;
@@ -620,6 +621,7 @@ export default class DrawingBoard {
      * @param y         Y坐标
      */
     private _drawRowPixel(startX: number, endX: number, y: number) {
+        if(!this.pixelColor) return ;
         let index = (y * this.width + startX) * 4;
         for (let x = startX; x <= endX; ++x) {
             if (this.pointColor[x][y] != this.tempColor) {
@@ -642,6 +644,7 @@ export default class DrawingBoard {
      * @param x         X坐标
      */
     private _drawColPixel(startY: number, endY: number, x: number) {
+        if(!this.pixelColor) return ;
         let index = (startY * this.width + x) * 4;
         for (let y = startY; y <= endY; ++y) {
             if (this.pointColor[x][y] != this.tempColor) {
@@ -687,6 +690,7 @@ class Vec2 {
     public set(p: number | Vec2, y?: number) {
         if (typeof p === "number") {
             this.x = p;
+            //@ts-ignore
             this.y = y;
         } else {
             this.x = p.x;

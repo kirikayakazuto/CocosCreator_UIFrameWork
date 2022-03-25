@@ -1,3 +1,5 @@
+import * as cc from "cc";
+
 export class PolygonUtil {
     /**
      * 
@@ -59,8 +61,8 @@ export class PolygonUtil {
             p=b;
             return [1,p];
         }
-    //如果不相交
-        return [-1,null];
+        //如果不相交
+        return [-1, cc.v2()];
     }
     //两条线段是否跨立
     //即非平行
@@ -77,7 +79,7 @@ export class PolygonUtil {
     }
  
     //求a点是不是在线段上，>0不在，=0与端点重合，<0在。
-    public static point_on_line(a,p1,p2) 
+    public static point_on_line(a: cc.Vec2,p1: cc.Vec2, p2: cc.Vec2) 
     {
         return this.dblcmp(this.dot(p1.x-a.x,p1.y-a.y,p2.x-a.x,p2.y-a.y),0);
     }
@@ -189,7 +191,7 @@ export class PolygonUtil {
             let inPolygon:boolean = r >=0;
             
             // if(pointIndex.length > 2 && cc.pDistance(cp0,cp1) > cc.pDistance(cp0,points[pointIndex[pointIndex.length-1]])) {
-            if(pointIndex.length > 2 && cp0.sub(cp1).mag() > cp0.sub(points[pointIndex[pointIndex.length-1]]).mag()) {
+            if(pointIndex.length > 2 && cp0.subtract(cp1).length() > cp0.subtract(points[pointIndex[pointIndex.length-1]]).length()) {
                 cp1 = points[pointIndex[pointIndex.length-1]];
                 r = this.relationPointToPolygon(new cc.Vec2((cp0.x + cp1.x)/2,(cp0.y+cp1.y)/2),polygon);
                 inPolygon = r <0;
@@ -279,14 +281,14 @@ export class PolygonUtil {
     }
  
     
-    private static ab_cross_ac(a,b,c) //ab与ac的叉积
+    private static ab_cross_ac(a: cc.Vec2, b: cc.Vec2, c: cc.Vec2) //ab与ac的叉积
     {
         return this.cross(b.x-a.x,b.y-a.y,c.x-a.x,c.y-a.y);
     }
-    private static dot(x1,y1,x2,y2){
+    private static dot(x1: number,y1: number,x2: number,y2: number){
         return x1*x2+y1*y2;
     }
-    private static cross(x1,y1,x2,y2){
+    private static cross(x1: number,y1: number,x2: number,y2: number){
         return x1*y2 - x2*y1;
     }
     private static dblcmp(a:number,b:number)

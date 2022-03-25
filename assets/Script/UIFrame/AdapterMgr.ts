@@ -32,7 +32,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass("AdapterMgr")
 export default class AdapterMgr {
 
-    private static _instance: AdapterMgr = null;                     // 单例
+    private static _instance: AdapterMgr | null = null;                     // 单例
     public static get inst() {
         if(this._instance == null) {
             this._instance = new AdapterMgr();       
@@ -43,7 +43,7 @@ export default class AdapterMgr {
     }
     
     /** 屏幕尺寸 */
-    public visibleSize: cc.Size;
+    public visibleSize: cc.Size | null = null;;
 
     public adapteByType(flag: number, node: cc.Node, distance = 0) {
         let tFlag = _Final;
@@ -53,16 +53,19 @@ export default class AdapterMgr {
             tFlag = tFlag >> 1;
         }
         let widget = node.getComponent(cc.Widget);
+        if(!widget) widget = node.addComponent(cc.Widget);
         widget.target = cc.find("Canvas");
         widget.updateAlignment();
     }
 
     private _doAdapte(flag: number, node: cc.Node, distance: number = 0) {
+        if(!this.visibleSize) return ;
         let widget = node.getComponent(cc.Widget);
         if(!widget) {
             widget = node.addComponent(cc.Widget);
         }
         let trans = node.getComponent(cc.UITransform);
+        if(!trans) trans = node.addComponent(cc.UITransform);
         switch(flag) {
             case _None:
                 break;

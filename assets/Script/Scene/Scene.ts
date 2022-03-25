@@ -7,11 +7,11 @@ import { EventType } from "../UIFrame/EventType";
 
 const {ccclass, property} = cc._decorator;
 
-@ccclass
+@ccclass("Scene")
 export default class Scene extends cc.Component {
 
-    public static inst: Scene = null;
-    private ndBlock: cc.Node = null;
+    public static inst: Scene | null = null;
+    private ndBlock: cc.Node | null = null;
     onLoad() {
         this.initBlockNode();
     }

@@ -34,7 +34,7 @@ export class Broadcast<T> {
         }
     }
 
-    get(listener: (...params: T[]) => void, target: any): ListenerBinding<T> {
+    get(listener: (...params: T[]) => void, target: any): ListenerBinding<T> | null {
         for (let item of this.bindings) {
             if (item.listener == listener && item.target == target && !item.hasDestroyed) return item;
         }
@@ -58,7 +58,7 @@ export class Broadcast<T> {
 
     removeAll() {
         while (this.bindings.length) {
-            this.bindings.pop().destroy();
+            this.bindings.pop()?.destroy();
         }
     }
 }

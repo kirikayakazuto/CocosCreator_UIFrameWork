@@ -7,8 +7,8 @@ import PlayerMgr from "./Manager/PlayerMgr";
 class Game {
 
     public inited = false;
-    public configMgr: ConfigMgr = null;
-    public playerMgr: PlayerMgr = null;
+    public configMgr: ConfigMgr | null = null;
+    public playerMgr: PlayerMgr | null = null;
     public async init() {
         // 初始化Manager, 例如new ConfigMgr();
         this.configMgr = new ConfigMgr();

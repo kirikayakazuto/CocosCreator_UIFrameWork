@@ -9,14 +9,14 @@ export enum CommandType {
     // 自定义命令类型
 }
 export class Command {
-    type: CommandType;
+    type: CommandType = 0;
     data: any;
 }
 
 /** 命令队列 */
 export default class TaskMgr {
 
-    private static _instance: TaskMgr = null;
+    private static _instance: TaskMgr | null = null;
     public static get inst() {
         if(!this._instance) {
             this._instance = new TaskMgr();

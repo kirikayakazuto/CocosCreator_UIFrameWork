@@ -8,20 +8,19 @@ import WindowMgr from "./WindowMgr";
 
 
 /**
- * @Author: 邓朗 
+ * @Author: honmono 
  * @Describe: 
  * @Date: 2019-05-30 23:35:26  
  * @Last Modified time: 2019-05-30 23:35:26 
  */
 const {ccclass, property} = cc._decorator;
 
-@ccclass
+@ccclass('UIModalScript')
 export default class UIModalScript extends cc.Component {
 
-    public fid: string;
-    
+    public fid: string = '';
 
-    private sprite: cc.Sprite = null;
+    private sprite: cc.Sprite | null = null;
     /**
      * 初始化
      */
@@ -29,10 +28,11 @@ export default class UIModalScript extends cc.Component {
         
         let size = cc.view.getVisibleSize();
         let trans = this.node.getComponent(cc.UITransform);
+        if(trans) {
+            trans.height = size.height;
+            trans.width = size.width;
+        }
         
-        trans.height = size.height;
-        trans.width = size.width;
-
         this.node.addComponent(cc.Button);
         this.node.on('click', this.clickMaskWindow, this);
         
@@ -43,8 +43,10 @@ export default class UIModalScript extends cc.Component {
         sprite.spriteFrame.texture = this.getSingleTexture();
 
         let UIOpacity = this.node.getComponent(cc.UIOpacity);
+        if(UIOpacity) {
+            UIOpacity.opacity = 0;
+        }
         sprite.color = new cc.Color(0, 0, 0);
-        UIOpacity.opacity = 0;
         this.node.active = false;
     }
 
@@ -76,7 +78,7 @@ export default class UIModalScript extends cc.Component {
             await CocosHelper.runTweenSync(this.node, cc.tween().to(time, {opacity: o}));
         }else {
             let UIOpacity = this.node.getComponent(cc.UIOpacity);
-            UIOpacity.opacity = o;
+            if(UIOpacity) UIOpacity.opacity = o;
         }
     }
 
@@ -88,7 +90,7 @@ export default class UIModalScript extends cc.Component {
     }
 
     /** 代码创建一个单色texture */
-    private _texture: cc.Texture2D = null;
+    private _texture: cc.Texture2D | null = null;
     private getSingleTexture() {
         if(this._texture) return this._texture;
         let data: any = new Uint8Array(2 * 2 * 4);

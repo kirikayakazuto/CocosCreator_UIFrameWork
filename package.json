@@ -1,9 +1,9 @@
 {
+  "creator": {
+    "version": "3.4.2"
+  },
   "name": "UIFrameWork3.x",
   "type": "3d",
   "uuid": "8cc2319b-91fb-4142-a52a-24a6d83ebb60",
-  "version": "3.4.1",
-  "creator": {
-    "version": "3.4.1"
-  }
+  "version": "3.4.2"
 }

@@ -41,7 +41,7 @@ export default class PriorityStack<T> {
     public pop() {
         if(this.stack.length <= 0) return null;
         this._size --;
-        return this.stack.pop().data;
+        return this.stack.pop()?.data;
     }
 
     private _adjust() {

@@ -42,7 +42,7 @@ class FormMgr {
                 return await TipsMgr.close(form.prefabUrl);
             default:
                 cc.error(`未知类型的窗体: ${form.type}`);
-                return null;
+                return false;
         }
     }
 

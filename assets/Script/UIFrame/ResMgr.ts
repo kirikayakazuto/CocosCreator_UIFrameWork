@@ -19,7 +19,7 @@ import { EventCenter } from "./EventCenter";
  * 所以销毁一个窗体 也需要两步, 销毁node, 销毁prefab
  */
 export default class ResMgr {
-    private static instance: ResMgr = null;
+    private static instance: ResMgr | null = null;
     public static get inst() {
         if(this.instance === null) {
             this.instance = new ResMgr();
@@ -39,7 +39,9 @@ export default class ResMgr {
     
     /** 加载窗体 */
     public async loadForm(fid: string) {
-        let {res, deps} = await this._loadResWithReference<cc.Prefab>(fid, cc.Prefab);
+        let result = await this._loadResWithReference<cc.Prefab>(fid, cc.Prefab);
+        if(!result) return ;
+        let {res, deps} = result;
         this._prefabDepends[fid] = deps;
         return cc.instantiate(res);
     }
@@ -52,7 +54,6 @@ export default class ResMgr {
         // 销毁依赖的资源
         this._destoryResWithReference(this._prefabDepends[com.fid]);
 
-        this._prefabDepends[com.fid] = null;
         delete this._prefabDepends[com.fid];
 
         // 销毁node
@@ -62,7 +63,9 @@ export default class ResMgr {
 
     /** 动态资源管理, 通过tag标记当前资源, 统一释放 */
     public async loadDynamicRes<T>(url: string, type: typeof cc.Asset, tag: string) {
-        let {res, deps} = await this._loadResWithReference<T>(url, type);
+        let result = await this._loadResWithReference<T>(url, type);
+        if(!result) return ;
+        let {res, deps} = result;
         if(!this._dynamicTags[tag]) {
             this._dynamicTags[tag] = [];
         }
@@ -77,7 +80,6 @@ export default class ResMgr {
         }
         this._destoryResWithReference(this._dynamicTags[tag])
         
-        this._dynamicTags[tag] = null;
         delete this._dynamicTags[tag];
 
         return true;
@@ -92,8 +94,10 @@ export default class ResMgr {
             return null;
         }
         this._clearTmpAssetsDepends();
-        let deps = cc.assetManager.dependUtil.getDepsRecursively(res['_uuid']) || [];
-        deps.push(res['_uuid']);
+        //@ts-ignore
+        let uuid = res._uuid;
+        let deps = cc.assetManager.dependUtil.getDepsRecursively(uuid) || [];
+        deps.push(uuid);
         this.addAssetsDepends(deps);
 
         return {
@@ -181,8 +185,10 @@ export default class ResMgr {
         let cache = cc.assetManager.assets;
         let totalTextureSize = 0;
         let count = 0;
-        cache.forEach((item: cc.Asset, key: string) => {            
-            let type = (item && item['__classname__']) ? item['__classname__'] : '';
+        cache.forEach((item: cc.Asset, key: string) => {      
+            //@ts-ignore
+            let className = item.__classname__;      
+            let type = (item && className) ? className : '';
             if(type == 'cc.Texture2D') {
                 let texture = item as cc.Texture2D;
                 let textureSize = texture.width * texture.height * ((texture['_native'] === '.jpg' ? 3 : 4) / 1024 / 1024);
