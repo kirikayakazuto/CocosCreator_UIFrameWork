@@ -1,0 +1,17 @@
+{
+    "package_version": 2,
+    "version": "1.0.0",
+    "name": "autobinder",
+    "description": "i18n:autobinder.description",
+    "main": "./dist/main.js",
+    "devDependencies": {
+        "@types/node": "^16.0.1",
+        "typescript": "^4.3.4"
+    },
+    "author": "honmono",
+    "editor": ">=3.4.2",
+    "scripts": {
+        "build": "tsc -b",
+        "watch": "tsc -w"
+    }
+}
