@@ -62,7 +62,7 @@ module scene {
     }
 
     function getResourcesUrl(fileUrl: string) {
-        return fileUrl.replace(`${Editor.Project.path}/assets/resources/`.replace(/\\/g, "/"), "").split('.')[0];
+        return fileUrl.replace(`${Editor.Project.path}/assets/resources/`, "").split('.')[0];
     }
 
     function getPrefabType(fileUrl: string): Promise<string | null> {

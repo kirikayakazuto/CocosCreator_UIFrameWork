@@ -115,7 +115,7 @@ var scene;
         });
     }
     function getResourcesUrl(fileUrl) {
-        return fileUrl.replace("".concat(Editor.Project.path, "/assets/resources/").replace(/\\/g, "/"), "").split('.')[0];
+        return fileUrl.replace("".concat(Editor.Project.path, "/assets/resources/"), "").split('.')[0];
     }
     function getPrefabType(fileUrl) {
         return new Promise(function (resolve, reject) {
