@@ -45,6 +45,7 @@ module scene {
 
         let dbConfigPath = ConfigPath.replace(Editor.Project.path.replace(/\\/g, "/"), "db:/");
         await saveFile(dbConfigPath, strScript);
+        
         Editor.log(`生成${config.ScriptsName}文件成功`);
     }
 

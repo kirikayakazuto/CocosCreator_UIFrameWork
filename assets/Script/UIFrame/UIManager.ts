@@ -49,7 +49,7 @@ export default class UIManager {
 
     /** 预加载UIForm */
     public async loadUIForm(prefabPath: string) {
-        let uiBase = await this.loadForm(prefabPath);
+        let uiBase = await this._loadForm(prefabPath);
         if(!uiBase) {
             console.warn(`${uiBase}没有被成功加载`);
             return null;
@@ -60,7 +60,9 @@ export default class UIManager {
     /**
      * 加载显示一个UIForm
      * @param prefabPath 
-     * @param obj 初始化信息, 可以不要
+     * @param params 
+     * @param formData 
+     * @returns 
      */
     public async openForm(prefabPath: string, params?: any, formData?: IFormData) {
         if(!prefabPath || prefabPath.length <= 0) {
@@ -71,7 +73,7 @@ export default class UIManager {
             cc.warn(`${prefabPath}, 窗体正在显示中`);
             return null;
         }
-        let com = await this.loadForm(prefabPath);
+        let com = await this._loadForm(prefabPath);
         if(!com) {
             cc.warn(`${prefabPath} 加载失败了!`);
             return null;
@@ -140,7 +142,7 @@ export default class UIManager {
     /**
      * 从窗口缓存中加载(如果没有就会在load加载), 并挂载到结点上
      */
-    private async loadForm(prefabPath: string): Promise<UIBase> {
+    private async _loadForm(prefabPath: string): Promise<UIBase> {
         let com = this._allForms[prefabPath];
         if(com) return com;
         return new Promise((resolve, reject) => {
@@ -159,12 +161,13 @@ export default class UIManager {
         });
     }
 
+
     /**
-     * 从resources中加载
      * @param prefabPath 
      */
     private async _doLoadUIForm(prefabPath: string) {
-        let node = await ResMgr.inst.loadForm(prefabPath);
+        let prefab = await ResMgr.inst.loadFormPrefab(prefabPath);
+        let node = cc.instantiate(prefab);
         let com = node.getComponent(UIBase);
         if(!com) {
             cc.warn(`${prefabPath} 结点没有绑定UIBase`);
@@ -320,8 +323,12 @@ export default class UIManager {
 
     /** 销毁 */
     private destoryForm(com: UIBase) {
+        // 销毁动态加载的资源
         ResMgr.inst.destoryDynamicRes(com.fid);
-        ResMgr.inst.destoryForm(com);
+        // 销毁prefab以及依赖的资源
+        ResMgr.inst.destoryFormPrefab(com.fid);
+        // 销毁node
+        com.node.destroy();
         // 从allmap中删除
         this._allForms[com.fid] = null;
         delete this._allForms[com.fid];

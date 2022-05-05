@@ -1,5 +1,5 @@
 
-import { ModalOpacity, SysDefine } from "./config/SysDefine";
+import { SysDefine } from "./config/SysDefine";
 import UIModalScript from "./UIModalScript";
 import { ModalType } from "./Struct";
 import { UIWindow } from "./UIForm";
@@ -11,20 +11,19 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class ModalMgr extends cc.Component {
-    public static popUpRoot = SysDefine.SYS_UIROOT_NAME + '/' + SysDefine.SYS_POPUP_NODE;
+    public static popUpRoot = '';
     public static _inst: ModalMgr = null;
     public static get inst() {
         if(this._inst == null) {
             this._inst = new ModalMgr();
 
             let node = new cc.Node("UIModalNode");
+            ModalMgr.popUpRoot = SysDefine.SYS_UIROOT_NAME + '/' + SysDefine.SYS_POPUP_NODE
+
             let rootNode = cc.find(ModalMgr.popUpRoot);
             rootNode.addChild(node);
-            ModalMgr.inst.uiModal = node.addComponent(UIModalScript);
-
-            let camera = rootNode.addComponent(cc.Camera);
-            camera.enabled = false;
-            ModalMgr.inst.uiModal.init(camera, new Uint8Array(cc.visibleRect.width * cc.visibleRect.height * 4));
+            this._inst.uiModal = node.addComponent(UIModalScript);
+            this._inst.uiModal.init();
         }
         return this._inst;
     }
@@ -52,10 +51,7 @@ export default class ModalMgr extends cc.Component {
                 this.showModal(coms[i].modalType);
                 break;
             }
-        }
-        
+        }   
     }
-
-
 }
 

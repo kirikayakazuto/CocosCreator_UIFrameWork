@@ -133,7 +133,7 @@ export default class CocosHelper {
                     cc.error(`${url} [资源加载] 错误 ${err}`);
                     resolve(null);
                 }else {
-                    resolve(asset);
+                    resolve(asset as T);
                 }
             });
         });

@@ -1,4 +1,4 @@
-import PriorityQueue from "../Common/Utils/PriorityQueue";
+import PriorityQueue from "./PriorityQueue";
 
 /**
  * author: denglang

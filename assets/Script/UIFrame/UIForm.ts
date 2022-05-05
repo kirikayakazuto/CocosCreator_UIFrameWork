@@ -9,7 +9,6 @@ export class UIScreen extends UIBase {
     formType = FormType.Screen;
     willDestory = true;
 
-
     public async closeSelf(): Promise<boolean> {
         return await FormMgr.close({prefabUrl: this.fid, type: this.formType});
     }

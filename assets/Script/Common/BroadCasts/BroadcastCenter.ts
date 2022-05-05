@@ -1,4 +1,4 @@
-import { Broadcast } from "../../UIFrame/BroadCast";
+import { Broadcast } from "../Utils/BroadCast";
 
 export class BuildingData {
     id: number;

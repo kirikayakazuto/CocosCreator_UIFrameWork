@@ -25,6 +25,7 @@ export interface IFormData {
     // window类型的form才有
     priority?: EPriority;       // 当前有已经显示的window时, 会放等待列表里, 知道 当前没有正在显示的window时才被显示
     showWait?: boolean;         // 优先级(会影响弹窗的层级, 先判断优先级, 在判断添加顺序)
+    uniqueId?: string;
 }
 
 export enum EPriority {

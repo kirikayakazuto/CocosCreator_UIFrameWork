@@ -9,8 +9,11 @@ export enum FormType {
     Fixed = "UIFixed",
     /** 弹出窗口 */
     Window = "UIWindow",
+    /** Toast */
+    Toast = "Toast",
     /** 独立窗口 */
     Tips = "UITips",
+
 }
 /**透明度类型 */
 export enum ModalOpacity {
@@ -27,7 +30,7 @@ export enum ModalOpacity {
     /** 完全不透明 */
     OpacityFull,
     /** 高斯模糊 */
-    GaussianBlur
+    //GaussianBlur
 }
 /** UI的状态 */
 export enum UIState {

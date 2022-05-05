@@ -34,27 +34,30 @@ export default class ResMgr {
     private _tmpAssetsDepends: string[] = [];                                       // 临时缓存
     private _assetsReference: {[key: string]: number} = cc.js.createMap();          // 资源引用计数
 
+    private _prefabs: {[key: string]: cc.Prefab} = cc.js.createMap();               // 预制体缓存
+
     
     /** 加载窗体 */
-    public async loadForm(fid: string) {
+    public async loadFormPrefab(fid: string) {
+        if(this._prefabs[fid]) return this._prefabs[fid];
         let {res, deps} = await this._loadResWithReference<cc.Prefab>(fid, cc.Prefab);
         this._prefabDepends[fid] = deps;
-        return cc.instantiate(res);
+        this._prefabs[fid] = res;
+        return res;
     }
 
     /** 销毁窗体 */
-    public destoryForm(com: UIBase) {
-        if(!com) return;
-        EventCenter.targetOff(com);
-
+    public destoryFormPrefab(fid: string) {
+        if(this._prefabs[fid]) {
+            this._prefabs[fid].destroy();
+            this._prefabs[fid] = null;
+            delete this._prefabs[fid];
+        }
         // 销毁依赖的资源
-        this._destoryResWithReference(this._prefabDepends[com.fid]);
-
-        this._prefabDepends[com.fid] = null;
-        delete this._prefabDepends[com.fid];
-
-        // 销毁node
-        com.node.destroy();
+        this._destoryResWithReference(this._prefabDepends[fid]);
+        // 删除缓存
+        this._prefabDepends[fid] = null;
+        delete this._prefabDepends[fid];
     }
 
 

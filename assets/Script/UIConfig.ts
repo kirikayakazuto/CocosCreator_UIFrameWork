@@ -1,3 +1,7 @@
+import UIFunction from "./UIScript/UIFunction"
+
+UIFunction['prefabUrl'] = 'form/UIFunction';
+
 export default class UIConfig {
     static UIFunction = {
         prefabUrl: "Forms/Fixed/UIFunction",
@@ -84,4 +88,11 @@ export default class UIConfig {
         type: "UIWindow"
     }
     
+}
+
+cc.game.on(cc.game.EVENT_GAME_INITED, () => {
+    for(const key in UIConfig) {
+        let constourt = cc.js.getClassByName(key);
+        if(constourt) constourt['UIConfig'] = UIConfig[key];
     }
+});

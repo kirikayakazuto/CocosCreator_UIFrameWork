@@ -18,8 +18,8 @@ class WindowMgr {
     }
 
     /** 打开窗体 */
-    public async open(prefabPath: string, params?: any, formData: IFormData = {showWait: false, priority: EPriority.FIVE}) {
-        this._formatFormData(formData);
+    public async open(prefabPath: string, params?: any, formData?: IFormData) {
+        formData = this._formatFormData(formData);
         if(this._showingList.size <= 0 || (!formData.showWait && formData.priority >= this._showingList.getTopEPriority())) {
             this._showingList.push(prefabPath, formData.priority);
             this._currWindow = this._showingList.getTopElement();
@@ -58,16 +58,7 @@ class WindowMgr {
     }
 
     private _formatFormData(formData: any) {
-        if(!formData) formData = {};
-
-        if(!formData.hasOwnProperty("showWait")) {        // 当前有已经显示的window时, 会放等待列表里, 知道 当前没有正在显示的window时才被显示
-            formData.showWait = false;
-        }
-        if(!formData.hasOwnProperty("priority")) {        // 优先级(会影响弹窗的层级, 先判断优先级, 在判断添加顺序)
-            formData.priority = EPriority.FIVE;
-        }
-
-        return formData;
+        return Object.assign({showWait: false, priority: EPriority.FIVE}, formData);
     }
 }
 

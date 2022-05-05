@@ -3,20 +3,33 @@ import { FormType } from "./config/SysDefine";
 import { IFormData } from "./Struct";
 import AdapterMgr from "./AdapterMgr";
 import ResMgr from "./ResMgr";
+import FormMgr from "./FormMgr";
 
 export default class UIBase extends cc.Component {
     /** 窗体id,该窗体的唯一标示(请不要对这个值进行赋值操作, 内部已经实现了对应的赋值) */
-    public fid: string;
+    public fid: string = '';
     /** 窗体数据 */
-    public formData: IFormData = null!;
+    public formData: IFormData | null = null;
     /** 窗体类型 */
-    public formType: FormType;
+    public formType: FormType | null = null;
     /** 关闭窗口后销毁, 会将其依赖的资源一并销毁, 采用了引用计数的管理, 不用担心会影响其他窗体 */
     public willDestory = false;
     /** 是否已经调用过preinit方法 */
     private _inited = false;
 
-    public view: cc.Component = null!;
+    public view: cc.Component = null;
+
+    public static open(param?: any, formData?: IFormData) {
+        let uiconfig = this['UIConfig'];
+        if(!uiconfig) {
+            cc.warn(`sorry UIConfig is null, please check UIConfig`);
+            return ;
+        }
+        FormMgr.open(uiconfig, param, formData);
+    }
+    public static close() {
+        FormMgr.close(this['UIConfig']);
+    }
 
     /** 预先初始化 */
     public async _preInit(params: any) {

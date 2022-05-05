@@ -18,16 +18,12 @@ const {ccclass, property} = cc._decorator;
 export default class UIModalScript extends cc.Component {
 
     public fid: string;
-    private pixelData: Uint8Array = null;
-    private blurCamera: cc.Camera = null;
     
     private sprite: cc.Sprite = null;
     /**
      * 初始化
      */
-    public init(camera: cc.Camera, pixel: Uint8Array) {
-        this.blurCamera = camera;
-        this.pixelData = pixel;
+    public init() {
         let size = cc.view.getVisibleSize();
         this.node.height = size.height;
         this.node.width = size.width;
@@ -66,14 +62,6 @@ export default class UIModalScript extends cc.Component {
             break;
             case ModalOpacity.OpacityFull:
                 o = 255;
-            break;
-            case ModalOpacity.GaussianBlur:
-                o = 255;
-                this.genGaussBlur(this.pixelData, this.blurCamera).then((texture: cc.Texture2D) => {
-                    this.sprite.spriteFrame = new cc.SpriteFrame(texture);
-                    this.sprite.spriteFrame.setFlipY(true);
-                });
-                this.node.color = new cc.Color(255, 255, 255);
             break;
         }
         if(!this.node.active) return ;
