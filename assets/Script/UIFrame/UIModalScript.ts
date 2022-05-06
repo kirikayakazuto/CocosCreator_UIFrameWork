@@ -47,7 +47,7 @@ export default class UIModalScript extends cc.Component {
     // 
     public async showModal(lucenyType: number, time: number = 0.6, isEasing: boolean = true, dualBlur = false) {
         if(dualBlur) {
-            this.useGaussBlurSprite(this.camera);
+            this.useDualBlurSprite(this.camera);
             this.node.color = cc.Color.WHITE;
         } else {
             this.useNormalSprite(this.sprite);
@@ -122,7 +122,7 @@ export default class UIModalScript extends cc.Component {
 
     private _renderTexture: cc.RenderTexture = null;
     private _renderTextures: cc.RenderTexture[] = [];
-    private useGaussBlurSprite(camera: cc.Camera) {
+    private useDualBlurSprite(camera: cc.Camera) {
         let dirtyNodes: cc.Node[] = [];
         let disRenderChildren = () => {
             // 不渲染tips
