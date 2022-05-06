@@ -12,7 +12,6 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class UISetting extends UIWindow {
-    willDestory = true;
     view: UISetting_Auto;
 
     modalType = new ModalType(ModalOpacity.OpacityHalf, true);

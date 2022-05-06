@@ -5,10 +5,15 @@ import ModalMgr from "./ModalMgr";
 import AdapterMgr, { AdapterType } from "./AdapterMgr";
 import Scene from "../Scene/Scene";
 import { UIWindow } from "./UIForm";
-import { IFormData } from "./Struct";
+import { ECloseType, IFormData } from "./Struct";
 import { EventCenter } from "./EventCenter";
 import { EventType } from "./EventType";
+import { LRUCache } from "../Common/Utils/LRUCache";
+import CocosHelper from "./CocosHelper";
 
+/**
+ * @author honmono
+ */
 export default class UIManager {    
     private _UIROOT: cc.Node = null;    // UIROOT
     private _ndScreen: cc.Node = null;  // 全屏显示的UI 挂载结点
@@ -20,7 +25,8 @@ export default class UIManager {
     private _allForms: {[key: string]: UIBase}                         = cc.js.createMap();    // 所有已经挂载的窗体, 可能没有显示
     private _showingForms: {[key: string]: UIBase}                     = cc.js.createMap();    // 正在显示的窗体
     private _tipsForms: {[key: string]: UIBase}                        = cc.js.createMap();    // 独立窗体 独立于其他窗体, 不受其他窗体的影响
-    private _loadingForm: {[key: string]: ((value: UIBase) => void)[]} = cc.js.createMap();    // 正在加载的form 
+    private _loadingForm: {[key: string]: ((value: UIBase) => void)[]} = cc.js.createMap();    // 正在加载的form
+    private _LRUCache: LRUCache = new LRUCache(3);                                             // LRU cache
     
     private static instance: UIManager = null;                                                 // 单例
     public static getInstance(): UIManager {
@@ -96,9 +102,16 @@ export default class UIManager {
                 await this.enterToTips(com.fid, params);
             break;
         }
-
+        
+        // 如果这个窗体在lru中存在, 那么立即删除它
+        if(com.closeType === ECloseType.LRU) {
+            this._LRUCache.remove(com.fid);
+        }
+    
         return com;
     }
+
+
     /**
      * 重要方法 关闭一个UIForm
      * @param prefabPath 
@@ -132,9 +145,15 @@ export default class UIManager {
         if(com.formData) {
             com.formData.onClose && com.formData.onClose();
         }
-        // 判断是否销毁该窗体
-        if(com.willDestory) {
-            this.destoryForm(com);
+
+        // 根据closeType 处理
+        switch(com.closeType) {
+            case ECloseType.CloseAndDestory:
+                this.destoryForm(com);
+            break;
+            case ECloseType.LRU:
+                this.putLRUCache(com);
+            break;
         }
         return true;
     }
@@ -333,6 +352,25 @@ export default class UIManager {
         this._allForms[com.fid] = null;
         delete this._allForms[com.fid];
     }
+
+    /** LRU缓存控制 */
+    private putLRUCache(com: UIBase) {
+        this._LRUCache.put(com.fid);
+        if(!this._LRUCache.needDelete()) return ;
+        let deleteFid = this._LRUCache.deleteLastNode();
+        if(deleteFid) {
+            CC_DEBUG && console.log('close form id:', deleteFid, this._LRUCache.toString())
+            let func = () => {
+                let com = this.getForm(deleteFid);
+                if(!com || !com.node) return ;
+                com && this.destoryForm(com);
+            }
+            window.requestIdleCallback ? window.requestIdleCallback(func, {timeout: 2000}) 
+            : CocosHelper.callInNextTick().then(func);
+        }
+        
+    }
+
     /** 窗体是否正在显示 */
     public checkFormShowing(fid: string) {
         let com = this._allForms[fid];

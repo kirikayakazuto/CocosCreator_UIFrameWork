@@ -1,6 +1,6 @@
 import UIManager from "./UIManager";
 import { FormType } from "./config/SysDefine";
-import { IFormData } from "./Struct";
+import { ECloseType, IFormData } from "./Struct";
 import AdapterMgr from "./AdapterMgr";
 import ResMgr from "./ResMgr";
 import FormMgr from "./FormMgr";
@@ -12,8 +12,8 @@ export default class UIBase extends cc.Component {
     public formData: IFormData | null = null;
     /** 窗体类型 */
     public formType: FormType | null = null;
-    /** 关闭窗口后销毁, 会将其依赖的资源一并销毁, 采用了引用计数的管理, 不用担心会影响其他窗体 */
-    public willDestory = false;
+    /** 关闭类型, 关闭窗口后销毁, 会将其依赖的资源一并销毁, 采用了引用计数的管理, 不用担心会影响其他窗体 */
+    public closeType: ECloseType | null = null;;
     /** 是否已经调用过preinit方法 */
     private _inited = false;
 

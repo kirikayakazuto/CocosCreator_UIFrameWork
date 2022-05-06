@@ -41,6 +41,7 @@ export enum UIState {
 }
 /** 常量 */
 export class SysDefine {
+    /* 加载窗体 */
     public static defaultLoadingForm: IFormConfig = UIConfig.UILoading;
     /* 路径常量 */
     public static SYS_PATH_CANVAS = "Canvas";

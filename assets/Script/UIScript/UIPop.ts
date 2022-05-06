@@ -10,7 +10,6 @@ const {ccclass, property} = cc._decorator;
 export default class UIPop extends UIWindow {
 
     modalType: ModalType = new ModalType(ModalOpacity.OpacityHalf);
-    willDestory = true;
 
     view: UIPop_Auto;
 

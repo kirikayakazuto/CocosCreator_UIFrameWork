@@ -40,3 +40,9 @@ export enum EPriority {
     EIGHT,
     NINE,
 }
+
+export enum ECloseType {
+    CloseAndHide,           // 关闭后隐藏
+    CloseAndDestory,        // 关闭后销毁
+    LRU,                    // 使用LRU控制其销毁时机
+}

@@ -7,8 +7,6 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class UILoading extends UITips {
-
-    public willDestory: boolean = false;
     
     view: UILoading_Auto;
 

@@ -1,13 +1,13 @@
 import CocosHelper from "./CocosHelper";
 import { FormType } from "./config/SysDefine";
 import FormMgr from "./FormMgr";
-import { ModalType } from "./Struct";
+import { ECloseType, ModalType } from "./Struct";
 import UIBase from "./UIBase";
 
 
 export class UIScreen extends UIBase {
     formType = FormType.Screen;
-    willDestory = true;
+    closeType = ECloseType.CloseAndDestory;
 
     public async closeSelf(): Promise<boolean> {
         return await FormMgr.close({prefabUrl: this.fid, type: this.formType});
@@ -17,7 +17,7 @@ export class UIScreen extends UIBase {
 export class UIWindow extends UIBase {
     formType = FormType.Window;    
     modalType = new ModalType();                // 阴影类型
-    willDestory = true;
+    closeType = ECloseType.LRU;
 
     /** 显示效果 */
     public async showEffect() {
@@ -33,7 +33,7 @@ export class UIWindow extends UIBase {
 
 export class UIFixed extends UIBase {
     formType = FormType.Fixed;
-    willDestory = true;
+    closeType = ECloseType.LRU;
 
     public async closeSelf(): Promise<boolean> {
         return await FormMgr.close({prefabUrl: this.fid, type: this.formType});
@@ -43,6 +43,7 @@ export class UIFixed extends UIBase {
 
 export class UITips extends UIBase {
     formType = FormType.Tips;
+    closeType = ECloseType.CloseAndHide;
 
     public async closeSelf(): Promise<boolean> {
         return await FormMgr.close({prefabUrl: this.fid, type: this.formType});
