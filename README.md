@@ -94,7 +94,8 @@ Task.update(dt); // 更新任务进度
 UIBase中定义窗体的属性和一系列的生命周期方法</br>
 ```typescript
 formType: FormType;           // 窗体类型
-willDestory: bool;            // 是否会被销毁, 只有这个标记为true时, 关闭窗体时才会销毁这个窗体, 不然就是隐藏
+modalType: ModalType;         // 模糊层类型
+closeType: ECloseType;        // 关闭类型, CloseAndDestroy, CloseAndHide, LRU(使用LRU cache控制窗体销毁时机)
 ```
 
 实际项目中不要直接继承UIBase, 请继承它的子类 UIScreen, UIFixed, UIWindow, UITips. 子类中预实现了一些功能.</br>
