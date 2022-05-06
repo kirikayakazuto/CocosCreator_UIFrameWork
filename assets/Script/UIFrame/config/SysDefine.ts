@@ -28,9 +28,7 @@ export enum ModalOpacity {
     /** 低透明度, 不能穿透 */
     OpacityHigh,
     /** 完全不透明 */
-    OpacityFull,
-    /** 高斯模糊 */
-    //GaussianBlur
+    OpacityFull
 }
 /** UI的状态 */
 export enum UIState {

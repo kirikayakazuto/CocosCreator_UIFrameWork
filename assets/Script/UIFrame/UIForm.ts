@@ -1,5 +1,5 @@
 import CocosHelper from "./CocosHelper";
-import { FormType } from "./config/SysDefine";
+import { FormType, ModalOpacity } from "./config/SysDefine";
 import FormMgr from "./FormMgr";
 import { ECloseType, ModalType } from "./Struct";
 import UIBase from "./UIBase";
@@ -16,7 +16,7 @@ export class UIScreen extends UIBase {
 
 export class UIWindow extends UIBase {
     formType = FormType.Window;    
-    modalType = new ModalType();                // 阴影类型
+    modalType = new ModalType(ModalOpacity.OpacityFull);                // 阴影类型
     closeType = ECloseType.LRU;
 
     /** 显示效果 */

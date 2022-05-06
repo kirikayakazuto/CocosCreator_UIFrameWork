@@ -18,8 +18,8 @@ const {ccclass, property} = cc._decorator;
 export default class UIModalScript extends cc.Component {
 
     public fid: string;
-    
     private sprite: cc.Sprite = null;
+    private camera: cc.Camera = null;
     /**
      * 初始化
      */
@@ -31,18 +31,29 @@ export default class UIModalScript extends cc.Component {
         this.node.addComponent(cc.Button);
         this.node.on('click', this.clickMaskWindow, this);
         
-        let sprite = this.sprite = this.node.addComponent(cc.Sprite)
-        sprite.sizeMode = cc.Sprite.SizeMode.CUSTOM;
-        sprite.type = cc.Sprite.Type.SIMPLE;
-        sprite.spriteFrame = new cc.SpriteFrame(this.getSingleTexture());
+        this.sprite = this.node.addComponent(cc.Sprite)
+        this.useNormalSprite(this.sprite);
 
-        this.node.color = new cc.Color(0, 0, 0);
+        this.node.color = new cc.Color(255, 255, 255);
         this.node.opacity = 0;
         this.node.active = false;
+
+        let node = new cc.Node("BlurCamera");
+        this.camera = node.addComponent(cc.Camera);
+        cc.find('Canvas').addChild(node);        
     }
 
+
     // 
-    public async showModal(lucenyType: number, time: number = 0.6, isEasing: boolean = true) {
+    public async showModal(lucenyType: number, time: number = 0.6, isEasing: boolean = true, dualBlur = false) {
+        if(dualBlur) {
+            this.useGaussBlurSprite(this.camera);
+            this.node.color = cc.Color.WHITE;
+        } else {
+            this.useNormalSprite(this.sprite);
+            this.node.color = cc.Color.BLACK;
+        }
+
         let o = 0;
         switch (lucenyType) {
             case ModalOpacity.None:    
@@ -97,16 +108,31 @@ export default class UIModalScript extends cc.Component {
         texture.initWithData(data, cc.Texture2D.PixelFormat.RGBA8888, 2, 2);
         texture.handleLoadedTexture();
         this._texture = texture;
-        // texture.packable = true;
         texture.addRef();
 
         return this._texture;
     }
 
-    private async genGaussBlur(pixes: Uint8Array, camera: cc.Camera) {
+    private useNormalSprite(sprite: cc.Sprite) {
+        sprite.sizeMode = cc.Sprite.SizeMode.CUSTOM;
+        sprite.type = cc.Sprite.Type.SIMPLE;
+        sprite.spriteFrame = new cc.SpriteFrame(this.getSingleTexture());
+    }
 
+
+    private _renderTexture: cc.RenderTexture = null;
+    private _renderTextures: cc.RenderTexture[] = [];
+    private useGaussBlurSprite(camera: cc.Camera) {
         let dirtyNodes: cc.Node[] = [];
-        let disrenderChildren = () => {
+        let disRenderChildren = () => {
+            // 不渲染tips
+            let tips = UIManager.getInstance().getUIROOT().getChildByName(SysDefine.SYS_TOPTIPS_NODE).children;
+            for(const node of tips) {
+                if(!node._activeInHierarchy || node.opacity == 0) continue;
+                node['_dirtyRenderFlag'] = node._renderFlag;
+                node._renderFlag &= ~(cc.RenderFlow.FLAG_CHILDREN | cc.RenderFlow.FLAG_RENDER);
+                dirtyNodes.push(node);
+            }
             // 不渲染自己和最上层的window
             this.node._renderFlag &= ~cc.RenderFlow.FLAG_RENDER;
             let windows = UIManager.getInstance().getUIROOT().getChildByName(SysDefine.SYS_POPUP_NODE).children;
@@ -114,108 +140,355 @@ export default class UIModalScript extends cc.Component {
                 if(windows[i].zIndex > this.node.zIndex) {
                     let node = windows[i];
                     if(!node._activeInHierarchy || node.opacity == 0) continue;
-                    let flag = node._renderFlag & cc.RenderFlow.FLAG_CHILDREN;
-                    node._renderFlag &= ~flag;
+                    node['_dirtyRenderFlag'] = node._renderFlag;
+                    node._renderFlag &= ~(cc.RenderFlow.FLAG_CHILDREN | cc.RenderFlow.FLAG_RENDER);
                     dirtyNodes.push(node);
                 }
             }
         }
         let rerenderChildren = () => {
             for(const node of dirtyNodes) {
-                //let flag = node._renderFlag & cc.RenderFlow.FLAG_CHILDREN;
-                node._renderFlag |= cc.RenderFlow.FLAG_CHILDREN;
+                node._renderFlag = node['_dirtyRenderFlag'];
             }
         }
-        let renderTexture = new cc.RenderTexture();
-        renderTexture.initWithSize(cc.visibleRect.width, cc.visibleRect.height, cc.game._renderContext.STENCIL_INDEX8);
+        if(!this._renderTexture) {
+            let renderTexture = this._renderTexture = new cc.RenderTexture();
+            renderTexture.initWithSize(cc.visibleRect.width, cc.visibleRect.height, cc.game._renderContext.STENCIL_INDEX8);
+        }
         camera.enabled = true;
-        camera.targetTexture = renderTexture;
-        disrenderChildren();
+        camera.targetTexture = this._renderTexture;
+        disRenderChildren();
         camera.render();
         rerenderChildren();
-        renderTexture.readPixels(pixes, 0, 0, renderTexture.width, renderTexture.height);
-        pixes = await getGaussBlur(pixes, renderTexture.width, renderTexture.height, 5, 0);
+        this.sprite.spriteFrame.setTexture(camera.targetTexture);
+        this.sprite.markForRender(true)
+        this.renderDualBlur(camera, 3);
         camera.enabled = false;
-        renderTexture.initWithData(pixes, cc.Texture2D.PixelFormat.RGBA8888, renderTexture.width, renderTexture.height);
-        return renderTexture;
+    }
+
+    private renderDualBlur(camera: cc.Camera, iterations: number) {
+        let size = cc.view.getVisibleSize();
+        if(this._renderTextures.length <= 0) {
+            for (let i = 0; i < iterations; i++) {
+                let r = Math.pow(2, i);
+                let renderTexture = new cc.RenderTexture();
+                renderTexture.initWithSize((cc.visibleRect.width / r) | 0, (cc.visibleRect.height / r) | 0);
+                this._renderTextures.push(renderTexture);
+            }
+        }
+        if(!MaterialDown) {
+            MaterialDown = this.genMaterial(EFFECT_DOWN);
+            MaterialDown.setProperty('v_halfpixel', [0.5 / size.width, 0.5 / size.height]);
+            MaterialDown.setProperty('v_offset', [4, 4]);
+        }
+        this.sprite.setMaterial(0, MaterialDown);
+        for (let i = 0; i < iterations; i++) {
+            camera.targetTexture = this._renderTextures[i];
+            camera.render(this.sprite.node);
+            this.sprite.spriteFrame.setTexture(camera.targetTexture);
+            this.sprite.markForRender(true)
+        }
+        if(!MaterialUp) {
+            MaterialUp = this.genMaterial(EFFECT_UP);
+            MaterialUp.setProperty('v_halfpixel', [0.5 / size.width, 0.5 / size.height]);
+            MaterialUp.setProperty('v_offset', [4, 4]);
+        }
+        this.sprite.setMaterial(0, MaterialUp);
+        for (let i = iterations - 1; i > 0; i--) {
+            camera.targetTexture = this._renderTextures[i - 1];
+            camera.render(this.sprite.node);
+            this.sprite.spriteFrame.setTexture(camera.targetTexture);
+            this.sprite.markForRender(true)
+        }
+        this.sprite.setMaterial(0, cc.Material.getBuiltinMaterial('2d-sprite'));
+    }
+
+    public genMaterial(effect: any) {
+        //@ts-ignore
+        let asset = cc.deserialize(effect, {priority: 0, responseType: "json"});
+        asset.onLoad && asset.onLoad();
+        asset.__onLoadInvoked__ = true;
+
+        return cc.Material.create(asset, 0);
     }
 }
-
-async function getGaussBlur(pixes: Uint8Array, width: number, height: number,radius: number, sigma: number) {
-    let gaussMatrix = [],
-        gaussSum = 0,
-        x: number, y: number,
-        r: number, g: number, b: number, a: number,
-        i: number, j: number, k: number, len: number;
-
-
-    radius = Math.floor(radius) || 3;
-    sigma = sigma || radius / 3;
-
-    a = 1 / (Math.sqrt(2 * Math.PI) * sigma);
-    b = -1 / (2 * sigma * sigma);
-    //生成高斯矩阵
-    for (i = 0, x = -radius; x <= radius; x++, i++){
-        g = a * Math.exp(b * x * x);
-        gaussMatrix[i] = g;
-        gaussSum += g;
-    }
-
-    //归一化, 保证高斯矩阵的值在[0,1]之间
-    for (i = 0, len = gaussMatrix.length; i < len; i++) {
-        gaussMatrix[i] /= gaussSum;
-    }
-
-    //x 方向一维高斯运算
-    for (y = 0; y < height; y++) {
-        for (x = 0; x < width; x++) {
-            r = g = b = a = 0;
-            gaussSum = 0;
-            for(j = -radius; j <= radius; j++){
-                k = x + j;
-                if(k >= 0 && k < width){//确保 k 没超出 x 的范围
-                    //r,g,b,a 四个一组
-                    i = (y * width + k) * 4;
-                    r += pixes[i] * gaussMatrix[j + radius];
-                    g += pixes[i + 1] * gaussMatrix[j + radius];
-                    b += pixes[i + 2] * gaussMatrix[j + radius];
-                    gaussSum += gaussMatrix[j + radius];
+let MaterialDown: cc.Material = null;
+let MaterialUp: cc.Material = null;
+const EFFECT_UP = {
+    "__type__": "cc.EffectAsset",
+    "_name": "BlurUp",
+    "_objFlags": 0,
+    "_native": "",
+    "properties": null,
+    "techniques": [
+      {
+        "passes": [
+          {
+            "blendState": {
+              "targets": [
+                {
+                  "blend": true
                 }
-            }
-            i = (y * width + x) * 4;
-            // 除以 gaussSum 是为了消除处于边缘的像素, 高斯运算不足的问题
-            pixes[i] = r / gaussSum;
-            pixes[i + 1] = g / gaussSum;
-            pixes[i + 2] = b / gaussSum;
-            pixes[i + 3] = 255;
-        }
-        await CocosHelper.callInNextTick();
-    }
-
-    //y 方向一维高斯运算
-    for (x = 0; x < width; x++) {
-        for (y = 0; y < height; y++) {
-            r = g = b = a = 0;
-            gaussSum = 0;
-            for(j = -radius; j <= radius; j++){
-                k = y + j;
-                if(k >= 0 && k < height){//确保 k 没超出 y 的范围
-                    i = (k * width + x) * 4;
-                    r += pixes[i] * gaussMatrix[j + radius];
-                    g += pixes[i + 1] * gaussMatrix[j + radius];
-                    b += pixes[i + 2] * gaussMatrix[j + radius];
-                    gaussSum += gaussMatrix[j + radius];
+              ]
+            },
+            "rasterizerState": {
+              "cullMode": 0
+            },
+            "properties": {
+              "texture": {
+                "value": "white",
+                "type": 29
+              },
+              "alphaThreshold": {
+                "value": [
+                  0.5
+                ],
+                "type": 13
+              }
+            },
+            "program": "BlurUp|vs|fs"
+          }
+        ]
+      }
+    ],
+    "shaders": [
+      {
+        "hash": 104409166,
+        "glsl3": {
+          "vert": "\nprecision highp float;\nuniform CCGlobal {\n  mat4 cc_matView;\n  mat4 cc_matViewInv;\n  mat4 cc_matProj;\n  mat4 cc_matProjInv;\n  mat4 cc_matViewProj;\n  mat4 cc_matViewProjInv;\n  vec4 cc_cameraPos;\n  vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_screenScale;\n};\nuniform CCLocal {\n  mat4 cc_matWorld;\n  mat4 cc_matWorldIT;\n};\nin vec3 a_position;\nin vec4 a_color;\nout vec4 v_color;\n#if USE_TEXTURE\nin vec2 a_uv0;\nout vec2 v_uv0;\n#endif\nvoid main () {\n  vec4 pos = vec4(a_position, 1);\n  #if CC_USE_MODEL\n  pos = cc_matViewProj * cc_matWorld * pos;\n  #else\n  pos = cc_matViewProj * pos;\n  #endif\n  #if USE_TEXTURE\n  v_uv0 = a_uv0;\n  #endif\n  v_color = a_color;\n  gl_Position = pos;\n}",
+          "frag": "\nprecision highp float;\n#if USE_ALPHA_TEST\n  uniform ALPHA_TEST {\n    float alphaThreshold;\n  };\n#endif\nvoid ALPHA_TEST (in vec4 color) {\n  #if USE_ALPHA_TEST\n      if (color.a < alphaThreshold) discard;\n  #endif\n}\nvoid ALPHA_TEST (in float alpha) {\n  #if USE_ALPHA_TEST\n      if (alpha < alphaThreshold) discard;\n  #endif\n}\nin vec4 v_color;\n#if USE_TEXTURE\nin vec2 v_uv0;\nuniform sampler2D texture;\n#endif\nuniform CustomUniform {\n  vec2 v_halfpixel;\n  vec2 v_offset;\n};\nvoid main () {\n  vec4 o = vec4(1, 1, 1, 1);\n vec2 uv = v_uv0;\n vec4 sum = texture2D(texture, clamp(uv + vec2(-v_halfpixel.x * 2.0, 0.0) * v_offset, 0., 1.));\n  sum += texture2D(texture, clamp(uv + vec2(-v_halfpixel.x, v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;\n  sum += texture2D(texture, clamp(uv + vec2(0.0, v_halfpixel.y * 2.0) * v_offset, 0., 1.));\n  sum += texture2D(texture, clamp(uv + vec2(v_halfpixel.x, v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;\n  sum += texture2D(texture, clamp(uv + vec2(v_halfpixel.x * 2.0, 0.0) * v_offset, 0., 1.));\n  sum += texture2D(texture, clamp(uv + vec2(v_halfpixel.x, -v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;\n  sum += texture2D(texture, clamp(uv + vec2(0.0, -v_halfpixel.y * 2.0) * v_offset, 0., 1.));\n  sum += texture2D(texture, clamp(uv + vec2(-v_halfpixel.x, -v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;\n  o = sum / 12.0;\n  o *= v_color;\n  ALPHA_TEST(o);\n  #if USE_BGRA\n    gl_FragColor = o.bgra;\n  #else\n    gl_FragColor = o.rgba;\n  #endif\n}"
+        },
+        "glsl1": {
+          "vert": "\nprecision highp float;\nuniform mat4 cc_matViewProj;\nuniform mat4 cc_matWorld;\nattribute vec3 a_position;\nattribute vec4 a_color;\nvarying vec4 v_color;\n#if USE_TEXTURE\nattribute vec2 a_uv0;\nvarying vec2 v_uv0;\n#endif\nvoid main () {\n  vec4 pos = vec4(a_position, 1);\n  #if CC_USE_MODEL\n  pos = cc_matViewProj * cc_matWorld * pos;\n  #else\n  pos = cc_matViewProj * pos;\n  #endif\n  #if USE_TEXTURE\n  v_uv0 = a_uv0;\n  #endif\n  v_color = a_color;\n  gl_Position = pos;\n}",
+          "frag": "\nprecision highp float;\n#if USE_ALPHA_TEST\n  uniform float alphaThreshold;\n#endif\nvoid ALPHA_TEST (in vec4 color) {\n  #if USE_ALPHA_TEST\n      if (color.a < alphaThreshold) discard;\n  #endif\n}\nvoid ALPHA_TEST (in float alpha) {\n  #if USE_ALPHA_TEST\n      if (alpha < alphaThreshold) discard;\n  #endif\n}\nvarying vec4 v_color;\n#if USE_TEXTURE\nvarying vec2 v_uv0;\nuniform sampler2D texture;\n#endif\nuniform vec2 v_halfpixel;\nuniform vec2 v_offset;\nvoid main () {\n  vec4 o = vec4(1, 1, 1, 1);\n vec2 uv = v_uv0;\n  vec4 sum = texture2D(texture, clamp(uv + vec2(-v_halfpixel.x * 2.0, 0.0) * v_offset, 0., 1.));\n  sum += texture2D(texture, clamp(uv + vec2(-v_halfpixel.x, v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;\n  sum += texture2D(texture, clamp(uv + vec2(0.0, v_halfpixel.y * 2.0) * v_offset, 0., 1.));\n  sum += texture2D(texture, clamp(uv + vec2(v_halfpixel.x, v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;\n  sum += texture2D(texture, clamp(uv + vec2(v_halfpixel.x * 2.0, 0.0) * v_offset, 0., 1.));\n  sum += texture2D(texture, clamp(uv + vec2(v_halfpixel.x, -v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;\n  sum += texture2D(texture, clamp(uv + vec2(0.0, -v_halfpixel.y * 2.0) * v_offset, 0., 1.));\n  sum += texture2D(texture, clamp(uv + vec2(-v_halfpixel.x, -v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;\n  o = sum / 12.0;\n  o *= v_color;\n  ALPHA_TEST(o);\n  #if USE_BGRA\n    gl_FragColor = o.bgra;\n  #else\n    gl_FragColor = o.rgba;\n  #endif\n}"
+        },
+        "builtins": {
+          "globals": {
+            "blocks": [
+              {
+                "name": "CCGlobal",
+                "defines": []
+              }
+            ],
+            "samplers": []
+          },
+          "locals": {
+            "blocks": [
+              {
+                "name": "CCLocal",
+                "defines": []
+              }
+            ],
+            "samplers": []
+          }
+        },
+        "defines": [
+          {
+            "name": "USE_TEXTURE",
+            "type": "boolean",
+            "defines": []
+          },
+          {
+            "name": "CC_USE_MODEL",
+            "type": "boolean",
+            "defines": []
+          },
+          {
+            "name": "USE_ALPHA_TEST",
+            "type": "boolean",
+            "defines": []
+          },
+          {
+            "name": "USE_BGRA",
+            "type": "boolean",
+            "defines": []
+          }
+        ],
+        "blocks": [
+          {
+            "name": "ALPHA_TEST",
+            "members": [
+              {
+                "name": "alphaThreshold",
+                "type": 13,
+                "count": 1
+              }
+            ],
+            "defines": [
+              "USE_ALPHA_TEST"
+            ],
+            "binding": 0
+          },
+          {
+            "name": "CustomUniform",
+            "members": [
+              {
+                "name": "v_halfpixel",
+                "type": 14,
+                "count": 1
+              },
+              {
+                "name": "v_offset",
+                "type": 14,
+                "count": 1
+              }
+            ],
+            "defines": [],
+            "binding": 1
+          }
+        ],
+        "samplers": [
+          {
+            "name": "texture",
+            "type": 29,
+            "count": 1,
+            "defines": [
+              "USE_TEXTURE"
+            ],
+            "binding": 30
+          }
+        ],
+        "record": null,
+        "name": "BlurUp|vs|fs"
+      }
+    ]
+};
+const EFFECT_DOWN = {
+    "__type__": "cc.EffectAsset",
+    "_name": "BlurDown",
+    "_objFlags": 0,
+    "_native": "",
+    "properties": null,
+    "techniques": [
+      {
+        "passes": [
+          {
+            "blendState": {
+              "targets": [
+                {
+                  "blend": true
                 }
-            }
-            i = (y * width + x) * 4;
-            pixes[i] = r / gaussSum;
-            pixes[i + 1] = g / gaussSum;
-            pixes[i + 2] = b / gaussSum;
-            pixes[i + 3] = 255;
-        }
-        await CocosHelper.callInNextTick();
-    }
-
-    //end
-    return pixes;
-}
+              ]
+            },
+            "rasterizerState": {
+              "cullMode": 0
+            },
+            "properties": {
+              "texture": {
+                "value": "white",
+                "type": 29
+              },
+              "alphaThreshold": {
+                "value": [
+                  0.5
+                ],
+                "type": 13
+              }
+            },
+            "program": "BlurDown|vs|fs"
+          }
+        ]
+      }
+    ],
+    "shaders": [
+      {
+        "hash": 104409166,
+        "glsl3": {
+          "vert": "\nprecision highp float;\nuniform CCGlobal {\n  mat4 cc_matView;\n  mat4 cc_matViewInv;\n  mat4 cc_matProj;\n  mat4 cc_matProjInv;\n  mat4 cc_matViewProj;\n  mat4 cc_matViewProjInv;\n  vec4 cc_cameraPos;\n  vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_screenScale;\n};\nuniform CCLocal {\n  mat4 cc_matWorld;\n  mat4 cc_matWorldIT;\n};\nin vec3 a_position;\nin vec4 a_color;\nout vec4 v_color;\n#if USE_TEXTURE\nin vec2 a_uv0;\nout vec2 v_uv0;\n#endif\nvoid main () {\n  vec4 pos = vec4(a_position, 1);\n  #if CC_USE_MODEL\n  pos = cc_matViewProj * cc_matWorld * pos;\n  #else\n  pos = cc_matViewProj * pos;\n  #endif\n  #if USE_TEXTURE\n  v_uv0 = a_uv0;\n  #endif\n  v_color = a_color;\n  gl_Position = pos;\n}",
+          "frag": "\nprecision highp float;\n#if USE_ALPHA_TEST\n  uniform ALPHA_TEST {\n    float alphaThreshold;\n  };\n#endif\nvoid ALPHA_TEST (in vec4 color) {\n  #if USE_ALPHA_TEST\n      if (color.a < alphaThreshold) discard;\n  #endif\n}\nvoid ALPHA_TEST (in float alpha) {\n  #if USE_ALPHA_TEST\n      if (alpha < alphaThreshold) discard;\n  #endif\n}\nin vec4 v_color;\n#if USE_TEXTURE\nin vec2 v_uv0;\nuniform sampler2D texture;\n#endif\nuniform CustomUniform {\n  vec2 v_halfpixel;\n  vec2 v_offset;\n};\nvoid main () {\n vec2 uv = v_uv0;\n  vec4 o = vec4(1, 1, 1, 1);\n  vec4 sum = texture2D(texture, clamp(uv + vec2(-v_halfpixel.x * 2.0, 0.0) * v_offset, 0., 1.));\n  sum += texture2D(texture, clamp(uv + vec2(-v_halfpixel.x, v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;\n  sum += texture2D(texture, clamp(uv + vec2(0.0, v_halfpixel.y * 2.0) * v_offset, 0., 1.));\n  sum += texture2D(texture, clamp(uv + vec2(v_halfpixel.x, v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;\n  sum += texture2D(texture, clamp(uv + vec2(v_halfpixel.x * 2.0, 0.0) * v_offset, 0., 1.));\n  sum += texture2D(texture, clamp(uv + vec2(v_halfpixel.x, -v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;\n  sum += texture2D(texture, clamp(uv + vec2(0.0, -v_halfpixel.y * 2.0) * v_offset, 0., 1.));\n  sum += texture2D(texture, clamp(uv + vec2(-v_halfpixel.x, -v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;\n  o = sum / 12.0;\n  o *= v_color;\n  ALPHA_TEST(o);\n  #if USE_BGRA\n    gl_FragColor = o.bgra;\n  #else\n    gl_FragColor = o.rgba;\n  #endif\n}"
+        },
+        "glsl1": {
+          "vert": "\nprecision highp float;\nuniform mat4 cc_matViewProj;\nuniform mat4 cc_matWorld;\nattribute vec3 a_position;\nattribute vec4 a_color;\nvarying vec4 v_color;\n#if USE_TEXTURE\nattribute vec2 a_uv0;\nvarying vec2 v_uv0;\n#endif\nvoid main () {\n  vec4 pos = vec4(a_position, 1);\n  #if CC_USE_MODEL\n  pos = cc_matViewProj * cc_matWorld * pos;\n  #else\n  pos = cc_matViewProj * pos;\n  #endif\n  #if USE_TEXTURE\n  v_uv0 = a_uv0;\n  #endif\n  v_color = a_color;\n  gl_Position = pos;\n}",
+          "frag": "\nprecision highp float;\n#if USE_ALPHA_TEST\n  uniform float alphaThreshold;\n#endif\nvoid ALPHA_TEST (in vec4 color) {\n  #if USE_ALPHA_TEST\n      if (color.a < alphaThreshold) discard;\n  #endif\n}\nvoid ALPHA_TEST (in float alpha) {\n  #if USE_ALPHA_TEST\n      if (alpha < alphaThreshold) discard;\n  #endif\n}\nvarying vec4 v_color;\n#if USE_TEXTURE\nvarying vec2 v_uv0;\nuniform sampler2D texture;\n#endif\nuniform vec2 v_halfpixel;\nuniform vec2 v_offset;\nvoid main () {\n  vec4 o = vec4(1, 1, 1, 1);\n vec2 uv = v_uv0;\n  vec4 sum = texture2D(texture, clamp(uv + vec2(-v_halfpixel.x * 2.0, 0.0) * v_offset, 0., 1.));\n  sum += texture2D(texture, clamp(uv + vec2(-v_halfpixel.x, v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;\n  sum += texture2D(texture, clamp(uv + vec2(0.0, v_halfpixel.y * 2.0) * v_offset, 0., 1.));\n  sum += texture2D(texture, clamp(uv + vec2(v_halfpixel.x, v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;\n  sum += texture2D(texture, clamp(uv + vec2(v_halfpixel.x * 2.0, 0.0) * v_offset, 0., 1.));\n  sum += texture2D(texture, clamp(uv + vec2(v_halfpixel.x, -v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;\n  sum += texture2D(texture, clamp(uv + vec2(0.0, -v_halfpixel.y * 2.0) * v_offset, 0., 1.));\n  sum += texture2D(texture, clamp(uv + vec2(-v_halfpixel.x, -v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;\n  o = sum / 12.0;\n  o *= v_color;\n  ALPHA_TEST(o);\n  #if USE_BGRA\n    gl_FragColor = o.bgra;\n  #else\n    gl_FragColor = o.rgba;\n  #endif\n}"
+        },
+        "builtins": {
+          "globals": {
+            "blocks": [
+              {
+                "name": "CCGlobal",
+                "defines": []
+              }
+            ],
+            "samplers": []
+          },
+          "locals": {
+            "blocks": [
+              {
+                "name": "CCLocal",
+                "defines": []
+              }
+            ],
+            "samplers": []
+          }
+        },
+        "defines": [
+          {
+            "name": "USE_TEXTURE",
+            "type": "boolean",
+            "defines": []
+          },
+          {
+            "name": "CC_USE_MODEL",
+            "type": "boolean",
+            "defines": []
+          },
+          {
+            "name": "USE_ALPHA_TEST",
+            "type": "boolean",
+            "defines": []
+          },
+          {
+            "name": "USE_BGRA",
+            "type": "boolean",
+            "defines": []
+          }
+        ],
+        "blocks": [
+          {
+            "name": "ALPHA_TEST",
+            "members": [
+              {
+                "name": "alphaThreshold",
+                "type": 13,
+                "count": 1
+              }
+            ],
+            "defines": [
+              "USE_ALPHA_TEST"
+            ],
+            "binding": 0
+          },
+          {
+            "name": "CustomUniform",
+            "members": [
+              {
+                "name": "v_halfpixel",
+                "type": 14,
+                "count": 1
+              },
+              {
+                "name": "v_offset",
+                "type": 14,
+                "count": 1
+              }
+            ],
+            "defines": [],
+            "binding": 1
+          }
+        ],
+        "samplers": [
+          {
+            "name": "texture",
+            "type": 29,
+            "count": 1,
+            "defines": [
+              "USE_TEXTURE"
+            ],
+            "binding": 30
+          }
+        ],
+        "record": null,
+        "name": "BlurDown|vs|fs"
+      }
+    ]
+};

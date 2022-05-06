@@ -22,8 +22,8 @@ export default class UISetting extends UIWindow {
 
         this.view.Pop.addClick(() => {
             FormMgr.open(UIConfig.UIPop);
-            FormMgr.open(UIConfig.UITips, "关闭后才显示的弹窗1", {showWait: true});
-            FormMgr.open(UIConfig.UITips, "关闭后才显示的弹窗2", {showWait: true})
+            // FormMgr.open(UIConfig.UITips, "关闭后才显示的弹窗1", {showWait: true});
+            // FormMgr.open(UIConfig.UITips, "关闭后才显示的弹窗2", {showWait: true})
         }, this);
 
         this.view.Mobx.addClick(() => {

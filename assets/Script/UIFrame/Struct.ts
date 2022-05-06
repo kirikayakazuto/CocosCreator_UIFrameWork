@@ -5,12 +5,19 @@ export class ModalType {
     public clickMaskClose = false;      // 点击阴影关闭
     public isEasing = true;             // 缓动实现
     public easingTime = 0.2;            // 缓动时间
+    public dualBlur = false;            // 模糊
+    
 
     constructor(opacity = ModalOpacity.OpacityHalf, ClickMaskClose=false, IsEasing=true, EasingTime=0.2) {
         this.opacity = opacity;
         this.clickMaskClose = ClickMaskClose;
         this.isEasing = IsEasing;
         this.easingTime = EasingTime;
+    }
+
+    useBlur() {
+        this.dualBlur = true;
+        return this;
     }
 }
 

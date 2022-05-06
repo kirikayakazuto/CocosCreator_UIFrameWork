@@ -32,7 +32,7 @@ export default class ModalMgr extends cc.Component {
 
     /** 为mask添加颜色 */
     private async showModal(maskType: ModalType) {
-        await this.uiModal.showModal(maskType.opacity, maskType.easingTime, maskType.isEasing);
+        await this.uiModal.showModal(maskType.opacity, maskType.easingTime, maskType.isEasing, maskType.dualBlur);
     }
 
     public checkModalWindow(coms: UIWindow[]) {

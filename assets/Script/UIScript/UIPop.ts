@@ -21,9 +21,6 @@ export default class UIPop extends UIWindow {
         }, this);
     }
 
-    public async hideEffect(): Promise<void> {
-        await CocosHelper.runTweenSync(this.node, cc.tween(this.node).to(0.3, {position: cc.v3(0, 500)}));
-    }
 
     // update (dt) {}
 }
