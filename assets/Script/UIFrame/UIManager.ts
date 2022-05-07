@@ -360,13 +360,9 @@ export default class UIManager {
         let deleteFid = this._LRUCache.deleteLastNode();
         if(deleteFid) {
             CC_DEBUG && console.log('close form id:', deleteFid, this._LRUCache.toString())
-            let func = () => {
-                let com = this.getForm(deleteFid);
-                if(!com || !com.node) return ;
-                com && this.destoryForm(com);
-            }
-            window.requestIdleCallback ? window.requestIdleCallback(func, {timeout: 2000}) 
-            : CocosHelper.callInNextTick().then(func);
+            let com = this.getForm(deleteFid);
+            if(!com || !com.node) return ;
+            com && this.destoryForm(com);
         }
         
     }
