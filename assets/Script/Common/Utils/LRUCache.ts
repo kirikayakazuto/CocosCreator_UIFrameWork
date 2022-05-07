@@ -1,4 +1,6 @@
-class LRUNode {
+import { IPool, Pool } from "./Pool";
+
+class LRUNode implements IPool {
     value: string;
     prev: LRUNode;          // 前面的
     next: LRUNode;          // 后面的
@@ -6,7 +8,19 @@ class LRUNode {
         this.value = value;
         this.next = next;
     }
+
+    use(value: string, next: LRUNode) {
+        this.value = value;
+        this.next = next;
+    }
+
+    free() {
+        this.value = '';
+        this.next = null;
+    }
 }
+
+
 /**
  * @author honmono
  * @description 为UIManager写的 lru cache控制.
@@ -17,6 +31,10 @@ export class LRUCache {
     private head: LRUNode;
     private last: LRUNode;
     private size: number;
+
+    private nodePool: Pool<LRUNode> = new Pool<LRUNode>(() => {
+        return new LRUNode('', null);
+    }, 3);
     constructor(maxSize: number) {
         this.maxSize = maxSize;
         this.head = new LRUNode('head', null);
@@ -30,7 +48,7 @@ export class LRUCache {
         
     public put(value: string) {
         if(this.size <= 0) {
-            this.last = new LRUNode(value, null);
+            this.last = this.nodePool.alloc(value, null);
             this.last.prev = this.head;
             this.head.next = this.last;
             this.size = 1;
@@ -38,7 +56,7 @@ export class LRUCache {
         }
         let node = this.has(value);
         if(!node) {     // 不存在, 直接加到最前面
-            node = new LRUNode(value, null);
+            node = this.nodePool.alloc(value, null);
             this.addHead(node);
             return ;
         }
@@ -57,6 +75,7 @@ export class LRUCache {
     public deleteLastNode() {
         let value = this.last.value;
         this.removeNode(this.last);
+        this.nodePool.free(this.last);
         this.last = this.last.prev;
         return value;
     }

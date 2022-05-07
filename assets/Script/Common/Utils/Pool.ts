@@ -1,5 +1,5 @@
 export interface IPool {
-    use?(): any;
+    use?(...params: any): any;
     free?(): any;
 }
 export class Pool<T extends IPool> {
@@ -21,7 +21,7 @@ export class Pool<T extends IPool> {
         }
     }
 
-    public alloc(): T {
+    public alloc(...params: any): T {
         if(this._idx < 0) {
             this._expand(Math.round(this._frees.length * 1.2) + 1);
         }
@@ -29,7 +29,7 @@ export class Pool<T extends IPool> {
         this._frees.splice(this._idx);
         --this._idx;
 
-        obj.use && obj.use();
+        obj.use && obj.use(...params);
         return obj;
     }
 
