@@ -9,7 +9,6 @@ import { ECloseType, IFormData } from "./Struct";
 import { EventCenter } from "./EventCenter";
 import { EventType } from "./EventType";
 import { LRUCache } from "../Common/Utils/LRUCache";
-import CocosHelper from "./CocosHelper";
 
 /**
  * @author honmono

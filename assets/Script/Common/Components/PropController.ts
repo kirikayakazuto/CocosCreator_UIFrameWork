@@ -31,6 +31,7 @@ export default class PropController extends cc.Component {
         this._refreshIdEnum();
     }
     
+    @property({type: cc.Enum({})})
     _state = 0;
     @property({type: cc.Enum({})})
     get state() {
