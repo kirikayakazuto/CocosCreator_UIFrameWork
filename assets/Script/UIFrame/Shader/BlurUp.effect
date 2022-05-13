@@ -72,15 +72,12 @@ CCProgram fs %{
   void main () {
     vec4 o = vec4(1, 1, 1, 1);
 
-    vec4 sum = texture2D(texture, clamp(uv + vec2(-v_halfpixel.x * 2.0, 0.0) * v_offset, 0., 1.));
-    sum += texture2D(texture, clamp(uv + vec2(-v_halfpixel.x, v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;
-    sum += texture2D(texture, clamp(uv + vec2(0.0, v_halfpixel.y * 2.0) * v_offset, 0., 1.));
-    sum += texture2D(texture, clamp(uv + vec2(v_halfpixel.x, v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;
-    sum += texture2D(texture, clamp(uv + vec2(v_halfpixel.x * 2.0, 0.0) * v_offset, 0., 1.));
-    sum += texture2D(texture, clamp(uv + vec2(v_halfpixel.x, -v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;
-    sum += texture2D(texture, clamp(uv + vec2(0.0, -v_halfpixel.y * 2.0) * v_offset, 0., 1.));
-    sum += texture2D(texture, clamp(uv + vec2(-v_halfpixel.x, -v_halfpixel.y) * v_offset, 0., 1.)) * 2.0;
-    o = sum / 12.0;
+    vec4 sum = texture2D(texture, v_uv0) * 4.0;
+    sum += texture2D(texture, v_uv0 - v_halfpixel.xy * v_offset);
+    sum += texture2D(texture, v_uv0 + v_halfpixel.xy * v_offset);
+    sum += texture2D(texture, v_uv0 + vec2(v_halfpixel.x, -v_halfpixel.y) * v_offset);
+    sum += texture2D(texture, v_uv0 - vec2(v_halfpixel.x, -v_halfpixel.y) * v_offset);
+    o = sum / 8.0;
 
     o *= v_color;
 
