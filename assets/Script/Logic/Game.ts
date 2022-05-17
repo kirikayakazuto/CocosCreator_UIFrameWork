@@ -4,15 +4,15 @@ import PlayerMgr from "./Manager/PlayerMgr";
 /**
  * 掌管逻辑层
  */
-class Game {
+export class Game {
 
     public inited = false;
     public configMgr: ConfigMgr = null;
     public playerMgr: PlayerMgr = null;
     public async init(uiRoot: cc.Node) {
         // 初始化Manager, 例如new ConfigMgr();
-        this.configMgr = new ConfigMgr();
-        this.playerMgr = new PlayerMgr();
+        this.configMgr = new ConfigMgr(this);
+        this.playerMgr = new PlayerMgr(this);
         // 初始化平台sdk
         // todo...
         // 加载配置
@@ -38,5 +38,5 @@ class Game {
         // 例如Task.update(dt); 更新任务进度
     }
 }
-
-export default new Game();
+let GameMgr = new Game();
+export default GameMgr;
