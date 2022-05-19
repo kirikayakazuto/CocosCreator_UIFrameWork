@@ -39,9 +39,17 @@ module scene {
     }
     `
         }
-        let strScript = `export default class UIConfig {
+        let strScript = `
+export default class UIConfig {
     ${contentStr}
-    }`;
+}
+cc.game.on(cc.game.EVENT_GAME_INITED, () => {
+    for(const key in UIConfig) {
+        let constourt = cc.js.getClassByName(key);
+        if(constourt) constourt['UIConfig'] = UIConfig[key];
+    }
+});
+`;
 
         let dbConfigPath = ConfigPath.replace(Editor.Project.path.replace(/\\/g, "/"), "db:/");
         await saveFile(dbConfigPath, strScript);
@@ -63,7 +71,7 @@ module scene {
     }
 
     function getResourcesUrl(fileUrl: string) {
-        return fileUrl.replace(`${Editor.Project.path}/assets/resources/`, "").split('.')[0];
+        return (fileUrl.replace(`${Editor.Project.path}/assets/resources/`, "").split('.')[0]).replace(/\\/g, "/");
     }
 
     function getPrefabType(fileUrl: string): Promise<string | null> {

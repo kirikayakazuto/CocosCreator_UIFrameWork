@@ -7,12 +7,10 @@ export default class CacheUtils extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
 
-    com: cc.Label = null;
+    public com: cc.Label = null;
     onLoad () {
         this.com = this.getComponent(cc.Label);
     }
-
-    
 
     start () {
         this.node.on(cc.Node.EventType.TOUCH_MOVE, (e: cc.Event.EventTouch) => {

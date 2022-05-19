@@ -90,7 +90,7 @@ var scene;
                         for (key in map) {
                             contentStr += "static ".concat(key, " = {\n        prefabUrl: \"").concat(map[key].prefabUrl, "\",\n        type: \"").concat(map[key].type, "\"\n    }\n    ");
                         }
-                        strScript = "export default class UIConfig {\n    ".concat(contentStr, "\n    }");
+                        strScript = "\nexport default class UIConfig {\n    ".concat(contentStr, "\n}\ncc.game.on(cc.game.EVENT_GAME_INITED, () => {\n    for(const key in UIConfig) {\n        let constourt = cc.js.getClassByName(key);\n        if(constourt) constourt['UIConfig'] = UIConfig[key];\n    }\n});\n");
                         dbConfigPath = ConfigPath.replace(Editor.Project.path.replace(/\\/g, "/"), "db:/");
                         return [4 /*yield*/, saveFile(dbConfigPath, strScript)];
                     case 2:
@@ -115,7 +115,7 @@ var scene;
         });
     }
     function getResourcesUrl(fileUrl) {
-        return fileUrl.replace("".concat(Editor.Project.path, "/assets/resources/"), "").split('.')[0];
+        return (fileUrl.replace("".concat(Editor.Project.path, "/assets/resources/"), "").split('.')[0]).replace(/\\/g, "/");
     }
     function getPrefabType(fileUrl) {
         return new Promise(function (resolve, reject) {
