@@ -116,6 +116,7 @@ var scene;
     }
     function getResourcesUrl(fileUrl) {
         var url = "".concat(Editor.Project.path, "/assets/resources/").replace(/\\/g, "/");
+        fileUrl = fileUrl.replace(/\\/g, "/");
         Editor.log(fileUrl, url);
         return fileUrl.replace(url, "").split('.')[0];
     }

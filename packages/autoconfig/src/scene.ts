@@ -72,6 +72,7 @@ cc.game.on(cc.game.EVENT_GAME_INITED, () => {
 
     function getResourcesUrl(fileUrl: string) {
         let url = `${Editor.Project.path}/assets/resources/`.replace(/\\/g, "/");
+        fileUrl = fileUrl.replace(/\\/g, "/");
         Editor.log(fileUrl, url);
         return fileUrl.replace(url, "").split('.')[0];
     }
