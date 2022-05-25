@@ -73,7 +73,6 @@ var scene;
                                         case 0: return [4 /*yield*/, getPrefabType(prefabUrl)];
                                         case 1:
                                             type = _a.sent();
-                                            Editor.log("prefabUrl: ", prefabUrl, type);
                                             if (!type)
                                                 return [2 /*return*/, null];
                                             baseName = path.basename(prefabUrl).split(".")[0];
@@ -116,7 +115,9 @@ var scene;
         });
     }
     function getResourcesUrl(fileUrl) {
-        return fileUrl.replace("".concat(Editor.Project.path, "/assets/resources/"), "").split('.')[0];
+        var url = "".concat(Editor.Project.path, "/assets/resources/").replace(/\\/g, "/");
+        Editor.log(fileUrl, url);
+        return fileUrl.replace(url, "").split('.')[0];
     }
     function getPrefabType(fileUrl) {
         return new Promise(function (resolve, reject) {
@@ -154,7 +155,6 @@ var scene;
                 switch (_a.label) {
                     case 0:
                         items = fs.readdirSync(dir);
-                        Editor.log("walkDirSync: ", dir, items.length);
                         i = 0;
                         _a.label = 1;
                     case 1:
@@ -162,7 +162,6 @@ var scene;
                         name_1 = items[i];
                         filePath = path.join(dir, name_1);
                         stat = fs.statSync(filePath);
-                        Editor.log("file: ", filePath, stat.isFile());
                         if (!stat.isFile()) return [3 /*break*/, 5];
                         extName = path.extname(filePath);
                         if (!checkIsPrefab(extName)) return [3 /*break*/, 3];
