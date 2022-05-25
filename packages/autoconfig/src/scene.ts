@@ -23,6 +23,7 @@ module scene {
         let ConfigPath = `${ProjectDir}/${config.ScriptsDir}/${config.ScriptsName}`.replace(/\\/g, "/");
         await walkDirSync(FormsPath, async (prefabUrl: string, stat: any) => {
             let type = await getPrefabType(prefabUrl);
+            Editor.log("prefabUrl: ",prefabUrl, type)
             if(!type) return null;
             let baseName = path.basename(prefabUrl).split(".")[0];
             map[baseName] = {
@@ -71,7 +72,7 @@ cc.game.on(cc.game.EVENT_GAME_INITED, () => {
     }
 
     function getResourcesUrl(fileUrl: string) {
-        return (fileUrl.replace(`${Editor.Project.path}/assets/resources/`, "").split('.')[0]).replace(/\\/g, "/");
+        return fileUrl.replace(`${Editor.Project.path}/assets/resources/`, "").split('.')[0];
     }
 
     function getPrefabType(fileUrl: string): Promise<string | null> {
@@ -101,11 +102,13 @@ cc.game.on(cc.game.EVENT_GAME_INITED, () => {
 
     // 遍历文件夹
     async function walkDirSync(dir: string, callback: (fileUrl: string, stat: any) => Promise<null>) {
-        let items = fs.readdirSync(dir)
+        let items = fs.readdirSync(dir);
+        Editor.log("walkDirSync: ", dir, items.length);
         for(let i=0; i<items.length; i++) {
             let name = items[i];
             let filePath = path.join(dir, name);
             let stat = fs.statSync(filePath);
+            Editor.log("file: ", filePath, stat.isFile());
             if (stat.isFile()) {
                 let extName = path.extname(filePath);
                 if(checkIsPrefab(extName)){
