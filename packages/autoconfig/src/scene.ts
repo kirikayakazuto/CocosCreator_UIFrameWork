@@ -39,9 +39,17 @@ module scene {
     }
     `
         }
-        let strScript = `export default class UIConfig {
+        let strScript = `
+export default class UIConfig {
     ${contentStr}
-    }`;
+}
+cc.game.on(cc.game.EVENT_GAME_INITED, () => {
+    for(const key in UIConfig) {
+        let constourt = cc.js.getClassByName(key);
+        if(constourt) constourt['UIConfig'] = UIConfig[key];
+    }
+});
+`;
 
         let dbConfigPath = ConfigPath.replace(Editor.Project.path.replace(/\\/g, "/"), "db:/");
         await saveFile(dbConfigPath, strScript);
@@ -63,7 +71,10 @@ module scene {
     }
 
     function getResourcesUrl(fileUrl: string) {
-        return fileUrl.replace(`${Editor.Project.path}/assets/resources/`, "").split('.')[0];
+        let url = `${Editor.Project.path}/assets/resources/`.replace(/\\/g, "/");
+        fileUrl = fileUrl.replace(/\\/g, "/");
+        Editor.log(fileUrl, url);
+        return fileUrl.replace(url, "").split('.')[0];
     }
 
     function getPrefabType(fileUrl: string): Promise<string | null> {
@@ -93,7 +104,7 @@ module scene {
 
     // 遍历文件夹
     async function walkDirSync(dir: string, callback: (fileUrl: string, stat: any) => Promise<null>) {
-        let items = fs.readdirSync(dir)
+        let items = fs.readdirSync(dir);
         for(let i=0; i<items.length; i++) {
             let name = items[i];
             let filePath = path.join(dir, name);

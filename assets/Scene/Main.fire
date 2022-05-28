@@ -247,7 +247,7 @@
       "__id__": 2
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 6
@@ -565,9 +565,6 @@
       "__id__": 2
     },
     "_enabled": true,
-    "spBg": {
-      "__id__": 6
-    },
     "_id": "00QU7S+A5MH7txvnQcvgap"
   }
 ]

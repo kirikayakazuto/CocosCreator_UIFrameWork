@@ -1,4 +1,6 @@
-export default class ConfigMgr {
+import { BaseMgr } from "./BaseMgr";
+
+export default class ConfigMgr extends BaseMgr {
 
     /** 加载配置文件 */
     async loadConfigs() {
@@ -7,6 +9,6 @@ export default class ConfigMgr {
 
     /** 通知其他manager */
     public onConfigChange() {
-
+        this.game.playerMgr.onConfigChange()
     }
 }
