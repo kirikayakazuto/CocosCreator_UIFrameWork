@@ -69,7 +69,7 @@ export class EventCenter {
     public static off(eventName: string, callback: Function, target: any = undefined) {
         target = target || this;
         let targetId = target['uuid'] || target['id'];
-        if(!targetId) return ;
+        if(!targetId) return false;
         this.offById(eventName, callback, targetId);
     }
     public static targetOff(target: any) {

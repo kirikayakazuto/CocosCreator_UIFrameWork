@@ -37,6 +37,8 @@ export default class UIManager {
                 scene = new cc.Node(SysDefine.SYS_SCENE_NODE);
                 scene.addComponent(Scene);
                 scene.parent = canvas;
+            }else {
+                !(scene.getComponent(Scene)) && scene.addComponent(Scene);
             }
             let UIROOT = this.instance._UIROOT = new cc.Node(SysDefine.SYS_UIROOT_NODE);
             scene.addChild(UIROOT);
@@ -341,6 +343,8 @@ export default class UIManager {
 
     /** 销毁 */
     private destoryForm(com: UIBase) {
+        // 取消所有监听
+        EventCenter.targetOff(com);
         // 销毁动态加载的资源
         ResMgr.inst.destoryDynamicRes(com.fid);
         // 销毁prefab以及依赖的资源
