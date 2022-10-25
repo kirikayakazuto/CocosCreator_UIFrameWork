@@ -1,5 +1,5 @@
-import { SysDefine } from "./config/SysDefine";
-import { IFormConfig, IFormData } from "./Struct";
+import { FormType, SysDefine } from "./config/SysDefine";
+import { GetForm, IFormConfig, IFormData } from "./Struct";
 import TipsMgr from "./TipsMgr";
 import UIManager from "./UIManager";
 
@@ -13,7 +13,9 @@ class SceneMgr {
     }
 
     /** 打开一个场景 */
-    public async open(scenePath: string, params?: any, formData?: IFormData) {
+    public async open(form: IFormConfig | string, params?: any, formData?: IFormData) {
+        form = GetForm(form);
+        let scenePath = form.prefabUrl;
         if(this._currScene == scenePath) {
             cc.warn(TAG, "当前场景和需要open的场景是同一个");
             return null;
@@ -35,7 +37,7 @@ class SceneMgr {
 
         this._currScene = scenePath;
 
-        let com = await UIManager.getInstance().openForm(scenePath, params, formData);
+        let com = await UIManager.getInstance().openForm(form, params, formData);
         await this.closeLoading(formData?.loadingForm);
         return com;
     }
@@ -51,7 +53,7 @@ class SceneMgr {
         await UIManager.getInstance().closeForm(currScene);
 
         this._currScene = this._scenes[this._scenes.length-1];
-        await UIManager.getInstance().openForm(this._currScene, params, formData);
+        await UIManager.getInstance().openForm({prefabUrl: this._currScene, type: FormType.Screen}, params, formData);
         await this.closeLoading(formData?.loadingForm);
     }
 
@@ -60,6 +62,7 @@ class SceneMgr {
         if(com) {
             return UIManager.getInstance().closeForm(scenePath);
         }
+        return false;
     }
 
     private async openLoading(formConfig: IFormConfig, params: any, formData: IFormData) {
@@ -73,6 +76,7 @@ class SceneMgr {
         await TipsMgr.close(form.prefabUrl);
     }
 
+    
 }
 
 export default new SceneMgr();

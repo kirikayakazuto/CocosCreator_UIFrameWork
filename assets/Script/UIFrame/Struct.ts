@@ -1,4 +1,4 @@
-import { ModalOpacity } from "./config/SysDefine";
+import { FormType, ModalOpacity } from "./config/SysDefine";
 
 export class ModalType {
     public opacity: ModalOpacity = ModalOpacity.OpacityHalf;
@@ -24,6 +24,16 @@ export class ModalType {
 export interface IFormConfig {
     prefabUrl: string;
     type: string;
+}
+
+export function GetForm(form: IFormConfig | string, type = FormType.Screen): IFormConfig {
+    if(typeof form === "string") {
+        return {
+            prefabUrl: form,
+            type: type
+        }
+    }
+    return form;
 }
 
 export interface IFormData {

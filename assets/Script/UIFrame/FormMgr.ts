@@ -3,6 +3,7 @@ import FixedMgr from "./FixedMgr";
 import SceneMgr from "./SceneMgr";
 import { IFormConfig, IFormData } from "./Struct";
 import TipsMgr from "./TipsMgr";
+import ToastMgr from "./ToastMgr";
 import WindowMgr from "./WindowMgr";
 
 class FormMgr {
@@ -15,13 +16,15 @@ class FormMgr {
     async open(form: IFormConfig, param?: any, formData?: IFormData) {
         switch(form.type) {
             case FormType.Screen:
-                return await SceneMgr.open(form.prefabUrl, param, formData);
+                return await SceneMgr.open(form, param, formData);
             case FormType.Window:
-                return await WindowMgr.open(form.prefabUrl, param, formData);
+                return await WindowMgr.open(form, param, formData);
             case FormType.Fixed:
-                return await FixedMgr.open(form.prefabUrl, param, formData);
+                return await FixedMgr.open(form, param, formData);
             case FormType.Tips:
-                return await TipsMgr.open(form.prefabUrl, param, formData);
+                return await TipsMgr.open(form, param, formData);
+            case FormType.Toast:
+                return await ToastMgr.open(form, param, formData);
             default:
                 cc.error(`未知类型的窗体: ${form.type}`);
                 return null;
@@ -40,7 +43,7 @@ class FormMgr {
                 return await TipsMgr.close(form.prefabUrl);
             default:
                 cc.error(`未知类型的窗体: ${form.type}`);
-                return null;
+                return false;
         }
     }
 

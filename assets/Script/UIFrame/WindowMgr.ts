@@ -1,6 +1,7 @@
 import PriorityQueue from "../Common/Utils/PriorityQueue";
 import PriorityStack from "../Common/Utils/PriorityStack";
-import { EPriority, IFormData } from "./Struct";
+import { FormType } from "./config/SysDefine";
+import { EPriority, GetForm, IFormConfig, IFormData } from "./Struct";
 import UIManager from "./UIManager";
 
 class WindowMgr {
@@ -18,16 +19,18 @@ class WindowMgr {
     }
 
     /** 打开窗体 */
-    public async open(prefabPath: string, params?: any, formData?: IFormData) {
+    public async open(form: IFormConfig | string, params?: any, formData?: IFormData) {
+        form = GetForm(form, FormType.Window);
+        let prefabPath = form.prefabUrl;
         formData = this._formatFormData(formData);
         if(this._showingList.size <= 0 || (!formData.showWait && formData.priority >= this._showingList.getTopEPriority())) {
             this._showingList.push(prefabPath, formData.priority);
             this._currWindow = this._showingList.getTopElement();
-            return await UIManager.getInstance().openForm(prefabPath, params, formData);
+            return await UIManager.getInstance().openForm(form, params, formData);
         }
         
         // 入等待队列
-        this._waitingList.enqueue({prefabPath: prefabPath, params: params, formData: formData});
+        this._waitingList.enqueue({form: form, params: params, formData: formData});
         // 加载窗体
         return await UIManager.getInstance().loadUIForm(prefabPath);
     }
@@ -40,7 +43,7 @@ class WindowMgr {
 
         if(this._showingList.size <= 0 && this._waitingList.size > 0) {
             let windowData = this._waitingList.dequeue();
-            this.open(windowData.prefabPath, windowData.params, windowData.formData);
+            this.open(windowData.form, windowData.params, windowData.formData);
         }
         return true;
     }
@@ -63,7 +66,7 @@ class WindowMgr {
 }
 
 class WindowData {
-    prefabPath: string;
+    form: IFormConfig;
     params?: any;
     formData?: any;
 }

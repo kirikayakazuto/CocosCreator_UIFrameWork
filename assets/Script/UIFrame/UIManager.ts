@@ -5,7 +5,7 @@ import ModalMgr from "./ModalMgr";
 import AdapterMgr, { AdapterType } from "./AdapterMgr";
 import Scene from "../Scene/Scene";
 import { UIWindow } from "./UIForm";
-import { ECloseType, IFormData } from "./Struct";
+import { ECloseType, IFormConfig, IFormData } from "./Struct";
 import { EventCenter } from "./EventCenter";
 import { EventType } from "./EventType";
 import { LRUCache } from "../Common/Utils/LRUCache";
@@ -55,7 +55,7 @@ export default class UIManager {
     }
 
     /** 预加载UIForm */
-    public async loadUIForm(prefabPath: string) {
+    public async loadUIForm(prefabPath: string): Promise<UIBase> {
         let uiBase = await this._loadForm(prefabPath);
         if(!uiBase) {
             console.warn(`${uiBase}没有被成功加载`);
@@ -71,7 +71,8 @@ export default class UIManager {
      * @param formData 
      * @returns 
      */
-    public async openForm(prefabPath: string, params?: any, formData?: IFormData) {
+    public async openForm(form: IFormConfig, params?: any, formData?: IFormData): Promise<UIBase> {
+        let prefabPath = form.prefabUrl;
         if(!prefabPath || prefabPath.length <= 0) {
             cc.warn(`${prefabPath}, 参数错误`);
             return ;
@@ -112,15 +113,14 @@ export default class UIManager {
         return com;
     }
 
-
     /**
      * 重要方法 关闭一个UIForm
      * @param prefabPath 
      */
-    public async closeForm(prefabPath: string) {
+    public async closeForm(prefabPath: string): Promise<boolean> {
         if(!prefabPath || prefabPath.length <= 0) {
             cc.warn(`${prefabPath}, 参数错误`);
-            return ;
+            return false;
         };
         let com = this._allForms[prefabPath];
         if(!com) return false;
@@ -185,7 +185,7 @@ export default class UIManager {
     /**
      * @param prefabPath 
      */
-    private async _doLoadUIForm(prefabPath: string) {
+    private async _doLoadUIForm(prefabPath: string): Promise<UIBase> {
         let prefab = await ResMgr.inst.loadFormPrefab(prefabPath);
         let node = cc.instantiate(prefab);
         let com = node.getComponent(UIBase);
@@ -279,6 +279,10 @@ export default class UIManager {
         com.onAfterShow(params);
     }
 
+    public async enterToToast(com: UIBase) {
+
+    }
+
     private async exitToScreen(fid: string) {
         let com = this._showingForms[fid];
         if(!com) return ;
@@ -330,6 +334,10 @@ export default class UIManager {
 
         this._tipsForms[fid] = null;
         delete this._tipsForms[fid];
+    }
+
+    public async exitToToast(com: UIBase) {
+        
     }
 
     private async showEffect(baseUI: UIBase) {

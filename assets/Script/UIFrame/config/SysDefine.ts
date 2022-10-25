@@ -35,7 +35,7 @@ export enum UIState {
     None = 0,
     Loading = 1,
     Showing = 2,
-    Hiding = 3
+    Hiding = 3,
 }
 /** 常量 */
 export class SysDefine {

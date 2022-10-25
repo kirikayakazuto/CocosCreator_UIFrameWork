@@ -1,6 +1,4 @@
 import CocosHelper from "./CocosHelper";
-import UIBase from "./UIBase";
-import { EventCenter } from "./EventCenter";
 
 /**
  * 资源加载, 针对的是Form
@@ -36,6 +34,9 @@ export default class ResMgr {
 
     private _prefabs: {[key: string]: cc.Prefab} = cc.js.createMap();               // 预制体缓存
 
+    public getFormPrefab(fid: string) {
+        return this._prefabs[fid];
+    }
     
     /** 加载窗体 */
     public async loadFormPrefab(fid: string) {

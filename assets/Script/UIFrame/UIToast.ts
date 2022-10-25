@@ -1,6 +1,9 @@
 import { IPool, Pool } from "../Common/Utils/Pool";
 import CocosHelper from "./CocosHelper";
+import { FormType } from "./config/SysDefine";
+import { IFormData } from "./Struct";
 import UIBase from "./UIBase";
+import UIManager from "./UIManager";
 
 
 export enum ToastType {
@@ -14,7 +17,12 @@ export enum ToastType {
  * 2. UIToast.open 直接打开
  */
 
-export class UIToast extends UIBase implements IPool {
+export class ToastBase extends UIBase implements IPool {
+    formType = FormType.Toast;
+
+    public static open() {
+
+    }
 
     public use() {
         
@@ -25,35 +33,4 @@ export class UIToast extends UIBase implements IPool {
     }   
 }
 
-export class ToastMgr {
-    private _pools: {[key: string]: Pool<UIToast>} = {};
-
-    private async load(url: string) {
-        if(!this._pools[url]) {
-            let prefab = await CocosHelper.loadResSync<cc.Prefab>(url, cc.Prefab);
-            this._pools[url] = new Pool<UIToast>(() => {
-                let node = cc.instantiate(prefab);
-                return node.getComponent(UIToast);
-            }, 10);
-        }
-        return this._pools[url].alloc();
-    }
-
-    public register(type: ToastType, toast: string) {
-
-    }
-
-    private async free(url: string, obj: UIToast) {
-        this._pools[url].free(obj);
-    }
-
-    public async open(name: string, params: number) {
-        
-    }
-
-    public async close(url: string) {
-        
-    }
-
-}
 
