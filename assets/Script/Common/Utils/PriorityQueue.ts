@@ -1,5 +1,5 @@
 /**
- * @author denglang
+ * @author honmono
  * 优先队列
  */
 export class PriorityElement<T> {

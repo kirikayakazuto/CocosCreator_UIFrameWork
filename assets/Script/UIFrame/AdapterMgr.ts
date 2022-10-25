@@ -1,5 +1,5 @@
 /**
- * @Author: 邓朗 
+ * @Author: honmono 
  * @Date: 2019-06-12 17:18:04  
  * @Describe: 适配组件, 主要适配背景大小,窗体的位置
  */

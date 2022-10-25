@@ -1,7 +1,7 @@
 import PriorityQueue from "./PriorityQueue";
 
 /**
- * author: denglang
+ * author: honmono
  * desc: 一个命令队列， 
  */
 export enum CommandType {

@@ -7,7 +7,7 @@ import WindowMgr from "./WindowMgr";
 const BAN_FALG = (cc.RenderFlow.FLAG_RENDER | cc.RenderFlow.FLAG_POST_RENDER);
 
 /**
- * @Author: 邓朗 
+ * @Author: honmono 
  * @Describe: 
  * @Date: 2019-05-30 23:35:26  
  * @Last Modified time: 2019-05-30 23:35:26 
