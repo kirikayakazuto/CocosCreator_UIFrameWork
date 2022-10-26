@@ -41,6 +41,8 @@ class FormMgr {
                 return await FixedMgr.close(form.prefabUrl);
             case FormType.Tips:
                 return await TipsMgr.close(form.prefabUrl);
+            case FormType.Toast:
+                // return await ToastMgr.close();
             default:
                 cc.error(`未知类型的窗体: ${form.type}`);
                 return false;

@@ -34,6 +34,7 @@ export default class ResMgr {
 
     private _prefabs: {[key: string]: cc.Prefab} = cc.js.createMap();               // 预制体缓存
 
+    /** 获取预制体 */
     public getFormPrefab(fid: string) {
         return this._prefabs[fid];
     }

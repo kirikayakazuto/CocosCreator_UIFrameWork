@@ -1,3 +1,4 @@
+import { IPool } from "../Common/Utils/Pool";
 import CocosHelper from "./CocosHelper";
 import { FormType, ModalOpacity } from "./config/SysDefine";
 import FormMgr from "./FormMgr";
@@ -49,6 +50,23 @@ export class UITips extends UIBase {
         return await FormMgr.close({prefabUrl: this.fid, type: this.formType});
     }
 }
+
+export class UIToast extends UIBase implements IPool {
+    formType = FormType.Toast;
+
+    public use() {
+        
+    }
+
+    public free() {
+
+    }
+
+    public async closeSelf(): Promise<boolean> {
+        return await FormMgr.close({prefabUrl: this.fid, type: this.formType});
+    }
+}
+
 
 // @ts-ignore
 cc.UIScreen = UIScreen;

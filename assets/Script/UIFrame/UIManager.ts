@@ -18,6 +18,7 @@ export default class UIManager {
     private _ndScreen: cc.Node = null;  // 全屏显示的UI 挂载结点
     private _ndFixed: cc.Node  = null;  // 固定显示的UI
     private _ndPopUp: cc.Node  = null;  // 弹出窗口
+    private _ndToast: cc.Node  = null;  // toast
     private _ndTips: cc.Node   = null;  // 独立窗体
 
     private _windows: UIWindow[]                                       = [];                   // 存储弹出的窗体
@@ -46,6 +47,7 @@ export default class UIManager {
             UIROOT.addChild(this.instance._ndScreen = new cc.Node(SysDefine.SYS_SCREEN_NODE));
             UIROOT.addChild(this.instance._ndFixed = new cc.Node(SysDefine.SYS_FIXED_NODE));
             UIROOT.addChild(this.instance._ndPopUp = new cc.Node(SysDefine.SYS_POPUP_NODE));
+            UIROOT.addChild(this.instance._ndToast = new cc.Node(SysDefine.SYS_TOAST_NODE));
             UIROOT.addChild(this.instance._ndTips = new cc.Node(SysDefine.SYS_TOPTIPS_NODE));
             cc.director.once(cc.Director.EVENT_BEFORE_SCENE_LAUNCH, () => {
                 this.instance = null;
@@ -188,9 +190,16 @@ export default class UIManager {
     private async _doLoadUIForm(prefabPath: string): Promise<UIBase> {
         let prefab = await ResMgr.inst.loadFormPrefab(prefabPath);
         let node = cc.instantiate(prefab);
+        let com = this.addNode(node);
+        this._allForms[prefabPath] = com;
+        
+        return com;
+    }
+
+    public addNode(node: cc.Node) {
         let com = node.getComponent(UIBase);
         if(!com) {
-            cc.warn(`${prefabPath} 结点没有绑定UIBase`);
+            cc.warn(`${node.name} 结点没有绑定UIBase`);
             return null;
         }
         node.active = false;                    // 避免baseCom调用了onload方法
@@ -204,12 +213,14 @@ export default class UIManager {
             case FormType.Window:
                 this._ndPopUp.addChild(node);
             break;
+            case FormType.Toast:
+                this._ndToast.addChild(node);
+            break;
             case FormType.Tips:
                 this._ndTips.addChild(node);
             break;
         }
-        this._allForms[prefabPath] = com;
-        
+
         return com;
     }
 
@@ -279,8 +290,13 @@ export default class UIManager {
         com.onAfterShow(params);
     }
 
-    public async enterToToast(com: UIBase) {
-
+    /** 加载到toast中 */
+    public async enterToToast(com: UIBase, params: any) {
+        await com._preInit(params);
+        
+        com.onShow(params);
+        await this.showEffect(com);
+        com.onAfterShow(params);
     }
 
     private async exitToScreen(fid: string) {
@@ -337,7 +353,9 @@ export default class UIManager {
     }
 
     public async exitToToast(com: UIBase) {
-        
+        com.onHide();
+        await this.hideEffect(com);
+        com.onAfterHide();
     }
 
     private async showEffect(baseUI: UIBase) {
