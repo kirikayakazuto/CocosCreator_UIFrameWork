@@ -122,32 +122,47 @@ var scene;
     }
     function getPrefabType(fileUrl) {
         return new Promise(function (resolve, reject) {
-            var dbFileUrl = getResourcesUrl(fileUrl);
-            cc.resources.load(dbFileUrl, cc.Prefab, function (err, asset) {
-                if (err) {
-                    resolve(null);
-                    return;
+            var prefab = fs.readFileSync(fileUrl);
+            var prefabJson = JSON.parse(prefab);
+            var idx = prefabJson.length;
+            while (--idx >= 0) {
+                var obj = prefabJson[idx];
+                var uuidZip = obj.__type__;
+                if (uuidZip.indexOf("cc.") == -1) {
+                    //@ts-ignore
+                    var uuid = Editor.Utils.UuidUtils.decompressUuid(uuidZip);
+                    if (Editor.remote.assetdb.assetInfoByUuid(uuid)) {
+                        var fsComponentPath = Editor.remote.assetdb.uuidToFspath(uuid);
+                        // let dbFileUrls = getResourcesUrl(fsComponentPath).split("/");
+                        // let fileName = dbFileUrls[dbFileUrls.length - 1];
+                        var fileName = path.basename(fsComponentPath).split(".")[0];
+                        if (fileName.indexOf("UI") >= 0 && fileName.indexOf("_Auto") == -1) { //注意 只检测文件名包含UI的文件&排除自动生成的Auto脚本
+                            // Editor.warn(`fileName:${fileName}`);
+                            var datastr = fs.readFileSync(fsComponentPath);
+                            if (datastr.indexOf("extends UIScreen") >= 0) {
+                                resolve("UIScreen");
+                            }
+                            else if (datastr.indexOf("extends UIWindow") >= 0) {
+                                resolve("UIWindow");
+                            }
+                            else if (datastr.indexOf("extends UIFixed") >= 0) {
+                                resolve("UIFixed");
+                            }
+                            else if (datastr.indexOf("extends UITips") >= 0) {
+                                resolve("UITips");
+                            }
+                            else if (datastr.indexOf("extends UIToast") >= 0) {
+                                resolve("UIToast");
+                            }
+                            else {
+                                Editor.log("".concat(fileUrl, ", \u6CA1\u6709\u7EE7\u627FUIBase class = ").concat(datastr));
+                                // return "";
+                            }
+                        }
+                    }
                 }
-                //@ts-ignore
-                var UIBase = cc.UIBase, UIScreen = cc.UIScreen, UIWindow = cc.UIWindow, UIFixed = cc.UIFixed, UITips = cc.UITips, UIToast = cc.UIToast;
-                var node = asset.data;
-                var com = node.getComponent(UIBase);
-                if (!com) {
-                    Editor.log("".concat(fileUrl, ", \u6CA1\u6709\u7EE7\u627F\u4E0EUIBase"));
-                    resolve(null);
-                    return;
-                }
-                if (com instanceof UIScreen)
-                    resolve("UIScreen");
-                else if (com instanceof UIWindow)
-                    resolve("UIWindow");
-                else if (com instanceof UIFixed)
-                    resolve("UIFixed");
-                else if (com instanceof UITips)
-                    resolve("UITips");
-                else if (com instanceof UIToast)
-                    resolve("UIToast");
-            });
+            }
+            resolve("");
         });
     }
     // 遍历文件夹

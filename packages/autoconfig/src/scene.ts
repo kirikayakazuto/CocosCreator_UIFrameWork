@@ -79,27 +79,42 @@ cc.game.on(cc.game.EVENT_GAME_INITED, () => {
 
     function getPrefabType(fileUrl: string): Promise<string | null> {
         return new Promise((resolve, reject) => {
-            let dbFileUrl = getResourcesUrl(fileUrl);
-            cc.resources.load(dbFileUrl, cc.Prefab, (err, asset) => {
-                if(err) {
-                    resolve(null);
-                    return ;
+            let prefab = fs.readFileSync(fileUrl);
+            let prefabJson = JSON.parse(prefab);
+            let idx = prefabJson.length;
+            while (--idx >= 0) {
+                let obj = prefabJson[idx];
+                let uuidZip = obj.__type__;
+                if (uuidZip.indexOf("cc.") == -1) {
+                    //@ts-ignore
+                    let uuid = Editor.Utils.UuidUtils.decompressUuid(uuidZip);
+                    if (Editor.remote.assetdb.assetInfoByUuid(uuid)) {
+                        let fsComponentPath = Editor.remote.assetdb.uuidToFspath(uuid);
+                        // let dbFileUrls = getResourcesUrl(fsComponentPath).split("/");
+                        // let fileName = dbFileUrls[dbFileUrls.length - 1];
+                        let fileName = path.basename(fsComponentPath).split(".")[0];
+                        if (fileName.indexOf("UI") >= 0 && fileName.indexOf("_Auto") == -1) {//注意 只检测文件名包含UI的文件&排除自动生成的Auto脚本
+                            // Editor.warn(`fileName:${fileName}`);
+                            let datastr = fs.readFileSync(fsComponentPath);
+                            if (datastr.indexOf("extends UIScreen") >= 0) {
+                                resolve("UIScreen");
+                            } else if (datastr.indexOf("extends UIWindow") >= 0) {
+                                resolve("UIWindow");
+                            } else if (datastr.indexOf("extends UIFixed") >= 0) {
+                                resolve("UIFixed");
+                            } else if (datastr.indexOf("extends UITips") >= 0) {
+                                resolve("UITips");
+                            } else if (datastr.indexOf("extends UIToast") >= 0) {
+                                resolve("UIToast");
+                            } else {
+                                Editor.log(`${fileUrl}, 没有继承UIBase`);
+                                // return "";
+                            }
+                        }
+                    }
                 }
-                //@ts-ignore
-                const UIBase = cc.UIBase, UIScreen = cc.UIScreen, UIWindow = cc.UIWindow, UIFixed = cc.UIFixed, UITips = cc.UITips, UIToast = cc.UIToast;
-                let node = (asset as cc.Prefab).data;
-                let com = node.getComponent(UIBase);
-                if(!com) {
-                    Editor.log(`${fileUrl}, 没有继承与UIBase`);
-                    resolve(null);
-                    return ;
-                }
-                if(com instanceof UIScreen) resolve("UIScreen");
-                else if(com instanceof UIWindow) resolve("UIWindow");
-                else if(com instanceof UIFixed) resolve("UIFixed");
-                else if(com instanceof UITips) resolve("UITips");
-                else if(com instanceof UIToast) resolve("UIToast");
-            });
+            }
+            resolve("");
         });
     }
 
