@@ -42,7 +42,8 @@ class FormMgr {
             case FormType.Tips:
                 return await TipsMgr.close(form.prefabUrl);
             case FormType.Toast:
-                // return await ToastMgr.close();
+                cc.warn("UIToast 目前不能通过这种方式关闭, 请使用 ToastMgr.close()");
+                break;
             default:
                 cc.error(`未知类型的窗体: ${form.type}`);
                 return false;

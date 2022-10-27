@@ -1,5 +1,6 @@
 import UINavigator_Auto from "../AutoScripts/UINavigator_Auto";
 import FormMgr from "../UIFrame/FormMgr";
+import ToastMgr from "../UIFrame/ToastMgr";
 import { UIScreen } from "../UIFrame/UIForm";
 import UIConfig from "./../UIConfig";
 
@@ -23,6 +24,7 @@ export default class UINavigator extends UIScreen {
         switch(node.name) {
             case "project":
                 FormMgr.open(UIConfig.UIHome);
+                // ToastMgr.open(UIConfig.UIToast1);
                 break;
             case "light":
                 FormMgr.open(UIConfig.UILight);

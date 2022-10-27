@@ -76,3 +76,5 @@ cc.UIWindow = UIWindow;
 cc.UIFixed = UIFixed;
 // @ts-ignore
 cc.UITips = UITips;
+// @ts-ignore
+cc.UIToast = UIToast;

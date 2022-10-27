@@ -86,7 +86,7 @@ cc.game.on(cc.game.EVENT_GAME_INITED, () => {
                     return ;
                 }
                 //@ts-ignore
-                const UIBase = cc.UIBase, UIScreen = cc.UIScreen, UIWindow = cc.UIWindow, UIFixed = cc.UIFixed, UITips = cc.UITips;
+                const UIBase = cc.UIBase, UIScreen = cc.UIScreen, UIWindow = cc.UIWindow, UIFixed = cc.UIFixed, UITips = cc.UITips, UIToast = cc.UIToast;
                 let node = (asset as cc.Prefab).data;
                 let com = node.getComponent(UIBase);
                 if(!com) {
@@ -98,6 +98,7 @@ cc.game.on(cc.game.EVENT_GAME_INITED, () => {
                 else if(com instanceof UIWindow) resolve("UIWindow");
                 else if(com instanceof UIFixed) resolve("UIFixed");
                 else if(com instanceof UITips) resolve("UITips");
+                else if(com instanceof UIToast) resolve("UIToast");
             });
         });
     }

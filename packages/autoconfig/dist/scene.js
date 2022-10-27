@@ -129,7 +129,7 @@ var scene;
                     return;
                 }
                 //@ts-ignore
-                var UIBase = cc.UIBase, UIScreen = cc.UIScreen, UIWindow = cc.UIWindow, UIFixed = cc.UIFixed, UITips = cc.UITips;
+                var UIBase = cc.UIBase, UIScreen = cc.UIScreen, UIWindow = cc.UIWindow, UIFixed = cc.UIFixed, UITips = cc.UITips, UIToast = cc.UIToast;
                 var node = asset.data;
                 var com = node.getComponent(UIBase);
                 if (!com) {
@@ -145,6 +145,8 @@ var scene;
                     resolve("UIFixed");
                 else if (com instanceof UITips)
                     resolve("UITips");
+                else if (com instanceof UIToast)
+                    resolve("UIToast");
             });
         });
     }

@@ -60,6 +60,10 @@ export default class UIConfig {
         prefabUrl: "Forms/Tips/UILoading",
         type: "UITips"
     }
+    static UIToast1 = {
+        prefabUrl: "Forms/Toast/UIToast1",
+        type: "UIToast"
+    }
     static UIMobx = {
         prefabUrl: "Forms/Windows/UIMobx",
         type: "UIWindow"

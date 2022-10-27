@@ -10,7 +10,6 @@ class ToastMgr {
     private _pools: {[key: string]: Pool<UIToast>} = cc.js.createMap();
     private _showingToast: {[key: string]: Array<UIToast>} = cc.js.createMap();
     
-
     public async open(form: IFormConfig | string, params?: any, formData?: IFormData) {
         form = GetForm(form, FormType.Toast);
         
@@ -27,7 +26,7 @@ class ToastMgr {
         }
         arr.push(toastBase);
 
-        return toastBase.uuid;
+        return toastBase;
     }
 
     public async close(com: UIToast) {
