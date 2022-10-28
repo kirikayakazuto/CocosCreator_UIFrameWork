@@ -77,7 +77,7 @@ cc.game.on(cc.game.EVENT_GAME_INITED, () => {
         return fileUrl.replace(url, "").split('.')[0];
     }
 
-    function getPrefabType(fileUrl: string): Promise<string | null> {
+    function getPrefabType(fileUrl: string): Promise<string> {
         return new Promise((resolve, reject) => {
             let prefab = fs.readFileSync(fileUrl);
             let prefabJson = JSON.parse(prefab);

@@ -4,7 +4,7 @@ export default class GlobalHelper {
         GlobalHelper[name] = inst;
     }
     public static Get<T>(name: string): T {
-        return GlobalHelper._globalMap[name] ? GlobalHelper._globalMap[name] as T : undefined;
+        return GlobalHelper._globalMap.hasOwnProperty(name) ? GlobalHelper._globalMap[name] as T : undefined;
     }
 }
 
