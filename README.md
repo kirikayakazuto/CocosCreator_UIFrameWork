@@ -317,3 +317,8 @@ UIHelper还提供了了bindNode()方法, 将对方结点或者其父节点传入
 
 BaseUIForm中添加CloseAndDestory属性, 当此属性为true时, 关闭此窗体将会销毁此结点,并且释放结点资源
 对于已经显示的窗体, 不会二次显示
+
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=kirikayakazuto/CocosCreator_UIFrameWork&type=Date)](https://star-history.com/#kirikayakazuto/CocosCreator_UIFrameWork&Date)
