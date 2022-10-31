@@ -24,7 +24,6 @@ export default class UINavigator extends UIScreen {
         switch(node.name) {
             case "project":
                 FormMgr.open(UIConfig.UIHome);
-                // ToastMgr.open(UIConfig.UIToast1);
                 break;
             case "light":
                 FormMgr.open(UIConfig.UILight);
@@ -46,6 +45,9 @@ export default class UINavigator extends UIScreen {
                 break;
             case "meshTexture":
                 FormMgr.open(UIConfig.UIMeshTexture);
+                break;
+            case "toast":
+                ToastMgr.open(UIConfig.UIToast1);
                 break;
         }
     }

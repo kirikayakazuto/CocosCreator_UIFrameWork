@@ -46,6 +46,7 @@ class ToastMgr {
 
     private async genPool(prefabUrl: string) {
         // 对pool创建一个独立结点
+        // todo...
         let prefab = await ResMgr.inst.loadFormPrefab(prefabUrl);
         let pool = this._pools[prefabUrl] = new Pool(() => {
             let node = cc.instantiate(prefab);
@@ -82,7 +83,7 @@ class ToastMgr {
     }
 
 
-    private checkHasShowingToast(prefabUrl: string) {
+    public checkHasShowingToast(prefabUrl: string) {
         return this._showingToast[prefabUrl].length > 0;
     }
 
