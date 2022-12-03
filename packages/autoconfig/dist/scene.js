@@ -90,7 +90,7 @@ var scene;
                         for (key in map) {
                             contentStr += "static ".concat(key, " = {\n        prefabUrl: \"").concat(map[key].prefabUrl, "\",\n        type: \"").concat(map[key].type, "\"\n    }\n    ");
                         }
-                        strScript = "\nexport default class UIConfig {\n    ".concat(contentStr, "\n}\ncc.game.on(cc.game.EVENT_GAME_INITED, () => {\n    for(const key in UIConfig) {\n        let constourt = cc.js.getClassByName(key);\n        if(constourt) constourt['UIConfig'] = UIConfig[key];\n    }\n});\n");
+                        strScript = "\nexport default class UIConfig {\n    ".concat(contentStr, "\n}\ncc.game.on(cc.game.EVENT_GAME_INITED, () => {\n    if(CC_EDITOR) return;\n    for(const key in UIConfig) { \n        let constourt = cc.js.getClassByName(key);\n        if(!constourt) {\n            let urls = UIConfig[key].prefabUrl.split('/') as string[];\n            if(!urls || urls.length <= 0) continue;\n            let name = urls[urls.length-1];\n            constourt = cc.js.getClassByName(name);\n        }\n        constourt['UIConfig'] = UIConfig[key];\n    }\n});\n");
                         dbConfigPath = ConfigPath.replace(Editor.Project.path.replace(/\\/g, "/"), "db:/");
                         return [4 /*yield*/, saveFile(dbConfigPath, strScript)];
                     case 2:
@@ -155,7 +155,7 @@ var scene;
                                 resolve("UIToast");
                             }
                             else {
-                                Editor.log("".concat(fileUrl, ", \u6CA1\u6709\u7EE7\u627FUIBase class = ").concat(datastr));
+                                Editor.log("".concat(fileUrl, ", \u6CA1\u6709\u7EE7\u627FUIBase"));
                                 // return "";
                             }
                         }

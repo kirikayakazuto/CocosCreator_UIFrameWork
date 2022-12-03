@@ -91,8 +91,15 @@ export default class UIConfig {
     
 }
 cc.game.on(cc.game.EVENT_GAME_INITED, () => {
-    for(const key in UIConfig) {
+    if(CC_EDITOR) return;
+    for(const key in UIConfig) { 
         let constourt = cc.js.getClassByName(key);
-        if(constourt) constourt['UIConfig'] = UIConfig[key];
+        if(!constourt) {
+            let urls = UIConfig[key].prefabUrl.split('/') as string[];
+            if(!urls || urls.length <= 0) continue;
+            let name = urls[urls.length-1];
+            constourt = cc.js.getClassByName(name);
+        }
+        constourt['UIConfig'] = UIConfig[key];
     }
 });
