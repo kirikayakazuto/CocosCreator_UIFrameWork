@@ -1,4 +1,4 @@
-import UIBase from "./UIBase";
+import type UIBase from "./UIBase";
 import { SysDefine, FormType } from "./config/SysDefine";
 import ResMgr from "./ResMgr";
 import ModalMgr from "./ModalMgr";
@@ -197,7 +197,8 @@ export default class UIManager {
     }
 
     public addNode(node: cc.Node) {
-        let com = node.getComponent(UIBase);
+        //@ts-ignore
+        let com = node.getComponent(cc.UIBase) as UIBase;
         if(!com) {
             cc.warn(`${node.name} 结点没有绑定UIBase`);
             return null;
