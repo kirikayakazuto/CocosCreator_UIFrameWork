@@ -25,10 +25,15 @@ class SceneMgr {
 
         if(this._scenes.length > 0) {
             let currScene = this._scenes[this._scenes.length-1];
-            await UIManager.getInstance().closeForm(form, params, formData);
+            await UIManager.getInstance().closeForm(currScene);
         }
-
-        let idx = this._scenes.indexOf(form);
+        
+        let idx = -1;
+        for(let i=0; i<this._scenes.length; i++) {
+            if(this._scenes[i].prefabUrl !== form.prefabUrl) continue;
+            idx = i;
+            break;
+        }
         if(idx == -1) {
             this._scenes.push(form);
         }else {
