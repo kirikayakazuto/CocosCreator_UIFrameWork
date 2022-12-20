@@ -9,10 +9,6 @@ import UIBase from "./UIBase";
 export class UIScreen extends UIBase {
     formType = FormType.Screen;
     closeType = ECloseType.CloseAndDestory;
-
-    public async closeSelf(): Promise<boolean> {
-        return await FormMgr.close({prefabUrl: this.fid, type: this.formType});
-    }
 }
 
 export class UIWindow extends UIBase {
@@ -25,30 +21,16 @@ export class UIWindow extends UIBase {
         this.node.scale = 0;
         await CocosHelper.runTweenSync(this.node, cc.tween().to(0.3, {scale: 1}, cc.easeBackOut()));
     }
-
-    public async closeSelf(): Promise<boolean> {
-        return await FormMgr.close(this.constructor['UIConfig'] || {prefabUrl: this.fid, type: this.formType});
-    }
-
 }
 
 export class UIFixed extends UIBase {
     formType = FormType.Fixed;
     closeType = ECloseType.LRU;
-
-    public async closeSelf(): Promise<boolean> {
-        return await FormMgr.close({prefabUrl: this.fid, type: this.formType});
-    }
-    
 }
 
 export class UITips extends UIBase {
     formType = FormType.Tips;
     closeType = ECloseType.CloseAndHide;
-
-    public async closeSelf(): Promise<boolean> {
-        return await FormMgr.close({prefabUrl: this.fid, type: this.formType});
-    }
 }
 
 export class UIToast extends UIBase implements IPool {

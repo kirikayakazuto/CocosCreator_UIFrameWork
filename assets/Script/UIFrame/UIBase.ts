@@ -65,8 +65,8 @@ export default class UIBase extends cc.Component {
     public onAfterHide(params: any) {}
 
     // 关闭自己
-    public async closeSelf(): Promise<boolean> {
-       return await UIManager.getInstance().closeForm(GetForm(this.fid, this.formType));
+    public async closeSelf(params?: any): Promise<boolean> {
+        return await FormMgr.close(GetForm(this.fid, this.formType), params);
     }
 
     /**
