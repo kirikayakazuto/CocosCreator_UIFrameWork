@@ -4,7 +4,7 @@ import ResMgr from "./ResMgr";
 import ModalMgr from "./ModalMgr";
 import AdapterMgr, { AdapterType } from "./AdapterMgr";
 import Scene from "../Scene/Scene";
-import { UIWindow } from "./UIForm";
+import type { UIWindow } from "./UIForm";
 import { ECloseType, IFormConfig, IFormData } from "./Struct";
 import { EventCenter } from "./EventCenter";
 import { EventType } from "./EventType";
