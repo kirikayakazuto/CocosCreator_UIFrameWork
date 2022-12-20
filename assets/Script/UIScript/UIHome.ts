@@ -12,7 +12,7 @@ export default class UIHome extends UIScreen {
 
     public view: UIHome_Auto;
     async load() {
-        await UIManager.getInstance().openForm(UIConfig.UISound.prefabUrl);;
+        await UIManager.getInstance().openForm(UIConfig.UISound);;
         return null;
     }
 

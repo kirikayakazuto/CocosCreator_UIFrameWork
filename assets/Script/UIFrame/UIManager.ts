@@ -13,6 +13,7 @@ import { LRUCache } from "../Common/Utils/LRUCache";
 /**
  * @author honmono
  */
+const TAG = "UIManager";
 export default class UIManager {    
     private _UIROOT: cc.Node = null;    // UIROOT
     private _ndScreen: cc.Node = null;  // 全屏显示的UI 挂载结点
@@ -26,6 +27,7 @@ export default class UIManager {
     private _showingForms: {[key: string]: UIBase}                     = cc.js.createMap();    // 正在显示的窗体
     private _tipsForms: {[key: string]: UIBase}                        = cc.js.createMap();    // 独立窗体 独立于其他窗体, 不受其他窗体的影响
     private _loadingForm: {[key: string]: ((value: UIBase) => void)[]} = cc.js.createMap();    // 正在加载的form
+    private _closingForm: {[key: string]: UIBase }                     = cc.js.createMap();    // 正在关闭的form
     private _LRUCache: LRUCache = new LRUCache(3);                                             // LRU cache
     
     private static instance: UIManager = null;                                                 // 单例
@@ -119,13 +121,20 @@ export default class UIManager {
      * 重要方法 关闭一个UIForm
      * @param prefabPath 
      */
-    public async closeForm(prefabPath: string): Promise<boolean> {
+    public async closeForm(form: IFormConfig, params?: any, formData?: IFormData): Promise<boolean> {
+        let prefabPath = form.prefabUrl;
         if(!prefabPath || prefabPath.length <= 0) {
-            cc.warn(`${prefabPath}, 参数错误`);
+            cc.warn(TAG, `${prefabPath}, 参数错误`);
             return false;
         };
         let com = this._allForms[prefabPath];
         if(!com) return false;
+
+        if(this._closingForm[prefabPath]) {
+            cc.warn(TAG, `${prefabPath}, form正在关闭中`);
+            return;
+        }
+        this._closingForm[prefabPath] = com;
         
         switch(com.formType) {
             case FormType.Screen:
@@ -158,6 +167,11 @@ export default class UIManager {
                 this.putLRUCache(com);
             break;
         }
+        
+        // 从_closingForm去除
+        this._closingForm[prefabPath] = null;
+        delete this._closingForm[prefabPath];
+
         return true;
     }
 
@@ -359,12 +373,12 @@ export default class UIManager {
         com.onAfterHide();
     }
 
-    private async showEffect(baseUI: UIBase) {
+    private async showEffect(baseUI: UIBase, quick = false) {
         baseUI.node.active = true;
-        await baseUI.showEffect();
+        !quick && await baseUI.showEffect();
     }
-    private async hideEffect(baseUI: UIBase) {
-        await baseUI.hideEffect();
+    private async hideEffect(baseUI: UIBase, quick = false) {
+        !quick && await baseUI.hideEffect();
         baseUI.node.active = false;
     }
 

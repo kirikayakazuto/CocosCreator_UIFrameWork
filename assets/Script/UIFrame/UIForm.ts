@@ -27,7 +27,7 @@ export class UIWindow extends UIBase {
     }
 
     public async closeSelf(): Promise<boolean> {
-        return await FormMgr.close({prefabUrl: this.fid, type: this.formType});
+        return await FormMgr.close(this.constructor['UIConfig'] || {prefabUrl: this.fid, type: this.formType});
     }
 
 }

@@ -6,10 +6,10 @@ import UIManager from "./UIManager";
 
 class WindowMgr {
     // 窗体
-    private _showingList: PriorityStack<string> = new PriorityStack();
+    private _showingList: PriorityStack<IFormConfig> = new PriorityStack((a: IFormConfig, b: IFormConfig) => a.prefabUrl === b.prefabUrl);
     private _waitingList: PriorityQueue<WindowData> = new PriorityQueue();
     
-    private _currWindow: string = "";
+    private _currWindow: IFormConfig;
     public get currWindow() {
         return this._currWindow;
     }
@@ -24,7 +24,7 @@ class WindowMgr {
         let prefabPath = form.prefabUrl;
         formData = this._formatFormData(formData);
         if(this._showingList.size <= 0 || (!formData.showWait && formData.priority >= this._showingList.getTopEPriority())) {
-            this._showingList.push(prefabPath, formData.priority);
+            this._showingList.push(form, formData.priority);
             this._currWindow = this._showingList.getTopElement();
             return await UIManager.getInstance().openForm(form, params, formData);
         }
@@ -35,11 +35,12 @@ class WindowMgr {
         return await UIManager.getInstance().loadUIForm(prefabPath);
     }
 
-    public async close(prefabPath: string) {
-        let result = this._showingList.remove(prefabPath);
+    public async close(form: IFormConfig | string, params?: any, formData?: IFormData) {
+        form = GetForm(form, FormType.Window);
+        let result = this._showingList.remove(form);
         if(!result) return false;
 
-        await UIManager.getInstance().closeForm(prefabPath);
+        await UIManager.getInstance().closeForm(form, params, formData);
 
         if(this._showingList.size <= 0 && this._waitingList.size > 0) {
             let windowData = this._waitingList.dequeue();

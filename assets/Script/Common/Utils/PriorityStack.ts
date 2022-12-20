@@ -1,7 +1,13 @@
 import { PriorityElement } from "./PriorityQueue";
 
+type StackCompare<T> = (a: T, b: T) => boolean;
+
 /** 带优先级的栈 */
 export default class PriorityStack<T> {
+    private compare: StackCompare<T> = (a: T, b: T) => a === b;
+    constructor(compare?: StackCompare<T>) {
+        this.compare = compare;
+    }
     private stack: Array<PriorityElement<T>> = new Array<PriorityElement<T>>();
     private _size = 0;
     public get size() {
@@ -58,11 +64,10 @@ export default class PriorityStack<T> {
         this.stack[b] = tmp;
     }
 
-
     /** 是否有这个元素 */
     public hasElement(t: T) {
         for(const e of this.stack) {
-            if(e.data === t) {
+            if(this.compare(e.data, t)) {
                 return true;
             }
         }
@@ -71,7 +76,7 @@ export default class PriorityStack<T> {
 
     public remove(t: T) {
         for(let i=this.stack.length-1; i>=0; i--) {
-            if(this.stack[i].data === t) {
+            if(this.compare(this.stack[i].data, t)) {
                 this.stack.splice(i, 1);
                 this._size --;
                 return true;

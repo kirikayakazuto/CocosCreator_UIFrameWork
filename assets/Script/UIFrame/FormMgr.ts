@@ -31,16 +31,16 @@ class FormMgr {
         }
     }
 
-    async close(form: IFormConfig) {
+    async close(form: IFormConfig, param?: any, formData?: IFormData) {
         switch(form.type) {
             case FormType.Screen:
-                return await SceneMgr.close(form.prefabUrl);
+                return await SceneMgr.close(form, param, formData);
             case FormType.Window:
-                return await WindowMgr.close(form.prefabUrl);
+                return await WindowMgr.close(form, param, formData);
             case FormType.Fixed:
-                return await FixedMgr.close(form.prefabUrl);
+                return await FixedMgr.close(form, param, formData);
             case FormType.Tips:
-                return await TipsMgr.close(form.prefabUrl);
+                return await TipsMgr.close(form, param, formData);
             case FormType.Toast:
                 cc.warn("UIToast 目前不能通过这种方式关闭, 请使用 ToastMgr.close()");
                 break;

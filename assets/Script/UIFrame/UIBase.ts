@@ -1,6 +1,6 @@
 import UIManager from "./UIManager";
 import { FormType } from "./config/SysDefine";
-import { ECloseType, IFormData } from "./Struct";
+import { ECloseType, GetForm, IFormData } from "./Struct";
 import AdapterMgr from "./AdapterMgr";
 import ResMgr from "./ResMgr";
 import FormMgr from "./FormMgr";
@@ -22,7 +22,7 @@ export default class UIBase extends cc.Component {
     public static open(param?: any, formData?: IFormData) {
         let uiconfig = this['UIConfig'];
         if(!uiconfig) {
-            cc.warn(`sorry UIConfig is null, please check UIConfig`);
+            cc.warn(`sorry UIConfig is null, please check AutoConfig`);
             return ;
         }
         FormMgr.open(uiconfig, param, formData);
@@ -66,7 +66,7 @@ export default class UIBase extends cc.Component {
 
     // 关闭自己
     public async closeSelf(): Promise<boolean> {
-       return await UIManager.getInstance().closeForm(this.fid);
+       return await UIManager.getInstance().closeForm(GetForm(this.fid, this.formType));
     }
 
     /**
