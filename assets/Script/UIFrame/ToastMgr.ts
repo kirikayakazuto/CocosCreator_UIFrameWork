@@ -29,8 +29,8 @@ class ToastMgr {
         return toastBase;
     }
 
-    public async close(com: UIToast) {
-        await UIManager.getInstance().exitToToast(com);
+    public async close(com: UIToast, params: any) {
+        await UIManager.getInstance().exitToToast(com, params);
         if(!this._pools[com.fid]) return;
         this._pools[com.fid].free(com);
 

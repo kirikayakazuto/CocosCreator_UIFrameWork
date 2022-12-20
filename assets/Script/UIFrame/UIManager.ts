@@ -138,17 +138,17 @@ export default class UIManager {
         
         switch(com.formType) {
             case FormType.Screen:
-                await this.exitToScreen(prefabPath);
+                await this.exitToScreen(prefabPath, params);
             break;
             case FormType.Fixed:                             // 普通模式显示
-                await this.exitToFixed(prefabPath);
+                await this.exitToFixed(prefabPath, params);
             break;
             case FormType.Window:
-                await this.exitToPopup(prefabPath);
+                await this.exitToPopup(prefabPath, params);
                 EventCenter.emit(EventType.WindowClosed, prefabPath);
             break;
             case FormType.Tips:
-                await this.exitToTips(prefabPath);
+                await this.exitToTips(prefabPath, params);
             break;
         }
 
@@ -314,29 +314,29 @@ export default class UIManager {
         com.onAfterShow(params);
     }
 
-    private async exitToScreen(fid: string) {
+    private async exitToScreen(fid: string, params?: any) {
         let com = this._showingForms[fid];
         if(!com) return ;
-        com.onHide();
+        com.onHide(params);
         await this.hideEffect(com);
-        com.onAfterHide();
+        com.onAfterHide(params);
 
         this._showingForms[fid] = null;
         delete this._showingForms[fid];
     }
    
-    private async exitToFixed(fid: string) {
+    private async exitToFixed(fid: string, params?: any) {
         let com = this._allForms[fid];
         if(!com) return ;
-        com.onHide();
+        com.onHide(params);
         await this.hideEffect(com);
-        com.onAfterHide();
+        com.onAfterHide(params);
 
         this._showingForms[fid] = null;
         delete this._showingForms[fid];
     }
     
-    private async exitToPopup(fid: string) {
+    private async exitToPopup(fid: string, params?: any) {
         if(this._windows.length <= 0) return;
         let com: UIWindow = null;
         for(let i=this._windows.length-1; i>=0; i--) {
@@ -347,38 +347,38 @@ export default class UIManager {
         }
         if(!com) return ;
         
-        com.onHide();
+        com.onHide(params);
         ModalMgr.inst.checkModalWindow(this._windows);
         await this.hideEffect(com);
-        com.onAfterHide();
+        com.onAfterHide(params);
 
         this._showingForms[fid] = null;
         delete this._showingForms[fid];
     }
     
-    private async exitToTips(fid: string) {
+    private async exitToTips(fid: string, params?: any) {
         let com = this._allForms[fid];
         if(!com) return ;
-        com.onHide();
+        com.onHide(params);
         await this.hideEffect(com);
-        com.onAfterHide();
+        com.onAfterHide(params);
 
         this._tipsForms[fid] = null;
         delete this._tipsForms[fid];
     }
 
-    public async exitToToast(com: UIBase) {
-        com.onHide();
+    public async exitToToast(com: UIBase, params?: any) {
+        com.onHide(params);
         await this.hideEffect(com);
-        com.onAfterHide();
+        com.onAfterHide(params);
     }
 
-    private async showEffect(baseUI: UIBase, quick = false) {
+    private async showEffect(baseUI: UIBase) {
         baseUI.node.active = true;
-        !quick && await baseUI.showEffect();
+        !(baseUI.formData?.quick) && await baseUI.showEffect();
     }
-    private async hideEffect(baseUI: UIBase, quick = false) {
-        !quick && await baseUI.hideEffect();
+    private async hideEffect(baseUI: UIBase) {
+        !(baseUI.formData?.quick) && await baseUI.hideEffect();
         baseUI.node.active = false;
     }
 

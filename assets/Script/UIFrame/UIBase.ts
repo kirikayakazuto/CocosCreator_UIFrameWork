@@ -60,9 +60,9 @@ export default class UIBase extends cc.Component {
     // 在显示动画结束后回调
     public onAfterShow(params: any) {}
     // 隐藏回调
-    public onHide() {}    
+    public onHide(params: any) {}    
     // 在隐藏动画结束后回调
-    public onAfterHide() {}
+    public onAfterHide(params: any) {}
 
     // 关闭自己
     public async closeSelf(): Promise<boolean> {
