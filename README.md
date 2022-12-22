@@ -2,7 +2,10 @@
 
 ## 基于cocos creator的UI框架, 使用过程中有任何问题,可以加QQ群: 552424835
 
-### 当前使用的cocos creator版本2.4.8版本. 理论上支持2.2.x ~ 2.4.x的所有版本.  3d版本目前在开发中... 尽请期待
+### 当前使用的cocos creator版本2.4.8版本. 理论上支持2.2.x ~ 2.4.x的所有版本. 
+
+### 项目使用了子模块, 所以建议使用以下命令克隆:
+git clone --recurse-submodules git@github.com:kirikayakazuto/CocosCreator_UIFrameWork.git
 
 // todo list
 + 简单的2d物理系统 仅支持矩形, 方便做同步.
