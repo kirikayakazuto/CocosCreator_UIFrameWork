@@ -1,6 +1,8 @@
-# 注意! 本框架是个人开发, 用于商业开发前建议先做一下评估.
+# 基于CocosCreator的轻量框架, 主要是针对单场景的游戏管理, 将界面制作成预制体, 提供了对界面预制体的显示, 隐藏, 释放等功能, 游戏管理更简单!
 
-## 基于cocos creator的UI框架, 使用过程中有任何问题,可以加QQ群: 552424835
+### 使用过程中有任何问题,可以加QQ群: 552424835
+
+### 注意! 本框架是个人开发, 用于商业开发前建议先做一下评估.
 
 ### 当前使用的cocos creator版本2.4.8版本. 理论上支持2.2.x ~ 2.4.x的所有版本. 
 
@@ -8,6 +10,7 @@
 ```
 git clone --recurse-submodules git@github.com:kirikayakazuto/CocosCreator_UIFrameWork.git
 ```
+
 
 // todo list
 + 支持bundle加载, 包括UIConfig配置
