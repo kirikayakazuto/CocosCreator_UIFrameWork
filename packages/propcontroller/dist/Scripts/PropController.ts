@@ -31,6 +31,7 @@ export default class PropController extends cc.Component {
         this._refreshIdEnum();
     }
     
+    @property({type: cc.Enum({})})
     _state = 0;
     @property({type: cc.Enum({})})
     get state() {
@@ -56,6 +57,7 @@ export default class PropController extends cc.Component {
     propertyJson = '';
 
     onLoad () {
+        this.open = false;
         this._refresh();
         this._refreshIdEnum();
     }
@@ -159,13 +161,31 @@ function _setLabelString(node: cc.Node, prop: any) {
     node.getComponent(cc.Label).string = prop;
 }
 function _setSpriteTexture(node: cc.Node, prop: any) {
-    cc.assetManager.loadAny({uuid: prop}, (error, data) => {        
+    let url = prop.url ?? "";
+    let uuid = prop.uuid ?? "";
+    if(url.includes("resources")) {
+        url = url.replace("resources/", "");
+        url = url.split('.')[0];
+    }
+    if(CC_EDITOR) {
+        cc.assetManager.loadAny({uuid: uuid}, (error, data) => {        
+            if(error) {
+                Editor.warn('PropController  load sprite texture faild', prop, error);
+                return ;
+            };
+            node.getComponent(cc.Sprite).spriteFrame = data;
+        });
+        return;
+    }
+
+    cc.resources.load<cc.Texture2D>(url, cc.Texture2D, (error, data: cc.Texture2D) => {        
         if(error) {
-            Editor.warn('PropController  load sprite texture faild', prop, error);
+            Editor.warn('PropController  load sprite texture faild', url, error);
             return ;
         };
-        node.getComponent(cc.Sprite).spriteFrame = data;
+        node.getComponent(cc.Sprite).spriteFrame = new cc.SpriteFrame(data);
     });
+    
 }
 
 const _localSetFunc: {[key: number]: (node: cc.Node, prop: any) => void} = {};

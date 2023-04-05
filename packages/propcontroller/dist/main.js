@@ -1,4 +1,3 @@
-"use strict";
 ///<reference path="../../../editor/editor-assetDB.d.ts"/>
 ///<reference path="../../../editor/editor-main.d.ts"/>
 ///<reference path="../../../editor/editor-renderer.d.ts"/>
@@ -26,10 +25,6 @@ var main;
         /**打开面板 */
         run: function () {
             Editor.Scene.callSceneScript("propcontroller", "start");
-        },
-        /** 添加脚本 */
-        addScript: function () {
-            Editor.Scene.callSceneScript("propcontroller", "copyScript");
         },
     };
 })(main || (main = {}));

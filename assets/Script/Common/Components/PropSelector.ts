@@ -1,6 +1,7 @@
 const {ccclass, executeInEditMode, menu, property} = cc._decorator;
 
 export enum PropEmum {
+    All,
     Active,
     Position,
     Rotation,
@@ -24,11 +25,12 @@ const ControllerId = cc.Enum({});
 @executeInEditMode
 export default class PropSelector extends cc.Component {
     
-    @property({type: ControllerId, tooltip: "控制器的名称"})
-    ctrlId = 0;
+    // @property({type: ControllerId, tooltip: "控制器的名称"})
+    // ctrlId = 0;
+    
     // 被控制的属性
     @property({type: [cc.Enum(PropEmum)], tooltip: "被控制的属性"})               
-    props: PropEmum[] = [];    
+    props: PropEmum[] = [0];    
 
     // update (dt) {} 
 }

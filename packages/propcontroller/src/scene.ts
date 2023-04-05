@@ -1,76 +1,90 @@
-const _localSaveFunc: {[key: number]: (saveData: any, com: any, comPropCtrl: any) => void} = {};
-let ROOT_NODE: cc.Node = null as any;
-let NodePathType = 1;
-
-const fs = require('fire-fs');
-const path = require("fire-path");
-
-const dirName = "assets/PropComponent";
+const _localSaveFunc: {[key: number]: (node: cc.Node) => any} = {};
 
 module scene {
 
-    function _checkScriptDir() {
-        let dir = path.join(Editor.Project.path, dirName);
-        if(!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);
-        }
-    }
-
-    function _readFile(path: string, callback: Function) {
-        fs.readFile(path, 'utf8', (err: any, data: string) => {
-            if(!err) {
-                callback(data);
-                return ;
-            }
-            Editor.log(path)
-            Editor.error(JSON.stringify(err));
-            callback(null);
-        });  
-    }
-
-    export function copyScript() {
-        _checkScriptDir();
-        _copyScript("PropController.ts", () => {
-            _copyScript("PropSelector.ts", () => {
-                Editor.assetdb.refresh("db://" + dirName);
-            });
-        });
-        
-    }
-
-    function _copyScript(scriptName: string, callback: Function ) {
-        _readFile(Editor.url("packages://propcontroller/dist/Scripts/" + scriptName), (data: any) => {
-            if(!data) return ;
-            let url = path.join(Editor.Project.path, dirName, scriptName);
-            fs.writeFileSync(url, data);
-            callback && callback();
-        });
-    }
-
     export function setState(event: any, t: any) {
-        let node = cc.director.getScene().getChildByUuid(t.nodeUuid);
-        let coms = node.getComponents("PropController");
-        for(const com of coms) {
-            if(com.uuid == t.comUuid) {
-                com.state = t.state;
+        findNodeByUuid(cc.director.getScene(), t.nodeUuid, (node: cc.Node) => {
+            if(!node) {
+                Editor.warn(`没找到node? ${t.nodeUuid}`);
+                return;
             }
+            let coms = node.getComponents("PropController");
+            for(const com of coms) {
+                if(com.uuid == t.comUuid) {
+                    com.state = t.state;
+                }
+            }
+        });
+    }
+
+    function findNodeByUuid(root: cc.Node, uuid: string, callback: Function) {
+        let uuidNode = root.getChildByUuid(uuid);
+        if(uuidNode) {
+            callback(uuidNode);
+            return;
+        }
+        for(const node of root.children) {
+            findNodeByUuid(node, uuid, callback);
         }
     }
-    
-    function _doSetProp(comPropCtrl: any, NodeRoot: cc.Node, saveData: any) {
-        let coms = NodeRoot.getComponentsInChildren("PropSelector");
-        for(const com of coms) {
-            // 只处理当前状态的控制器属性
-            let ctrl = NodeRoot.getComponents("PropController")[com.ctrlId];
-            if(!ctrl || ctrl.uid !== comPropCtrl.uid) {
-                continue;
+
+    async function walkNodes(root: cc.Node, pathType: number, callback: Function, path: string) {
+
+        for(const node of root.children) {
+            let selector = node.getComponent("PropSelector");
+            if(selector) {
+                await callback(selector, _makePath(pathType, path, node));
             }
             
-            for(const e of com.props) {
-                let func = _localSaveFunc[e];
-                func(saveData, com, comPropCtrl);
+            if(node.getComponent("PropController")) continue;
+
+            if(node.childrenCount > 0) {
+                await walkNodes(node, pathType, callback, _makePath(pathType, path, node));
             }
         }
+    }
+
+    function _makePath(pathType: number, path: string, node: cc.Node) {
+        switch(pathType) {
+            case (cc as any).NodePathType.Name:
+                path += `/${node.name}`;
+            break;
+            case (cc as any).NodePathType.SiblingIndex:
+                path += `/${node.getSiblingIndex()}`;
+            break;
+        }
+        return path;
+    }
+    
+    async function _doSetProp(comPropCtrl: any, saveData: any) {
+
+        let nodeRoot = comPropCtrl.node;
+        let pathType = comPropCtrl.nodePathType;
+
+        let map = saveData[comPropCtrl.state];
+        if(!map) {
+            map = saveData[comPropCtrl.state] = {};
+        }
+        await walkNodes(nodeRoot, pathType, async (selector: any, path: string) => {
+            
+            let obj = map[path] = map[path] ?? {};
+
+            // 如果没有选择, 则全部记录
+            if(selector.props.length <= 0) {
+                for(let key in _localSaveFunc) {
+                    let func = _localSaveFunc[key];
+                    obj[key] = await func(selector.node);
+                }
+                return;
+            }
+
+            for(const key of selector.props) {
+                let func = _localSaveFunc[key];
+                obj[key] = await func(selector.node);
+                
+            }
+        }, `${pathType}:`);
+    
     }
 
     /** 
@@ -81,17 +95,19 @@ module scene {
     export function start() { 
         let childs = cc.director.getScene().children;
         if(childs.length < 3) return null;
-        let NodeRoot = ROOT_NODE = childs[1];
-
-        let comPropCtrls = NodeRoot.getComponents("PropController");
+        let NodeRoot = childs[1];
+        // 获取所有的controller
+        let comPropCtrls = NodeRoot.getComponentsInChildren("PropController");
+        
         for(const comPropCtrl of comPropCtrls) {
-            if(!comPropCtrl || !comPropCtrl.open) {            
+            if(!comPropCtrl.open) {            
                 continue;
             }
+
             let saveData: {[key: string]: any} = {};
             
             if(!comPropCtrl.uid || comPropCtrl.uid.length <= 0) {
-                cc.warn(`PropController, 请设置 PropController 的 uid ${comPropCtrl.node.name} `);
+                cc.warn(`PropController, 请设置 node: ${comPropCtrl.node.name} 的 uid `);
                 return ;
             }
     
@@ -99,8 +115,6 @@ module scene {
                 cc.warn(`PropController, ${comPropCtrl.uid} 控制器越界了`);
                 return ;
             }
-
-            NodePathType = comPropCtrl.nodePathType;
 
             if(comPropCtrl.propertyJson) {
                 saveData = JSON.parse(comPropCtrl.propertyJson);
@@ -114,36 +128,17 @@ module scene {
                     delete saveData[e];
                 }
             }
+
             // 把当前控制器下的
-            _doSetProp(comPropCtrl, NodeRoot, saveData);
-            comPropCtrl.propertyJson = JSON.stringify(saveData);
-            Editor.log('控制器数据保存成功');
+            _doSetProp(comPropCtrl, saveData).then(() => {
+                comPropCtrl.propertyJson = JSON.stringify(saveData);
+                Editor.log('控制器数据保存成功');
+            });
         }
     }
 
-    function _getNodePathByName(node: cc.Node, rootNode: cc.Node) {
-        let parent = node;
-        let path = '';
-        while(parent) {
-            if(parent.uuid == rootNode.uuid) {
-                break;
-            }
-            path += '/' + parent.name;
-            parent = parent.parent;
-        }
-        return "0:" + path;
-    }
 
-    function _getNodePathBySilblineIndex(node: cc.Node, rootNode: cc.Node) {
-        let path = '';
-        while(node.uuid != rootNode.uuid) {
-            path += '/' + node.getSiblingIndex();
-            node = node.parent;
-        }
-        return "1:" + path;
-    }
-
-    function _regiestSaveFunction(propId: number, func: (saveData: any, com: any, comPropCtrl: any) => void) {
+    function _regiestSaveFunction(propId: number, func: (node: cc.Node) => any) {
         if(_localSaveFunc[propId]) {
             cc.warn(`prop: ${propId}, 已经被注册了, 此次注册将会覆盖上次的func`);
             return ;
@@ -151,108 +146,135 @@ module scene {
         _localSaveFunc[propId] = func;
     }
 
-    function _checkSaveData(saveData: any, com: any, controller: any) {
-        let state = controller.state;
-        let map = saveData[state];
-        if(!map) map = saveData[state] = {};
-        let path = '';
-        switch(NodePathType) {
-            case (cc as any).NodePathType.Name:
-                path = _getNodePathByName(com.node, ROOT_NODE);
-                break;
-            case (cc as any).NodePathType.SiblingIndex:
-                path = _getNodePathBySilblineIndex(com.node, ROOT_NODE);
-                break;
-        }
-
-        let d = map[path];
-        if(!d) d = map[path] = {};
-        return d;
+    function _savePosition(node: cc.Node) {
+        return node.position;
     }
 
-    function _savePosition(saveData: any, com: any, controller: any) {
-        let d = _checkSaveData(saveData, com, controller);
-        d[(cc as any).PropEmum.Position] = com.node.position;
-    }
-
-    function _saveColor(saveData: any, com: any, controller: any) {
-        let d = _checkSaveData(saveData, com, controller);
-        d[(cc as any).PropEmum.Color] = {
-            r: com.node.color.r,
-            g: com.node.color.g,
-            b: com.node.color.b,
-            a: com.node.color.a,
+    function _saveColor(node: cc.Node) {
+        return {
+            r: node.color.r,
+            g: node.color.g,
+            b: node.color.b,
+            a: node.color.a,
         }
     }
 
-    function _saveScale(saveData: any, com: any, controller: any) {
-        let d = _checkSaveData(saveData, com, controller);
-        d[(cc as any).PropEmum.Scale] = {
-            scaleX: com.node.scaleX,
-            scaleY: com.node.scaleY
+    function _saveScale(node: cc.Node) {
+        return {
+            scaleX: node.scaleX,
+            scaleY: node.scaleY
+        }
+    }
+
+    function _saveRotation(node: cc.Node) {
+        return node.angle;
+    }
+
+    function _saveOpacity(node: cc.Node) {
+        return node.opacity;
+    }
+
+    function _saveSkew(node: cc.Node) {
+        return {
+            skewX: node.skewX,
+            skewY: node.skewY,
+        }
+    }
+
+    function _saveSize(node: cc.Node) {
+        return node.getContentSize();
+    }
+
+    function _saveAnchor(node: cc.Node) {
+        return {
+            anchorX: node.anchorX,
+            anchorY: node.anchorY,
         };
     }
 
-    function _saveRotation(saveData: any, com: any, controller: any) {
-        let d = _checkSaveData(saveData, com, controller);
-        d[(cc as any).PropEmum.Rotation] = com.node.angle;
+    function _saveActive(node: cc.Node) {
+        return node.active;
     }
 
-    function _saveOpacity(saveData: any, com: any, controller: any) {
-        let d = _checkSaveData(saveData, com, controller);
-        d[(cc as any).PropEmum.Opacity] = com.node.opacity;
+    function _saveLabelString(node: cc.Node) {
+        if(!node.getComponent(cc.Label)) return ;
+        return node.getComponent(cc.Label).string;
     }
 
-    function _saveSlew(saveData: any, com: any, controller: any) {
-        let d = _checkSaveData(saveData, com, controller);
-        d[(cc as any).PropEmum.Slew] = {
-            slewX: com.node.slewX,
-            slewY: com.node.slewY,
+    async function _saveSpriteTexture(node: cc.Node) {
+        if(!node.getComponent(cc.Sprite)) return ;
+        return new Promise((resolve, reject) => {
+            // let uuid = (node.getComponent(cc.Sprite).spriteFrame?.getTexture() as any)["_uuid"];
+            let uuid = (node.getComponent(cc.Sprite).spriteFrame as any)["_uuid"];
+            if(!uuid) return "";
+            (Editor.assetdb as any).queryUrlByUuid(uuid, (error: any, url: string) => {
+                if(error) {
+                    resolve("");
+                    return;
+                }
+                url = url.replace("db://assets/", "");
+                resolve({
+                    uuid,
+                    url
+                }); 
+            });
+        });
+    }
+
+    function _saveAll(node: cc.Node) {
+        let coms = node.getComponents(cc.Component);
+        let props = {} as any;
+        props["node"] = {
+            active: node.active,
+            position: node.position,
+            angle: node.angle,
+            scale: {
+                scaleX: node.scaleX,
+                scaleY: node.scaleY,
+            },
+            anchor: {
+                anchorX: node.anchorX,
+                anchorY: node.anchorY,
+            },
+            size: node.getContentSize(),
+            color: {
+                r: node.color.r,
+                g: node.color.g,
+                b: node.color.b,
+                a: node.color.a,
+            },
+            opacity: node.opacity,
+            // skew: {
+            //     skewX: node.skewX,
+            //     skewY: node.skewY,
+            // }
         }
-    }
-
-    function _saveSize(saveData: any, com: any, controller: any) {
-        let d = _checkSaveData(saveData, com, controller);
-        d[(cc as any).PropEmum.Size] = com.node.getContentSize();
-    }
-
-    function _saveAnchor(saveData: any, com: any, controller: any) {
-        let d = _checkSaveData(saveData, com, controller);
-        d[(cc as any).PropEmum.Anchor] = {
-            anchorX: com.node.anchorX,
-            anchorY: com.node.anchorY,
-        };
-    }
-
-    function _saveActive(saveData: any, com: any, controller: any) {
-        let d = _checkSaveData(saveData, com, controller);
-        d[(cc as any).PropEmum.Active] = com.node.active;
-    }
-
-    function _saveLabelString(saveData: any, com: any, controller: any) {
-        if(!com.getComponent(cc.Label)) return ;
-        let d = _checkSaveData(saveData, com, controller);
-        d[(cc as any).PropEmum.Label_String] = com.getComponent(cc.Label).string;
-    }
-
-    function _saveSpriteTexture(saveData: any, com: any, controller: any) {
-        if(!com.getComponent(cc.Sprite)) return ;
-        let d = _checkSaveData(saveData, com, controller);
-        d[(cc as any).PropEmum.Sprite_Texture] = com.getComponent(cc.Sprite).spriteFrame['_uuid'];
+        let comsProp = props["coms"] = {} as any;
+        for(const com of coms) {
+            if(com.name.includes("PropSelector")) continue;
+            let prop = comsProp[com.constructor.name] = {} as any; 
+            for(let key in com) {
+                if(key.startsWith("_")) continue;
+                let val = (com as any)[key];
+                if(typeof val === "function" || typeof val === "object") continue;
+                prop[key] = val;
+            }
+        }
+        return props;
     }
     
+    _regiestSaveFunction((cc as any).PropEmum.All, _saveAll);
     _regiestSaveFunction((cc as any).PropEmum.Active, _saveActive);
     _regiestSaveFunction((cc as any).PropEmum.Position, _savePosition);
     _regiestSaveFunction((cc as any).PropEmum.Color, _saveColor);
     _regiestSaveFunction((cc as any).PropEmum.Scale, _saveScale);
     _regiestSaveFunction((cc as any).PropEmum.Rotation, _saveRotation);
     _regiestSaveFunction((cc as any).PropEmum.Opacity, _saveOpacity);
-    _regiestSaveFunction((cc as any).PropEmum.Slew, _saveSlew);
+    _regiestSaveFunction((cc as any).PropEmum.Slew, _saveSkew);
     _regiestSaveFunction((cc as any).PropEmum.Size, _saveSize);
     _regiestSaveFunction((cc as any).PropEmum.Anchor, _saveAnchor);
     _regiestSaveFunction((cc as any).PropEmum.Label_String, _saveLabelString);
     _regiestSaveFunction((cc as any).PropEmum.Sprite_Texture, _saveSpriteTexture);
-    
-    
+       
 }
 module.exports = scene;

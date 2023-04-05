@@ -13,7 +13,7 @@ declare module Editor {
         export const assetdb: assetdb
     }
     declare class assetdb {
-
+        uuidToUrl(uuid: string): string;
         urlToUuid(url): string
         fspathToUuid(fspath): string
         uuidToFspath(uuid): string

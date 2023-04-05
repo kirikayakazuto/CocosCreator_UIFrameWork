@@ -8,13 +8,13 @@
     "i18n:MAIN_MENU.package.title/propcontroller/run": {
       "message": "propcontroller:run",
       "accelerator": "alt+h"
-    },
-    "i18n:MAIN_MENU.package.title/propcontroller/addScript": {
-      "message": "propcontroller:addScript"
     }
   },
   "scene-script": "dist/scene.js",
   "dependencies": {
     "axios": "^0.21.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11"
   }
 }

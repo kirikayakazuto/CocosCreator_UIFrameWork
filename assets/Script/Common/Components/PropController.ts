@@ -57,6 +57,7 @@ export default class PropController extends cc.Component {
     propertyJson = '';
 
     onLoad () {
+        this.open = false;
         this._refresh();
         this._refreshIdEnum();
     }
@@ -159,14 +160,57 @@ function _setActive(node: cc.Node, prop: any) {
 function _setLabelString(node: cc.Node, prop: any) {
     node.getComponent(cc.Label).string = prop;
 }
+function _setAll(node: cc.Node, prop: any) {
+    let nodeProp = prop["node"];
+    node.active = nodeProp.active;
+    node.setPosition(nodeProp.position);
+    node.angle = nodeProp.angle;
+    node.scaleX = nodeProp.scale.scaleX;
+    node.scaleY = nodeProp.scale.scaleY;
+    node.anchorX = nodeProp.anchor.anchorX;
+    node.anchorY = nodeProp.anchor.anchorY;
+    node.setContentSize(nodeProp.size);
+    node.color = new cc.Color(nodeProp.color.r, nodeProp.color.g, nodeProp.color.b);
+    node.opacity = nodeProp.opacity;
+    // node.skewX = nodeProp.skew.skewX;
+    // node.skewY = nodeProp.skew.skewY;
+
+    for(let comName in prop.coms) {
+        let comProp = prop.coms[comName];
+        comName = comName.replace('_', '.');
+        let com = node.getComponent(comName);
+        for(const key in comProp) {
+            if(key.startsWith("_")) continue;
+            com[key] = comProp[key];
+        }
+    }
+}
 function _setSpriteTexture(node: cc.Node, prop: any) {
-    cc.assetManager.loadAny({uuid: prop}, (error, data) => {        
+    let url = prop.url ?? "";
+    let uuid = prop.uuid ?? "";
+    if(url.includes("resources")) {
+        url = url.replace("resources/", "");
+        url = url.split('.')[0];
+    }
+    if(CC_EDITOR) {
+        cc.assetManager.loadAny({uuid: uuid}, (error, data) => {        
+            if(error) {
+                Editor.warn('PropController  load sprite texture faild', prop, error);
+                return ;
+            };
+            node.getComponent(cc.Sprite).spriteFrame = data;
+        });
+        return;
+    }
+
+    cc.resources.load<cc.Texture2D>(url, cc.Texture2D, (error, data: cc.Texture2D) => {        
         if(error) {
-            Editor.warn('PropController  load sprite texture faild', prop, error);
+            Editor.warn('PropController  load sprite texture faild', url, error);
             return ;
         };
-        node.getComponent(cc.Sprite).spriteFrame = data;
+        node.getComponent(cc.Sprite).spriteFrame = new cc.SpriteFrame(data);
     });
+    
 }
 
 const _localSetFunc: {[key: number]: (node: cc.Node, prop: any) => void} = {};
@@ -177,6 +221,7 @@ function _regiestSetFunction(id: number, func: (node: cc.Node, prop: any) => voi
     _localSetFunc[id] = func;
 }
 
+_regiestSetFunction(PropEmum.All, _setAll);
 _regiestSetFunction(PropEmum.Active, _setActive);
 _regiestSetFunction(PropEmum.Position, _setPosition);
 _regiestSetFunction(PropEmum.Color, _setColor);
