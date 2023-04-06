@@ -14,9 +14,9 @@ git clone --recurse-submodules git@github.com:kirikayakazuto/CocosCreator_UIFram
 
 // todo list
 + 支持bundle加载, 包括UIConfig配置
-+ PropCtroller 优化, 支持图片和tween
 + 简单的2d物理系统 仅支持矩形, 方便做同步.
 + AdapterMgr优化, 支持可视化设置.
++ ~~PropCtroller 优化, 支持图片, 嵌套~~
 + ~~Toast条.~~ 已完成
 + ~~自动生成UIConfig.ts.~~ 已完成
 + ~~LRU销毁不常用的窗体.~~ 已完成
