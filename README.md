@@ -6,10 +6,6 @@
 
 ### 当前使用的cocos creator版本2.4.8版本. 理论上支持2.2.x ~ 2.4.x的所有版本. 
 
-### 项目使用了子模块, 所以建议使用以下命令克隆:
-```
-git clone --recurse-submodules git@github.com:kirikayakazuto/CocosCreator_UIFrameWork.git
-```
 
 
 // todo list
