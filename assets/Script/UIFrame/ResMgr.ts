@@ -144,9 +144,10 @@ export default class ResMgr {
     /** 销毁资源 */
     private _destoryAsset(url: string) {
         if(this._checkIsBuiltinAssets(url)) return;
-        cc.assetManager.assets.remove(url);               // 从缓存中清除
         let asset = cc.assetManager.assets.get(url);      // 销毁该资源
-        asset && asset.destroy();
+        if(!asset) return;
+        asset.destroy();
+        cc.assetManager.assets.remove(url);               // 从缓存中清除
         cc.assetManager.dependUtil['remove'](url);        // 从依赖中删除
     }
 
