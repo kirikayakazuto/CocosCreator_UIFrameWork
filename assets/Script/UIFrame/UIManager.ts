@@ -386,12 +386,12 @@ export default class UIManager {
     private destoryForm(com: UIBase) {
         // 取消所有监听
         EventCenter.targetOff(com);
-        // 销毁动态加载的资源
-        ResMgr.inst.destoryDynamicRes(com.fid);
-        // 销毁prefab以及依赖的资源
-        ResMgr.inst.destoryFormPrefab(com.fid);
         // 销毁node
         com.node.destroy();
+        // 销毁prefab以及依赖的资源
+        ResMgr.inst.destoryFormPrefab(com.fid);
+        // 销毁动态加载的资源
+        ResMgr.inst.destoryDynamicRes(com.fid);
         // 从allmap中删除
         this._allForms[com.fid] = null;
         delete this._allForms[com.fid];
