@@ -4,6 +4,7 @@ import SceneMgr from "./SceneMgr";
 import { IFormConfig, IFormData } from "./Struct";
 import TipsMgr from "./TipsMgr";
 import ToastMgr from "./ToastMgr";
+import UIManager from "./UIManager";
 import WindowMgr from "./WindowMgr";
 
 class FormMgr {
@@ -56,6 +57,10 @@ class FormMgr {
 
     async closeAllWindows() {
         await WindowMgr.closeAll();
+    }
+
+    async load(form: IFormConfig) {
+        await UIManager.getInstance().loadUIForm(form.prefabUrl);
     }
 
 }
