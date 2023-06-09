@@ -52,9 +52,10 @@ export default class PriorityStack<T> {
 
     private _adjust() {
         for(let i=this.stack.length-1; i>0; i--) {
-            if(this.stack[i] < this.stack[i-1]) {
+            if(this.stack[i].priority < this.stack[i-1].priority) {
                 this._swap(i, i-1);
             }
+            
         }
     }
 
