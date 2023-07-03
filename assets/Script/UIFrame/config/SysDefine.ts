@@ -10,7 +10,7 @@ export enum FormType {
     /** 弹出窗口 */
     Window = "UIWindow",
     /** Toast */
-    Toast = "Toast",
+    Toast = "UIToast",
     /** 独立窗口 */
     Tips = "UITips",
 
