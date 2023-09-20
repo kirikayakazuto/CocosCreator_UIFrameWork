@@ -60,10 +60,6 @@ export class LRUCache {
             this.addHead(node);
             return ;
         }
-        // 存在, 把这个node放在最前面
-        if(this.last == node) { // 如果当前node就是last, 那么更换last
-            this.last = node.prev;
-        }
         this.removeNode(node);
         this.addHead(node);
     }
@@ -75,8 +71,6 @@ export class LRUCache {
     public deleteLastNode() {
         let value = this.last.value;
         this.removeNode(this.last);
-        this.nodePool.free(this.last);
-        this.last = this.last.prev;
         return value;
     }
 
@@ -84,7 +78,10 @@ export class LRUCache {
         node.prev.next = node.next;
         if(node.next) {
             node.next.prev = node.prev;
+        }else {
+            this.last = node.prev;
         }
+        this.nodePool.free(node);
         this.size --;
     }
 
