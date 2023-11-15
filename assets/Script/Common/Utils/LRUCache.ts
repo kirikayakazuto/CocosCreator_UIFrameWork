@@ -60,6 +60,8 @@ export class LRUCache {
             this.addHead(node);
             return ;
         }
+        if(node == this.head.next) return;
+
         this.removeNode(node);
         this.addHead(node);
     }
@@ -96,16 +98,20 @@ export class LRUCache {
         }
         this.head.next = node;
         node.prev = this.head;
+
         this.size ++;
     }
 
     public has(value: string) {
         let next = this.head.next;
+        let count = 0;
         while(next) {
             if(next.value == value) {
                 return next;
             }
             next = next.next;
+            count ++;
+            if(count > this.maxSize) break;
         }
         return null;
     }
@@ -113,10 +119,28 @@ export class LRUCache {
     public toString() {
         let str = '';
         let next = this.head.next;
-        while(next) {
-            str += next.value + " ";
-            next = next.next;
-        }
+        // while(next) {
+        //     str += next.value + " ";
+        //     next = next.next;
+        // }
         return str;
     }
 }
+
+// let lruCache = new LRUCache(4);
+// lruCache.put("222222");
+// lruCache.put("333333");
+
+// lruCache.put("123");
+// lruCache.remove("123");
+// lruCache.put("123");
+
+
+// lruCache.remove("123");
+// lruCache.put("123");
+
+// lruCache.put("123");
+// lruCache.remove("123");
+
+
+// window.lruCache = lruCache;
