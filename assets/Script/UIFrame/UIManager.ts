@@ -130,7 +130,7 @@ export default class UIManager {
         let com = this._allForms[prefabPath];
         if(!com) return false;
 
-        if(!this._showingForms[prefabPath]) {
+        if(!this.checkFormShowing(prefabPath)) {
             cc.warn(TAG, `${prefabPath}, 已经关闭了, 请不要重复关闭`);
             return false;
         }
@@ -418,9 +418,7 @@ export default class UIManager {
 
     /** 窗体是否正在显示 */
     public checkFormShowing(fid: string) {
-        let com = this._allForms[fid];
-        if (!com) return false;
-        return com.node.active;
+        return !!this._showingForms[fid];        
     }
 
     /** 窗体是否正在加载 */
