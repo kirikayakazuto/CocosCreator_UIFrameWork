@@ -130,6 +130,11 @@ export default class UIManager {
         let com = this._allForms[prefabPath];
         if(!com) return false;
 
+        if(!this._showingForms[prefabPath]) {
+            cc.warn(TAG, `${prefabPath}, 已经关闭了, 请不要重复关闭`);
+            return false;
+        }
+
         if(this._closingForm[prefabPath]) {
             cc.warn(TAG, `${prefabPath}, form正在关闭中`);
             return;

@@ -81,6 +81,9 @@ export class LRUCache {
         }else {
             this.last = node.prev;
         }
+
+        node.prev = null;
+        node.next = null;
         this.nodePool.free(node);
         this.size --;
     }
