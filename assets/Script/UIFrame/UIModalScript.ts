@@ -36,17 +36,18 @@ export default class UIModalScript extends cc.Component {
 
         this.node.color = new cc.Color(255, 255, 255);
         this.node.opacity = 0;
-        this.node.active = false;
-
-        let node = new cc.Node("BlurCamera");
-        this.camera = node.addComponent(cc.Camera);
-        cc.find('Canvas').addChild(node);        
+        this.node.active = false;     
     }
 
 
     // 
     public async showModal(lucenyType: number, time: number = 0.6, isEasing: boolean = true, dualBlur = false) {
         if(dualBlur) {
+            if(!this.camera) {
+              let node = new cc.Node("BlurCamera");
+              this.camera = node.addComponent(cc.Camera);
+              cc.find('Canvas').addChild(node);
+            }
             this.useDualBlurSprite(this.camera);
             this.node.color = cc.Color.WHITE;
         } else {
