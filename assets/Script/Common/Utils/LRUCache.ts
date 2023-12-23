@@ -60,10 +60,8 @@ export class LRUCache {
             this.addHead(node);
             return ;
         }
-        // 存在, 把这个node放在最前面
-        if(this.last == node) { // 如果当前node就是last, 那么更换last
-            this.last = node.prev;
-        }
+        if(node == this.head.next) return;
+
         this.removeNode(node);
         this.addHead(node);
     }
@@ -75,8 +73,6 @@ export class LRUCache {
     public deleteLastNode() {
         let value = this.last.value;
         this.removeNode(this.last);
-        this.nodePool.free(this.last);
-        this.last = this.last.prev;
         return value;
     }
 
@@ -84,7 +80,13 @@ export class LRUCache {
         node.prev.next = node.next;
         if(node.next) {
             node.next.prev = node.prev;
+        }else {
+            this.last = node.prev;
         }
+
+        node.prev = null;
+        node.next = null;
+        this.nodePool.free(node);
         this.size --;
     }
 
@@ -96,16 +98,20 @@ export class LRUCache {
         }
         this.head.next = node;
         node.prev = this.head;
+
         this.size ++;
     }
 
     public has(value: string) {
         let next = this.head.next;
+        let count = 0;
         while(next) {
             if(next.value == value) {
                 return next;
             }
             next = next.next;
+            count ++;
+            if(count > this.maxSize) break;
         }
         return null;
     }
@@ -113,10 +119,28 @@ export class LRUCache {
     public toString() {
         let str = '';
         let next = this.head.next;
-        while(next) {
-            str += next.value + " ";
-            next = next.next;
-        }
+        // while(next) {
+        //     str += next.value + " ";
+        //     next = next.next;
+        // }
         return str;
     }
 }
+
+// let lruCache = new LRUCache(4);
+// lruCache.put("222222");
+// lruCache.put("333333");
+
+// lruCache.put("123");
+// lruCache.remove("123");
+// lruCache.put("123");
+
+
+// lruCache.remove("123");
+// lruCache.put("123");
+
+// lruCache.put("123");
+// lruCache.remove("123");
+
+
+// window.lruCache = lruCache;
