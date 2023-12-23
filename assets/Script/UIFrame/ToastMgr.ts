@@ -12,8 +12,9 @@ class ToastMgr {
     
     public async open(form: IFormConfig | string, params?: any, formData?: IFormData) {
         form = GetForm(form, FormType.Toast);
-        
+    
         let pool = this._pools[form.prefabUrl];
+        console.log(pool, form.prefabUrl);
         if(!pool) {
             pool = await this.genPool(form.prefabUrl);
         }
@@ -31,6 +32,7 @@ class ToastMgr {
 
     public async close(com: UIToast, params: any) {
         await UIManager.getInstance().exitToToast(com, params);
+        console.log(com.fid);
         if(!this._pools[com.fid]) return;
         this._pools[com.fid].free(com);
 
@@ -51,7 +53,9 @@ class ToastMgr {
         let pool = this._pools[prefabUrl] = new Pool(() => {
             let node = cc.instantiate(prefab);
             UIManager.getInstance().addNode(node);
-            return node.getComponent(UIToast);
+            let com = node.getComponent(UIToast);
+            com.fid = prefabUrl;
+            return com;
         }, 3);
         return pool;
     }

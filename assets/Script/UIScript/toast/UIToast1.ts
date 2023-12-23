@@ -21,7 +21,7 @@ export default class UIToast1 extends UIToast {
 
     public onShow(params: any): void {
         this.scheduleOnce(() => {
-            ToastMgr.close(this);
+            ToastMgr.close(this, null);
         }, 0.5);
     }
 
