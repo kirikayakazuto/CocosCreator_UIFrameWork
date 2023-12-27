@@ -176,7 +176,7 @@ export default class CocosHelper {
     public static loadBundleSync(url: string, options: any): Promise<cc.AssetManager.Bundle> {
         return new Promise((resolve, reject) => {
             cc.assetManager.loadBundle(url, options, (err: Error, bundle: cc.AssetManager.Bundle) => {
-                if(!err) {
+                if(err) {
                     cc.error(`加载bundle失败, url: ${url}, err:${err}`);
                     resolve(null);
                 }else {
